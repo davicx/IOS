@@ -11,6 +11,10 @@ import Foundation
 
 func registerUser(userName: String, fullName: String, email: String, password: String) {
     
+    //var registerUserOutcome = RegisterUserModel()
+    //registerUserOutcome.master_success = 0
+    
+    
     let parameters = [
         "user_name": userName,
         "full_name": fullName,
@@ -55,3 +59,5 @@ func registerUser(userName: String, fullName: String, email: String, password: S
     
     
 }
+
+
