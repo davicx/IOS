@@ -26,13 +26,29 @@ class RegisterViewController: UIViewController {
         var registerEmail = emailInputField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         var registerPassword =  passwordInputField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
+        
+        var registerUserOutcome = RegisterUserModel()
+        
         registerUserName = "vasquezd433"
         registerFullName = "Davey V"
         registerEmail = "vasquezd433@onid.orst.edu"
-        registerPassword =  "password"
+        registerPassword = "password"
         
-        registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword)
+        //STEP 1: Register User on Server and Get Outcome
+        registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword) 
+        /*
+        registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword) { tempRegisterOutcome, error in
+            DispatchQueue.main.async {
+                //self.registerUserOutcome = tempRegisterOutcome
+                //self.postsArray = filterPostsIntoArray(tempPostArray: tempPostArray)
+                //self.tableView.reloadData()
+                
+            }
+        }
+        */
+        //registerUserOutcome = registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword)
         
+        //print("OUTCOME: \(registerUserOutcome.user_name_message)")
         /*
         if registerUserName == "" || registerEmail == "" || registerPassword == "" {
             if registerUserName == "" {

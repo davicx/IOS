@@ -10,6 +10,7 @@ import Foundation
 
 //func getCurrentUser(completionHandler:@escaping (User, Error?)->Void ) {
 func getPosts(completionHandler:@escaping (Array<PostModel>, Error?)->Void ) {
+//func getPosts(tempInput: String, completionHandler:@escaping (Array<PostModel>, Error?)->Void ) {
     let parameters = ["user_name": "vasquezd", "user_key": "vasquezd"]
     
     guard let url = URL(string: "http://people.oregonstate.edu/~vasquezd/sites/template/site_files/rest/post/get_user_posts.php") else { return }
