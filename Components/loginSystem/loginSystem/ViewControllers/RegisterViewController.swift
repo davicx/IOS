@@ -27,7 +27,7 @@ class RegisterViewController: UIViewController {
         var registerPassword =  passwordInputField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         
-        var registerUserOutcome = RegisterUserModel()
+        //var registerUserOutcome = RegisterUserModel()
         
         registerUserName = "vasquezd433"
         registerFullName = "Davey V"
@@ -35,44 +35,53 @@ class RegisterViewController: UIViewController {
         registerPassword = "password"
         
         //STEP 1: Register User on Server and Get Outcome
-        registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword) 
-        /*
-        registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword) { tempRegisterOutcome, error in
+        //registerUserOutcome = registerUser(userName: registerUserName, fullName: registerFullName, email:registerEmail, password: registerPassword)
+     
+        registerUser(tempInput: "hiya!") { tempRegisterOutcome, error in
             DispatchQueue.main.async {
-                //self.registerUserOutcome = tempRegisterOutcome
                 //self.postsArray = filterPostsIntoArray(tempPostArray: tempPostArray)
                 //self.tableView.reloadData()
                 
             }
         }
-        */
-        //registerUserOutcome = registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword)
         
-        //print("OUTCOME: \(registerUserOutcome.user_name_message)")
-        /*
-        if registerUserName == "" || registerEmail == "" || registerPassword == "" {
-            if registerUserName == "" {
-                print(" User Name ")
-            }
-            if registerEmail == "" {
-                print(" Email ")
-            }
-            if registerPassword == "" {
-                 print(" Password ")
-            }
-            
-        } else {
-            registerUserName = "vasquezd"
-            registerFullName = "Davey V"
-            registerEmail = "vasquezd@onid.orst.edu"
-            registerPassword =  "password"
-            
-            registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword)
-            
-        }
-        */
+    
+        
 
+ 
+        
+    }
+    
+    func registerUser(tempInput: String, completionHandler:@escaping (Array<RegisterUserModel>, Error?)->Void ) {
+        let parameters = ["user_name": "vasquezd", "user_key": "vasquezd"]
+        
+        print(tempInput)
+        
         
     }
     
 }
+
+//print("OUTCOME: \(registerUserOutcome.user_name_message)")
+/*
+ if registerUserName == "" || registerEmail == "" || registerPassword == "" {
+ if registerUserName == "" {
+ print(" User Name ")
+ }
+ if registerEmail == "" {
+ print(" Email ")
+ }
+ if registerPassword == "" {
+ print(" Password ")
+ }
+ 
+ } else {
+ registerUserName = "vasquezd"
+ registerFullName = "Davey V"
+ registerEmail = "vasquezd@onid.orst.edu"
+ registerPassword =  "password"
+ 
+ registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword)
+ 
+ }
+ */
