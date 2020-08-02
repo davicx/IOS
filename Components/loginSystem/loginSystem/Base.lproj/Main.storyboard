@@ -119,15 +119,26 @@
                                     <action selector="signUpUserButton:" destination="n2J-hN-ZU3" eventType="touchUpInside" id="v30-P7-1lS"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error " textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bmm-1r-gaT">
+                                <rect key="frame" x="20" y="524" width="374" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="LSO-1u-or6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="j05-vY-HXI" firstAttribute="trailing" secondItem="RSa-rx-0c4" secondAttribute="trailing" constant="40" id="20F-Ts-atS"/>
                             <constraint firstItem="j05-vY-HXI" firstAttribute="trailing" secondItem="B3l-Im-wXu" secondAttribute="trailing" constant="40" id="3Xf-bt-fzn"/>
+                            <constraint firstItem="Bmm-1r-gaT" firstAttribute="top" secondItem="Ek0-pw-Q4k" secondAttribute="bottom" constant="20" id="AWU-7L-dHI"/>
                             <constraint firstItem="Ek0-pw-Q4k" firstAttribute="top" secondItem="OAA-j0-kaa" secondAttribute="bottom" constant="40" id="CDF-yd-7A2"/>
                             <constraint firstItem="OAA-j0-kaa" firstAttribute="top" secondItem="RSa-rx-0c4" secondAttribute="bottom" constant="20" id="CRk-qk-unm"/>
                             <constraint firstItem="j05-vY-HXI" firstAttribute="trailing" secondItem="Ek0-pw-Q4k" secondAttribute="trailing" constant="40" id="ChA-V4-xix"/>
                             <constraint firstItem="99g-AU-FZU" firstAttribute="leading" secondItem="j05-vY-HXI" secondAttribute="leading" constant="40" id="Dn5-Q6-KP7"/>
+                            <constraint firstItem="j05-vY-HXI" firstAttribute="trailing" secondItem="Bmm-1r-gaT" secondAttribute="trailing" constant="20" id="EkA-Zh-k16"/>
                             <constraint firstItem="SXT-PW-W48" firstAttribute="top" secondItem="B3l-Im-wXu" secondAttribute="bottom" constant="20" id="LHV-zZ-J1s"/>
                             <constraint firstItem="B3l-Im-wXu" firstAttribute="top" secondItem="99g-AU-FZU" secondAttribute="bottom" constant="80" id="QXH-qJ-Ixa"/>
                             <constraint firstItem="j05-vY-HXI" firstAttribute="trailing" secondItem="OAA-j0-kaa" secondAttribute="trailing" constant="40" id="S4x-Xj-2OO"/>
@@ -137,6 +148,7 @@
                             <constraint firstItem="SXT-PW-W48" firstAttribute="leading" secondItem="j05-vY-HXI" secondAttribute="leading" constant="40" id="qmc-cG-YwH"/>
                             <constraint firstItem="RSa-rx-0c4" firstAttribute="leading" secondItem="j05-vY-HXI" secondAttribute="leading" constant="40" id="rko-zH-Loj"/>
                             <constraint firstItem="j05-vY-HXI" firstAttribute="trailing" secondItem="99g-AU-FZU" secondAttribute="trailing" constant="40" id="u5g-uZ-7S7"/>
+                            <constraint firstItem="Bmm-1r-gaT" firstAttribute="leading" secondItem="j05-vY-HXI" secondAttribute="leading" constant="20" id="u7U-GL-lPs"/>
                             <constraint firstItem="Ek0-pw-Q4k" firstAttribute="leading" secondItem="j05-vY-HXI" secondAttribute="leading" constant="40" id="w2B-xS-0VT"/>
                             <constraint firstItem="B3l-Im-wXu" firstAttribute="leading" secondItem="j05-vY-HXI" secondAttribute="leading" constant="40" id="xQj-Jt-Mxj"/>
                             <constraint firstItem="j05-vY-HXI" firstAttribute="trailing" secondItem="SXT-PW-W48" secondAttribute="trailing" constant="40" id="yRL-dk-eUn"/>
@@ -147,6 +159,7 @@
                         <outlet property="emailInputField" destination="RSa-rx-0c4" id="eWX-aa-mHP"/>
                         <outlet property="fullNameInputField" destination="SXT-PW-W48" id="wrZ-4W-Ihd"/>
                         <outlet property="passwordInputField" destination="OAA-j0-kaa" id="iGP-yk-ifR"/>
+                        <outlet property="registerErrorMessage" destination="Bmm-1r-gaT" id="AxT-YH-gU5"/>
                         <outlet property="userNameInputField" destination="B3l-Im-wXu" id="UGK-Uf-nUc"/>
                     </connections>
                 </viewController>

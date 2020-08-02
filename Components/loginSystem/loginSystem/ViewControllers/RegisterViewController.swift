@@ -15,6 +15,9 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var emailInputField: UITextField!
     @IBOutlet weak var passwordInputField: UITextField!
     
+    @IBOutlet weak var registerErrorMessage: UILabel!
+    var registerUserOutcome = RegisterUserModel()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,41 +29,65 @@ class RegisterViewController: UIViewController {
         var registerEmail = emailInputField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         var registerPassword =  passwordInputField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        
-        //var registerUserOutcome = RegisterUserModel()
-        
-        registerUserName = "vasquezd433"
+        registerUserName = "davey"
         registerFullName = "Davey V"
-        registerEmail = "vasquezd433@onid.orst.edu"
+        registerEmail = "davey@gmail.com"
         registerPassword = "password"
         
-        //STEP 1: Register User on Server and Get Outcome
-        //registerUserOutcome = registerUser(userName: registerUserName, fullName: registerFullName, email:registerEmail, password: registerPassword)
-     
-        registerUser(tempInput: "hiya!") { tempRegisterOutcome, error in
+        //STEP 1: Make Sure Fields are all filled in
+        
+        //STEP 2: Register User on Server and Get Outcome
+        registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword) { userServerRegisterOutcome, error in
             DispatchQueue.main.async {
-                //self.postsArray = filterPostsIntoArray(tempPostArray: tempPostArray)
-                //self.tableView.reloadData()
+                //print(userServerRegisterOutcome)
+                
+                //STEP 3: Register with Firebase (Success)
+                if(userServerRegisterOutcome.master_success == 1) {
+                    self.registerErrorMessage.text = "success"
+                
+                
+                //Handle Failure
+                } else {
+                    
+                    var error_message = ""
+                    
+                    
+                    //Failure: Username Failure
+                    if userServerRegisterOutcome.username_failure == 1 {
+                        error_message = error_message + userServerRegisterOutcome.user_name_message
+                    }
+                    
+                    //Failure: Full Name Failure
+                    if userServerRegisterOutcome.full_name_failure == 1 {
+                        error_message = error_message + userServerRegisterOutcome.full_name_message
+                    }
+                    
+                    //Failure: Email Failure
+                    if userServerRegisterOutcome.email_failure == 1 {
+                        error_message = error_message + userServerRegisterOutcome.email_message
+                    }
+                    
+                    //Failure: Password Failure 
+                    if userServerRegisterOutcome.password_failure == 1 {
+                        error_message = error_message + userServerRegisterOutcome.password_message
+                    }
+ 
+                    
+                    self.registerErrorMessage.text = error_message
+                
                 
             }
         }
         
-    
         
+        
+    }
+    
 
- 
-        
     }
-    
-    func registerUser(tempInput: String, completionHandler:@escaping (Array<RegisterUserModel>, Error?)->Void ) {
-        let parameters = ["user_name": "vasquezd", "user_key": "vasquezd"]
-        
-        print(tempInput)
-        
-        
-    }
-    
 }
+
+//registerUserOutcome = registerUser(userName: registerUserName, fullName: registerFullName, email:registerEmail, password: registerPassword)
 
 //print("OUTCOME: \(registerUserOutcome.user_name_message)")
 /*
@@ -81,7 +108,6 @@ class RegisterViewController: UIViewController {
  registerEmail = "vasquezd@onid.orst.edu"
  registerPassword =  "password"
  
- registerUser(userName: registerUserName, fullName: registerFullName, email: registerEmail, password: registerPassword)
- 
+
  }
  */
