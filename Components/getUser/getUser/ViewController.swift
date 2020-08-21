@@ -122,7 +122,7 @@ class ViewController: UIViewController {
                         self.loggedInUser.lastName = returned_user_array.last_name
                         
                         //USER: Set User Image
-                        let baseURL = ""
+                        let baseURL = "http://people.oregonstate.edu/~vasquezd/sites/user_uploads/user_image/"
                         let urlKey = returned_user_array.user_image
                         
                         //Load Image
