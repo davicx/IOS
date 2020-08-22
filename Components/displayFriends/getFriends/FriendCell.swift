@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FriendCellDelegate {
-    func didTapAddFriend(title: String)
+    func didTapAddFriend(selectedFriend: String)
 }
 
 class FriendCell: UITableViewCell {
@@ -18,15 +18,16 @@ class FriendCell: UITableViewCell {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var fullNameLabel: UILabel!
     
-    //var friendItem = Friend?
+    var currentFriendName = ""
     var delegate: FriendCellDelegate?
-    //var currentFriend = Friend.self
-   
+
     func setFriend(friend: Friend) {
-        print(friend.userImage)
+        //print(friend.userImage)
         userNameLabel.text = friend.userName
         fullNameLabel.text = friend.userImage
-        
+        currentFriendName = friend.userName
+        print(friend.friendStatus)
+
         //Load Image
         let userImagePath = "http://people.oregonstate.edu/~vasquezd/sites/user_uploads/user_image/"
         let userImageFullPath = userImagePath + friend.userImage
@@ -41,30 +42,37 @@ class FriendCell: UITableViewCell {
                 
             }
         }
-        print(friend.userName)
+        
     }
     
     @IBAction func addFriend(_ sender: UIButton) {
-       delegate?.didTapAddFriend(title: "ahhh")
-    }
-    
-    /*
-    @IBAction func addFriend(_ sender: Any) {
-        delegate?.didTapAddFriend(title: "friendItem.userName")
+
+       //delegate?.didTapAddFriend(title: currentFriendName)
+        delegate?.didTapAddFriend(selectedFriend: currentFriendName)
         
     }
     
-    */
-    
-    /*
-    @IBAction func addFriend(_ sender: Any) {
-        delegate?.didTapAddFriend(title: friend.userName)
-        
-    }
-    */
+ 
     
 }
 
 
+/*
+@IBAction func addFriend(_ sender: UIButton) {
+    flipButton(withString: "Add Friend", on: sender)
+}
+
+func flipButton(withString addFriend: String, on button: UIButton) {
+    if button.currentTitle == addFriend {
+        button.setTitle("Remove Friend", for: UIControl.State.normal)
+    } else {
+        button.setTitle("Add Friend", for: UIControl.State.normal)
+    }
+    
+}
+
+
+
+*/
 
 

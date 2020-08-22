@@ -12,6 +12,7 @@ class VideoCell: UITableViewCell {
     @IBOutlet weak var videoImageView: UIImageView!
     @IBOutlet weak var videoTitleLabel: UILabel!
     
+    var videoItem: Video! 
     
     func setVideo(video: Video) {
         videoImageView.image = video.image

@@ -17,6 +17,7 @@ class Friend {
     var fullName = ""
     var firstName = ""
     var lastName = ""
+    var friendStatus = 1
     
    
     init(userName: String) {

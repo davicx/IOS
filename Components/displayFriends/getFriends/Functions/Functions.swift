@@ -31,15 +31,12 @@ func getUserFriends(userName: String, completionHandler:@escaping (Array<Friend>
                 let friendModelArray = try JSONDecoder().decode([FriendModel].self, from: data)
                 
                 for friend in friendModelArray{
-                    
-                    
                     let currentFriend = Friend(userName: friend.friend_user_name)
-                    
                     
                     currentFriend.userImage = friend.user_image
                     currentFriend.firstName = friend.first_name
                     currentFriend.lastName = friend.last_name
-                     currentFriend.userName = friend.friend_user_name
+                    currentFriend.userName = friend.friend_user_name
                     friendsArray.append(currentFriend)
                     //print(currentFriend.userName)
                 }

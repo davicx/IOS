@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, FriendCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -28,16 +28,20 @@ class ViewController: UIViewController {
         
     }
 
-}
-
-extension ViewController: FriendCellDelegate {
-    func didTapAddFriend(title: String) {
-        print(title)
+    func didTapAddFriend(selectedFriend: String) {
+        print(selectedFriend)
     }
     
-    
 }
 
+/*
+extension ViewController: FriendCellDelegate {
+    func didTapAddFriend(selectedFriend: String) {
+        print(selectedFriend)
+    }
+}
+*/
+ 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -50,8 +54,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as! FriendCell
         cell.setFriend(friend: friend)
         cell.delegate = self
-        //cell.fullNameLabel.text =
-        
+    
         return cell
     }
 }
