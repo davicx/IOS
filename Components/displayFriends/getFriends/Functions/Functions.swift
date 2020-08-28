@@ -37,6 +37,9 @@ func getUserFriends(userName: String, completionHandler:@escaping (Array<Friend>
                     currentFriend.firstName = friend.first_name
                     currentFriend.lastName = friend.last_name
                     currentFriend.userName = friend.friend_user_name
+                    if currentFriend.userName == "matt" || currentFriend.userName == "Becca" {
+                        currentFriend.friendStatus = 0
+                    }
                     friendsArray.append(currentFriend)
                     //print(currentFriend.userName)
                 }
@@ -50,6 +53,24 @@ func getUserFriends(userName: String, completionHandler:@escaping (Array<Friend>
         }.resume()
     //print("Return Friends \(friendsArray)")
   
+}
+
+//Function: Find Index of Friend in Array of Friend Objects
+func getFriendArrayLocation(friendToFind: String, friendsArray: [Friend]) -> Int {
+    var currentIndex = 0
+    var friendsIndexLocation = -1
+    let friendToFindLowerCase = friendToFind.lowercased()
+    for friend in friendsArray {
+        //print("Friend: \(friend.userName.lowercased())  \(friendToFindLowerCase)")
+        if friend.userName.lowercased() == friendToFindLowerCase {
+            friendsIndexLocation = currentIndex
+            break
+        }
+        currentIndex = currentIndex + 1
+        
+    }
+    
+    return friendsIndexLocation
 }
 
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		632BEE0024F48413003B49D4 /* LearningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632BEDFF24F48413003B49D4 /* LearningViewController.swift */; };
 		6333BAE324E2143F00F63BF2 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6333BAE224E2143F00F63BF2 /* Functions.swift */; };
 		63436FB924E8B250004915DF /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63436FB824E8B250004915DF /* FriendCell.swift */; };
 		63A645CA24BA953400ADE3B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A645C924BA953400ADE3B7 /* AppDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		632BEDFF24F48413003B49D4 /* LearningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningViewController.swift; sourceTree = "<group>"; };
 		6333BAE224E2143F00F63BF2 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		63436FB824E8B250004915DF /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		63A645C624BA953400ADE3B7 /* getFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = getFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +78,7 @@
 				63A645C924BA953400ADE3B7 /* AppDelegate.swift */,
 				63A645CB24BA953400ADE3B7 /* ViewController.swift */,
 				63A645CD24BA953400ADE3B7 /* Main.storyboard */,
+				632BEDFF24F48413003B49D4 /* LearningViewController.swift */,
 				63436FB824E8B250004915DF /* FriendCell.swift */,
 				63A645D024BA953600ADE3B7 /* Assets.xcassets */,
 				63A645D224BA953600ADE3B7 /* LaunchScreen.storyboard */,
@@ -173,6 +176,7 @@
 			files = (
 				63A645CC24BA953400ADE3B7 /* ViewController.swift in Sources */,
 				63436FB924E8B250004915DF /* FriendCell.swift in Sources */,
+				632BEE0024F48413003B49D4 /* LearningViewController.swift in Sources */,
 				63F09ED724BBDDC900917AAE /* FriendModel.swift in Sources */,
 				63F09EDA24BBE15600917AAE /* Friend.swift in Sources */,
 				6333BAE324E2143F00F63BF2 /* Functions.swift in Sources */,
