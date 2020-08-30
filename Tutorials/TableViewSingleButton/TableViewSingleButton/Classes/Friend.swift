@@ -1,8 +1,8 @@
 //
 //  Friend.swift
-//  TableViewButtonsThree
+//  TableViewSingleButton
 //
-//  Created by David Vasquez on 8/27/20.
+//  Created by David Vasquez on 8/28/20.
 //  Copyright © 2020 David Vasquez. All rights reserved.
 //
 
@@ -18,7 +18,9 @@ struct Friend {
         self.friendID = friendID
         self.userName = userName
         self.friendStatus = friendStatus
-
+        
     }
-
+    
 }
+
+
