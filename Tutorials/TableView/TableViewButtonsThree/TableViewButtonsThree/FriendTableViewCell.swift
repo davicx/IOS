@@ -59,6 +59,33 @@ class FriendTableViewCell: UITableViewCell {
 }
 
 
+
+import Foundation
+import UIKit
+
+struct Friend {
+    var friendID: Int
+    var userName: String
+    var friendStatus: Int
+    
+    init(friendID: Int, userName: String, friendStatus: Int) {
+        self.friendID = friendID
+        self.userName = userName
+        self.friendStatus = friendStatus
+        
+    }
+    
+}
+
+
+var friendOne = Friend(friendID: 1, userName: "bilbo", friendStatus: 1)
+var friendTwo = Friend(friendID: 2, userName: "frodo", friendStatus: 1)
+var friendThree = Friend(friendID: 3, userName: "james", friendStatus: 0)
+var friendFour = Friend(friendID: 4, userName: "samwise", friendStatus: 0)
+
+//var friendsArray: [Friend] = []
+var friendsArray = ["david", "Bilbo", "Frodo"]
+
 /*
 @IBAction func addFriend(_ sender: UIButton) {
     
