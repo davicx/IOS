@@ -11,4 +11,6 @@ import Foundation
 class addFriendModel: Decodable {
     let request_from: String
     let request_to: String
+    let add_friend_outcome: Int
+    let add_friend_message: String
 }
