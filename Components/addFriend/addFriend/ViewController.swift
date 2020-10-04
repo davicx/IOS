@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBAction func addFriend(_ sender: UIButton) {
-        let parameters = ["request_from": "vasquezd", "request_to": "frodo"]
+        let parameters = ["request_from": "vasquezd", "request_to": "matt"]
         
         guard let url = URL(string: "http://people.oregonstate.edu/~vasquezd/sites/template/site_files/rest/friends/add_friend.php") else { return }
         var request = URLRequest(url: url)
@@ -27,6 +27,7 @@ class ViewController: UIViewController {
                     
                     let friendResponse = try JSONDecoder().decode(addFriendModel.self, from: data)
                     print("\(friendResponse.request_to) \(friendResponse.request_from)")
+                    print(friendResponse.add_friend_message)
                     //print("\(friendResponse.request_from)")
                     
                     //completionHandler(postModelArray, nil)
