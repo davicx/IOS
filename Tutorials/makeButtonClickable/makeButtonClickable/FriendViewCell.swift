@@ -22,7 +22,6 @@ class FriendViewCell: UITableViewCell {
     @IBOutlet weak var friendName: UILabel!
     @IBOutlet weak var addFriendButtonOutlet: UIButton!
     
-    //friendName.text =
     
     @IBAction func addFriendButton(_ sender: UIButton) {
         cellDelegate?.addFriendClick(index: index!.row, friendName: selectedFriendName!)

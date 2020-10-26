@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.rowHeight = 120;
         friendsArray = createArray()
         //tableView.delegate = self
         //tableView.dataSource = self
