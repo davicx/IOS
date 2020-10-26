@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  addFriend
 //
-//  Created by David Vasquez on 9/5/20.
+//  Created by David Vasquez on 10/13/20.
 //  Copyright © 2020 David Vasquez. All rights reserved.
 //
 

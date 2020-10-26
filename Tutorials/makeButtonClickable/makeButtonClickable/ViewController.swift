@@ -26,12 +26,13 @@ class ViewController: UIViewController, addFriendProtocol {
         friendsArray.append(friendFour)
     }
     
-
     func addFriendClick(index: Int, friendName: String) {
         print("Update Friend Status \(index) \(friendsArray[index].userName)")
     
     }
 }
+
+
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -54,8 +55,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         //Set Name 
         cell?.friendName.text = currentFriendName
-        
-        
         cell?.cellDelegate = self
         cell?.index = indexPath
         
@@ -71,12 +70,3 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-/*
-func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let video = videos[indexPath.row]
-    let cell = tableView.dequeueReusableCell(withIdentifier: "VideoCell") as! VideoCell
-    cell.setVideo(video: video)
-    cell.configure(with: "hiya")
-    return cell
-}
- */
