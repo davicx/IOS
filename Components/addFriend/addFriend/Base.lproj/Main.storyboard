@@ -46,12 +46,12 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e7b-s7-vaV">
-                                                    <rect key="frame" x="297" y="40" width="85" height="40"/>
+                                                    <rect key="frame" x="329" y="40" width="53" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="EQr-eF-FkU"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                    <state key="normal" title="Add Friend"/>
+                                                    <state key="normal" title="Button"/>
                                                     <connections>
                                                         <action selector="addFriendButton:" destination="jWN-LW-6KY" eventType="touchUpInside" id="pbJ-vJ-qM3"/>
                                                     </connections>

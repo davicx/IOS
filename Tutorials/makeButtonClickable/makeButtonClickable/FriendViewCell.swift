@@ -15,6 +15,7 @@ protocol addFriendProtocol {
 class FriendViewCell: UITableViewCell {
 
     var cellDelegate: addFriendProtocol?
+    
     var index: IndexPath?
     var selectedFriendName: String?
     var selectedFriendStatus: Int?
@@ -42,6 +43,7 @@ class FriendViewCell: UITableViewCell {
     
     func configure(with title: String) {
         addFriendButtonOutlet.setTitle(title, for: .normal)
+ 
     }
     
     func flipButton(withString addFriend: String, on button: UIButton) {  

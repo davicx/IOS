@@ -10,64 +10,56 @@ import UIKit
 
 class FriendCell: UITableViewCell {
     
+    //OUTLETS
     @IBOutlet weak var friendImage: UIImageView!
     @IBOutlet weak var friendName: UILabel!
     @IBOutlet weak var addFriendButtonOutlet: UIButton!
     
     @IBAction func addFriendButton(_ sender: UIButton) {
-        
-    }
-    
-    //Set the friend information 
-    func setFriend(friend: Friend){
-        friendImage.image = friend.friendImage
-        friendName.text = friend.userName
-    }
-}
-
-
-
-
-/*
-import UIKit
-
-protocol addFriendProtocol {
-    func addFriendClick(index: Int, friendName: String)
-}
-
-class FriendViewCell: UITableViewCell {
-    
-    var cellDelegate: addFriendProtocol?
-    var index: IndexPath?
-    var selectedFriendName: String?
-    var selectedFriendStatus: Int?
-    
-    @IBOutlet weak var friendName: UILabel!
-    @IBOutlet weak var addFriendButtonOutlet: UIButton!
-    
-    //friendName.text =
-    
-    @IBAction func addFriendButton(_ sender: UIButton) {
-        cellDelegate?.addFriendClick(index: index!.row, friendName: selectedFriendName!)
+        print("addFriendButton")
+        //print("You Selected \(friend.userName)")
         flipButton(withString: "", on: sender)
     }
     
-    //Set Friend
-    func setFriend(friend: Friend) {
-        print("Set Friend \(friend.userName) \(friend.friendStatus)")
-        //Yay! Do the stuff here
-        //videoImageView.image = video.image
-        //videoTitleLabel.text = video.username
+    
+    
+    
+    //SETUP Methods that Run on Setup the friend information (This is called when the app is loaded)
+    func setupFriendCell(friend: Friend){
+        friendImage.image = friend.friendImage
+        friendName.text = friend.userName
         
-        //Set Properties to Use in Video Cell
-        //userName = video.username
-        //friendStatus = video.friendStatus
+        //Set Up the Button Title
+        if friend.friendStatus == 1 {
+            addFriendButtonOutlet.setTitle("Remove", for: .normal)
+        } else {
+            addFriendButtonOutlet.setTitle("Add", for: .normal)
+        }
     }
     
-    func configure(with title: String) {
-        addFriendButtonOutlet.setTitle(title, for: .normal)
+    /*
+    //Runs on Setup
+    func getTheData(friend: Friend) {
+        print("User Name \(friend.friendID)")
+        print("User Name \(friend.userName)")
+        print("User Name \(friend.friendStatus)")
     }
     
+    //Set Button Title On Load (Calls another Function)
+    func configureButtonTitle(friend: Friend) {
+        if friend.friendStatus == 1 {
+           addFriendButtonOutlet.setTitle("Remove", for: .normal)
+        } else {
+            addFriendButtonOutlet.setTitle("Add", for: .normal)
+        }
+        
+    }
+ */
+    
+    //BUTTON: Configure the Add Friend Button
+
+    
+    //Configure Button on Cell Flip
     func flipButton(withString addFriend: String, on button: UIButton) {
         if button.currentTitle == "Add" {
             button.setTitle("Remove", for: UIControl.State.normal)
@@ -77,49 +69,5 @@ class FriendViewCell: UITableViewCell {
         
     }
 }
-*/
-
-/*
- import UIKit
- 
- class VideoCell: UITableViewCell {
- 
- @IBOutlet weak var videoImageView: UIImageView!
- 
- @IBOutlet weak var videoTitleLabel: UILabel!
- 
- var userName = ""
- var friendStatus = 0
- 
- @IBAction func buttonTapped(_ sender: UIButton) {
- print("button Tapped")
- print(userName)
- }
- 
- @IBOutlet weak var button: UIButton!
- 
- func configure(with title: String) {
- 
- button.setTitle(title, for: .normal)
- }
- 
- func setVideo(video: Video) {
- videoImageView.image = video.image
- videoTitleLabel.text = video.username
- 
- //Set Properties to Use in Video Cell
- userName = video.username
- friendStatus = video.friendStatus
- }
- 
- 
- }
- 
- 
 
 
- override func awakeFromNib() {
- super.awakeFromNib()
- // Initialization code
- }
- */
