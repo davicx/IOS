@@ -57,6 +57,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         cell?.friendName.text = currentFriendName
         cell?.cellDelegate = self
         cell?.index = indexPath
+        //cell?.whatTheHeck = "hi"
         
         
         if currentFriendStatus == 1 {

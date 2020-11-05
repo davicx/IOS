@@ -23,7 +23,6 @@ class FriendCell: UITableViewCell {
     
     
     
-    
     //SETUP Methods that Run on Setup the friend information (This is called when the app is loaded)
     func setupFriendCell(friend: Friend){
         friendImage.image = friend.friendImage
@@ -37,28 +36,8 @@ class FriendCell: UITableViewCell {
         }
     }
     
-    /*
-    //Runs on Setup
-    func getTheData(friend: Friend) {
-        print("User Name \(friend.friendID)")
-        print("User Name \(friend.userName)")
-        print("User Name \(friend.friendStatus)")
-    }
-    
-    //Set Button Title On Load (Calls another Function)
-    func configureButtonTitle(friend: Friend) {
-        if friend.friendStatus == 1 {
-           addFriendButtonOutlet.setTitle("Remove", for: .normal)
-        } else {
-            addFriendButtonOutlet.setTitle("Add", for: .normal)
-        }
-        
-    }
- */
-    
-    //BUTTON: Configure the Add Friend Button
 
-    
+    //BUTTON: Changes to Button s
     //Configure Button on Cell Flip
     func flipButton(withString addFriend: String, on button: UIButton) {
         if button.currentTitle == "Add" {
@@ -70,4 +49,23 @@ class FriendCell: UITableViewCell {
     }
 }
 
+
+/*
+ //Runs on Setup
+ func getTheData(friend: Friend) {
+ print("User Name \(friend.friendID)")
+ print("User Name \(friend.userName)")
+ print("User Name \(friend.friendStatus)")
+ }
+ 
+ //Set Button Title On Load (Calls another Function)
+ func configureButtonTitle(friend: Friend) {
+ if friend.friendStatus == 1 {
+ addFriendButtonOutlet.setTitle("Remove", for: .normal)
+ } else {
+ addFriendButtonOutlet.setTitle("Add", for: .normal)
+ }
+ 
+ }
+ */
 

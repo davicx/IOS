@@ -17,8 +17,11 @@ class FriendViewCell: UITableViewCell {
     var cellDelegate: addFriendProtocol?
     
     var index: IndexPath?
+    
     var selectedFriendName: String?
     var selectedFriendStatus: Int?
+   
+    //var whatTheHeck: String?
     
     @IBOutlet weak var friendName: UILabel!
     @IBOutlet weak var addFriendButtonOutlet: UIButton!
@@ -27,6 +30,8 @@ class FriendViewCell: UITableViewCell {
     @IBAction func addFriendButton(_ sender: UIButton) {
         cellDelegate?.addFriendClick(index: index!.row, friendName: selectedFriendName!)
         flipButton(withString: "", on: sender)
+        let currentIndex = index!.row
+        print("Info \(currentIndex)")
     }
     
     //Set Friend

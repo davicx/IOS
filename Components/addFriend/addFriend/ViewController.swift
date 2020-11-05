@@ -44,24 +44,32 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     //CELL: This is where each cell is configured
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        //CELL SET UP
         //Get the Friend we are going to Load into the Cell
         let friend = friendsArray[indexPath.row]
         
         //Create a cell variable so we can configure it
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as! FriendCell
         
-        //CELL SET UP: Methods in Friend Cell Called when we set the Cell Up
+        //Methods in Friend Cell Called when we set the Cell Up
         cell.setupFriendCell(friend: friend)
         //cell.getTheData(friend: friend)
         //cell.configureButtonTitle(friend: friend)
+        
+        
         
  
         return cell
         
         
-        
-        
     }
+    
+  
+    //cell?.friendName.text = currentFriendName
+    //cell?.cellDelegate = self
+    //cell?.index = indexPath
+    
+ 
 
 }
 
