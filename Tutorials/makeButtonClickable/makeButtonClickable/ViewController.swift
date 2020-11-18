@@ -5,6 +5,7 @@
 //  Created by David Vasquez on 9/1/20.
 //  Copyright © 2020 David Vasquez. All rights reserved.
 //https://www.youtube.com/watch?v=UPrBXUWPf6Q
+//The Intern 
 
 import UIKit
 
@@ -59,13 +60,14 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         cell?.index = indexPath
         //cell?.whatTheHeck = "hi"
         
-        
+        /*
+         Moved to the cell where cell! broke 
         if currentFriendStatus == 1 {
            cell!.configure(with: "Remove")
         } else {
             cell!.configure(with: "Add")
         }
-        
+        */
         return cell!
         
     }

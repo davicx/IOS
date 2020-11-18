@@ -12,7 +12,7 @@ import UIKit
 
 //A list of commands to send to the intern (list of function names)
 protocol SideSelectionDelegate {
-    func didTapChoice(image: UIImage, name: String, color: UIColor)
+    func didTapChoice(image: UIImage, name: String, color: UIColor, david: String)
 }
 
 class SelectionScreen: UIViewController {
@@ -25,16 +25,16 @@ class SelectionScreen: UIViewController {
     }
 
     @IBAction func imperialButtonTapped(_ sender: UIButton) {
-        
+        print("Imperial ")
         //Send to the Intern
-        selectionDelegate.didTapChoice(image: UIImage(named: "vader")!, name: "Darth Vader", color: .red)
+        selectionDelegate.didTapChoice(image: UIImage(named: "vader")!, name: "Darth Vader", color: .red, david: "Hiya")
         dismiss(animated: true, completion: nil)
     }
 
     @IBAction func rebelButtonTapped(_ sender: UIButton) {
-        
+            print("Rebel ")
         //Send to the Intern 
-        selectionDelegate.didTapChoice(image: UIImage(named: "luke")!, name: "Luke Skywalker", color: .cyan)
+        selectionDelegate.didTapChoice(image: UIImage(named: "luke")!, name: "Luke Skywalker", color: .cyan, david: "Hiya Rebel! ")
         dismiss(animated: true, completion: nil)
     }
 }

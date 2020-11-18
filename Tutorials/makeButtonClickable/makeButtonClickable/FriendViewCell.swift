@@ -4,7 +4,7 @@
 //
 //  Created by David Vasquez on 9/1/20.
 //  Copyright © 2020 David Vasquez. All rights reserved.
-//
+//This is the Boss
 
 import UIKit
 
@@ -31,12 +31,39 @@ class FriendViewCell: UITableViewCell {
         cellDelegate?.addFriendClick(index: index!.row, friendName: selectedFriendName!)
         flipButton(withString: "", on: sender)
         let currentIndex = index!.row
-        print("Info \(currentIndex)")
+        //print("Info \(currentIndex)")
     }
     
-    //Set Friend
+    //SETUP: Set Friend
+    //func setupFriendCell(friend: Friend){
     func setFriend(friend: Friend) {
         print("Set Friend \(friend.userName) \(friend.friendStatus)")
+        
+        //This broke here so we changed
+        if friend.friendStatus == 1 {
+            addFriendButtonOutlet.setTitle("Remove", for: .normal)
+        } else {
+            addFriendButtonOutlet.setTitle("Add", for: .normal)
+        }
+        /*
+        if friend.friendStatus == 1 {
+            cell!.configure(with: "Remove")
+        } else {
+            cell!.configure(with: "Add")
+        }
+            */
+        /*
+        friendImage.image = friend.friendImage
+        friendName.text = friend.userName
+        
+        //Set Up the Button Title
+        if friend.friendStatus == 1 {
+            addFriendButtonOutlet.setTitle("Remove", for: .normal)
+        } else {
+            addFriendButtonOutlet.setTitle("Add", for: .normal)
+ 
+        }
+ */
         //Yay! Do the stuff here 
         //videoImageView.image = video.image
         //videoTitleLabel.text = video.username
