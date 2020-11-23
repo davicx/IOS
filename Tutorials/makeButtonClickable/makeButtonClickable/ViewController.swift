@@ -1,11 +1,8 @@
 //
 //  ViewController.swift
-//  makeButtonClickable
 //
 //  Created by David Vasquez on 9/1/20.
 //  Copyright © 2020 David Vasquez. All rights reserved.
-//https://www.youtube.com/watch?v=UPrBXUWPf6Q
-//The Intern 
 
 import UIKit
 
@@ -28,11 +25,10 @@ class ViewController: UIViewController, addFriendProtocol {
     }
     
     func addFriendClick(index: Int, friendName: String) {
-        print("Update Friend Status \(index) \(friendsArray[index].userName)")
+        print("Update Friend Status \(index) \(friendsArray[index].userName) \(friendsArray[index].friendStatus)")
     
     }
 }
-
 
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
@@ -45,29 +41,18 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         //Just send the Full Friend Object
         let currentFriendObject = friendsArray[indexPath.row]
-        cell?.setFriend(friend: currentFriendObject)
-        
-        //Clean Below
         let currentFriendName = friendsArray[indexPath.row].userName
-
         let currentFriendStatus = friendsArray[indexPath.row].friendStatus
+        
+        //Send Variables to the Cell
+        cell?.setupFriendCell(friend: currentFriendObject)
+        
         cell?.selectedFriendName = currentFriendName
         cell?.selectedFriendStatus = currentFriendStatus
-        
-        //Set Name 
-        cell?.friendName.text = currentFriendName
         cell?.cellDelegate = self
         cell?.index = indexPath
         //cell?.whatTheHeck = "hi"
         
-        /*
-         Moved to the cell where cell! broke 
-        if currentFriendStatus == 1 {
-           cell!.configure(with: "Remove")
-        } else {
-            cell!.configure(with: "Add")
-        }
-        */
         return cell!
         
     }

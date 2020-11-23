@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, addFriendProtocol {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -32,6 +32,12 @@ class ViewController: UIViewController {
         return [friendOne, friendTwo, friendThree, friendFour]
 
     }
+    
+    
+    func addFriendClick(index: Int, friendName: String, friendObject: Friend) {
+        print("Update Friend Status \(index) \(friendsArray[index].userName) \(friendsArray[index].friendStatus)")
+        print("FRIEND \(friendObject.userName)")
+    }
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
@@ -49,36 +55,42 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let friend = friendsArray[indexPath.row]
         
         //Create a cell variable so we can configure it
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as! FriendCell
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as! FriendCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as? FriendCell
         
         //Methods in Friend Cell Called when we set the Cell Up
-        cell.setupFriendCell(friend: friend)
-        //cell.getTheData(friend: friend)
-        //cell.configureButtonTitle(friend: friend)
+        cell?.setupFriendCell(friend: friend)
+        cell?.selectedFriendName = friend.userName
+        cell?.selectedFriendStatus = friend.friendStatus
+        cell?.cellDelegate = self
+        cell?.index = indexPath
         
-        
-        
- 
-        return cell
+        //Send the Friend Object
+        cell?.currentFriend = friend
+  
+        return cell!
         
         
     }
     
   
-    //cell?.friendName.text = currentFriendName
-    //cell?.cellDelegate = self
-    //cell?.index = indexPath
-    
  
 
 }
 
 /*
- //Set the Button Title on Load
- if friend.friendStatus == 1 {
- cell.setOriginalButtonTitle(with: "Remove")
- } else {
- cell.setOriginalButtonTitle(with: "Add")
- }
- */
 
+
+//Just send the Full Friend Object
+let currentFriendObject = friendsArray[indexPath.row]
+let currentFriendName = friendsArray[indexPath.row].userName
+let currentFriendStatus = friendsArray[indexPath.row].friendStatus
+
+//Send Variables to the Cell
+cell?.setupFriendCell(friend: currentFriendObject)
+
+
+//cell?.whatTheHeck = "hi"
+
+return cell!
+*/
