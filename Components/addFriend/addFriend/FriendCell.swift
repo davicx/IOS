@@ -11,7 +11,8 @@
 import UIKit
 
 protocol addFriendProtocol {
-    func addFriendClick(index: Int, friendName: String, friendObject: Friend)
+    //func addFriendClick(index: Int, friendName: String, friendObject: Friend)
+    func addFriendClick(index: Int, friendObject: Friend)
 }
 
 class FriendCell: UITableViewCell {
@@ -25,13 +26,15 @@ class FriendCell: UITableViewCell {
     var cellDelegate: addFriendProtocol?
     var index: IndexPath?
     var currentFriend: Friend? 
-    var selectedFriendName: String?
-    var selectedFriendStatus: Int?
+    //var selectedFriendName: String?
+    //var selectedFriendStatus: Int?
     
     @IBAction func addFriendButton(_ sender: UIButton) {
         print("addFriendButton")
-        cellDelegate?.addFriendClick(index: index!.row, friendName: selectedFriendName!, friendObject: currentFriend!)
-        //print("You Selected \(friend.userName)")
+        //cellDelegate?.addFriendClick(index: index!.row, friendName: selectedFriendName!, friendObject: currentFriend!)
+        cellDelegate?.addFriendClick(index: index!.row, friendObject: currentFriend!)
+        
+        //print("addFriendButton \(friend.userName)")
         flipButton(withString: "", on: sender)
     }
     
@@ -50,7 +53,7 @@ class FriendCell: UITableViewCell {
     }
     
 
-    //BUTTON: Changes to Button s
+    //BUTTON: Changes to Button 
     //Configure Button on Cell Flip
     func flipButton(withString addFriend: String, on button: UIButton) {
         if button.currentTitle == "Add" {

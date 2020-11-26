@@ -34,9 +34,11 @@ class ViewController: UIViewController, addFriendProtocol {
     }
     
     
-    func addFriendClick(index: Int, friendName: String, friendObject: Friend) {
-        print("Update Friend Status \(index) \(friendsArray[index].userName) \(friendsArray[index].friendStatus)")
-        print("FRIEND \(friendObject.userName)")
+    //func addFriendClick(index: Int, friendName: String, friendObject: Friend) {
+    func addFriendClick(index: Int, friendObject: Friend) {
+        print("Friend ID: \(index) \(friendsArray[index].userName) Friend Status: \(friendsArray[index].friendStatus)")
+        print("Friend Name: \(friendObject.userName)")
+        print("______________________")
     }
 }
 
@@ -55,13 +57,12 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let friend = friendsArray[indexPath.row]
         
         //Create a cell variable so we can configure it
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as! FriendCell
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as? FriendCell
         
         //Methods in Friend Cell Called when we set the Cell Up
         cell?.setupFriendCell(friend: friend)
-        cell?.selectedFriendName = friend.userName
-        cell?.selectedFriendStatus = friend.friendStatus
+        //cell?.selectedFriendName = friend.userName
+        //cell?.selectedFriendStatus = friend.friendStatus
         cell?.cellDelegate = self
         cell?.index = indexPath
         
@@ -70,27 +71,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
   
         return cell!
         
-        
     }
     
-  
- 
-
 }
 
-/*
-
-
-//Just send the Full Friend Object
-let currentFriendObject = friendsArray[indexPath.row]
-let currentFriendName = friendsArray[indexPath.row].userName
-let currentFriendStatus = friendsArray[indexPath.row].friendStatus
-
-//Send Variables to the Cell
-cell?.setupFriendCell(friend: currentFriendObject)
-
-
-//cell?.whatTheHeck = "hi"
-
-return cell!
-*/
