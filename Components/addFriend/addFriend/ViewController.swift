@@ -40,6 +40,8 @@ class ViewController: UIViewController, addFriendProtocol {
         print("Friend Name: \(friendObject.userName)")
         print("______________________")
     }
+    
+  
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
