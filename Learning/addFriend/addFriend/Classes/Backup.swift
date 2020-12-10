@@ -1,4 +1,89 @@
 //
+//  Backup.swift
+//  addFriend
+//
+//  Created by David Vasquez on 12/9/20.
+//  Copyright © 2020 David Vasquez. All rights reserved.
+//
+
+import Foundation
+
+//
+//  FriendCell.swift
+//  addFriend
+//
+//  Created by David Vasquez on 10/13/20.
+//  Copyright © 2020 David Vasquez. All rights reserved.
+// Boss
+
+//CELL
+
+/*
+
+import UIKit
+
+protocol addFriendProtocol {
+    //func addFriendClick(index: Int, friendName: String, friendObject: Friend)
+    func addFriendClick(index: Int, friendObject: Friend)
+}
+
+class FriendCell: UITableViewCell {
+    
+    //OUTLETS
+    @IBOutlet weak var friendImage: UIImageView!
+    @IBOutlet weak var friendName: UILabel!
+    @IBOutlet weak var addFriendButtonOutlet: UIButton!
+    
+    //Cell Delegates
+    var cellDelegate: addFriendProtocol?
+    var index: IndexPath?
+    var currentFriend: Friend?
+    //var selectedFriendName: String?
+    //var selectedFriendStatus: Int?
+    
+    @IBAction func addFriendButton(_ sender: UIButton) {
+        //Unwrap Optional
+        
+        
+        print("addFriendButton \(currentFriend?.userName)")
+        
+        
+        //cellDelegate?.addFriendClick(index: i ndex!.row, friendName: selectedFriendName!, friendObject: currentFriend!)
+        cellDelegate?.addFriendClick(index: index!.row, friendObject: currentFriend!)
+        
+        //print("addFriendButton \(friend.userName)")
+        flipButton(withString: "", on: sender)
+    }
+    
+    
+    //SETUP Methods that Run on Setup the friend information (This is called when the app is loaded)
+    func setupFriendCell(friend: Friend){
+        friendImage.image = friend.friendImage
+        friendName.text = friend.userName
+        
+        //Set Up the Button Title
+        if friend.friendStatus == 1 {
+            addFriendButtonOutlet.setTitle("Remove", for: .normal)
+        } else {
+            addFriendButtonOutlet.setTitle("Add", for: .normal)
+        }
+    }
+    
+    
+    //BUTTON: Changes to Button
+    //Configure Button on Cell Flip
+    func flipButton(withString addFriend: String, on button: UIButton) {
+        if button.currentTitle == "Add" {
+            button.setTitle("Remove", for: UIControl.State.normal)
+        } else {
+            button.setTitle("Add", for: UIControl.State.normal)
+        }
+        
+    }
+}
+
+
+//
 //  ViewController.swift
 //  addFriend
 //
@@ -8,14 +93,11 @@
 
 import UIKit
 
-//May need to make global
-var friendsArray: [Friend] = []
-var friendIndex = 0
-
 class ViewController: UIViewController, addFriendProtocol {
-
+    
     @IBOutlet weak var tableView: UITableView!
     
+    var friendsArray: [Friend] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +107,7 @@ class ViewController: UIViewController, addFriendProtocol {
         //tableView.dataSource = self
         
     }
-
+    
     func createArray() -> [Friend] {
         let friendOne = Friend(friendID: 1, userName: "david", friendImage: #imageLiteral(resourceName: "train"), friendStatus: 1)
         let friendTwo = Friend(friendID: 2, userName: "frodo", friendImage: #imageLiteral(resourceName: "city"), friendStatus: 1)
@@ -33,7 +115,7 @@ class ViewController: UIViewController, addFriendProtocol {
         let friendFour = Friend(friendID: 4, userName: "samwise",friendImage: #imageLiteral(resourceName: "train"), friendStatus: 0)
         
         return [friendOne, friendTwo, friendThree, friendFour]
-
+        
     }
     
     
@@ -44,7 +126,7 @@ class ViewController: UIViewController, addFriendProtocol {
         print("______________________")
     }
     
-  
+    
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
@@ -73,17 +155,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         //Send the Friend Object
         cell?.currentFriend = friend
-  
-        return cell!
         
-    }
-    
-    //Send Data to FriendViewController
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        friendIndex = indexPath.row
-        performSegue(withIdentifier: "segue", sender: self)
+        return cell!
         
     }
     
 }
 
+*/
