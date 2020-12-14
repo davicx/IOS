@@ -7,25 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63273CFB2586F854006526B1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63273CFA2586F854006526B1 /* ViewController.swift */; };
 		632AD5D42585A74100A8B5E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632AD5D32585A74100A8B5E3 /* AppDelegate.swift */; };
-		632AD5D62585A74100A8B5E3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632AD5D52585A74100A8B5E3 /* ViewController.swift */; };
 		632AD5D92585A74100A8B5E3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 632AD5D72585A74100A8B5E3 /* Main.storyboard */; };
 		632AD5DB2585A74300A8B5E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 632AD5DA2585A74300A8B5E3 /* Assets.xcassets */; };
 		632AD5DE2585A74300A8B5E3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 632AD5DC2585A74300A8B5E3 /* LaunchScreen.storyboard */; };
 		632AD5E62585A86D00A8B5E3 /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632AD5E52585A86D00A8B5E3 /* NewPostViewController.swift */; };
-		632AD5E82585A87E00A8B5E3 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632AD5E72585A87E00A8B5E3 /* PostsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		63273CFA2586F854006526B1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		632AD5D02585A74100A8B5E3 /* Post.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Post.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		632AD5D32585A74100A8B5E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		632AD5D52585A74100A8B5E3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		632AD5D82585A74100A8B5E3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		632AD5DA2585A74300A8B5E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		632AD5DD2585A74300A8B5E3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		632AD5DF2585A74300A8B5E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		632AD5E52585A86D00A8B5E3 /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
-		632AD5E72585A87E00A8B5E3 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,9 +57,8 @@
 			isa = PBXGroup;
 			children = (
 				632AD5D32585A74100A8B5E3 /* AppDelegate.swift */,
-				632AD5D52585A74100A8B5E3 /* ViewController.swift */,
 				632AD5E52585A86D00A8B5E3 /* NewPostViewController.swift */,
-				632AD5E72585A87E00A8B5E3 /* PostsViewController.swift */,
+				63273CFA2586F854006526B1 /* ViewController.swift */,
 				632AD5D72585A74100A8B5E3 /* Main.storyboard */,
 				632AD5DA2585A74300A8B5E3 /* Assets.xcassets */,
 				632AD5DC2585A74300A8B5E3 /* LaunchScreen.storyboard */,
@@ -141,8 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				632AD5E82585A87E00A8B5E3 /* PostsViewController.swift in Sources */,
-				632AD5D62585A74100A8B5E3 /* ViewController.swift in Sources */,
+				63273CFB2586F854006526B1 /* ViewController.swift in Sources */,
 				632AD5D42585A74100A8B5E3 /* AppDelegate.swift in Sources */,
 				632AD5E62585A86D00A8B5E3 /* NewPostViewController.swift in Sources */,
 			);
