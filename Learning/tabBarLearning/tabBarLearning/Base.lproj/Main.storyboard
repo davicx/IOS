@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item 2-->
+        <!--New Post-->
         <scene sceneID="8sf-FX-Vvd">
             <objects>
                 <viewController id="kKd-AY-jig" sceneMemberID="viewController">
@@ -20,13 +20,13 @@
                         <color key="backgroundColor" red="1" green="0.38140016329999998" blue="0.4206196157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="Uy8-4p-4Wt"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="8JW-I8-gAd"/>
+                    <tabBarItem key="tabBarItem" title="New Post" id="8JW-I8-gAd"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wd1-gO-Cy7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-986" y="488"/>
         </scene>
-        <!--Item-->
+        <!--Notifications-->
         <scene sceneID="H3K-nY-Xde">
             <objects>
                 <viewController id="pmL-2K-gRc" sceneMemberID="viewController">
@@ -36,7 +36,7 @@
                         <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="qja-Yp-EMN"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="V1t-aK-S3Z"/>
+                    <tabBarItem key="tabBarItem" title="Notifications" id="V1t-aK-S3Z"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rbc-er-PPF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -60,6 +60,9 @@
                                 <state key="normal" title="Next">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <segue destination="8yb-Th-sBc" kind="show" id="slq-ii-3b5"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.90418781729999997" green="0.1052014567" blue="0.36202469030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -82,6 +85,15 @@
                     <view key="view" contentMode="scaleToFill" id="XSc-1n-Vbw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hiya" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYd-Pw-fAN">
+                                <rect key="frame" x="178" y="142" width="34" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="6Uu-xM-upI"/>
                     </view>
@@ -90,7 +102,7 @@
             </objects>
             <point key="canvasLocation" x="2920" y="-287"/>
         </scene>
-        <!--Item 1-->
+        <!--Posts-->
         <scene sceneID="hIv-XR-Aau">
             <objects>
                 <viewController id="J5m-TS-sgL" sceneMemberID="viewController">
@@ -100,7 +112,7 @@
                         <color key="backgroundColor" red="0.91430193185806274" green="0.33538931608200073" blue="0.78264909982681274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="Yot-AX-iZC"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="RVA-hI-Yoz"/>
+                    <tabBarItem key="tabBarItem" title="Posts" id="RVA-hI-Yoz"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HIb-SX-2yr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -126,11 +138,11 @@
             </objects>
             <point key="canvasLocation" x="-328" y="-287"/>
         </scene>
-        <!--Item-->
+        <!--Profile-->
         <scene sceneID="Xed-Lf-RHA">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SIA-h7-zGs" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Ek9-2K-5k8"/>
+                    <tabBarItem key="tabBarItem" title="Profile" id="Ek9-2K-5k8"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jDW-jM-eQ4">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
