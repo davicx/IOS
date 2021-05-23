@@ -10,14 +10,29 @@
 import UIKit
 
 class ViewController: UIViewController {
-    //var postsArray: [Post] = []
+    
+    @IBOutlet weak var tableView: UITableView!
     var postsArray: [Post] = []
     
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        getPosts { posts, error in
+            DispatchQueue.main.async {
+                //self.postsArray = filterPostsIntoArray(tempPostArray: tempPostArray)
+                posts?.forEach({ (post) in
+                    print(post.title)
+                    let currentPost = Post(caption: post.title)
+                    self.postsArray.append(currentPost)
+                    //print(self.postsArray.count)
+                })
+                self.tableView.reloadData()
+                
+            }
+        }
         
+        /*
         getPosts{(posts, err) in
             if let err = err {
                 print(err)
@@ -30,10 +45,10 @@ class ViewController: UIViewController {
                 self.postsArray.append(currentPost)
                 print(self.postsArray.count)
             })
-            
+            self.tableView.reloadData()
+ 
         }
-    
-
+ */
     }
     
     //FUNCTIONS
@@ -73,7 +88,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let post = postsArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
         
-        //cell.setPost(post: post)
+        cell.setPost(post: post)
         
         return cell
     }

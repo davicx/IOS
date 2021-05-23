@@ -12,7 +12,9 @@ class PostCell: UITableViewCell {
 
     @IBOutlet weak var postCaption: UILabel!
     
-    
+    func setPost(post: Post) {
+        postCaption.text = post.caption
+    }
     
 
 }
