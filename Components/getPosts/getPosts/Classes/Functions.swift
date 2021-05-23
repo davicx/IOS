@@ -58,3 +58,5 @@ func filterPostsIntoArray(tempPostArray: [PostModel]) -> Array<Post> {
     }
     return postsArrayInternal
 }
+
+
