@@ -6,9 +6,11 @@
 //  Copyright © 2021 David Vasquez. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 class CustomCell: UITableViewCell {
-
-
+    
+    @IBOutlet weak var cellLabel: UILabel!
+    
 }
