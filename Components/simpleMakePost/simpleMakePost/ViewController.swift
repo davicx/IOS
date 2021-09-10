@@ -15,9 +15,19 @@ class ViewController: UIViewController {
     }
 
     func makePost() {
-        let parameters = ["postFrom": "davey", "postTo": "sam", "postCaption": "Hiya Sam, wanna garden!"]
+        let parameters = [
+            "postType": "IOS",
+            "postStatus": "1",
+            "groupID": "77",
+            "postFrom": "davey",
+            "postTo": "sam",
+            "postCaption": "Hiya Sam, wanna garden in September 10!",
+            "notificationMessage": "sam",
+            "notificationType": "sam",
+            "notificationLink": "sam",
+        ]
         
-        guard let url = URL(string: "http://hellofour-env.eba-mymqvrea.us-west-2.elasticbeanstalk.com/post") else { return }
+        guard let url = URL(string: "http://hellofour-env.eba-mymqvrea.us-west-2.elasticbeanstalk.com/post/text") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -28,9 +38,7 @@ class ViewController: UIViewController {
         session.dataTask(with: request) { (data, response, error) in
             if let data = data {
                 do {
-                    
                     let postResponse = try JSONDecoder().decode(PostResponseModel.self, from: data)
-                    
                     print(postResponse)
                 } catch {
                     print(error)
@@ -42,7 +50,24 @@ class ViewController: UIViewController {
 
 }
 
-
+/*
+private func fetchImage() {
+    print("fetching image")
+    if let url = imageURL {
+        
+        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            guard let data = data else {
+                return
+            }
+            // maybe try dispatch to main
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: data)
+            }
+        }
+        task.resume()
+    }
+}
+ */
 
 /*
 @IBAction func addFriend(_ sender: UIButton) {

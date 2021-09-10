@@ -26,15 +26,18 @@ class ViewController: UIViewController {
                 do {
                     
                     let posts = try decoder.decode([PostModel].self, from: data!)
-     
+                
+                    
                     print(posts[0].postID)
                     print(posts[0].postFrom)
                     print(posts[0].postTo)
                     print(posts[0].postCaption)
+                    print("_____________")
                     print(posts[1].postID)
                     print(posts[1].postFrom)
                     print(posts[1].postTo)
                     print(posts[1].postCaption)
+                    
 
                 } catch {
                     print("Error parsing JSON")

@@ -13,8 +13,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     //let video1 = Video(image: #imageLiteral(resourceName: "river"), title: "Forever we are Lost")
-
-    
     let dataSource = ["David", "Frodo", "Bilbo"]
     var users: [User] = []
     
@@ -23,9 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         users = createArray()
         //usersArray[0] = users[0]
-    
         //usersArray[1] = users[1]
-        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -40,9 +36,6 @@ class ViewController: UIViewController {
     }
     
 }
-
-
-
 
 
 extension ViewController : UITableViewDelegate {

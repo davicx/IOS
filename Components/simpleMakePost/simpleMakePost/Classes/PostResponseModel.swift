@@ -8,7 +8,8 @@
 import Foundation
 
 struct PostResponseModel: Codable {
-    var status:String = ""
+    var outcome:Int = 0
     var postID:Int = 0
+    var errors:Array = ["worky"]
 }
 
