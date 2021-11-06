@@ -13,6 +13,5 @@ class PostCell: UITableViewCell {
     
     func setPost(post: Post) {
         PostCaption.text = post.caption
-   
     }
 }
