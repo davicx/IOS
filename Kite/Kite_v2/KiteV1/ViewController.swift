@@ -8,6 +8,7 @@
 import UIKit
 
 
+
 class ViewController: UIViewController {
 
     var posts: [Post] = []
@@ -28,6 +29,8 @@ class ViewController: UIViewController {
     
 }
 
+
+
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
@@ -42,3 +45,4 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
+ 

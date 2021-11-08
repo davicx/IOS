@@ -17,6 +17,8 @@
 		B80959C826D8606D0089DFA6 /* KiteV1UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80959C726D8606D0089DFA6 /* KiteV1UITests.swift */; };
 		B80A287B26DDA2DB00AB97E9 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80A287A26DDA2DB00AB97E9 /* PostModel.swift */; };
 		B80A287D26DDA2E300AB97E9 /* PostsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80A287C26DDA2E300AB97E9 /* PostsModel.swift */; };
+		B861F616273740D600260DA3 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B861F615273740D500260DA3 /* PostsViewController.swift */; };
+		B861F6542737450100260DA3 /* AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B861F6532737450100260DA3 /* AppViewController.swift */; };
 		B862598B26DEF3A900D3B92F /* PostFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862598A26DEF3A900D3B92F /* PostFunctions.swift */; };
 		B862598E26DEF5BC00D3B92F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862598D26DEF5BC00D3B92F /* PostCell.swift */; };
 		B86934C826E827DD00ECEC6E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86934C726E827DD00ECEC6E /* Post.swift */; };
@@ -58,6 +60,8 @@
 		B80959C926D8606D0089DFA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B80A287A26DDA2DB00AB97E9 /* PostModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		B80A287C26DDA2E300AB97E9 /* PostsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsModel.swift; sourceTree = "<group>"; };
+		B861F615273740D500260DA3 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		B861F6532737450100260DA3 /* AppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewController.swift; sourceTree = "<group>"; };
 		B862598A26DEF3A900D3B92F /* PostFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFunctions.swift; sourceTree = "<group>"; };
 		B862598D26DEF5BC00D3B92F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		B86934C726E827DD00ECEC6E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -118,6 +122,7 @@
 				B862598926DEF37C00D3B92F /* Functions */,
 				B80A287926DDA2B200AB97E9 /* Classes */,
 				B80959A526D8606C0089DFA6 /* AppDelegate.swift */,
+				B861F6532737450100260DA3 /* AppViewController.swift */,
 				B80959A726D8606C0089DFA6 /* SceneDelegate.swift */,
 				B80959A926D8606C0089DFA6 /* ViewController.swift */,
 				B80959AB26D8606C0089DFA6 /* Main.storyboard */,
@@ -153,6 +158,13 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		B861F614273740A600260DA3 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		B862598926DEF37C00D3B92F /* Functions */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +186,7 @@
 		B89161742737396A00F46BB2 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				B861F614273740A600260DA3 /* Login */,
 				B891617527373B6E00F46BB2 /* Posts */,
 			);
 			path = Application;
@@ -185,6 +198,7 @@
 				B8B131AC26EC1F5000245F29 /* MakePostViewController.swift */,
 				B86934C726E827DD00ECEC6E /* Post.swift */,
 				B862598D26DEF5BC00D3B92F /* PostCell.swift */,
+				B861F615273740D500260DA3 /* PostsViewController.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -323,7 +337,9 @@
 				B862598E26DEF5BC00D3B92F /* PostCell.swift in Sources */,
 				B80959AA26D8606C0089DFA6 /* ViewController.swift in Sources */,
 				B862598B26DEF3A900D3B92F /* PostFunctions.swift in Sources */,
+				B861F616273740D600260DA3 /* PostsViewController.swift in Sources */,
 				B86934C826E827DD00ECEC6E /* Post.swift in Sources */,
+				B861F6542737450100260DA3 /* AppViewController.swift in Sources */,
 				B80A287B26DDA2DB00AB97E9 /* PostModel.swift in Sources */,
 				B8B131AD26EC1F5000245F29 /* MakePostViewController.swift in Sources */,
 				B80959A626D8606C0089DFA6 /* AppDelegate.swift in Sources */,
