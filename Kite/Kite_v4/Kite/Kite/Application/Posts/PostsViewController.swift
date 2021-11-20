@@ -38,7 +38,7 @@ class PostsViewController: UIViewController {
        }
 
     }
-    
+
     
     @IBAction func logOutButton(_ sender: Any) {
         let firebaseAuth = Auth.auth()
