@@ -1,0 +1,6 @@
+framework module Pods_Kite_KiteUITests {
+  umbrella header "Pods-Kite-KiteUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

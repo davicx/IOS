@@ -14,29 +14,8 @@ class PostsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Auth.auth().addStateDidChangeListener { auth, user in
-            if let user = user {
-                print("Signed In! \(user.email!)")
-                //let PostsViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.postsViewController) as? PostsViewController
-                
-                //self.view.window?.rootViewController = PostsViewController
-                //self.view.window?.makeKeyAndVisible()
-            } else {
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                let LoginViewController = storyBoard.instantiateViewController(withIdentifier: Constants.Storyboard.loginViewController) as! ViewController
-                self.view.window?.rootViewController = LoginViewController
-                self.view.window?.makeKeyAndVisible()
-                
-                /*
-                print("NOT Signed In!")
-                let LoginViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.loginViewController) as? LoginViewController
-                
-                self.view.window?.rootViewController = LoginViewController
-                self.view.window?.makeKeyAndVisible()
-                */
-            }
-       }
-
+        self.helloLabel.text = "hiya!"
+        userStatus()
     }
 
     
@@ -45,59 +24,32 @@ class PostsViewController: UIViewController {
         do {
           try firebaseAuth.signOut()
             print("LOGOUT")
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            let LoginViewController = storyBoard.instantiateViewController(withIdentifier: Constants.Storyboard.loginViewController) as! ViewController
+            self.view.window?.rootViewController = LoginViewController
+            self.view.window?.makeKeyAndVisible()
+
         } catch let signOutError as NSError {
           print("Error signing out: %@", signOutError)
             
         }
+    }
 
     
     func userStatus() {
         Auth.auth().addStateDidChangeListener { auth, user in
             if let user = user {
                 print("Signed In! \(user.email!)")
-                let PostsViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.postsViewController) as? PostsViewController
-                
-                self.view.window?.rootViewController = PostsViewController
-                self.view.window?.makeKeyAndVisible()
             } else {
+                print("ON POSTS")
                 print("NOT Signed In!")
-                let LoginViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.loginViewController) as? LoginViewController
-                
+
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                let LoginViewController = storyBoard.instantiateViewController(withIdentifier: Constants.Storyboard.loginViewController) as! ViewController
                 self.view.window?.rootViewController = LoginViewController
                 self.view.window?.makeKeyAndVisible()
             }
        }
-
-    }
-
     }
 }
 
-
-/*
-Auth.auth().addStateDidChangeListener { auth, user in
-    if let user = user {
-        let email = user.email
-        print("Signed In! \(email)")
-    } else {
-        print("NOT Signed In!")
-    }
-}
- */
-
-/*
- FIRAuth.auth()?.addStateDidChangeListener { auth, user in
-   if let user = user {
-     // User is signed in. Show home screen
-   } else {
-     // No User is signed in. Show user the login screen
-   }
- }
- let handle = Auth.auth().addStateDidChangeListener { auth, user in
- if let user = user {
-   // User is signed in. Show home screen
- } else {
-   // No User is signed in. Show user the login screen
- }
-}
-*/

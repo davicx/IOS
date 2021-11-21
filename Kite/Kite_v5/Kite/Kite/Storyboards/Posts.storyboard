@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9kE-Xy-MJW">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Posts View Controller-->
+        <scene sceneID="R56-rh-jgP">
+            <objects>
+                <viewController storyboardIdentifier="PostsVC" id="9kE-Xy-MJW" customClass="PostsViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Yu2-m5-afY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hzd-2O-wTu">
+                                <rect key="frame" x="80" y="809" width="254" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="e53-Os-wjs"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <state key="normal" title="Log Out"/>
+                                <connections>
+                                    <action selector="logOutButton:" destination="9kE-Xy-MJW" eventType="touchUpInside" id="1Kx-k9-oLL"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="S49-Gw-jsI">
+                                <rect key="frame" x="80" y="244" width="254" height="160"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FvP-NJ-J1i">
+                                        <rect key="frame" x="0.0" y="0.0" width="254" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="7NQ-nL-VFp"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Get Posts"/>
+                                        <connections>
+                                            <action selector="getPostsButton:" destination="9kE-Xy-MJW" eventType="touchUpInside" id="FBe-GE-Tiu"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSh-9I-ccC">
+                                        <rect key="frame" x="0.0" y="60" width="254" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="CRv-0x-9YO"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Make Post"/>
+                                        <connections>
+                                            <action selector="makePostButton:" destination="9kE-Xy-MJW" eventType="touchUpInside" id="8i7-sL-yNF"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Posts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jk1-Uc-x38">
+                                        <rect key="frame" x="0.0" y="120" width="254" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="as7-St-WYI"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cht-1R-j6r"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="S49-Gw-jsI" firstAttribute="leading" secondItem="cht-1R-j6r" secondAttribute="leading" constant="80" id="Ia5-Uz-fT4"/>
+                            <constraint firstItem="Hzd-2O-wTu" firstAttribute="leading" secondItem="cht-1R-j6r" secondAttribute="leading" constant="80" id="LIV-0v-lBg"/>
+                            <constraint firstItem="cht-1R-j6r" firstAttribute="trailing" secondItem="Hzd-2O-wTu" secondAttribute="trailing" constant="80" id="LsV-x5-Kfz"/>
+                            <constraint firstItem="S49-Gw-jsI" firstAttribute="top" secondItem="cht-1R-j6r" secondAttribute="top" constant="200" id="RPD-OA-vJX"/>
+                            <constraint firstItem="cht-1R-j6r" firstAttribute="trailing" secondItem="S49-Gw-jsI" secondAttribute="trailing" constant="80" id="Zmd-O9-JAq"/>
+                            <constraint firstItem="cht-1R-j6r" firstAttribute="bottom" secondItem="Hzd-2O-wTu" secondAttribute="bottom" constant="3" id="alS-aa-tpd"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="B9y-qY-cn6"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kgo-lQ-MbB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2687" y="74"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
