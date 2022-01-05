@@ -22,18 +22,13 @@ class Post {
 
 }
 
-
-
-
-
-
 class ViewController: UIViewController {
     
-  
     @IBOutlet weak var imageView: UIImageView!
     
-    let urlKey = "http://people.oregonstate.edu/~vasquezd/sites/template/site_files/rest/images/background_2.png"
-    
+    //let urlKey = "https://live.staticflickr.com/7506/26400112934_c548d6484a_b.jpg"
+    let urlKey = "https://kite-post-photo-upload.s3.us-west-2.amazonaws.com/1637111930787hiya.jpg"
+
     @IBAction func getImage(_ sender: Any) {
         
         var currentPost = Post(postID: 1)
