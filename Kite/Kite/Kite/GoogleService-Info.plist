@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>774264836772-atb612a2gk63u8q96rlrikmppc5j35om.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.774264836772-atb612a2gk63u8q96rlrikmppc5j35om</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD-vgTupRNa5WAEPvLGh2yFnm0jvTX4S2E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>774264836772</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.david.Kite</string>
+	<key>PROJECT_ID</key>
+	<string>kite-ba74d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kite-ba74d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:774264836772:ios:e28889b15d850c078f8c31</string>
+</dict>
+</plist>
