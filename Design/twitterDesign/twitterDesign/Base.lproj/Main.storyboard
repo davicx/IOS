@@ -180,9 +180,41 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="linkColor"/>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wbn-2u-ayg">
+                                <rect key="frame" x="21" y="263" width="374" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="linkColor"/>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7lx-SG-0sj">
+                                <rect key="frame" x="20" y="633" width="374" height="140"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ram-8H-do1">
+                                        <rect key="frame" x="0.0" y="0.0" width="124.5" height="140"/>
+                                        <color key="backgroundColor" systemColor="systemPinkColor"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6FO-58-SuK">
+                                        <rect key="frame" x="124.5" y="0.0" width="125" height="140"/>
+                                        <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VA5-kb-fzH">
+                                        <rect key="frame" x="249.5" y="0.0" width="124.5" height="140"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="ACW-KV-Que"/>
+                                    <constraint firstItem="VA5-kb-fzH" firstAttribute="width" secondItem="ram-8H-do1" secondAttribute="width" id="Czk-Af-OTj"/>
+                                    <constraint firstItem="6FO-58-SuK" firstAttribute="width" secondItem="ram-8H-do1" secondAttribute="width" id="NDR-ke-jRt"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vhp-tf-dqb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7lx-SG-0sj" firstAttribute="leading" secondItem="vhp-tf-dqb" secondAttribute="leading" constant="20" id="DEr-Wp-DDv"/>
+                            <constraint firstItem="vhp-tf-dqb" firstAttribute="trailing" secondItem="7lx-SG-0sj" secondAttribute="trailing" constant="20" id="UeL-ro-9kL"/>
+                            <constraint firstItem="vhp-tf-dqb" firstAttribute="bottom" secondItem="7lx-SG-0sj" secondAttribute="bottom" constant="40" id="W2H-Vc-AkK"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="vG1-dQ-pbU"/>
                     <connections>
@@ -540,6 +572,12 @@
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
