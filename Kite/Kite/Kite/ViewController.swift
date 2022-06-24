@@ -4,7 +4,7 @@
 //
 //  Created by Vasquez, Charles Geoffrey David [C] on 3/15/22.
 //
-//STOP: 1 hour 10 minutes- Setting up Firebase creating a new firestore database 
+//STOP: 1 hour 17 minutes- Setting up Login
 
 import UIKit
 

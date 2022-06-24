@@ -50,16 +50,18 @@ class SignUpViewController: UIViewController {
                     print("User Created now adding to database")
                     let db = Firestore.firestore()
                     
-                    //Create the User
+                    //STEP 3: Add user to Firebase Users
                     db.collection("users").addDocument(data: ["userName":userName, "email":email, "password":password, "fullName":fullName, "uid": result!.user.uid ]) { (error) in
                         
                         if error != nil {
                             // Show error message
                             self.showError("Error saving user data")
                         }
-                        
                         print(result)
                     }
+                    
+                    //Transition to home screen
+                    self.transitionToHome()
                     
                 //Error: Couldn't create login
                 } else {
@@ -69,46 +71,25 @@ class SignUpViewController: UIViewController {
 
             }
              
-        
         //Error: Couldn't validate the fields
         } else {
             //showError(error!)
             print("couldn't validate")
      
         }
-        
-        //transition to home screen
+    
         
     }
     
+
+
+    func transitionToHome() {
+        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+        
+        view.window?.rootViewController = homeViewController
+        view.window?.makeKeyAndVisible()
+    }
     
-    
-    /*
-    
-     // Check for errors
-     if err != nil {
-         
-         // There was an error creating the user
-         self.showError("Error creating user")
-     }
-     else {
-         
-         // User was created successfully, now store the first name and last name
-         let db = Firestore.firestore()
-         
-         db.collection("users").addDocument(data: ["firstname":firstName, "lastname":lastName, "uid": result!.user.uid ]) { (error) in
-             
-             if error != nil {
-                 // Show error message
-                 self.showError("Error saving user data")
-             }
-         }
-         
-         // Transition to the home screen
-         self.transitionToHome()
-     }
-     
-     */
     
     func setUpElements() {
         errorLabel.alpha = 0
@@ -292,4 +273,31 @@ class SignUpViewController: UIViewController {
      
  }
 
+ */
+
+/*
+
+ // Check for errors
+ if err != nil {
+     
+     // There was an error creating the user
+     self.showError("Error creating user")
+ }
+ else {
+     
+     // User was created successfully, now store the first name and last name
+     let db = Firestore.firestore()
+     
+     db.collection("users").addDocument(data: ["firstname":firstName, "lastname":lastName, "uid": result!.user.uid ]) { (error) in
+         
+         if error != nil {
+             // Show error message
+             self.showError("Error saving user data")
+         }
+     }
+     
+     // Transition to the home screen
+     self.transitionToHome()
+ }
+ 
  */

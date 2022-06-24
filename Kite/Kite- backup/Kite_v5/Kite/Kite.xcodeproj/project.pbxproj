@@ -142,6 +142,7 @@
 		B80F920C2739F8A800A5BBFB /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				B861F6DF273746A900260DA3 /* Main.storyboard */,
 				B80F920D2739F90A00A5BBFB /* Posts.storyboard */,
 			);
 			path = Storyboards;
@@ -189,7 +190,6 @@
 				B861F6D9273746A900260DA3 /* AppDelegate.swift */,
 				B861F6DB273746A900260DA3 /* SceneDelegate.swift */,
 				B861F6DD273746A900260DA3 /* ViewController.swift */,
-				B861F6DF273746A900260DA3 /* Main.storyboard */,
 				B861F6E2273746AA00260DA3 /* Assets.xcassets */,
 				B861F6E4273746AA00260DA3 /* LaunchScreen.storyboard */,
 				B80538CD27389F99009063C1 /* GoogleService-Info.plist */,

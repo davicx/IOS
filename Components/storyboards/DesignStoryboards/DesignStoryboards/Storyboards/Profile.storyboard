@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0Q7-zV-t6Z">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Profile View Controller-->
+        <scene sceneID="YmW-6g-AVV">
+            <objects>
+                <viewController id="eIX-RN-xMK" customClass="ProfileViewController" customModule="DesignStoryboards" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tzf-u1-QMI">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Z9-l7-eZt">
+                                <rect key="frame" x="274" y="108" width="120" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="FHD-xm-AgQ"/>
+                                    <constraint firstAttribute="height" constant="40" id="zs8-WJ-fsJ"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Home">
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="HomeButton:" destination="eIX-RN-xMK" eventType="touchUpInside" id="kGb-lJ-OsF"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="zCx-7m-93Q"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7Z9-l7-eZt" firstAttribute="top" secondItem="zCx-7m-93Q" secondAttribute="top" constant="20" id="1fQ-dm-BzH"/>
+                            <constraint firstItem="zCx-7m-93Q" firstAttribute="trailing" secondItem="7Z9-l7-eZt" secondAttribute="trailing" constant="20" id="3kQ-TH-Z94"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="3C7-fg-cmA"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oQu-Tw-950" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1366.6666666666667" y="132.58928571428572"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="W3D-GR-8ZV">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0Q7-zV-t6Z" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Profile" id="HX0-UE-WEG"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yyQ-Zw-eZ7">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="eIX-RN-xMK" kind="relationship" relationship="rootViewController" id="Ol9-Kt-AjX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iZC-Nc-qxF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="456.52173913043481" y="132.58928571428572"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
