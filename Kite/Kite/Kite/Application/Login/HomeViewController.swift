@@ -22,8 +22,8 @@ class HomeViewController: UIViewController {
           try firebaseAuth.signOut()
             print("LOGOUT")
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-            let LoginViewController = storyBoard.instantiateViewController(withIdentifier: Constants.Storyboard.loginViewController) as! ViewController
-            self.view.window?.rootViewController = LoginViewController
+            let viewController = storyBoard.instantiateViewController(withIdentifier: Constants.Storyboard.loginViewController) as! ViewController
+            self.view.window?.rootViewController = viewController
             self.view.window?.makeKeyAndVisible()
 
         } catch let signOutError as NSError {

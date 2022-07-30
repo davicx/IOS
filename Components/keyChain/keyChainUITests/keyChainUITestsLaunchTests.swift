@@ -1,13 +1,13 @@
 //
-//  keyChainUITestsLaunchTests.swift
-//  keyChainUITests
+//  KeyChainUITestsLaunchTests.swift
+//  KeyChainUITests
 //
-//  Created by Vasquez, Charles Geoffrey David [C] on 6/6/22.
+//  Created by Vasquez, Charles Geoffrey David [C] on 7/30/22.
 //
 
 import XCTest
 
-class keyChainUITestsLaunchTests: XCTestCase {
+class KeyChainUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

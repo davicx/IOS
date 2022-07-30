@@ -1,13 +1,13 @@
 //
-//  keyChainUITests.swift
-//  keyChainUITests
+//  KeyChainUITests.swift
+//  KeyChainUITests
 //
-//  Created by Vasquez, Charles Geoffrey David [C] on 6/6/22.
+//  Created by Vasquez, Charles Geoffrey David [C] on 7/30/22.
 //
 
 import XCTest
 
-class keyChainUITests: XCTestCase {
+class KeyChainUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -27,7 +27,6 @@ class keyChainUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 

@@ -76,12 +76,9 @@ class SignUpViewController: UIViewController {
             //showError(error!)
             print("couldn't validate")
      
-        }
-    
-        
+        }        
     }
     
-
 
     func transitionToHome() {
         let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController

@@ -1,14 +1,14 @@
 //
-//  keyChainTests.swift
-//  keyChainTests
+//  KeyChainTests.swift
+//  KeyChainTests
 //
-//  Created by Vasquez, Charles Geoffrey David [C] on 6/6/22.
+//  Created by Vasquez, Charles Geoffrey David [C] on 7/30/22.
 //
 
 import XCTest
-@testable import keyChain
+@testable import KeyChain
 
-class keyChainTests: XCTestCase {
+class KeyChainTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

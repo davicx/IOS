@@ -12,3 +12,4 @@ struct PostResponseModel: Codable {
     var postID:Int = 0
     var errors:Array = ["worky"]
 }
+
