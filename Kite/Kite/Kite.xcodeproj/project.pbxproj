@@ -141,6 +141,7 @@
 				E8AD996B27E161270063A186 /* Application */,
 				E864777D27F5300B00106B78 /* Functions */,
 				E864777C27F52FFF00106B78 /* Classes */,
+				E8AD996E27E161500063A186 /* Style */,
 				E8AD993527E15FED0063A186 /* AppDelegate.swift */,
 				E8AD993727E15FED0063A186 /* SceneDelegate.swift */,
 				E8AD993927E15FED0063A186 /* ViewController.swift */,
@@ -175,7 +176,6 @@
 			children = (
 				E8AD996C27E161380063A186 /* Login */,
 				E8AD996D27E161400063A186 /* Posts */,
-				E8AD996E27E161500063A186 /* Style */,
 			);
 			path = Application;
 			sourceTree = "<group>";

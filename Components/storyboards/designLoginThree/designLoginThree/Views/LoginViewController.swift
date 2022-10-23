@@ -23,8 +23,6 @@ class LoginViewController: UIViewController {
         view.window?.makeKeyAndVisible()
         
         
- 
-       
     }
     
 }

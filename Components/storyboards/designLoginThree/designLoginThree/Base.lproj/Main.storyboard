@@ -154,7 +154,7 @@
         <!--Register View Controller-->
         <scene sceneID="jzc-NH-VuU">
             <objects>
-                <viewController id="QEp-qR-657" customClass="RegisterViewController" customModule="designLoginThree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegisterVC" id="QEp-qR-657" customClass="RegisterViewController" customModule="designLoginThree" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r3Y-34-OzX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

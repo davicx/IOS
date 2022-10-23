@@ -1,27 +1,24 @@
 //
 //  AppDelegate.swift
-//  Kite
+//  userDefaults
 //
-//  Created by Vasquez, Charles Geoffrey David [C] on 3/15/22.
+//  Created by Vasquez, Charles Geoffrey David [C] on 7/30/22.
 //
 
 import UIKit
-import Firebase
-
-//https://swiftpackageindex.com/camiletti/UnsplashFramework
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
+
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        FirebaseApp.configure()
+        // Override point for customization after application launch.
+        print("Run on start!")
         return true
     }
 
     // MARK: UISceneSession Lifecycle
-
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
@@ -38,18 +35,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-/*
- import UIKit
-
-
-
-
- @UIApplicationMain
-
- class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
-
- }
- */

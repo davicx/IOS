@@ -8,5 +8,21 @@
 import Foundation
 
 struct PostResponseModel: Codable {
-    var postFrom: String
+    var posts: [PostModel]
 }
+
+/*
+"postID": 254,
+"postType": "text",
+"groupID": 77,
+"listID": 0,
+"postFrom": "davey",
+"postTo": "frodo",
+"postCaption": "Hiya Frodo!!!!!",
+"fileName": "",
+"fileNameServer": "hiya.jpg",
+"fileUrl": "empty",
+"videoURL": "empty",
+"videoCode": "empty",
+"created": "2021-12-19T08:14:03.000Z"
+*/

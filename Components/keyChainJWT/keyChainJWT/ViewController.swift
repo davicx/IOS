@@ -18,11 +18,11 @@ class ViewController: UIViewController {
         //TYPE 1: Video
         let service = "kite"
         let account = "davey"
-        let password = "password"
+        let password = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6eyJ1c2VySUQiOjEsInVzZXJuYW1lIjoiZGF2ZXkiLCJwYXNzd29yZCI6Im15cGFzc3dvcmQifSwiaWF0IjoxNjU4NjE3MTY4LCJleHAiOjE2NTkyMjE5Njh9.w65IUAT8_MkoZ86UKUQ4HgGTg57OwNGX-sILjGJYBR8"
         var userPassword = ""
         
         //Save Password
-        //savePassword(service: service, account: account, password: password)
+        savePassword(service: service, account: account, password: password)
 
         //Get Password
         userPassword = getPassword(service: service, account: account)
