@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		634CFE2929B56C730017BF81 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CFE2829B56C730017BF81 /* SimpleViewController.swift */; };
 		E80330E22904B52F007D1448 /* VerifyResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80330E12904B52F007D1448 /* VerifyResponseModel.swift */; };
 		E8254551288A1C9800C5923E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8254550288A1C9800C5923E /* AppDelegate.swift */; };
 		E8254553288A1C9800C5923E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8254552288A1C9800C5923E /* SceneDelegate.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		634CFE2829B56C730017BF81 /* SimpleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		E80330E12904B52F007D1448 /* VerifyResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyResponseModel.swift; sourceTree = "<group>"; };
 		E825454D288A1C9800C5923E /* myAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8254550288A1C9800C5923E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			children = (
 				E833F958288CC66400FFA29F /* Model */,
 				E8254554288A1C9800C5923E /* ViewController.swift */,
+				634CFE2829B56C730017BF81 /* SimpleViewController.swift */,
 				E8254550288A1C9800C5923E /* AppDelegate.swift */,
 				E8254552288A1C9800C5923E /* SceneDelegate.swift */,
 				E8254556288A1C9800C5923E /* Main.storyboard */,
@@ -292,6 +295,7 @@
 			files = (
 				E8AF34B428A7131E003CD2F0 /* LoginResponseModel.swift in Sources */,
 				E8254555288A1C9800C5923E /* ViewController.swift in Sources */,
+				634CFE2929B56C730017BF81 /* SimpleViewController.swift in Sources */,
 				E8484D5A28A5D00F002F8BE8 /* RegisterUserModel.swift in Sources */,
 				E833F957288CC62900FFA29F /* PostModel.swift in Sources */,
 				E8254551288A1C9800C5923E /* AppDelegate.swift in Sources */,
