@@ -16,7 +16,7 @@ import Foundation
 
 
 import Foundation
-
+/*
 struct RegisterUserModel: Codable {
     let emailStatus: Int
     let emailMessages: [String]
@@ -32,16 +32,13 @@ struct RegisterUserModel: Codable {
     let userID: Int
 }
 
-
-import Foundation
-
 struct LoginResponseModel: Codable {
     let validUser: Bool
     let passwordCorrect: Bool
     let accessToken: String
     let refreshToken: String
 }
-
+*/
 
 /*
  {

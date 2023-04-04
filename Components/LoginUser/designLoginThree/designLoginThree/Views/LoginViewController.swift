@@ -25,7 +25,8 @@ class LoginViewController: UIViewController {
         
         print("login \(userName)")
         //setCookie()
-        getCookie()
+        //getCookie()
+        loginUser()
         goToGroups()
         
     }
@@ -43,6 +44,36 @@ class LoginViewController: UIViewController {
     
 }
 
+func loginUser() {
+    guard let urlString = URL(string: "http://localhost:3003/user/login") else { return }
+    
+    let parameters = [
+        "userName": "davey",
+        "password": "password"
+    ]
+    
+    var request = URLRequest(url: urlString)
+    request.httpMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+    guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else { return }
+    request.httpBody = httpBody
+    
+    let session = URLSession.shared
+    session.dataTask(with: request) { (data, response, error) in
+        if let data = data {
+            do {
+                print(response)
+                let loginUserResponse = try JSONDecoder().decode(LoginResponseModel.self, from: data)
+                print(loginUserResponse)
+            } catch {
+                print(error)
+            }
+        }
+        
+        }.resume()
+  
+}
 
 
 //Function 4: Set Cookie
