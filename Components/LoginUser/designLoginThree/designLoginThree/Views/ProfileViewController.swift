@@ -15,11 +15,18 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func logoutButton(_ sender: UIButton) {
+        logoutUser()
+
+    }
+     
+    func logoutUser() {
         print("logout")
         let loginViewController = self.storyboard?.instantiateViewController(identifier: "LoginMain") as! UINavigationController
         view.window?.rootViewController = loginViewController
         view.window?.makeKeyAndVisible()
     }
+
     
 
 }
+

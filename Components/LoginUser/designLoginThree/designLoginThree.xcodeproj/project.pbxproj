@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		631D1E8F29DE49A100FF3C75 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631D1E8E29DE49A100FF3C75 /* PostModel.swift */; };
 		6320897129DBA44F00075D6D /* LoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320897029DBA44F00075D6D /* LoginResponseModel.swift */; };
 		6320897329DBA49700075D6D /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320897229DBA49700075D6D /* ResponseModel.swift */; };
 		638C82DA29D8F9AC0025B0B0 /* tempCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638C82D929D8F9AC0025B0B0 /* tempCode.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		631D1E8E29DE49A100FF3C75 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		6320897029DBA44F00075D6D /* LoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseModel.swift; sourceTree = "<group>"; };
 		6320897229DBA49700075D6D /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
 		638C82D929D8F9AC0025B0B0 /* tempCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tempCode.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				638C82DF29D8FFA70025B0B0 /* SetCookieModel.swift */,
 				6320897029DBA44F00075D6D /* LoginResponseModel.swift */,
 				6320897229DBA49700075D6D /* ResponseModel.swift */,
+				631D1E8E29DE49A100FF3C75 /* PostModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				638C82DA29D8F9AC0025B0B0 /* tempCode.swift in Sources */,
 				E8FA727E286BD2590076C90E /* ViewController.swift in Sources */,
 				638C82E029D8FFA70025B0B0 /* SetCookieModel.swift in Sources */,
+				631D1E8F29DE49A100FF3C75 /* PostModel.swift in Sources */,
 				E8FA727A286BD2590076C90E /* AppDelegate.swift in Sources */,
 				E8326A98286E71FA0056D93A /* ProfileViewController.swift in Sources */,
 				E8FA727C286BD2590076C90E /* SceneDelegate.swift in Sources */,

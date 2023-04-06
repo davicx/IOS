@@ -7,13 +7,41 @@
 
 import Foundation
 
+struct Data: Codable {
+    let loginSuccess: Bool
+    let validUser: Bool
+    let passwordCorrect: Bool
+    let accessToken: String
+    let refreshToken: String
+}
+
 struct LoginResponseModel: Codable {
+    let data: Data
     let success: Bool
     let message: String
     let errors: [String]
+    let statusCode: Int
+    let currentUser: String
+    
 }
 
 /*
+{
+     "data": {
+         "loginSuccess": true,
+         "validUser": true,
+         "passwordCorrect": true,
+         "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6ImRhdmV5IiwiaWF0IjoxNjgwNzM5Njc5LCJleHAiOjE2ODA3NDMyNzl9.qOy9qVnR8tsgFtvp9g81yQCvsOHHVoTBeM_i7-u9_tA",
+         "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6ImRhdmV5IiwiaWF0IjoxNjgwNzM5Njc5fQ.zsLp4zVkzFP-bHBjJIYhab7n1DuvnY_7DJBYuzdWkC0"
+     },
+     "success": true,
+     "message": "daveywas succesfully logged in!",
+     "statusCode": 200,
+     "errors": [],
+     "currentUser": "davey"
+ }
+ 
+ 
  success: true,
  message: userName + "was succesfully logged in!",
  errors: [],

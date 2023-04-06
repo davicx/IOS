@@ -33,14 +33,11 @@ class LoginViewController: UIViewController {
     
     //Go to Groups
     func goToGroups() {
-        //Goes to Logged In
         let homeViewController = self.storyboard?.instantiateViewController(identifier: "AppMain") as! UITabBarController
         view.window?.rootViewController = homeViewController
         view.window?.makeKeyAndVisible()
-        
     }
 
-    
     
 }
 
@@ -63,9 +60,15 @@ func loginUser() {
     session.dataTask(with: request) { (data, response, error) in
         if let data = data {
             do {
-                print(response)
+                
+                if let response = response as? HTTPURLResponse {
+                    print("Response HTTP Status code: \(response.statusCode)")
+                }
+            
                 let loginUserResponse = try JSONDecoder().decode(LoginResponseModel.self, from: data)
-                print(loginUserResponse)
+                print(loginUserResponse.statusCode)
+                print(loginUserResponse.data)
+                
             } catch {
                 print(error)
             }
@@ -74,6 +77,12 @@ func loginUser() {
         }.resume()
   
 }
+
+
+
+
+
+
 
 
 //Function 4: Set Cookie
@@ -138,8 +147,9 @@ func getCookie() {
                 //print(response)
                 let decoder = JSONDecoder()
                 let jsonResponse = try decoder.decode(GetCookieModel.self, from: data)
-                print(jsonResponse.userName)
-                print(jsonResponse.accessToken)
+                print("Username: \(jsonResponse.userName)")
+                print("Access Token: \(jsonResponse.accessToken)")
+                
                 //let postArray = posts.posts
                 
             } catch {

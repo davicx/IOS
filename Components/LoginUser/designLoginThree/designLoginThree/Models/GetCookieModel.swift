@@ -9,6 +9,7 @@ import Foundation
 
 struct GetCookieModel: Codable {
     let accessToken: String
+    let refreshToken: String
     let userName: String
 
 }
