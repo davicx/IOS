@@ -13,6 +13,10 @@
 		638C82DA29D8F9AC0025B0B0 /* tempCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638C82D929D8F9AC0025B0B0 /* tempCode.swift */; };
 		638C82DE29D8FEA70025B0B0 /* GetCookieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638C82DD29D8FEA70025B0B0 /* GetCookieModel.swift */; };
 		638C82E029D8FFA70025B0B0 /* SetCookieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638C82DF29D8FFA70025B0B0 /* SetCookieModel.swift */; };
+		63B34DFC29E0DF2100689567 /* CommentLikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B34DFB29E0DF2100689567 /* CommentLikeModel.swift */; };
+		63B34DFE29E0DF2F00689567 /* PostLikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B34DFD29E0DF2F00689567 /* PostLikeModel.swift */; };
+		63B34E0029E0DF5900689567 /* CommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B34DFF29E0DF5900689567 /* CommentModel.swift */; };
+		63B34E0229E0DF7D00689567 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B34E0129E0DF7D00689567 /* PostResponseModel.swift */; };
 		E8326A91286E6ECD0056D93A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8326A90286E6ECD0056D93A /* LoginViewController.swift */; };
 		E8326A94286E6EF00056D93A /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8326A93286E6EF00056D93A /* RegisterViewController.swift */; };
 		E8326A96286E71F10056D93A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8326A95286E71F10056D93A /* HomeViewController.swift */; };
@@ -52,6 +56,10 @@
 		638C82D929D8F9AC0025B0B0 /* tempCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tempCode.swift; sourceTree = "<group>"; };
 		638C82DD29D8FEA70025B0B0 /* GetCookieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCookieModel.swift; sourceTree = "<group>"; };
 		638C82DF29D8FFA70025B0B0 /* SetCookieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCookieModel.swift; sourceTree = "<group>"; };
+		63B34DFB29E0DF2100689567 /* CommentLikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeModel.swift; sourceTree = "<group>"; };
+		63B34DFD29E0DF2F00689567 /* PostLikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeModel.swift; sourceTree = "<group>"; };
+		63B34DFF29E0DF5900689567 /* CommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModel.swift; sourceTree = "<group>"; };
+		63B34E0129E0DF7D00689567 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		E8326A90286E6ECD0056D93A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E8326A93286E6EF00056D93A /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		E8326A95286E71F10056D93A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -101,11 +109,31 @@
 			children = (
 				638C82DD29D8FEA70025B0B0 /* GetCookieModel.swift */,
 				638C82DF29D8FFA70025B0B0 /* SetCookieModel.swift */,
-				6320897029DBA44F00075D6D /* LoginResponseModel.swift */,
+				638E096929E2386D00078246 /* Login */,
 				6320897229DBA49700075D6D /* ResponseModel.swift */,
-				631D1E8E29DE49A100FF3C75 /* PostModel.swift */,
+				63B34E0329E0DF8F00689567 /* Post */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		638E096929E2386D00078246 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				6320897029DBA44F00075D6D /* LoginResponseModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		63B34E0329E0DF8F00689567 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				63B34E0129E0DF7D00689567 /* PostResponseModel.swift */,
+				631D1E8E29DE49A100FF3C75 /* PostModel.swift */,
+				63B34DFD29E0DF2F00689567 /* PostLikeModel.swift */,
+				63B34DFF29E0DF5900689567 /* CommentModel.swift */,
+				63B34DFB29E0DF2100689567 /* CommentLikeModel.swift */,
+			);
+			path = Post;
 			sourceTree = "<group>";
 		};
 		E8326A92286E6ED60056D93A /* Views */ = {
@@ -305,15 +333,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8326A91286E6ECD0056D93A /* LoginViewController.swift in Sources */,
+				63B34E0029E0DF5900689567 /* CommentModel.swift in Sources */,
 				E8326A94286E6EF00056D93A /* RegisterViewController.swift in Sources */,
 				638C82DA29D8F9AC0025B0B0 /* tempCode.swift in Sources */,
 				E8FA727E286BD2590076C90E /* ViewController.swift in Sources */,
 				638C82E029D8FFA70025B0B0 /* SetCookieModel.swift in Sources */,
 				631D1E8F29DE49A100FF3C75 /* PostModel.swift in Sources */,
 				E8FA727A286BD2590076C90E /* AppDelegate.swift in Sources */,
+				63B34E0229E0DF7D00689567 /* PostResponseModel.swift in Sources */,
 				E8326A98286E71FA0056D93A /* ProfileViewController.swift in Sources */,
 				E8FA727C286BD2590076C90E /* SceneDelegate.swift in Sources */,
+				63B34DFE29E0DF2F00689567 /* PostLikeModel.swift in Sources */,
 				E8326A96286E71F10056D93A /* HomeViewController.swift in Sources */,
+				63B34DFC29E0DF2100689567 /* CommentLikeModel.swift in Sources */,
 				638C82DE29D8FEA70025B0B0 /* GetCookieModel.swift in Sources */,
 				6320897329DBA49700075D6D /* ResponseModel.swift in Sources */,
 				6320897129DBA44F00075D6D /* LoginResponseModel.swift in Sources */,
