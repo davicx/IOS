@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  delete
+//  CheckLoginStatus
 //
-//  Created by Vasquez, Charles Geoffrey David [C] on 12/15/21.
+//  Created by David on 4/11/23.
 //
 
 import UIKit

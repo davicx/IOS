@@ -15,7 +15,6 @@ class UserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
  
-        
     }
     
     @IBAction func getLoginStatusButton(_ sender: UIButton) {

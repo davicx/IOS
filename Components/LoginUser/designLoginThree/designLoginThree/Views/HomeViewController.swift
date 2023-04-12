@@ -45,52 +45,45 @@ func getPosts() {
                 
                 if let response = response as? HTTPURLResponse {
                     print("Response HTTP Status code: \(response.statusCode)")
+                    
+                    if(response.statusCode == 200) {
+                        
+                        let decoder = JSONDecoder()
+                        
+                        let postsResponse = try decoder.decode(PostResponseModel.self, from: data)
+                        //print(postsResponse)
+                        
+                        let postArray = postsResponse.posts
+                        
+                        //POSTS
+                        for post in postArray {
+                            print("The POST ")
+                            print("\(post.postID) \(post.postCaption)")
+                            print("")
+                            
+                            //COMMENTS
+                            let commentsArray = post.commentsArray
+                            print("The Comments ")
+                            for comment in commentsArray {
+                                print("\(comment.commentID) \(comment.commentCaption)")
+                            }
+                            
+                            //POST LIKES
+                            let postLikesArray = post.postLikesArray
+                            print("The Likes ")
+                            for postLike in postLikesArray {
+                                print("\(postLike.postLikeID) \(postLike.likedByUserName)")
+                            }
+                            
+                        }
+                    } else {
+                        print("gotta log in!")
+                    }
+                    
                 }
             
                 
-                let decoder = JSONDecoder()
-                
-                let postsResponse = try decoder.decode(PostResponseModel.self, from: data)
-                //print(postsResponse)
-                
-                let postArray = postsResponse.posts
-                
-                //POSTS
-                for post in postArray {
-                    print("The POST ")
-                    print("\(post.postID) \(post.postCaption)")
-                    print("")
-                    
-                    //COMMENTS
-                    let commentsArray = post.commentsArray
-                    print("The Comments ")
-                    for comment in commentsArray {
-                        print("\(comment.commentID) \(comment.commentCaption)")
-                    }
-                    
-                    //POST LIKES
-                    let postLikesArray = post.postLikesArray
-                    print("The Likes ")
-                    for postLike in postLikesArray {
-                        print("\(postLike.postLikeID) \(postLike.likedByUserName)")
-                    }
-                    
-                    /*
-                     postLikesArray": [
-                                     {
-                                         "postLikeID": 93,
-                                         "postID": 72,
-                                         "likedByUserName": "sam",
-                                         "likedByImage": "frodo.jpg",
-                                         "likedByFirstName": "sam gamgee",
-                                         "likedByLastName": "sam gamgee",
-                                         "timestamp": "2023-02-21T00:42:33.000Z"
-                                     },
-                     */
-                  
-                    
-                    
-                }
+     
                  
             } catch {
                 print("Error Parsing JSON")

@@ -1,13 +1,13 @@
 //
-//  deleteUITestsLaunchTests.swift
-//  deleteUITests
+//  CheckLoginStatusUITestsLaunchTests.swift
+//  CheckLoginStatusUITests
 //
-//  Created by Vasquez, Charles Geoffrey David [C] on 12/15/21.
+//  Created by David on 4/11/23.
 //
 
 import XCTest
 
-class deleteUITestsLaunchTests: XCTestCase {
+class CheckLoginStatusUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

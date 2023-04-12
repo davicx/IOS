@@ -10,18 +10,21 @@ import UIKit
 class LoginViewController: UIViewController {
 
     //goToGroups()
-
+    //https://www.youtube.com/watch?v=mQ1R-Zh7VrI&list=PLdW9lrB9HDw3bMSHtNZNt1Qb9XTMmQzLU&index=13
     
     @IBOutlet weak var userNameInput: UITextField!
     @IBOutlet weak var passwordInput: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
-        
+        print("logged in")
+  
 
-
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        //goToGroups()
     }
     
 
@@ -32,7 +35,7 @@ class LoginViewController: UIViewController {
         //print("login \(userName)")
         //setCookie()
         //getCookie()
-        //loginUser()
+        loginUser()
         goToGroups()
         
     }

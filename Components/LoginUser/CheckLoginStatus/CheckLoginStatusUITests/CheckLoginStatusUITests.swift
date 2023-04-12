@@ -1,13 +1,13 @@
 //
-//  deleteUITests.swift
-//  deleteUITests
+//  CheckLoginStatusUITests.swift
+//  CheckLoginStatusUITests
 //
-//  Created by Vasquez, Charles Geoffrey David [C] on 12/15/21.
+//  Created by David on 4/11/23.
 //
 
 import XCTest
 
-class deleteUITests: XCTestCase {
+class CheckLoginStatusUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -27,7 +27,6 @@ class deleteUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 

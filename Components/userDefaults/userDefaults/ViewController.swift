@@ -20,12 +20,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         inputTextField.delegate = self
         
         //TYPE 1: Simple
+        
         /*
         userDefaults.set("davey", forKey: "loggedInUser")
         if let loggedInUser = userDefaults.value(forKey: "loggedInUser") as? String {
             print(loggedInUser)
         }
          */
+         
         
         //TYPE 2: With Class
         //Logged in User
