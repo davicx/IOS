@@ -19,6 +19,95 @@ class SimpleViewController: UIViewController {
         simpleGET()
     }
     
+    
+    @IBAction func simpleGetRequest(_ sender: UIButton) {
+        print("GET Request")
+   
+    }
+    
+    @IBAction func simplePostRequest(_ sender: UIButton) {
+        print("POST Request")
+        simplePostRequest()
+    }
+    
+    func simplePostRequest() {
+        guard let urlString = URL(string: "http://localhost:3003/group/create/") else { return }
+        
+        //let body : [String:Any] = ["id": userID, "name": userName, "contactInfo": contactInfo, "message": message
+        let parameters : [String:Any] = [
+            "currentUser": "davey",
+            "groupName": "music!",
+            "groupType": "kite",
+            "groupPrivate": 1,
+            "groupUsers": ["davey", "sam", "frodo", "merry"],
+            "notificationMessage": "Invited you to a new Group",
+            "notificationType": "group_invite",
+            "notificationLink": "http://localhost:3003/group/77"
+        ]
+        
+        var request = URLRequest(url: urlString)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+  
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else { return }
+        request.httpBody = httpBody
+        
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, error) in
+            if let data = data {
+                do {
+                    print(response)
+                    //let loginUserResponse = try JSONDecoder().decode(LoginResponseModel.self, from: data)
+                    //print(loginUserResponse)
+                } catch {
+                    print(error)
+                }
+            }
+            
+            }.resume()
+    }
+    
+    func simpleGetRequest() {
+        //Gotta check may not work
+        let urlString = "http://localhost:3003/"
+        let url = URL(string: urlString)
+        
+        guard url != nil else {
+            return
+        }
+       
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+            
+            //Parse JSON
+            if error == nil && data != nil {
+                do {
+                    let decoder = JSONDecoder()
+                    //print(response)
+
+       
+                    let postArray = try JSONDecoder().decode([PostModel].self, from: data!)
+                    //print(postArray)
+ 
+                    for post in postArray {
+                        print("\(post.postFrom) \(post.postCaption)")
+                    }
+                    
+                    //print(postArray[0].userName)
+                    //print(postArray[1])
+                    //let posts = try JSONDecoder().decode(posts.self, from: data!)
+                    //let postArray = posts[post]
+                    //print(response)
+             
+                } catch {
+                    print("Error Parsing JSON")
+                    
+                }
+            }
+        }
+        dataTask.resume()
+    }
+    
     func simpleGET() {
         let urlString = "http://localhost:3003/post"
         

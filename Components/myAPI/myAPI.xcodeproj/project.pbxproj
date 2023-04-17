@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		634CFE2929B56C730017BF81 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CFE2829B56C730017BF81 /* SimpleViewController.swift */; };
+		63FBCCEA29EB71EC007E3C71 /* GroupResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FBCCE929EB71EC007E3C71 /* GroupResponseModel.swift */; };
+		63FBCCEC29EB71F5007E3C71 /* NewGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FBCCEB29EB71F5007E3C71 /* NewGroupModel.swift */; };
 		E80330E22904B52F007D1448 /* VerifyResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80330E12904B52F007D1448 /* VerifyResponseModel.swift */; };
 		E8254551288A1C9800C5923E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8254550288A1C9800C5923E /* AppDelegate.swift */; };
 		E8254553288A1C9800C5923E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8254552288A1C9800C5923E /* SceneDelegate.swift */; };
@@ -46,6 +48,8 @@
 
 /* Begin PBXFileReference section */
 		634CFE2829B56C730017BF81 /* SimpleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
+		63FBCCE929EB71EC007E3C71 /* GroupResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupResponseModel.swift; sourceTree = "<group>"; };
+		63FBCCEB29EB71F5007E3C71 /* NewGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupModel.swift; sourceTree = "<group>"; };
 		E80330E12904B52F007D1448 /* VerifyResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyResponseModel.swift; sourceTree = "<group>"; };
 		E825454D288A1C9800C5923E /* myAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8254550288A1C9800C5923E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +98,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63FBCCE629EB7195007E3C71 /* Post Models */ = {
+			isa = PBXGroup;
+			children = (
+				E82800BA288F66B60006D4C8 /* PostResponseModel.swift */,
+				E833F956288CC62900FFA29F /* PostModel.swift */,
+			);
+			path = "Post Models";
+			sourceTree = "<group>";
+		};
+		63FBCCE729EB71A0007E3C71 /* Random */ = {
+			isa = PBXGroup;
+			children = (
+				E8484D5928A5D00F002F8BE8 /* RegisterUserModel.swift */,
+				E80330E12904B52F007D1448 /* VerifyResponseModel.swift */,
+				E8AF34B328A7131E003CD2F0 /* LoginResponseModel.swift */,
+				E8254580288A221300C5923E /* UserModel.swift */,
+				E8314A45289B449B00415A92 /* CookieModel.swift */,
+			);
+			path = Random;
+			sourceTree = "<group>";
+		};
+		63FBCCE829EB71DB007E3C71 /* Group Models */ = {
+			isa = PBXGroup;
+			children = (
+				63FBCCE929EB71EC007E3C71 /* GroupResponseModel.swift */,
+				63FBCCEB29EB71F5007E3C71 /* NewGroupModel.swift */,
+			);
+			path = "Group Models";
+			sourceTree = "<group>";
+		};
 		E8254544288A1C9800C5923E = {
 			isa = PBXGroup;
 			children = (
@@ -151,13 +185,9 @@
 		E833F958288CC66400FFA29F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E8314A45289B449B00415A92 /* CookieModel.swift */,
-				E8254580288A221300C5923E /* UserModel.swift */,
-				E833F956288CC62900FFA29F /* PostModel.swift */,
-				E82800BA288F66B60006D4C8 /* PostResponseModel.swift */,
-				E8484D5928A5D00F002F8BE8 /* RegisterUserModel.swift */,
-				E8AF34B328A7131E003CD2F0 /* LoginResponseModel.swift */,
-				E80330E12904B52F007D1448 /* VerifyResponseModel.swift */,
+				63FBCCE829EB71DB007E3C71 /* Group Models */,
+				63FBCCE629EB7195007E3C71 /* Post Models */,
+				63FBCCE729EB71A0007E3C71 /* Random */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -294,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8AF34B428A7131E003CD2F0 /* LoginResponseModel.swift in Sources */,
+				63FBCCEA29EB71EC007E3C71 /* GroupResponseModel.swift in Sources */,
 				E8254555288A1C9800C5923E /* ViewController.swift in Sources */,
 				634CFE2929B56C730017BF81 /* SimpleViewController.swift in Sources */,
 				E8484D5A28A5D00F002F8BE8 /* RegisterUserModel.swift in Sources */,
@@ -304,6 +335,7 @@
 				E80330E22904B52F007D1448 /* VerifyResponseModel.swift in Sources */,
 				E8254553288A1C9800C5923E /* SceneDelegate.swift in Sources */,
 				E82800B9288F663C0006D4C8 /* extraCode.swift in Sources */,
+				63FBCCEC29EB71F5007E3C71 /* NewGroupModel.swift in Sources */,
 				E8314A46289B449B00415A92 /* CookieModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
