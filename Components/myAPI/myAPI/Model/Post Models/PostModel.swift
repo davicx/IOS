@@ -24,6 +24,23 @@ struct PostModel: Codable {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 struct PostModel: Codable {
     let userName: String

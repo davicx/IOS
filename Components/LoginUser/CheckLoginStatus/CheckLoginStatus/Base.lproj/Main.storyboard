@@ -74,17 +74,23 @@
             </objects>
             <point key="canvasLocation" x="452" y="92"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="ELh-Ig-jqi">
             <objects>
-                <viewController id="Y4T-B3-iVS" sceneMemberID="viewController">
+                <viewController id="Y4T-B3-iVS" customClass="SettingsViewController" customModule="CheckLoginStatus" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Gri-IG-dSJ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="xf3-eh-hFq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="JdT-hr-o8h"/>
+                    <navigationItem key="navigationItem" id="JdT-hr-o8h">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="4nG-nQ-lBu">
+                            <connections>
+                                <action selector="logoutButtonTapped:" destination="Y4T-B3-iVS" id="VvA-HN-hIY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RWV-MG-9FT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -109,7 +115,7 @@
         <!--View Controller-->
         <scene sceneID="VkZ-WV-8rg">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="k1e-eF-w31" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OnboardingViewController" modalPresentationStyle="fullScreen" id="k1e-eF-w31" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r8Y-nI-amm">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -123,11 +129,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login or Register" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3K-dg-Wd0">
+                                <rect key="frame" x="20" y="424" width="374" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="7L7-MV-4mD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="XUr-Lo-A33"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="L3K-dg-Wd0" firstAttribute="top" secondItem="Gps-Dh-T61" secondAttribute="bottom" constant="20" id="8G8-h8-jQx"/>
                             <constraint firstItem="Gps-Dh-T61" firstAttribute="leading" secondItem="XUr-Lo-A33" secondAttribute="leading" constant="20" id="9vb-Xg-Dju"/>
+                            <constraint firstItem="XUr-Lo-A33" firstAttribute="trailing" secondItem="L3K-dg-Wd0" secondAttribute="trailing" constant="20" id="PGn-c5-XNq"/>
+                            <constraint firstItem="L3K-dg-Wd0" firstAttribute="leading" secondItem="XUr-Lo-A33" secondAttribute="leading" constant="20" id="exW-I1-5xm"/>
                             <constraint firstItem="Gps-Dh-T61" firstAttribute="top" secondItem="XUr-Lo-A33" secondAttribute="top" constant="320" id="g1N-iX-AGD"/>
                             <constraint firstItem="XUr-Lo-A33" firstAttribute="trailing" secondItem="Gps-Dh-T61" secondAttribute="trailing" constant="20" id="h0c-h1-ONg"/>
                         </constraints>
@@ -148,7 +166,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="o6e-h0-6Bz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="4H6-CB-Lyo" kind="relationship" relationship="viewControllers" id="l6o-XN-8We"/>

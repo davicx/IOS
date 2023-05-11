@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-
+//Lesson 5: stop 3
 class LoadingViewController: UIViewController {
     
     private let isUserLoggedIn = true
@@ -25,14 +25,7 @@ class LoadingViewController: UIViewController {
         delay(durationInSeconds: 1.0) {
             self.showInitialView()
         }
-        
-        /*
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.showInitialView()
-        }
-        */
-        //showInitialView()
-        
+
     }
     
     
@@ -42,22 +35,46 @@ class LoadingViewController: UIViewController {
     
     private func showInitialView() {
         if isUserLoggedIn {
-            let mainTabBarController = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil).instantiateViewController(withIdentifier: Constants.StoryboardID.mainTabBarController)
-            if let sceneDelegate = view.window?.windowScene?.delegate as? SceneDelegate,
-                let window = sceneDelegate.window {
-                window.rootViewController = mainTabBarController
-            }
-            
+            PresenterManager.shared.show(vc: .mainTabBarController)
         } else {
             performSegue(withIdentifier: Constants.Segue.showOnboardingScreen, sender: nil)
         }
-        
+        //Example 1
     }
     
 }
 
 
+//Example 1
 /*
+ if isUserLoggedIn {
+     let mainTabBarController = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil).instantiateViewController(withIdentifier: Constants.StoryboardID.mainTabBarController)
+     if let sceneDelegate = view.window?.windowScene?.delegate as? SceneDelegate,
+         let window = sceneDelegate.window {
+         window.rootViewController = mainTabBarController
+     }
+     
+ } else {
+     performSegue(withIdentifier: Constants.Segue.showOnboardingScreen, sender: nil)
+ }
+ 
+ */
+
+/*
+ 
+ let mainTabBarController = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil).instantiateViewController(withIdentifier: Constants.StoryboardID.mainTabBarController)
+ if let sceneDelegate = view.window?.windowScene?.delegate as? SceneDelegate,
+     let window = sceneDelegate.window {
+     window.rootViewController = mainTabBarController
+ }
+  
+
+ DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+     self.showInitialView()
+ }
+ 
+ //showInitialView()
+ 
  //let homeViewController = self.storyboard?.instantiateViewController(identifier: "AppMain") as! UITabBarController
  //let homeViewController = self.storyboard?.instantiateViewController(identifier: "MainTabBarController") as! UITabBarController
  //view.window?.rootViewController = homeViewController
