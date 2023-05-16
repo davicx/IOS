@@ -11,6 +11,7 @@ struct PostResponseModel: Codable {
     var posts: [PostModel]
 }
 
+
 /*
 "postID": 254,
 "postType": "text",

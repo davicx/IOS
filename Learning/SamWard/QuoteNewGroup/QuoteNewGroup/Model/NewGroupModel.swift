@@ -8,6 +8,12 @@
 import Foundation
 
 struct NewGroupModel: Codable {
-    let groupID: Int
-
+    let groupData: GroupDataModel
+    let message: String
+    let success: Bool
+    let statusCode: Int
+    let errors: [String]
+    let currentUser: String
+   
 }
+

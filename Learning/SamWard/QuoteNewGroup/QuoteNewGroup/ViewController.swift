@@ -5,12 +5,14 @@
 //  Created by David on 5/8/23.
 //
 
-//STOP 7
+//STOP 14:30 go over url session
 import UIKit
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var label: UILabel!
+    
+    let groupAPI = GroupAPI()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,11 +22,20 @@ class ViewController: UIViewController {
 
     @IBAction func newGroupButton(_ sender: UIButton) {
         print("new group!")
-        simpleTwo()
+        //simpleTwo()
+        
+        groupAPI.createNewGroup {(NewGroupModel, error) -> (Void) in
+            if let error = error {
+                self.label.text = "there was an error!"
+            }
+            
+            print("NewGroupModel from View")
+            print(NewGroupModel)
+        }
         
     }
     
-    
+
     //SIMPLE 2: Better
     func simpleTwo() {
         guard let urlString = URL(string: "http://localhost:3003/group/create/") else { return }
@@ -69,10 +80,15 @@ class ViewController: UIViewController {
             }
             
             do {
-                let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Int]
-                print(response)
-                print(json)
+                //let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Int]
+                let newGroupResponse = try JSONDecoder().decode(NewGroupModel.self, from: data)
+                let groupMembers = newGroupResponse.groupData.groupMembers
+                let pendingGroupMembers = newGroupResponse.groupData.pendingGroupMembers
                 
+                print(newGroupResponse.message)
+                print(groupMembers)
+                print(pendingGroupMembers)
+        
                 DispatchQueue.main.async {
                     //self.label.text = json["quote"]
                 }
