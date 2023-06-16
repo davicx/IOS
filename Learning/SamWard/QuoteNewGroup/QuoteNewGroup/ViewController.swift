@@ -5,17 +5,31 @@
 //  Created by David on 5/8/23.
 //
 
-//STOP 14:30 go over url session
+//STOP 18 added grouptwoapi (probably better)
 import UIKit
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var label: UILabel!
     
+    @IBOutlet weak var imageView: UIImageView!
+    
+    let groupTwoAPI = GroupAPI()
     let groupAPI = GroupAPI()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        groupAPI.getImage { (data, error)  in
+           if let error = error {
+             print(error)
+             return
+           }
+           
+           self.imageView.image = UIImage(data: data!)
+            
+         }
         
     }
 
@@ -24,6 +38,7 @@ class ViewController: UIViewController {
         print("new group!")
         //simpleTwo()
         
+        //groupAPI.createNewGroup {(NewGroupModel, error) -> (Void) in
         groupAPI.createNewGroup {(NewGroupModel, error) -> (Void) in
             if let error = error {
                 self.label.text = "there was an error!"
@@ -32,6 +47,8 @@ class ViewController: UIViewController {
             print("NewGroupModel from View")
             print(NewGroupModel)
         }
+        
+        
         
     }
     
@@ -51,6 +68,7 @@ class ViewController: UIViewController {
             "notificationLink": "http://localhost:3003/group/77"
         ]
         
+        //Can configure timeouts and caching
         var request = URLRequest(url: urlString)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")

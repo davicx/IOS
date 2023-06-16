@@ -1,17 +1,16 @@
 //
-//  GroupAPI.swift
+//  GroupTwoAPI.swift
 //  QuoteNewGroup
 //
-//  Created by David on 6/14/23.
+//  Created by David on 5/22/23.
 //
 
 import Foundation
 
 //Shared Instance so every object can use
-class GroupAPI {
+class GroupTwoAPI {
     
-    //This creates a shared instance of this GroupAPI class (can remove if you want multiple)
-    static let shared = GroupAPI()
+    static let shared = GroupTwoAPI()
     private let session: URLSession
     
     init() {
@@ -33,7 +32,6 @@ class GroupAPI {
             "notificationLink": "http://localhost:3003/group/77"
         ]
         
-        //SETUP: Modify the request
         var request = URLRequest(url: urlString)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -42,7 +40,7 @@ class GroupAPI {
         request.httpBody = httpBody
         
         
-        //TYPE 1: This is better it is a Singleton
+       //TYPE 1: This is better it is a Singleton
         let task = session.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 print(error)
@@ -94,6 +92,61 @@ class GroupAPI {
         
     }
     
+    
+    
+    /*
+     func getQuote(completion: @escaping (Kanye?, Error?) -> (Void)) {
+         let url = URL(string: "https://api.kanye.rest/")!
+         
+         //How to configure for a specific case
+         var request = URLRequest(url: url)
+         request.httpMethod = "GET"
+      
+         let task = session.dataTask(with: url) { (data: Data?, response: URLResponse?, error: Error?) in
+
+             if let error = error {
+               DispatchQueue.main.async {
+                 completion(nil, error)
+               }
+               return
+             }
+             
+             guard let httpResponse = response as? HTTPURLResponse else {
+               DispatchQueue.main.async {
+                 completion(nil, NetworkerError.badResponse)
+               }
+               return
+             }
+             
+             guard (200...299).contains(httpResponse.statusCode) else {
+               DispatchQueue.main.async {
+                 completion(nil, NetworkerError.badStatusCode(httpResponse.statusCode))
+               }
+               return
+             }
+             
+             guard let data = data else {
+               DispatchQueue.main.async {
+                 completion(nil, NetworkerError.badData)
+               }
+               return
+             }
+             
+             do {
+                 let kanye = try JSONDecoder().decode(Kanye.self, from: data)
+                 print(kanye)
+                 
+                 DispatchQueue.main.async {
+                     //Data and Error (nil)
+                     completion(kanye, nil)
+                 }
+             } catch let error {
+                 completion(nil, error)
+             }
+
+        }
+         task.resume()
+     }
      
      func getImage(completion: @escaping (Data?, Error?) -> (Void)) {
          let url = URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Kanye_West_at_the_2009_Tribeca_Film_Festival-2_%28cropped%29.jpg/440px-Kanye_West_at_the_2009_Tribeca_Film_Festival-2_%28cropped%29.jpg")!
@@ -141,5 +194,10 @@ class GroupAPI {
             }
             task.resume()
      }
+     */
+    
+    ///
+    
+    
     
 }
