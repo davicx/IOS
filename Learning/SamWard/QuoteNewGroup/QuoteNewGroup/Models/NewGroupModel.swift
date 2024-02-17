@@ -17,3 +17,11 @@ struct NewGroupModel: Codable {
    
 }
 
+
+struct GroupDataModel: Codable {
+    let groupID: Int
+    let groupMembers: [String]
+    let pendingGroupMembers: [String]
+}
+
+

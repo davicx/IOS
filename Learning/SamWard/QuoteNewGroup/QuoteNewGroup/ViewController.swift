@@ -20,7 +20,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         groupAPI.getImage { (data, error)  in
            if let error = error {
              print(error)
@@ -30,7 +29,6 @@ class ViewController: UIViewController {
            self.imageView.image = UIImage(data: data!)
             
          }
-        
     }
 
 
@@ -39,18 +37,40 @@ class ViewController: UIViewController {
         //simpleTwo()
         
         //groupAPI.createNewGroup {(NewGroupModel, error) -> (Void) in
-        groupAPI.createNewGroup {(NewGroupModel, error) -> (Void) in
+        groupAPI.createNewGroup(currentUser: "davey") {(NewGroupModel, error) -> (Void) in
             if let error = error {
                 self.label.text = "there was an error!"
             }
             
             print("NewGroupModel from View")
-            print(NewGroupModel)
+            let message = NewGroupModel?.message ?? "group message not there"
+            
+            print(NewGroupModel?.groupData)
+            print(message)
+            //print(NewGroupModel?.message)
+            //print(NewGroupModel?.statusCode)
+            //print(NewGroupModel?.message)
+            //print(NewGroupModel.groupMembers)
         }
         
-        
-        
     }
+    
+    
+    
+    @IBAction func getGroupUsers(_ sender: UIButton) {
+        print("Get Group Users")
+        
+        groupAPI.getGroupUsers(groupID: 72, currentUser: "davey"){(GroupUsersModel, error) -> (Void) in
+            print("Should do stuff")
+            print("getGroupUsers from View")
+            let message = GroupUsersModel?.message ?? "group message not there"
+            
+            //print(GroupUsersModel?.groupData)
+            print(message)
+        }
+    }
+    
+    
     
 
     //SIMPLE 2: Better

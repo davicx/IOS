@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-//Lesson 6 done start on 7
+//Lesson 7 Stop at 1 min
 class LoadingViewController: UIViewController {
     
     private let isUserLoggedIn = true

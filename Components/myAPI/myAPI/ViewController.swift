@@ -64,6 +64,61 @@ class ViewController: UIViewController {
         verifyUser()
     }
     
+    @IBAction func getGroupUsersButton(_ sender: UIButton) {
+        print("Get Group Users")
+        getGroupUsers()
+    }
+    
+    //Function 9: Get Group Users
+    func getGroupUsers() {
+        print("Trying to get group user")
+        let urlString = "http://localhost:3003/group/users/72"
+        let url = URL(string: urlString)
+        
+        guard url != nil else {
+            return
+        }
+       
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+            print("dataTask")
+            
+            //Parse JSON
+            if error == nil && data != nil {
+                print("data")
+                do {
+                    let decoder = JSONDecoder()
+                    /*
+                     let groupUsersResponse = try JSONDecoder().decode(GroupUsersModel.self, from: data)
+                     print("Inside Function")
+                     print(groupUsersResponse)
+                     print(groupUsersResponse.message)
+                     print(groupUsersResponse.data.activeGroupUsers)
+                     print(groupUsersResponse.data.pendingGroupUsers)
+                     */
+
+
+                    print("START")
+                    //let groupUsersResponse = try JSONDecoder().decode(GroupUsersModel.self, from: data!)
+                    let groupUsersResponse = try JSONDecoder().decode(GroupUsersModel.self, from: data!)
+                    //print(postArray)
+                    //print(groupUsersResponse)
+                    print(groupUsersResponse.message)
+                    print(groupUsersResponse.data.activeGroupUsers)
+                    print(groupUsersResponse.data.pendingGroupUsers)
+                    
+
+                    print("END")
+
+                } catch {
+                    print("Error Parsing JSON")
+                    
+                }
+            }
+        }
+        dataTask.resume()
+    }
+
     
     //Function 1: Get Group Posts (GET)
     func getGroupPosts() {

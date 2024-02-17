@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		51E94B502AC1093D008461FC /* GroupUsersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E94B4F2AC1093D008461FC /* GroupUsersModel.swift */; };
 		634CFE2929B56C730017BF81 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CFE2829B56C730017BF81 /* SimpleViewController.swift */; };
 		63FBCCEA29EB71EC007E3C71 /* GroupResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FBCCE929EB71EC007E3C71 /* GroupResponseModel.swift */; };
 		63FBCCEC29EB71F5007E3C71 /* NewGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FBCCEB29EB71F5007E3C71 /* NewGroupModel.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		51E94B4F2AC1093D008461FC /* GroupUsersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUsersModel.swift; sourceTree = "<group>"; };
 		634CFE2829B56C730017BF81 /* SimpleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		63FBCCE929EB71EC007E3C71 /* GroupResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupResponseModel.swift; sourceTree = "<group>"; };
 		63FBCCEB29EB71F5007E3C71 /* NewGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupModel.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			children = (
 				63FBCCE929EB71EC007E3C71 /* GroupResponseModel.swift */,
 				63FBCCEB29EB71F5007E3C71 /* NewGroupModel.swift */,
+				51E94B4F2AC1093D008461FC /* GroupUsersModel.swift */,
 			);
 			path = "Group Models";
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				E82800BB288F66B60006D4C8 /* PostResponseModel.swift in Sources */,
 				E80330E22904B52F007D1448 /* VerifyResponseModel.swift in Sources */,
 				E8254553288A1C9800C5923E /* SceneDelegate.swift in Sources */,
+				51E94B502AC1093D008461FC /* GroupUsersModel.swift in Sources */,
 				E82800B9288F663C0006D4C8 /* extraCode.swift in Sources */,
 				63FBCCEC29EB71F5007E3C71 /* NewGroupModel.swift in Sources */,
 				E8314A46289B449B00415A92 /* CookieModel.swift in Sources */,

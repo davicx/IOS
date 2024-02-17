@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kite" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPQ-LY-Q5x">
-                                <rect key="frame" x="20" y="364" width="374" height="40"/>
+                                <rect key="frame" x="20" y="368" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="bNc-Rs-t08"/>
                                 </constraints>
@@ -51,7 +52,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login User" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VtQ-eH-dD6">
-                                <rect key="frame" x="20" y="364" width="374" height="40"/>
+                                <rect key="frame" x="20" y="320" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="iZs-Wr-JOb"/>
                                 </constraints>
@@ -121,7 +122,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Onboarding" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gps-Dh-T61">
-                                <rect key="frame" x="20" y="364" width="374" height="40"/>
+                                <rect key="frame" x="20" y="320" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="AOC-zo-zed"/>
                                 </constraints>
@@ -130,7 +131,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login or Register" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3K-dg-Wd0">
-                                <rect key="frame" x="20" y="424" width="374" height="40"/>
+                                <rect key="frame" x="20" y="380" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="7L7-MV-4mD"/>
                                 </constraints>
@@ -138,16 +139,30 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAw-KW-V3F">
+                                <rect key="frame" x="24" y="760" width="366" height="56"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="jkF-1a-G2N"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Get Started">
+                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="18"/>
+                                </buttonConfiguration>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="XUr-Lo-A33"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="L3K-dg-Wd0" firstAttribute="top" secondItem="Gps-Dh-T61" secondAttribute="bottom" constant="20" id="8G8-h8-jQx"/>
                             <constraint firstItem="Gps-Dh-T61" firstAttribute="leading" secondItem="XUr-Lo-A33" secondAttribute="leading" constant="20" id="9vb-Xg-Dju"/>
+                            <constraint firstItem="XUr-Lo-A33" firstAttribute="bottom" secondItem="xAw-KW-V3F" secondAttribute="bottom" constant="80" id="HhN-87-TWD"/>
+                            <constraint firstItem="XUr-Lo-A33" firstAttribute="trailing" secondItem="xAw-KW-V3F" secondAttribute="trailing" constant="24" id="Ii7-mD-Qw2"/>
                             <constraint firstItem="XUr-Lo-A33" firstAttribute="trailing" secondItem="L3K-dg-Wd0" secondAttribute="trailing" constant="20" id="PGn-c5-XNq"/>
                             <constraint firstItem="L3K-dg-Wd0" firstAttribute="leading" secondItem="XUr-Lo-A33" secondAttribute="leading" constant="20" id="exW-I1-5xm"/>
                             <constraint firstItem="Gps-Dh-T61" firstAttribute="top" secondItem="XUr-Lo-A33" secondAttribute="top" constant="320" id="g1N-iX-AGD"/>
                             <constraint firstItem="XUr-Lo-A33" firstAttribute="trailing" secondItem="Gps-Dh-T61" secondAttribute="trailing" constant="20" id="h0c-h1-ONg"/>
+                            <constraint firstItem="xAw-KW-V3F" firstAttribute="leading" secondItem="XUr-Lo-A33" secondAttribute="leading" constant="24" id="rWl-6Z-bLB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bPZ-GH-djG"/>
@@ -184,7 +199,7 @@
                     <tabBarItem key="tabBarItem" title="Item 2" id="9vR-ee-9PS"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KR6-Km-VQ0">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -198,6 +213,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
