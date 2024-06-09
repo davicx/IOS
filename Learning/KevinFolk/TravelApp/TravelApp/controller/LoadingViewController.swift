@@ -5,7 +5,6 @@
 //  Created by David Vasquez on 11/1/23.
 //
 
-//Stop: Video 8 done start Video 9
 //https://developer.apple.com/documentation/uikit/view_controllers/showing_and_hiding_view_controllers
 import UIKit
 
@@ -54,6 +53,9 @@ class LoadingViewController: UIViewController {
     }
     
 }
+
+
+
 
 //Lesson 5
 /*

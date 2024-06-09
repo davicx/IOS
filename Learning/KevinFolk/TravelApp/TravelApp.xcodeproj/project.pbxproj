@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5115CAC32B1ABD3E00FD917D /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5115CAC22B1ABD3E00FD917D /* OnboardingViewController.swift */; };
+		5125647C2B96AC08003046C4 /* OnboardingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5125647B2B96AC08003046C4 /* OnboardingCollectionView.swift */; };
+		5125647F2B96ACAF003046C4 /* Slide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5125647E2B96ACAF003046C4 /* Slide.swift */; };
 		5154B2CE2B0D92240072167F /* PresenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5154B2CD2B0D92240072167F /* PresenterManager.swift */; };
 		5157F8072AF1CBB700730E03 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157F8062AF1CBB700730E03 /* AppDelegate.swift */; };
 		5157F8092AF1CBB700730E03 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157F8082AF1CBB700730E03 /* SceneDelegate.swift */; };
@@ -18,6 +20,7 @@
 		5157F8282AF1CBB900730E03 /* TravelAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157F8272AF1CBB900730E03 /* TravelAppUITests.swift */; };
 		5157F82A2AF1CBB900730E03 /* TravelAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157F8292AF1CBB900730E03 /* TravelAppUITestsLaunchTests.swift */; };
 		517CC5F92B05A4E300D5E7EC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517CC5F82B05A4E300D5E7EC /* SettingsViewController.swift */; };
+		51D4DB882C06AA7E0018C52B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D4DB872C06AA7E0018C52B /* LoginViewController.swift */; };
 		51EA73DB2B02FB3D0093695C /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EA73DA2B02FB3D0093695C /* Helper.swift */; };
 		51EA73DD2B02FC6C0093695C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EA73DC2B02FC6C0093695C /* Constants.swift */; };
 		51FF3E0A2AF3276300259254 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF3E092AF3276300259254 /* LoadingViewController.swift */; };
@@ -42,6 +45,8 @@
 
 /* Begin PBXFileReference section */
 		5115CAC22B1ABD3E00FD917D /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		5125647B2B96AC08003046C4 /* OnboardingCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCollectionView.swift; sourceTree = "<group>"; };
+		5125647E2B96ACAF003046C4 /* Slide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide.swift; sourceTree = "<group>"; };
 		5154B2CD2B0D92240072167F /* PresenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterManager.swift; sourceTree = "<group>"; };
 		5157F8032AF1CBB700730E03 /* TravelApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5157F8062AF1CBB700730E03 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +61,7 @@
 		5157F8272AF1CBB900730E03 /* TravelAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelAppUITests.swift; sourceTree = "<group>"; };
 		5157F8292AF1CBB900730E03 /* TravelAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		517CC5F82B05A4E300D5E7EC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		51D4DB872C06AA7E0018C52B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		51EA73DA2B02FB3D0093695C /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		51EA73DC2B02FC6C0093695C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		51FF3E092AF3276300259254 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +92,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5125647A2B96ABF1003046C4 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				5125647B2B96AC08003046C4 /* OnboardingCollectionView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		5125647D2B96ACA1003046C4 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				5125647E2B96ACAF003046C4 /* Slide.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		5154B2CC2B0D920C0072167F /* manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +139,8 @@
 		5157F8052AF1CBB700730E03 /* TravelApp */ = {
 			isa = PBXGroup;
 			children = (
+				5125647D2B96ACA1003046C4 /* model */,
+				5125647A2B96ABF1003046C4 /* views */,
 				5154B2CC2B0D920C0072167F /* manager */,
 				51EA73D92B02FB2A0093695C /* helper */,
 				51FF3E042AF326D500259254 /* controller */,
@@ -162,6 +186,7 @@
 				51FF3E092AF3276300259254 /* LoadingViewController.swift */,
 				517CC5F82B05A4E300D5E7EC /* SettingsViewController.swift */,
 				5115CAC22B1ABD3E00FD917D /* OnboardingViewController.swift */,
+				51D4DB872C06AA7E0018C52B /* LoginViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -297,6 +322,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5125647C2B96AC08003046C4 /* OnboardingCollectionView.swift in Sources */,
 				51EA73DD2B02FC6C0093695C /* Constants.swift in Sources */,
 				5157F8072AF1CBB700730E03 /* AppDelegate.swift in Sources */,
 				5157F8092AF1CBB700730E03 /* SceneDelegate.swift in Sources */,
@@ -305,6 +331,8 @@
 				51EA73DB2B02FB3D0093695C /* Helper.swift in Sources */,
 				5154B2CE2B0D92240072167F /* PresenterManager.swift in Sources */,
 				517CC5F92B05A4E300D5E7EC /* SettingsViewController.swift in Sources */,
+				5125647F2B96ACAF003046C4 /* Slide.swift in Sources */,
+				51D4DB882C06AA7E0018C52B /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
