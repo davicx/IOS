@@ -10,6 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    class addFriendModel: Decodable {
+        let request_from: String
+        let request_to: String
+        let add_friend_outcome: Int
+        let add_friend_message: String
+    }
     @IBAction func addFriend(_ sender: UIButton) {
         let parameters = ["request_from": "vasquezd", "request_to": "matt"]
         
