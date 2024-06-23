@@ -2,10 +2,11 @@
 //  LoginModel.swift
 //  myAPI
 //
-//  Created by David on 6/19/24.
+//  Created by David on 6/22/24.
 //
 
 import Foundation
+
 
 struct LoginModel: Codable {
     let loginSuccess: Bool
@@ -15,4 +16,3 @@ struct LoginModel: Codable {
     let accessToken: String
     let refreshToken: String
 }
-

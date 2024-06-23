@@ -2,10 +2,11 @@
 //  CommentModel.swift
 //  myAPI
 //
-//  Created by David on 6/19/24.
+//  Created by David on 6/22/24.
 //
 
 import Foundation
+
 
 struct CommentModel: Codable {
     let commentID: Int
@@ -20,10 +21,8 @@ struct CommentModel: Codable {
     let commentDate: String
     let commentTime: String
     let timeMessage: String
-    let commentLikes: [CommentLikeModel] 
+    let commentLikes: [CommentLikeModel]
     let created: String
     let friendshipStatus: String
     let commentLikeCount: Int
 }
-
-

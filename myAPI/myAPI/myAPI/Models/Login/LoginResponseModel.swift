@@ -2,10 +2,11 @@
 //  LoginResponseModel.swift
 //  myAPI
 //
-//  Created by David on 6/19/24.
+//  Created by David on 6/22/24.
 //
 
 import Foundation
+
 
 struct LoginResponseModel: Codable {
     let data: LoginModel
@@ -15,4 +16,3 @@ struct LoginResponseModel: Codable {
     let errors: [String]
     let currentUser: String
 }
-
