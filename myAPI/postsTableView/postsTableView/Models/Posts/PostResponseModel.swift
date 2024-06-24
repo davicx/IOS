@@ -2,10 +2,11 @@
 //  PostResponseModel.swift
 //  myAPI
 //
-//  Created by David on 6/23/24.
+//  Created by David on 6/22/24.
 //
 
 import Foundation
+
 
 struct PostResponseModel: Codable {
     let data: [PostModel]

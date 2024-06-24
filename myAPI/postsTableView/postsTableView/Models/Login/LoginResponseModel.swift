@@ -1,14 +1,15 @@
 //
-//  PostResponseModel.swift
-//  myAPI
+//  LoginResponseModel.swift
+//  postsTableView
 //
 //  Created by David on 6/23/24.
 //
 
 import Foundation
 
-struct PostResponseModel: Codable {
-    let data: [PostModel]
+
+struct LoginResponseModel: Codable {
+    let data: LoginModel
     let message: String
     let success: Bool
     let statusCode: Int

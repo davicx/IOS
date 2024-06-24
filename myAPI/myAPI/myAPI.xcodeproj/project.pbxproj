@@ -17,13 +17,13 @@
 		633D13DC2C278B63006E8B2B /* myAPIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13DB2C278B63006E8B2B /* myAPIUITests.swift */; };
 		633D13DE2C278B63006E8B2B /* myAPIUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13DD2C278B63006E8B2B /* myAPIUITestsLaunchTests.swift */; };
 		633D13EC2C278CB8006E8B2B /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13EB2C278CB8006E8B2B /* PostModel.swift */; };
-		633D13EF2C278CD7006E8B2B /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13EE2C278CD7006E8B2B /* PostResponseModel.swift */; };
 		633D13F22C278CF8006E8B2B /* LoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13F12C278CF8006E8B2B /* LoginResponseModel.swift */; };
 		633D13F42C278D02006E8B2B /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13F32C278D02006E8B2B /* LoginModel.swift */; };
 		633D13F72C278D1C006E8B2B /* LikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13F62C278D1C006E8B2B /* LikeModel.swift */; };
 		633D13FA2C278D35006E8B2B /* CommentLikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13F92C278D35006E8B2B /* CommentLikeModel.swift */; };
 		633D13FC2C278D4F006E8B2B /* CommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D13FB2C278D4F006E8B2B /* CommentModel.swift */; };
 		633D14012C279A5A006E8B2B /* PostAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D14002C279A5A006E8B2B /* PostAPI.swift */; };
+		6391ED792C28E812003B53F6 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6391ED782C28E812003B53F6 /* PostResponseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,13 +58,13 @@
 		633D13DB2C278B63006E8B2B /* myAPIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myAPIUITests.swift; sourceTree = "<group>"; };
 		633D13DD2C278B63006E8B2B /* myAPIUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myAPIUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		633D13EB2C278CB8006E8B2B /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
-		633D13EE2C278CD7006E8B2B /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		633D13F12C278CF8006E8B2B /* LoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseModel.swift; sourceTree = "<group>"; };
 		633D13F32C278D02006E8B2B /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		633D13F62C278D1C006E8B2B /* LikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeModel.swift; sourceTree = "<group>"; };
 		633D13F92C278D35006E8B2B /* CommentLikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeModel.swift; sourceTree = "<group>"; };
 		633D13FB2C278D4F006E8B2B /* CommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModel.swift; sourceTree = "<group>"; };
 		633D14002C279A5A006E8B2B /* PostAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAPI.swift; sourceTree = "<group>"; };
+		6391ED782C28E812003B53F6 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,7 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				633D13EB2C278CB8006E8B2B /* PostModel.swift */,
-				633D13EE2C278CD7006E8B2B /* PostResponseModel.swift */,
+				6391ED782C28E812003B53F6 /* PostResponseModel.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -334,8 +334,8 @@
 				633D13F22C278CF8006E8B2B /* LoginResponseModel.swift in Sources */,
 				633D14012C279A5A006E8B2B /* PostAPI.swift in Sources */,
 				633D13F42C278D02006E8B2B /* LoginModel.swift in Sources */,
-				633D13EF2C278CD7006E8B2B /* PostResponseModel.swift in Sources */,
 				633D13BF2C278B61006E8B2B /* ViewController.swift in Sources */,
+				6391ED792C28E812003B53F6 /* PostResponseModel.swift in Sources */,
 				633D13EC2C278CB8006E8B2B /* PostModel.swift in Sources */,
 				633D13FA2C278D35006E8B2B /* CommentLikeModel.swift in Sources */,
 				633D13FC2C278D4F006E8B2B /* CommentModel.swift in Sources */,
