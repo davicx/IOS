@@ -26,34 +26,8 @@ class PostListScreen: UIViewController {
         //getPostsAPI()
 
         //WORKS
-        //posts = createArray()
+        posts = createArray()
         
-
-        //TRY
-        postAPI.getGroupPosts {(postResponseModel, error) -> (Void) in
-            if let error = error {
-                //self.postCaption.text = "there was an error!"
-                print(error)
-            }
-            
-            if let posts = postResponseModel {
-                var postsArray: [Post] = []
-                //let post1 = Post(image: #imageLiteral(resourceName: "whale"), caption: posts.data[0].postCaption)
-                //let post2 = Post(image: #imageLiteral(resourceName: "train"), caption: posts.data[1].postCaption)
-                //postsArray.append(post1)
-                //postsArray.append(post2)
-                //Loop over posts and get image and post data here!!
-                
-                //self.getImage()
-                //self.postCaption.text = posts.data[0].postCaption
-                
-                print(posts.data[0].postCaption)
-            }
-            //getImage()
-        }
-        
-        
-        //TRY
     }
     
     func createArray() -> [Post] {
