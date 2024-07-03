@@ -104,11 +104,11 @@
 				6379078F2C322D430017FF60 /* AppDelegate.swift */,
 				637907912C322D430017FF60 /* SceneDelegate.swift */,
 				637907932C322D430017FF60 /* ViewController.swift */,
+				637907C12C322E8A0017FF60 /* Post.swift */,
 				637907952C322D430017FF60 /* Main.storyboard */,
 				637907982C322D450017FF60 /* Assets.xcassets */,
 				6379079A2C322D450017FF60 /* LaunchScreen.storyboard */,
 				6379079D2C322D450017FF60 /* Info.plist */,
-				637907C12C322E8A0017FF60 /* Post.swift */,
 			);
 			path = getImage;
 			sourceTree = "<group>";

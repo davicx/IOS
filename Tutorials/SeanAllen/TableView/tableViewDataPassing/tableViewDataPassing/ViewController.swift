@@ -13,15 +13,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     //let video1 = Video(image: #imageLiteral(resourceName: "river"), title: "Forever we are Lost")
-    let dataSource = ["David", "Frodo", "Bilbo"]
+    //let dataSource = ["David", "Frodo", "Bilbo"]
     var users: [User] = []
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         users = createArray()
-        //usersArray[0] = users[0]
-        //usersArray[1] = users[1]
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -39,23 +37,25 @@ class ViewController: UIViewController {
 
 
 extension ViewController : UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("you clicked \(indexPath.row)")
-        print("you clicked \(dataSource[indexPath.row])")
+        print("you clicked \(users[indexPath.row].userName)")
         
-        let detailVC  = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        let userPageVC  = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
         
         //print(users[indexPath.row])
         //detailVC.detailText = dataSource[indexPath.row]
-        detailVC.currentUser = users[indexPath.row]
+        userPageVC.currentUser = users[indexPath.row]
         
-        navigationController?.pushViewController(detailVC, animated: true)
+        navigationController?.pushViewController(userPageVC, animated: true)
         
         
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        //return UITableView.automaticDimension
+        return 120
     }
     
 }
@@ -63,13 +63,13 @@ extension ViewController : UITableViewDelegate {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomCell
-        cell.cellLabel.text = dataSource[indexPath.row]
+        cell.cellLabel.text = users[indexPath.row].userName
         
         return cell
     }

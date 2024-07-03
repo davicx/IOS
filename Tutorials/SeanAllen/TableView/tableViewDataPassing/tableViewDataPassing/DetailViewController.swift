@@ -12,7 +12,8 @@ import UIKit
 class DetailViewController : UIViewController {
    
     @IBOutlet weak var detailLabel: UILabel!
-    //var detailText : String?
+    @IBOutlet weak var firstName: UILabel!
+
     var currentUser : User?
     
     override func viewDidLoad() {
@@ -20,6 +21,7 @@ class DetailViewController : UIViewController {
 
         //detailLabel.text = detailText
         detailLabel.text = currentUser?.userName
+        firstName.text = currentUser?.
         
         print("You Picked: \(currentUser?.firstName)")
         

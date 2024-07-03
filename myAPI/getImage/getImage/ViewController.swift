@@ -15,15 +15,27 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getImageFromURL(inputFileURL: currentPost.fileUrl)
+
     }
     
     
     @IBAction func getImageButton(_ sender: UIButton) {
-        getImage()
+ 
     }
     
-    func getImage() {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //FUNCTIONS: Doesnt work on new Code
+    func getImageOld() {
         if let url = URL(string: currentPost.fileUrl) {
             do {
        
@@ -38,7 +50,7 @@ class ViewController: UIViewController {
     }
     
     
-    func getImageFromURL(inputFileURL: String) {
+    func getImageFromURLOld(inputFileURL: String) {
         if let url = URL(string: inputFileURL) {
             do {
                 let data = try Data(contentsOf: url)
@@ -59,51 +71,70 @@ class ViewController: UIViewController {
 
 /*
 
- import UIKit
-
- class Post {
-     let postID: Int
-     var postFrom = ""
-     var postCaption = "hi"
-     //var fileUrl = "https://149455152.v2.pressablecdn.com/wp-content/uploads/2013/05/Howls-Moving-Castle.jpg"
-     var fileUrl = "https://insta-app-bucket-tutorial.s3.us-west-2.amazonaws.com/images/postImage-1717975390703-820924480-city.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAXZAOI335HZSDKHVN%2F20240701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240701T000623Z&X-Amz-Expires=3600&X-Amz-Signature=40d0c32f0b8ca4fa961bf19c587f26fcf32bce7957194c616d0bc06ad871dc6d&X-Amz-SignedHeaders=host&x-id=GetObject"
-     var postImage: UIImage?
+ override func viewDidLoad() {
+     super.viewDidLoad()
      
-     init(postID: Int) {
-         self.postID = postID
+     /*
+     networker.getImage { (data, error)  in
+       if let error = error {
+         print(error)
+         return
+       }
+       
+       self.imageView.image = UIImage(data: data!)
      }
-
- }
-
- class ViewController: UIViewController {
      
-     @IBOutlet weak var imageView: UIImageView!
-
-     var currentPost = Post(postID: 1)
-
-     @IBAction func getImage(_ sender: Any) {
-         
-         //Load Image
-         if let url = URL(string: currentPost.fileUrl) {
-             do {
+      */
+ 
+ }
+ 
+ 
+ func getImage(completion: @escaping (Data?, Error?) -> (Void)) {
+     let url = URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Kanye_West_at_the_2009_Tribeca_Film_Festival-2_%28cropped%29.jpg/440px-Kanye_West_at_the_2009_Tribeca_Film_Festival-2_%28cropped%29.jpg")!
         
-                 let data = try Data(contentsOf: url)
-                 currentPost.postImage = UIImage(data: data)
-                 self.imageView.image = currentPost.postImage
-             } catch let err {
-                 print("error ", err)
-                 
-             }
-         }
-         
-     }
-     
-     override func viewDidLoad() {
-         super.viewDidLoad()
-     }
-     
-
+        let task = session.downloadTask(with: url) { (localUrl: URL?, response: URLResponse?, error: Error?) in
+          
+          if let error = error {
+            DispatchQueue.main.async {
+              completion(nil, error)
+            }
+            return
+          }
+          
+          guard let httpResponse = response as? HTTPURLResponse else {
+            DispatchQueue.main.async {
+              completion(nil, NetworkerError.badResponse)
+            }
+            return
+          }
+          
+          guard (200...299).contains(httpResponse.statusCode) else {
+            DispatchQueue.main.async {
+              completion(nil, NetworkerError.badStatusCode(httpResponse.statusCode))
+            }
+            return
+          }
+          
+          guard let localUrl = localUrl else {
+            DispatchQueue.main.async {
+              completion(nil, NetworkerError.badData)
+            }
+            return
+          }
+          
+          do {
+            let data = try Data(contentsOf: localUrl)
+            DispatchQueue.main.async {
+              completion(data, nil)
+            }
+          } catch let error {
+            DispatchQueue.main.async {
+              completion(nil, error)
+            }
+          }
+        }
+        task.resume()
  }
 
-
+ 
  */

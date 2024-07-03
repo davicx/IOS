@@ -35,8 +35,6 @@ class PostViewController: UIViewController {
         //let imgUrl = post?.fileUrl ?? "https://149455152.v2.pressablecdn.com/wp-content/uploads/2013/05/Howls-Moving-Castle.jpg"
         
         print(imgUrl)
-
-   
         
         
         //let postImage = post?.fileUrl

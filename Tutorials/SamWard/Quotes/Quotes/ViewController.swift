@@ -19,18 +19,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         
-        /*
-        networker.getImage { (data, error)  in
-          if let error = error {
-            print(error)
-            return
-          }
-          
-          self.imageView.image = UIImage(data: data!)
-        }
-        
-         */
     }
 
     @IBAction func randomButton(_ sender: UIButton) {
