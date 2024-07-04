@@ -17,6 +17,7 @@
 		637907B12C322D450017FF60 /* getImageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637907B02C322D450017FF60 /* getImageUITests.swift */; };
 		637907B32C322D450017FF60 /* getImageUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637907B22C322D450017FF60 /* getImageUITestsLaunchTests.swift */; };
 		637907C22C322E8A0017FF60 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637907C12C322E8A0017FF60 /* Post.swift */; };
+		63F7659C2C3756850010B31E /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F7659B2C3756850010B31E /* Networker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		637907B02C322D450017FF60 /* getImageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getImageUITests.swift; sourceTree = "<group>"; };
 		637907B22C322D450017FF60 /* getImageUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getImageUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		637907C12C322E8A0017FF60 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		63F7659B2C3756850010B31E /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				637907912C322D430017FF60 /* SceneDelegate.swift */,
 				637907932C322D430017FF60 /* ViewController.swift */,
 				637907C12C322E8A0017FF60 /* Post.swift */,
+				63F7659B2C3756850010B31E /* Networker.swift */,
 				637907952C322D430017FF60 /* Main.storyboard */,
 				637907982C322D450017FF60 /* Assets.xcassets */,
 				6379079A2C322D450017FF60 /* LaunchScreen.storyboard */,
@@ -261,6 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63F7659C2C3756850010B31E /* Networker.swift in Sources */,
 				637907942C322D430017FF60 /* ViewController.swift in Sources */,
 				637907902C322D430017FF60 /* AppDelegate.swift in Sources */,
 				637907922C322D430017FF60 /* SceneDelegate.swift in Sources */,
