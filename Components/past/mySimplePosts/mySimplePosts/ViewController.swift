@@ -41,39 +41,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             if err == nil {
                 do {
-                    
-                    //let loginResponse = try JSONDecoder().decode(LoginResponseModel.self, from: data)
-                    //let postResponse = try JSONDecoder().decode(PostResponseModel.self, from: data!)
-                    //let postsArray = postResponse.data
-               
-        
-                    
-                    //
+
                     if let data = data {
                        do {
                            
                            let postResponse = try JSONDecoder().decode(PostResponseModel.self, from: data)
                            let postsArray = postResponse.data
-                           //print(posts)
-                           //print("\(friendResponse.request_to) \(friendResponse.request_from)")
-                           //print(PostResponseModel.data.loggedInUser)
-                           //print(postResponse.message)
-                           //print("\(friendResponse.request_from)")
-                           //for post in posts {
-                           //    print(post.postCaption)
-                           //}
-                           //print(posts[0].postCaption)
-                           //completionHandler(postModelArray, nil)
-             
+         
                            self.posts = postsArray
                        } catch {
                            print(error)
                        }
                    }
-                    //
-                    //self.posts = try JSONDecoder().decode([PostResponseModel].self, from: data!)
-                    //self.posts = postResponsedata
-                    
+     
                     DispatchQueue.main.async {
                         completed()
                     }
@@ -123,3 +103,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
  
 }
 
+
+
+//print(posts)
+//print("\(friendResponse.request_to) \(friendResponse.request_from)")
+//print(PostResponseModel.data.loggedInUser)
+//print(postResponse.message)
+//print("\(friendResponse.request_from)")
+//for post in posts {
+//    print(post.postCaption)
+//}
+//print(posts[0].postCaption)
+//completionHandler(postModelArray, nil)
+
+
+
+//let loginResponse = try JSONDecoder().decode(LoginResponseModel.self, from: data)
+//let postResponse = try JSONDecoder().decode(PostResponseModel.self, from: data!)
+//let postsArray = postResponse.data
+
+//
+//self.posts = try JSONDecoder().decode([PostResponseModel].self, from: data!)
+//self.posts = postResponsedata
+
+
+//
