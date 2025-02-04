@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "E66F6449-01E7-4500-A63F-91FE8F1D7811"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A2B382C2-9819-48EE-918F-8799EE80F68E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "posts/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "ViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "A2B382C2-9819-48EE-918F-8799EE80F68E - 7246909ccb555fd6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posts.ViewController.newPostButtonStyle.getter : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "posts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dvas22/Desktop/David/www/IOS/MyAPI/Posts/template/posts/posts/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "A2B382C2-9819-48EE-918F-8799EE80F68E - f9493448c8d82fe2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posts.ViewController.newPostButtonStyle.setter : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "posts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dvas22/Desktop/David/www/IOS/MyAPI/Posts/template/posts/posts/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "A2B382C2-9819-48EE-918F-8799EE80F68E - 7d396b37e1fd03d1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posts.ViewController.newPostButtonStyle.modify : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "posts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dvas22/Desktop/David/www/IOS/MyAPI/Posts/template/posts/posts/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "A2B382C2-9819-48EE-918F-8799EE80F68E - b2ab92fafe57bae7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posts.ViewController.newPostButtonStyle.modify : Swift.Optional&lt;__C.UIButton&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "posts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dvas22/Desktop/David/www/IOS/MyAPI/Posts/template/posts/posts/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  uuid = "A2B382C2-9819-48EE-918F-8799EE80F68E - 65cbc119a45b42aa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posts.ViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; posts.ViewController"
+                  moduleName = "posts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dvas22/Desktop/David/www/IOS/MyAPI/Posts/template/posts/posts/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "644">
+               </Location>
+               <Location
+                  uuid = "A2B382C2-9819-48EE-918F-8799EE80F68E - 16eeb64c73a77add"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posts.ViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;posts.ViewController&gt;"
+                  moduleName = "posts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dvas22/Desktop/David/www/IOS/MyAPI/Posts/template/posts/posts/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "620">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

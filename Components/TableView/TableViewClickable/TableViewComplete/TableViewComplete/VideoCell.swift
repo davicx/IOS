@@ -19,3 +19,5 @@ class VideoCell: UITableViewCell {
     }
     
 }
+
+

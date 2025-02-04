@@ -57,6 +57,7 @@ class UserViewController: UIViewController {
     }
     
     func logUserIn(userName: String) {
+        
         UserDefaultManager.shared.defaults.set(userName, forKey: "loggedInUser")
     }
     
@@ -114,6 +115,7 @@ class UserViewController: UIViewController {
     
 }
 
+
 class UserDefaultManager {
     static let shared = UserDefaultManager()
     let defaults = UserDefaults(suiteName: "kite")!
@@ -135,3 +137,5 @@ if let value = UserDefaultManagerSmall.shared.defaults.value(forKey: "name") as?
     labelField.text = value
 }
 */
+
+

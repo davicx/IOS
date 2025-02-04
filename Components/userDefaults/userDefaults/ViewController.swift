@@ -64,15 +64,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     }
     
+    /*
     //Run on Enter
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         UserDefaultManagerSmall.shared.defaults.set(inputTextField.text, forKey: "name")
         inputTextField.resignFirstResponder()
         return true
     }
+     */
 
 
 }
+
 
 
 class UserDefaultManagerSmall {
@@ -84,3 +87,5 @@ class UserDefaultManagerSmall {
         return ""
     }
 }
+
+
