@@ -11,6 +11,7 @@ import UIKit
 class ProfileViewController: UIViewController {
     let postsAPI = PostsAPI()
     let profileAPI = ProfileAPI()
+    let loginAPI = LoginAPI()
     let userDefaultManager = UserDefaultManager()
     
     @IBOutlet weak var profileImageView: UIImageView!
@@ -31,22 +32,20 @@ class ProfileViewController: UIViewController {
                 userNameLabel.text = userResponseModel.data.userName
                 nameLabel.text = userResponseModel.data.firstName
                 biographyTextField.text = userResponseModel.data.biography
-                print("Image URL \(userResponseModel.data.userImage)")
+                //print("Image URL \(userResponseModel.data.userImage)")
                 print(userResponseModel)
-                print("SUCCESS: Got the User Profile")
-                
-                /*
+                //print("SUCCESS: Got the User Profile")
+            
                 if let image = await fetchImage(from: userResponseModel.data.userImage) {
                     profileImageView.image = image
-                    print("Loaded image")
+                    //print("Loaded image")
                 } else {
                     profileImageView.image = UIImage(named: "background_9")
-                    print("Failed to load image")
+                    //print("Failed to load image")
                 }
-                 */
                 
             } catch{
-                print("yo man error!")
+                print("ProfileViewController profileAPI.getUserProfileAPI yo man error!")
                 print(error)
             }
         }
@@ -85,3 +84,8 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
     }
 }
 
+
+/*
+ let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+ print(newAccessTokenModel)
+ */

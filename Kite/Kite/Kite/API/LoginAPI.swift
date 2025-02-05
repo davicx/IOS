@@ -156,75 +156,85 @@ class LoginAPI {
         print("logUserOut")
     }
     
-    func getNewAccessToken() {
+
+    func getNewAccessToken(username: String) async throws -> AccessTokenResponseModel {
+        print("___________________________")
         print("getNewAccessToken")
+
+        
+        let endpoint = "http://localhost:3003/refresh/tokens"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        
+        let parameters = ["userName": username] as [String : Any]
+        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            let accessTokenResponseModel = AccessTokenResponseModel()
+            print("Error converting JSON")
+            return accessTokenResponseModel
+        }
+        
+        request.httpBody = httpBody
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("LoginAPI.getNewAccessToken: networkError.invalidResponse")
+            throw networkError.invalidResponse
+        }
+        
+        if httpResponse.statusCode == 200 {
+            // Continue processing as normal
+        } else if httpResponse.statusCode == 498 {
+            print("LoginAPI.getNewAccessToken: 498")
+        } else if httpResponse.statusCode == 401 {
+            print("LoginAPI.getNewAccessToken: 401")
+        } else {
+            print("LoginAPI.getNewAccessToken: networkError.invalidResponse")
+            throw networkError.invalidResponse
+        }
+
+        
+        do {
+            let decoder = JSONDecoder ()
+            let accessTokenResponseModel = try decoder.decode(AccessTokenResponseModel.self, from: data)
+            print(accessTokenResponseModel)
+            print("getNewAccessToken")
+            print("___________________________")
+            return accessTokenResponseModel
+            
+        } catch {
+            let accessTokenResponseModel = AccessTokenResponseModel()
+            print("Error decoding data")
+            print("getNewAccessToken")
+            print("___________________________")
+            return accessTokenResponseModel
+            
+        }
+
     }
     
-    
-    //TEMP
-    /*
-     import Foundation
-
-     struct RefreshResponseModel: Codable {
-         let accessToken: String
-     }
-
-     enum NetworkError: Error {
-         case invalidURL
-         case invalidResponse
-         case decodingError
-     }
-
-     func refreshToken() async throws -> RefreshResponseModel {
-         print("ATTEMPTING TO REFRESH TOKEN: refreshToken()")
-         
-         let refreshURL = "http://localhost:3003/refresh/tokens"
-         
-         guard let url = URL(string: refreshURL) else {
-             throw NetworkError.invalidURL
-         }
-         
-         guard let userData = UserDefaults.standard.string(forKey: "localStorageCurrentUser"),
-               let userName = try? JSONDecoder().decode(String.self, from: Data(userData.utf8)) else {
-             throw NetworkError.invalidResponse
-         }
-         
-         print("refreshToken: you are refreshing for \(userName)")
-         
-         var request = URLRequest(url: url)
-         request.httpMethod = "POST"
-         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-         
-         let parameters: [String: Any] = [
-             "userName": userName,
-             "refreshToken": "dontneedheretoken"
-         ]
-         
-         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-             throw NetworkError.invalidResponse
-         }
-         
-         request.httpBody = httpBody
-         
-         let (data, response) = try await URLSession.shared.data(for: request)
-         
-         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-             throw NetworkError.invalidResponse
-         }
-         
-         do {
-             let decoder = JSONDecoder()
-             let refreshResponseModel = try decoder.decode(RefreshResponseModel.self, from: data)
-             print("refreshToken(): We got a new access token!")
-             return refreshResponseModel
-         } catch {
-             print("refreshToken(): We failed to get a new access token!")
-             throw NetworkError.decodingError
-         }
-     }
-
-     */
-    
-
 
 }
+
+
+//REQUEST
+/*
+let loginAPI = LoginAPI()
+ 
+Task{
+    do{
+        let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+        print(newAccessTokenModel)
+    } catch{
+        print("ProfileViewController profileAPI.getUserProfileAPI yo man error!")
+        print(error)
+    }
+}
+ */

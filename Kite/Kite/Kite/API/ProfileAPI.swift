@@ -16,7 +16,9 @@ FUNCTIONS A: All Functions Related to User Profile
 class ProfileAPI {
     
     static let shared = Networker()
-    
+    let loginAPI = LoginAPI()
+    //let authManager = AuthManager()
+
     private let session: URLSession
     
     init() {
@@ -42,18 +44,24 @@ class ProfileAPI {
             throw networkError.invalidResponse
         }
 
-        print("Get User Profile Response \(httpResponse.statusCode)")
-
         if httpResponse.statusCode == 200 {
             // Continue processing as normal
-        } else if httpResponse.statusCode == 401 {
-            logUserOut()
         } else if httpResponse.statusCode == 498 {
-            getNewAccessToken()
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+            print(newAccessTokenModel)
+            
+            if newAccessTokenModel.success == true {
+                //RETRY getUserProfileAPI Request Here
+                return try await getUserProfileAPI(currentUser: currentUser)
+            } else {
+                AuthManager.shared.logoutCurrentUser()
+            }
+            
+        } else if httpResponse.statusCode == 401 {
+            AuthManager.shared.logoutCurrentUser()
         } else {
             throw networkError.invalidResponse
         }
-
 
         
         do {
@@ -64,12 +72,18 @@ class ProfileAPI {
             
         } catch {
             let userProfileResponseModel = UserProfileResponseModel()
-            print("CATCH: Going to use empty response data")
+            //print("CATCH: Going to use empty response data")
             return userProfileResponseModel
             
         }
     }
 
+
+    //NEW
+    //let accessTokenResponse = try await loginAPI.getNewAccessToken(username: currentUser)
+    //print(accessTokenResponse)
+    //NEW
+    //Logout User AuthManager.shared.logoutCurrentUser()
 
     //Function A2: Update User Profile Information without Image
     func updateUserProfileAPI(currentUser: String, imageName: String, firstName: String, lastName: String, biography: String) async throws -> UpdateUserProfileResponseModel {
@@ -156,22 +170,8 @@ class ProfileAPI {
         }
     }
     
-
-    
-    func logUserOut() {
-        print("logUserOut")
-    }
-    
-    func getNewAccessToken() {
-        print("getNewAccessToken")
-    }
 }
 
 
 
 
-
-
-/*
-
- */

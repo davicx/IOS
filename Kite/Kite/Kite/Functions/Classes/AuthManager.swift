@@ -18,6 +18,8 @@ class AuthManager {
     private init() {} // Ensures singleton usage
 
     func logoutCurrentUser() {
+        
+        /*
         let loggedInUser = userDefaultManager.getLoggedInUser()
         
         // STEP 1: Set User Defaults
@@ -50,5 +52,7 @@ class AuthManager {
         
         // STEP 3: Navigate to Login Screen
         PresenterManager.shared.showOnboarding()
+         */
+        print("AUTH MANAGER: Logout User")
     }
 }
