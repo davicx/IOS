@@ -5,6 +5,7 @@
 //  Created by David Vasquez on 2/4/25.
 //
 
+
 import Foundation
 
 //Example
@@ -19,13 +20,88 @@ import Foundation
          print("Error fetching profile: \(error)")
      }
  }
+*/
 
- */
+class NetworkManager {
+    static let shared = NetworkManager()
+    let loginAPI = LoginAPI() // Ensure you have an instance of `LoginAPI`
+    
+    private init() {} // Singleton
+
+    func performRequest<T: Decodable, U: Encodable>(
+        endpoint: String,
+        method: String = "GET",
+        body: U? = nil, // Generic body for requests
+        headers: [String: String] = [:],
+        requiresAuth: Bool = true,
+        currentUser: String
+    ) async throws -> T {
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+
+        // Convert Encodable body to JSON
+        if let body = body {
+            request.httpBody = try? JSONEncoder().encode(body)
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+
+        // Add extra headers if needed
+        for (key, value) in headers {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        
+        let config = URLSessionConfiguration.default
+        config.httpCookieStorage = HTTPCookieStorage.shared
+        let session = URLSession(configuration: config)
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw networkError.invalidResponse
+        }
+
+        switch httpResponse.statusCode {
+        case 200...299:
+            return try JSONDecoder().decode(T.self, from: data) // Success
+
+        case 498:
+            print("Session expired, attempting to refresh access token...")
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+
+            if newAccessTokenModel.success {
+                print("Access token refreshed, retrying request...")
+                return try await performRequest(
+                    endpoint: endpoint,
+                    method: method,
+                    body: body,
+                    headers: headers,
+                    requiresAuth: requiresAuth,
+                    currentUser: currentUser // Retry request
+                )
+            } else {
+                print("Failed to refresh token. Logging out user.")
+                AuthManager.shared.logoutCurrentUser()
+                throw networkError.tokenRefreshFailed
+            }
+
+        case 401:
+            print("Unauthorized - Logging out user.")
+            AuthManager.shared.logoutCurrentUser()
+            throw networkError.unauthorized
+
+        default:
+            throw networkError.serverError(statusCode: httpResponse.statusCode)
+        }
+    }
+}
 
 
-
-import Foundation
-
+/*
 class NetworkManager {
     static let shared = NetworkManager()
     let loginAPI = LoginAPI() // Ensure you have an instance of `LoginAPI`
@@ -100,7 +176,7 @@ class NetworkManager {
         }
     }
 }
-
+*/
 
 
 
