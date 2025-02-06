@@ -29,6 +29,11 @@ class ProfileViewController: UIViewController {
             do{
                 let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
                 self.userResponseModel = userResponseModel
+                
+                if(userResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
                 userNameLabel.text = userResponseModel.data.userName
                 nameLabel.text = userResponseModel.data.firstName
                 biographyTextField.text = userResponseModel.data.biography

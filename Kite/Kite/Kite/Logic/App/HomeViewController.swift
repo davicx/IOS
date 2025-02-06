@@ -34,39 +34,8 @@ class HomeViewController: UIViewController {
     
     @IBAction func logoutButton(_ sender: UIButton) {
         let loggedInUser = userDefaultManager.getLoggedInUser()
-        
-        //STEP 1: Set User Defaults
-        let loginOutcome = userDefaultManager.logUserOut()
-        
-        if(loginOutcome) {
-            print("You just logged out")
-        } else {
-            print("Was an error logging out!")
-        }
-        
-        //STEP 2: Call Logout API
-        Task{
-            do{
-                let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser)
-                
-                print(logoutResponseModel)
-               
-                if(logoutResponseModel.success == true) {
-                    print("API Logout worked!")
-           
-                } else {
-                    print("API Was an error logging out!")
-                }
-                
-            } catch{
-                print("yo man error!")
-                print(error)
-            }
-        }
-        
-        //STEP 3: Navigate to Login Screen
-        PresenterManager.shared.showOnboarding()
-        
+        AuthManager.shared.logoutCurrentUser()
+     
     }
     
 }
@@ -121,3 +90,37 @@ Task{
 
  
  */
+
+/*
+//STEP 1: Set User Defaults
+let loginOutcome = userDefaultManager.logUserOut()
+
+if(loginOutcome) {
+    print("You just logged out")
+} else {
+    print("Was an error logging out!")
+}
+
+//STEP 2: Call Logout API
+Task{
+    do{
+        let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser)
+        
+        print(logoutResponseModel)
+       
+        if(logoutResponseModel.success == true) {
+            print("API Logout worked!")
+   
+        } else {
+            print("API Was an error logging out!")
+        }
+        
+    } catch{
+        print("yo man error!")
+        print(error)
+    }
+}
+
+//STEP 3: Navigate to Login Screen
+PresenterManager.shared.showOnboarding()
+*/
