@@ -33,7 +33,7 @@ class ProfileViewController: UIViewController {
                 nameLabel.text = userResponseModel.data.firstName
                 biographyTextField.text = userResponseModel.data.biography
                 //print("Image URL \(userResponseModel.data.userImage)")
-                print(userResponseModel)
+                //print(userResponseModel)
                 //print("SUCCESS: Got the User Profile")
             
                 if let image = await fetchImage(from: userResponseModel.data.userImage) {
@@ -45,8 +45,9 @@ class ProfileViewController: UIViewController {
                 }
                 
             } catch{
-                print("ProfileViewController profileAPI.getUserProfileAPI yo man error!")
+                print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
                 print(error)
+                AuthManager.shared.logoutCurrentUser()
             }
         }
     }

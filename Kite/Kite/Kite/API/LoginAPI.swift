@@ -204,7 +204,7 @@ class LoginAPI {
         do {
             let decoder = JSONDecoder ()
             let accessTokenResponseModel = try decoder.decode(AccessTokenResponseModel.self, from: data)
-            print(accessTokenResponseModel)
+            print(accessTokenResponseModel.message)
             print("getNewAccessToken")
             print("___________________________")
             return accessTokenResponseModel

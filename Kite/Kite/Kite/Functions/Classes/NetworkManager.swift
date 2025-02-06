@@ -22,6 +22,9 @@ import Foundation
  }
 */
 
+
+
+/*
 class NetworkManager {
     static let shared = NetworkManager()
     let loginAPI = LoginAPI() // Ensure you have an instance of `LoginAPI`
@@ -99,7 +102,7 @@ class NetworkManager {
         }
     }
 }
-
+*/
 
 /*
 class NetworkManager {
