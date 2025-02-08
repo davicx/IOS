@@ -8,39 +8,47 @@
 import Foundation
 
 
+
 struct UpdateUserProfileModel: Codable {
-    let currentUser: String
-    let imageName: String
+    let userName: String
+    let userID: Int
+    let userImage: String
+    let biography: String
     let firstName: String
     let lastName: String
-    let biography: String
+
     
     init() {
-        self.currentUser = ""
-        self.imageName = ""
+        self.userName = ""
+        self.userID = 0
+        self.userImage = ""
+        self.biography = ""
         self.firstName = ""
         self.lastName = ""
-        self.biography = ""
+
     }
 
 }
 
+
 /*
  {
-     "message": "We updated the user profile for davey",
-     "success": true,
-     "statusCode": 200,
-     "errors": [],
-     "currentUser": "davey",
-     "data": {
-         "currentUser": "davey",
-         "imageName": "password",
-         "firstName": "david vas",
-         "lastName": "v",
-         "biography": "biography"
-     }
+   data: {
+     userName: 'davey',
+     userID: 1,
+     userImage: 'http://localhost:3003/kite-profile-us-west-two/profileImage-1738887410682-505580232-background_1.jpg',
+     biography: 'They are (or were) a little people, about half our height, and smaller than the bearded dwarves',
+     firstName: 'david v',
+     lastName: 'david v'
+   },
+   message: 'We got the user profile for davey',
+   success: true,
+   statusCode: 200,
+   errors: [],
+   currentUser: 'davey'
  }
  */
+
 
 
 /*

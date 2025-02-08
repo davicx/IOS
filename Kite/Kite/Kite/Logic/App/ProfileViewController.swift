@@ -19,6 +19,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var biographyTextField: UITextView!
     
+    @IBOutlet weak var actualUserName: UILabel!
     var userResponseModel: UserProfileResponseModel?
     
     override func viewDidLoad() {
@@ -34,13 +35,14 @@ class ProfileViewController: UIViewController {
                     AuthManager.shared.logoutCurrentUser()
                 }
                 
-                userNameLabel.text = userResponseModel.data.userName
-                nameLabel.text = userResponseModel.data.firstName
+                userNameLabel.text = userResponseModel.data.firstName
+                nameLabel.text = userResponseModel.data.lastName
+                actualUserName.text = userResponseModel.data.userName
                 biographyTextField.text = userResponseModel.data.biography
                 //print("Image URL \(userResponseModel.data.userImage)")
                 //print(userResponseModel)
                 //print("SUCCESS: Got the User Profile")
-            
+                
                 if let image = await fetchImage(from: userResponseModel.data.userImage) {
                     profileImageView.image = image
                     //print("Loaded image")
@@ -49,10 +51,11 @@ class ProfileViewController: UIViewController {
                     //print("Failed to load image")
                 }
                 
+           
             } catch{
                 print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
                 print(error)
-                AuthManager.shared.logoutCurrentUser()
+                //AuthManager.shared.logoutCurrentUser()
             }
         }
     }
@@ -65,8 +68,8 @@ class ProfileViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showEditProfileViewController" {
             let editProfileViewController = segue.destination as! EditProfileViewController
-            editProfileViewController.inputUserName = userResponseModel?.data.userName ?? "Error getting User Name"
-            editProfileViewController.inputFullName = userResponseModel?.data.firstName ?? "Error getting Full Name"
+            editProfileViewController.inputFirstName = userResponseModel?.data.firstName ?? "Error getting User Name"
+            editProfileViewController.inputLastName = userResponseModel?.data.lastName ?? "Error getting Full Name"
             editProfileViewController.inputBiography = userResponseModel?.data.biography ?? "Error getting Biography"
 
             if let profileImage = profileImageView.image {

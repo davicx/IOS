@@ -94,10 +94,9 @@ class ProfileAPI {
             throw networkError.invalidURL
         }
         
-        
         var request = URLRequest(url: url)
 
-       let parameters = ["currentUser": currentUser, "imageName": imageName, "firstName": firstName, "lastName": lastName, "biography": biography] as [String : Any]
+        let parameters = ["currentUser": currentUser, "imageName": imageName, "firstName": firstName, "lastName": lastName, "biography": biography] as [String : Any]
         
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -130,7 +129,7 @@ class ProfileAPI {
     }
     
     //Function A3: Update User Profile Information
-    func updateFullUserProfileAPI(currentUser: String, imageName: String, firstName: String, lastName: String, biography: String) async throws -> UpdateUserProfileResponseModel {
+    func updateFullUserProfileAPI(currentUser: String, newProfileImage: UIImage, imageName: String, firstName: String, lastName: String, biography: String) async throws -> UpdateUserProfileResponseModel {
         let endpoint = "http://localhost:3003/profile/update"
         
         guard let url = URL(string: endpoint) else {

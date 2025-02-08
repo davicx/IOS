@@ -24,7 +24,6 @@ struct UpdateUserProfileResponseModel: Codable {
         self.errors = []
         self.currentUser = ""
     }
-    
 }
 
 /*
@@ -33,13 +32,22 @@ struct UpdateUserProfileResponseModel: Codable {
      "success": true,
      "statusCode": 200,
      "errors": [],
-     "currentUser": "davey",
-     "data": {
-         "currentUser": "davey",
-         "imageName": "password",
-         "firstName": "david vas",
-         "lastName": "v",
-         "biography": "biography"
-     }
+     "currentUser": "davey"
+ }
+ 
+ {
+   data: {
+     userName: 'davey',
+     userID: 1,
+     userImage: 'http://localhost:3003/kite-profile-us-west-two/profileImage-1738887410682-505580232-background_1.jpg',
+     biography: 'They are (or were) a little people, about half our height, and smaller than the bearded dwarves',
+     firstName: 'david v',
+     lastName: 'david v'
+   },
+   message: 'We got the user profile for davey',
+   success: true,
+   statusCode: 200,
+   errors: [],
+   currentUser: 'davey'
  }
  */

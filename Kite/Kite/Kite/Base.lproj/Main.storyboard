@@ -348,7 +348,7 @@
                                     <constraint firstAttribute="height" constant="220" id="rAx-0d-tfV"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEg-ON-Gt5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEg-ON-Gt5">
                                 <rect key="frame" x="20" y="363" width="353" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="eWf-ss-mbd"/>
@@ -357,7 +357,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKR-0q-yh1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKR-0q-yh1">
                                 <rect key="frame" x="20" y="423" width="353" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="MCj-Pf-N21"/>
@@ -389,6 +389,15 @@
                                     <segue destination="YDc-cX-3oX" kind="show" identifier="showEditProfileViewController" id="KPg-mi-ju6"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WHG-K9-fvY">
+                                <rect key="frame" x="20" y="683" width="353" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="QNc-mE-4dw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mUS-n7-XhL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -396,10 +405,12 @@
                             <constraint firstItem="4B9-I5-MxU" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" constant="20" id="4tJ-wJ-sgk"/>
                             <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="zEg-ON-Gt5" secondAttribute="trailing" constant="20" id="EsQ-bH-IXc"/>
                             <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="4B9-I5-MxU" secondAttribute="trailing" constant="20" id="GXl-nZ-MEX"/>
+                            <constraint firstItem="WHG-K9-fvY" firstAttribute="top" secondItem="rG9-YH-ggV" secondAttribute="bottom" constant="20" id="Ir8-Hy-XfM"/>
                             <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="rG9-YH-ggV" secondAttribute="trailing" constant="20" id="Kph-pI-iap"/>
                             <constraint firstItem="CKR-0q-yh1" firstAttribute="top" secondItem="zEg-ON-Gt5" secondAttribute="bottom" constant="20" id="OC7-ul-XSw"/>
                             <constraint firstItem="rG9-YH-ggV" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" constant="20" id="OIn-sh-f43"/>
                             <constraint firstItem="3MF-qt-Frz" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" constant="20" id="Qgp-x6-3Dk"/>
+                            <constraint firstItem="WHG-K9-fvY" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" constant="20" id="SR1-Bm-2MS"/>
                             <constraint firstItem="zEg-ON-Gt5" firstAttribute="top" secondItem="4B9-I5-MxU" secondAttribute="bottom" constant="20" id="VrI-1b-Bif"/>
                             <constraint firstItem="4B9-I5-MxU" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" constant="20" id="YZH-Ws-aIK"/>
                             <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="3MF-qt-Frz" secondAttribute="trailing" constant="20" id="blR-yJ-xCY"/>
@@ -407,6 +418,7 @@
                             <constraint firstItem="rG9-YH-ggV" firstAttribute="top" secondItem="3MF-qt-Frz" secondAttribute="bottom" constant="20" id="gS1-SE-ost"/>
                             <constraint firstItem="4B9-I5-MxU" firstAttribute="top" secondItem="mUS-n7-XhL" secondAttribute="top" constant="20" id="iXM-vX-fdM"/>
                             <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="CKR-0q-yh1" secondAttribute="trailing" constant="20" id="lBb-R4-EwS"/>
+                            <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="WHG-K9-fvY" secondAttribute="trailing" constant="20" id="mVV-cO-27j"/>
                             <constraint firstItem="zEg-ON-Gt5" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" constant="20" id="mr7-1U-FJL"/>
                             <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="4B9-I5-MxU" secondAttribute="trailing" constant="20" id="okw-nL-Maz"/>
                             <constraint firstItem="CKR-0q-yh1" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" constant="20" id="rRq-GL-omq"/>
@@ -415,6 +427,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="qM6-KM-At1"/>
                     <connections>
+                        <outlet property="actualUserName" destination="WHG-K9-fvY" id="JZK-mO-wvS"/>
                         <outlet property="biographyTextField" destination="3MF-qt-Frz" id="ibS-VX-1X4"/>
                         <outlet property="nameLabel" destination="CKR-0q-yh1" id="gEj-ud-bX4"/>
                         <outlet property="profileImageView" destination="4B9-I5-MxU" id="wq3-p8-xcM"/>
@@ -590,7 +603,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

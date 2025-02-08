@@ -5,8 +5,6 @@
 //  Created by David Vasquez on 1/12/25.
 //
 
-
-
 import UIKit
 
 
@@ -26,26 +24,28 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var userBiographyTextArea: UITextView!
     
     //Incoming Data
-    var inputUserName: String!
-    var inputFullName: String!
+    var inputFirstName: String! //First Name
+    var inputLastName: String! //Last Name
     var inputBiography: String!
     var inputProfileImage: UIImage?
    
     // Delegate property
     weak var delegate: EditProfileViewControllerDelegate?
     
+    var selectedProfileImage: UIImage?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let userName: String = inputUserName ?? ""
-        let fullName : String = inputFullName ?? ""
+        let firstName: String = inputFirstName ?? ""
+        let lastName : String = inputLastName ?? ""
         let biography : String = inputBiography ?? ""
         
         if let profileImage = inputProfileImage {
             userImageView.image = profileImage
         }
         
-        userNameField.text = userName
-        userFullNameField.text = fullName
+        userNameField.text = firstName
+        userFullNameField.text = lastName
         userBiographyTextArea.text = biography
         
     }
@@ -58,13 +58,57 @@ class EditProfileViewController: UIViewController {
         present(vc, animated: true)
     }
     
+    
+    @IBAction func saveButtonTapped(_ sender: UIButton) {
+        let currentUser = userDefaultManager.getLoggedInUser()
+        let updatedFirstName = userNameField.text ?? ""
+        let updatedLastName = userFullNameField.text ?? ""
+        let updatedBiography = userBiographyTextArea.text ?? ""
+
+        // TYPE 1: Image Not Updated
+        Task {
+            do {
+                let updatedProfileResponse = try await profileAPI.updateUserProfileAPI(
+                    currentUser: currentUser,
+                    imageName: "currentUser",
+                    firstName: updatedFirstName,
+                    lastName: updatedLastName,
+                    biography: updatedBiography
+                )
+
+                print(updatedProfileResponse)
+                // Notify the delegate with the updated data
+                delegate?.didUpdateProfile(fullName: updatedFirstName, biography: updatedBiography)
+                
+                // Go back to ProfileViewController
+                navigationController?.popViewController(animated: true)
+            
+            } catch {
+                print("Failed to update profile: \(error)")
+            }
+        
+        }
+    }
+    
+    /*
+     {
+         "currentUser": "davey",
+         "imageName": "http://localhost:3003/images/background_2.png",
+         "firstName":"david vasquez",
+         "lastName": "v",
+         "biography": "biography"
+     }
+
+     */
+    
+    /*
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         let currentUser = userDefaultManager.getLoggedInUser()
 
-        // Get the updated values
         let updatedFullName = userFullNameField.text ?? ""
         let updatedBiography = userBiographyTextArea.text ?? ""
-
+        
+        //TYPE 1: Image Not Updated
         Task {
             do {
                 let updatedProfileResponse = try await profileAPI.updateUserProfileAPI(currentUser: currentUser, imageName: "currentUser", firstName: updatedFullName, lastName: updatedFullName, biography: updatedBiography)
@@ -80,7 +124,19 @@ class EditProfileViewController: UIViewController {
                 print("Failed to update profile: \(error)")
             }
         }
+        
+        //TYPE 2: Image was updated
+        
     }
+     */
+    
+    // New function to handle full profile update when image is changed
+    func fullProfileUpdate() {
+        print("Updating full profile with new image...")
+        // Mock function to handle full profile update
+        // You can replace this with the actual API call
+    }
+
 }
 
 
@@ -89,6 +145,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         if let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage {
             print("You picked an image! dude!")
             userImageView.image = selectedImage
+            selectedProfileImage = selectedImage
         }
         print("Here some info DUDE \(info)")
         picker.dismiss(animated: true)
@@ -100,4 +157,5 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         picker.dismiss(animated: true)
     }
 }
+
 
