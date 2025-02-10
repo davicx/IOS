@@ -96,6 +96,9 @@ class LoginAPI {
         do {
             let decoder = JSONDecoder ()
             let loginResponseModel = try decoder.decode(LoginResponseModel.self, from: data)
+            print("loginResponseModel")
+            print(loginResponseModel)
+            print("loginResponseModel")
             
             return loginResponseModel
             
