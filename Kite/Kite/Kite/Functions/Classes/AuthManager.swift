@@ -33,7 +33,10 @@ class AuthManager {
         // STEP 2: Call Logout API
         Task {
             do {
-                let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser)
+                let deviceID = getDeviceId()
+                print("Device ID:", deviceID)
+
+                let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser, deviceID: deviceID)
                 
                 print(logoutResponseModel)
                 

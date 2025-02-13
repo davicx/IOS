@@ -65,7 +65,7 @@ class LoginAPI {
     
     
     //func loginUser(username: String?, email: String?, password: String) -> LoginResponseModel {
-    func loginUser(username: String, password: String) async throws -> LoginResponseModel {
+    func loginUser(username: String, password: String, deviceID: String) async throws -> LoginResponseModel {
         
         let endpoint = "http://localhost:3003/user/login"
         
@@ -75,7 +75,7 @@ class LoginAPI {
         
         var request = URLRequest(url: url)
         
-        let parameters = ["userName": username, "password": password] as [String : Any]
+        let parameters = ["userName": username, "password": password, "device_id": deviceID] as [String : Any]
         
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -111,7 +111,7 @@ class LoginAPI {
     }
     
     //func loginUser(username: String?, email: String?, password: String) -> LoginResponseModel {
-    func logoutUser(username: String) async throws -> LogoutResponseModel {
+    func logoutUser(username: String, deviceID: String) async throws -> LogoutResponseModel {
         
         let endpoint = "http://localhost:3003/user/logout"
         
@@ -121,7 +121,7 @@ class LoginAPI {
         
         var request = URLRequest(url: url)
         
-        let parameters = ["userName": username] as [String : Any]
+        let parameters = ["userName": username, "device_id": deviceID] as [String : Any]
         
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
