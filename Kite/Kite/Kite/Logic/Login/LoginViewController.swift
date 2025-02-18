@@ -19,11 +19,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButtonStyle: UIButton!
     @IBOutlet weak var loginMessageLabel: UILabel!
     
-    
     var activityIndicator = UIActivityIndicatorView()
     var errrorMessage = ""
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,7 +62,9 @@ class LoginViewController: UIViewController {
         //STEP 3: Login User
         if(validUsername == true && validPassword == true) {
             
-            let deviceID = getDeviceId()
+            //let deviceID = getDeviceId()
+            let deviceID = KeychainHelper.shared.getOrCreateDeviceId()
+
             print("Device ID:", deviceID)
 
             Task{
@@ -120,7 +120,6 @@ class LoginViewController: UIViewController {
             loginMessageLabel.alpha = 1
             loginMessageLabel.text = errrorMessage
         
-            
         }
     
     }

@@ -33,7 +33,8 @@ class AuthManager {
         // STEP 2: Call Logout API
         Task {
             do {
-                let deviceID = getDeviceId()
+                //let deviceID = getDeviceId()
+                let deviceID = KeychainHelper.shared.getOrCreateDeviceId()
                 print("Device ID:", deviceID)
 
                 let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser, deviceID: deviceID)
