@@ -15,7 +15,16 @@ func delay(durationInSeconds seconds: Double, completion: @escaping () -> Void) 
     
 }
 
+func printHeader(headerMessage: String) {
+    print("______________________________")
+    print(headerMessage)
+}
 
+func printFooter() {
+    print("______________________________")
+    print("______________________________")
+    print(" ")
+}
 
 //Image Functions
 func getImageHeight(currentImage: UIImage) -> Float {

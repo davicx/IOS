@@ -13,22 +13,15 @@ class LoginViewController: UIViewController {
     let userDefaultManager = UserDefaultManager()
     let loginAPI = LoginAPI()
     
-    
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    
     @IBOutlet weak var loginButtonStyle: UIButton!
-    
     @IBOutlet weak var loginMessageLabel: UILabel!
-    
-    
-    
     
     var activityIndicator = UIActivityIndicatorView()
     var errrorMessage = ""
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,13 +61,18 @@ class LoginViewController: UIViewController {
         
         //STEP 3: Login User
         if(validUsername == true && validPassword == true) {
+            
+            //let deviceID = getDeviceId()
+            let deviceID = KeychainHelper.shared.getOrCreateDeviceId()
+
+            print("Device ID:", deviceID)
 
             Task{
                 do{
                     //Get Posts from the API
                     activityIndicator.startAnimating()
                     view.isUserInteractionEnabled = false
-                    let loginResponseModel = try await loginAPI.loginUser(username: logInUser, password: logInPassword)
+                    let loginResponseModel = try await loginAPI.loginUser(username: logInUser, password: logInPassword, deviceID: deviceID)
                     
                     activityIndicator.stopAnimating()
                     self.view.isUserInteractionEnabled = true
@@ -122,7 +120,6 @@ class LoginViewController: UIViewController {
             loginMessageLabel.alpha = 1
             loginMessageLabel.text = errrorMessage
         
-            
         }
     
     }
@@ -138,10 +135,11 @@ class LoginViewController: UIViewController {
         print("User is Logged in \(loginStatus)")
     }
     
-    func loginUser(username: String, password: String) async throws -> String {
+    func loginUser(username: String, password: String, deviceID: String) async throws -> String {
         var outcome = ""
         do {
-            let loginResponseModel = try await loginAPI.loginUser(username: username, password: password)
+            
+            let loginResponseModel = try await loginAPI.loginUser(username: username, password: password, deviceID: deviceID)
             if loginResponseModel.data.loginSuccess {
                 let loginOutcome = userDefaultManager.logUserIn(userName: username)
                 if loginOutcome {

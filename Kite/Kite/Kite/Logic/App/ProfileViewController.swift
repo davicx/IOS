@@ -16,26 +16,37 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var biographyTextField: UITextView!
+    @IBOutlet weak var firstNameLabek: UILabel!
+    @IBOutlet weak var lastNameLabel: UILabel!
+    @IBOutlet weak var biographyLabel: UILabel!
     
+
     var userResponseModel: UserProfileResponseModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let currentUser = userDefaultManager.getLoggedInUser()
  
+        let deviceId = getDeviceId()
+        print("Device ID:", deviceId)
+        
         Task{
             do{
                 let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
                 self.userResponseModel = userResponseModel
-                userNameLabel.text = userResponseModel.data.userName
-                nameLabel.text = userResponseModel.data.firstName
-                biographyTextField.text = userResponseModel.data.biography
+                
+                if(userResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
+                userNameLabel.text = "USERNAME: \(userResponseModel.data.userName)"
+                firstNameLabek.text = userResponseModel.data.firstName
+                lastNameLabel.text = userResponseModel.data.lastName
+                biographyLabel.text = userResponseModel.data.biography
                 //print("Image URL \(userResponseModel.data.userImage)")
-                print(userResponseModel)
+                //print(userResponseModel)
                 //print("SUCCESS: Got the User Profile")
-            
+                
                 if let image = await fetchImage(from: userResponseModel.data.userImage) {
                     profileImageView.image = image
                     //print("Loaded image")
@@ -44,9 +55,11 @@ class ProfileViewController: UIViewController {
                     //print("Failed to load image")
                 }
                 
+           
             } catch{
-                print("ProfileViewController profileAPI.getUserProfileAPI yo man error!")
+                print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
                 print(error)
+                //AuthManager.shared.logoutCurrentUser()
             }
         }
     }
@@ -59,8 +72,8 @@ class ProfileViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showEditProfileViewController" {
             let editProfileViewController = segue.destination as! EditProfileViewController
-            editProfileViewController.inputUserName = userResponseModel?.data.userName ?? "Error getting User Name"
-            editProfileViewController.inputFullName = userResponseModel?.data.firstName ?? "Error getting Full Name"
+            editProfileViewController.inputFirstName = userResponseModel?.data.firstName ?? "Error getting User Name"
+            editProfileViewController.inputLastName = userResponseModel?.data.lastName ?? "Error getting Full Name"
             editProfileViewController.inputBiography = userResponseModel?.data.biography ?? "Error getting Biography"
 
             if let profileImage = profileImageView.image {
@@ -74,18 +87,33 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: EditProfileViewControllerDelegate {
-    func didUpdateProfile(fullName: String, biography: String) {
-        // Update the UI with the new data
-        nameLabel.text = fullName
-        biographyTextField.text = biography
+    func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {
+        // Update UI with the new data
+        firstNameLabek.text = firstName
+        lastNameLabel.text = lastName
+        biographyLabel.text = biography
 
-        // Optionally, you can save the updated profile to the server or local storage
-        print("Profile updated: \(fullName), \(biography)")
+        // Check if an updated image was provided
+        if let newImage = updatedImage {
+            print("Updating profile image in ProfileViewController")
+            profileImageView.image = newImage
+        }
+
+        print("Profile updated: \(firstName), \(lastName), \(biography)")
     }
 }
 
 
 /*
- let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
- print(newAccessTokenModel)
- */
+extension ProfileViewController: EditProfileViewControllerDelegate {
+    func didUpdateProfile(firstName: String, lastName: String, biography: String) {
+        // Update the UI with the new data
+        firstNameLabek.text = firstName
+        lastNameLabel.text = lastName
+        biographyLabel.text = biography
+
+        // Optionally, you can save the updated profile to the server or local storage
+        print("Profile updated: \(firstName), \(lastName) \(biography)")
+    }
+}
+*/

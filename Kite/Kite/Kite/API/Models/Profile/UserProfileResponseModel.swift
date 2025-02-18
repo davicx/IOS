@@ -17,9 +17,9 @@ struct UserProfileResponseModel: Codable {
     
     init() {
         self.data = UserProfileModel()
-        self.message = ""
+        self.message = "Log user out"
         self.success = false
-        self.statusCode = 500
+        self.statusCode = 401
         self.errors = []
         self.currentUser = ""
     }

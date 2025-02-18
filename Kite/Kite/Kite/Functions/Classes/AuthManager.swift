@@ -19,7 +19,6 @@ class AuthManager {
 
     func logoutCurrentUser() {
         
-        /*
         let loggedInUser = userDefaultManager.getLoggedInUser()
         
         // STEP 1: Set User Defaults
@@ -34,7 +33,11 @@ class AuthManager {
         // STEP 2: Call Logout API
         Task {
             do {
-                let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser)
+                //let deviceID = getDeviceId()
+                let deviceID = KeychainHelper.shared.getOrCreateDeviceId()
+                print("Device ID:", deviceID)
+
+                let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser, deviceID: deviceID)
                 
                 print(logoutResponseModel)
                 
@@ -52,7 +55,7 @@ class AuthManager {
         
         // STEP 3: Navigate to Login Screen
         PresenterManager.shared.showOnboarding()
-         */
+         
         print("AUTH MANAGER: Logout User")
     }
 }
