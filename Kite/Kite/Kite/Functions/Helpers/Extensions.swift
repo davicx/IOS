@@ -79,3 +79,21 @@ extension UIColor {
 }
 
 
+
+//PHOTOS
+extension UIImage {
+    func croppedToSquare() -> UIImage? {
+        let originalWidth  = size.width
+        let originalHeight = size.height
+        let squareSize = min(originalWidth, originalHeight)
+        
+        let xOffset = (originalWidth - squareSize) / 2
+        let yOffset = (originalHeight - squareSize) / 2
+        let cropRect = CGRect(x: xOffset, y: yOffset, width: squareSize, height: squareSize)
+
+        if let cgImage = self.cgImage?.cropping(to: cropRect) {
+            return UIImage(cgImage: cgImage)
+        }
+        return nil
+    }
+}

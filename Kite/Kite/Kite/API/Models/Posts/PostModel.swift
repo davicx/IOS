@@ -19,7 +19,10 @@ struct PostModel: Codable {
     let fileName: String
     let fileNameServer: String
     let fileURL: String
+    
+    let cloudBucket: String
     let cloudKey: String
+    
     let videoURL: String
     let videoCode: String
     let postDate: String
@@ -32,4 +35,22 @@ struct PostModel: Codable {
     
 }
 
+/*
+ "data": [
+     {
+
+         "cloudKey": "no_cloud_key",
+         "videoURL": "empty",
+         "videoCode": "empty",
+         "postDate": "02/25/2025",
+         "postTime": "3:030 pm",
+         "timeMessage": "3 days ago",
+         "created": "2025-02-25T23:30:03.000Z",
+         "commentsArray": [],
+         "postLikesArray": [],
+         "simpleLikesArray": []
+     },
+   
+ ],
+ */
 

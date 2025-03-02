@@ -21,6 +21,7 @@ struct Constants {
         static let showRegistrationScreen = "showRegistrationPage"
         static let showMainTabBarController = "showMainTabBarController"
         static let showEditProfileViewController = "showEditProfileViewController"
+        static let showIndividualPost = "showIndividualPost"
         
         //static let showOnboardingScreen = "showOnboarding"
         //static let showRegister = "showRegister"

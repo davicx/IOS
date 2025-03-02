@@ -121,7 +121,6 @@ class EditProfileViewController: UIViewController {
     }
 
   
-    
     // New function to handle full profile update when image is changed
     func fullProfileUpdate() {
         print("Updating full profile with new image...")

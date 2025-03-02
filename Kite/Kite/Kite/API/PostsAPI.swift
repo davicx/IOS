@@ -107,11 +107,12 @@ class PostsAPI {
         let masterSite = "kite"
         let notificationMessage = "Posted a Photo"
         let notificationType = "new_post_photo"
+        //http://localhost:3003/post/photo
         let notificationLink = "http://localhost:3003/posts/group/72"
         
             
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/photo/local"
+        let endpoint = "http://localhost:3003/post/photo"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -219,7 +220,7 @@ class PostsAPI {
     //FUNCTIONS B: All Functions Related to getting Posts
     //Function B1: Get all Group Posts
     func getPostsAPI() async throws -> PostResponseModel {
-        let endpoint = "http://localhost:3003/posts/group/72"
+        let endpoint = "http://localhost:3003/posts/group/564"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

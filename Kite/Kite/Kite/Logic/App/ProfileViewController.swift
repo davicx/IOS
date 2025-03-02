@@ -27,6 +27,8 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         let currentUser = userDefaultManager.getLoggedInUser()
  
+        setUpViews()
+        
         let deviceId = getDeviceId()
         print("Device ID:", deviceId)
         
@@ -46,7 +48,8 @@ class ProfileViewController: UIViewController {
                 //print("Image URL \(userResponseModel.data.userImage)")
                 //print(userResponseModel)
                 //print("SUCCESS: Got the User Profile")
-                
+           
+                /*
                 if let image = await fetchImage(from: userResponseModel.data.userImage) {
                     profileImageView.image = image
                     //print("Loaded image")
@@ -54,7 +57,31 @@ class ProfileViewController: UIViewController {
                     profileImageView.image = UIImage(named: "background_9")
                     //print("Failed to load image")
                 }
+                 */
+                if let image = await fetchImage(from: userResponseModel.data.userImage) {
+                    if let croppedImage = image.croppedToSquare() {
+                        profileImageView.image = croppedImage
+                    } else {
+                        profileImageView.image = image // Fallback to original if cropping fails
+                    }
+                } else {
+                    profileImageView.image = UIImage(named: "background_9")
+                }
+
                 
+                
+                /*
+                 //Original Uncroped Image
+                 if let originalImage = profileImageView.image,
+                           let croppedImage = originalImage.croppedToSquare() {
+                            profileImageView.image = croppedImage
+                        }
+                 
+                 //Use Image Fill
+                 profileImageView.contentMode = .scaleAspectFill
+                 profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+                 profileImageView.clipsToBounds = true
+                 */
            
             } catch{
                 print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
@@ -83,6 +110,12 @@ class ProfileViewController: UIViewController {
             // Set the delegate
             editProfileViewController.delegate = self
         }
+    }
+    
+    
+    func setUpViews() {
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
     }
 }
 
