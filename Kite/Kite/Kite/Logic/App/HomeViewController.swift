@@ -23,28 +23,25 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let groupID = 72
 
         Task{
 
             do{
-                //Get Posts from the API
-                let postsResponseModel = try await postsAPI.getPostsAPI()
+
+                let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
                 //print(postsResponseModel)
                 
                 //Add Post Images from S3
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
    
-                
                 for post in postsArray {
                     //print("POST: \(post.postCaption) \(post.fileUrl)")
                 }
                 
-                //self.postTableView.reloadData()
-                //let postCaption : String = postsArray[0].postCaption ?? ""
                 postsTableView.reloadData()
-                //print(postCaption)
-                
+
             } catch{
                 print("yo man error!")
                 print(error)
@@ -100,7 +97,3 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 
-
-//Temp.styleTextField(userNameTextField)
-//Buttons.styleLoginFilledButton(sayHiButtonStyle)
-//sayHiButtonStyle.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)

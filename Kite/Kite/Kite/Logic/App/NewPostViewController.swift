@@ -40,8 +40,8 @@ class NewPostViewController: UIViewController {
     
     @IBAction func NewPostButton(_ sender: UIButton) {
         print("New Post!!")
-        let groupID = 564
-        let postTo = "564"
+        let groupID = 72
+        let postTo = "72"
         
         guard let postImage = selectedImage, let postCaption = newPostCaption.text, !postCaption.isEmpty else {
             print("Image and caption are required")

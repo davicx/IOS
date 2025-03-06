@@ -219,8 +219,10 @@ class PostsAPI {
     
     //FUNCTIONS B: All Functions Related to getting Posts
     //Function B1: Get all Group Posts
-    func getPostsAPI() async throws -> PostResponseModel {
-        let endpoint = "http://localhost:3003/posts/group/564"
+    //func getPostsAPI() async throws -> PostResponseModel {
+    func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
+        //let endpoint = "http://localhost:3003/posts/group/72"
+        let endpoint = "http://localhost:3003/posts/group/\(groupID)"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -247,6 +249,37 @@ class PostsAPI {
             
         }
     }
+    
+    //CHAT
+    /*
+     func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
+         let endpoint = "http://localhost:3003/posts/group/\(groupID)"
+         
+         guard let url = URL(string: endpoint) else {
+             throw networkError.invalidURL
+         }
+         
+         let apiURL = URLRequest(url: url)
+         
+         let (data, response) = try await URLSession.shared.data(for: apiURL)
+                
+         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+             throw networkError.invalidResponse
+         }
+         
+         do {
+             let decoder = JSONDecoder()
+             let postResponseModel = try decoder.decode(PostResponseModel.self, from: data)
+
+             return postResponseModel
+             
+         } catch {
+             print("Error decoding data:", error)
+             throw error
+         }
+     }
+
+     */
     
     //Function B2: Get all User Posts
     //Function B3: Get Single Post by ID
