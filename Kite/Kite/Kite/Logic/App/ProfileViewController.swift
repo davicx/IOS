@@ -14,8 +14,14 @@ class ProfileViewController: UIViewController {
     let loginAPI = LoginAPI()
     let userDefaultManager = UserDefaultManager()
     
+    //MAIN VIEWS
+    @IBOutlet weak var userFollowerView: UIView!
+    
+    
+    //LABELS
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
+    
     @IBOutlet weak var firstNameLabek: UILabel!
     @IBOutlet weak var lastNameLabel: UILabel!
     @IBOutlet weak var biographyLabel: UILabel!
@@ -29,6 +35,18 @@ class ProfileViewController: UIViewController {
  
         setUpViews()
         
+        //
+        let userFollowerView = UserFollowersView()
+        userFollowerView.translatesAutoresizingMaskIntoConstraints = false
+        self.userFollowerView.addSubview(userFollowerView)
+
+        NSLayoutConstraint.activate([
+            userFollowerView.topAnchor.constraint(equalTo: self.userFollowerView.topAnchor),
+            userFollowerView.leadingAnchor.constraint(equalTo: self.userFollowerView.leadingAnchor),
+            userFollowerView.trailingAnchor.constraint(equalTo: self.userFollowerView.trailingAnchor),
+            userFollowerView.bottomAnchor.constraint(equalTo: self.userFollowerView.bottomAnchor)
+        ])
+        //
         let deviceId = getDeviceId()
         print("Device ID:", deviceId)
         
@@ -41,7 +59,7 @@ class ProfileViewController: UIViewController {
                     AuthManager.shared.logoutCurrentUser()
                 }
                 
-                userNameLabel.text = "USERNAME: \(userResponseModel.data.userName)"
+                userNameLabel.text = "@\(userResponseModel.data.userName)"
                 firstNameLabek.text = userResponseModel.data.firstName
                 lastNameLabel.text = userResponseModel.data.lastName
                 biographyLabel.text = userResponseModel.data.biography
