@@ -17,16 +17,14 @@ class ProfileViewController: UIViewController {
     //MAIN VIEWS
     @IBOutlet weak var userFollowerView: UIView!
     
-    
     //LABELS
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     
-    @IBOutlet weak var firstNameLabek: UILabel!
+    @IBOutlet weak var firstNameLabel: UILabel!
     @IBOutlet weak var lastNameLabel: UILabel!
     @IBOutlet weak var biographyLabel: UILabel!
     
-
     var userResponseModel: UserProfileResponseModel?
     
     override func viewDidLoad() {
@@ -35,7 +33,7 @@ class ProfileViewController: UIViewController {
  
         setUpViews()
         
-        //
+
         let userFollowerView = UserFollowersView()
         userFollowerView.translatesAutoresizingMaskIntoConstraints = false
         self.userFollowerView.addSubview(userFollowerView)
@@ -46,7 +44,7 @@ class ProfileViewController: UIViewController {
             userFollowerView.trailingAnchor.constraint(equalTo: self.userFollowerView.trailingAnchor),
             userFollowerView.bottomAnchor.constraint(equalTo: self.userFollowerView.bottomAnchor)
         ])
-        //
+        
         let deviceId = getDeviceId()
         print("Device ID:", deviceId)
         
@@ -59,23 +57,9 @@ class ProfileViewController: UIViewController {
                     AuthManager.shared.logoutCurrentUser()
                 }
                 
+                //Update Data from API
                 userNameLabel.text = "@\(userResponseModel.data.userName)"
-                firstNameLabek.text = userResponseModel.data.firstName
-                lastNameLabel.text = userResponseModel.data.lastName
-                biographyLabel.text = userResponseModel.data.biography
-                //print("Image URL \(userResponseModel.data.userImage)")
-                //print(userResponseModel)
-                //print("SUCCESS: Got the User Profile")
-           
-                /*
-                if let image = await fetchImage(from: userResponseModel.data.userImage) {
-                    profileImageView.image = image
-                    //print("Loaded image")
-                } else {
-                    profileImageView.image = UIImage(named: "background_9")
-                    //print("Failed to load image")
-                }
-                 */
+
                 if let image = await fetchImage(from: userResponseModel.data.userImage) {
                     if let croppedImage = image.croppedToSquare() {
                         profileImageView.image = croppedImage
@@ -86,21 +70,6 @@ class ProfileViewController: UIViewController {
                     profileImageView.image = UIImage(named: "background_9")
                 }
 
-                
-                
-                /*
-                 //Original Uncroped Image
-                 if let originalImage = profileImageView.image,
-                           let croppedImage = originalImage.croppedToSquare() {
-                            profileImageView.image = croppedImage
-                        }
-                 
-                 //Use Image Fill
-                 profileImageView.contentMode = .scaleAspectFill
-                 profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
-                 profileImageView.clipsToBounds = true
-                 */
-           
             } catch{
                 print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
                 print(error)
@@ -140,7 +109,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: EditProfileViewControllerDelegate {
     func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {
         // Update UI with the new data
-        firstNameLabek.text = firstName
+        firstNameLabel.text = firstName
         lastNameLabel.text = lastName
         biographyLabel.text = biography
 
@@ -155,6 +124,11 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
 }
 
 
+
+
+
+
+
 /*
 extension ProfileViewController: EditProfileViewControllerDelegate {
     func didUpdateProfile(firstName: String, lastName: String, biography: String) {
@@ -167,4 +141,37 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
         print("Profile updated: \(firstName), \(lastName) \(biography)")
     }
 }
+ 
+ //biographyLabel.text = userResponseModel.data.biography
+ //firstNameLabek.text = userResponseModel.data.firstName
+ //lastNameLabel.text = userResponseModel.data.lastName
 */
+
+
+/*
+ //Original Uncroped Image
+ if let originalImage = profileImageView.image,
+           let croppedImage = originalImage.croppedToSquare() {
+            profileImageView.image = croppedImage
+        }
+ 
+ //Use Image Fill
+ profileImageView.contentMode = .scaleAspectFill
+ profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+ profileImageView.clipsToBounds = true
+ */
+
+
+//print("Image URL \(userResponseModel.data.userImage)")
+//print(userResponseModel)
+//print("SUCCESS: Got the User Profile")
+
+/*
+if let image = await fetchImage(from: userResponseModel.data.userImage) {
+    profileImageView.image = image
+    //print("Loaded image")
+} else {
+    profileImageView.image = UIImage(named: "background_9")
+    //print("Failed to load image")
+}
+ */

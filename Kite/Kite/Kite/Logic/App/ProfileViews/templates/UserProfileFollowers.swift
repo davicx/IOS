@@ -75,13 +75,6 @@ class UserProfileFollowers: UIView {
     private func createRightView() -> UIView {
         let rightView = createContainerView(topColor: .white, bottomColor: .blue)
 
-        /*
-        if let topContainer = rightView.subviews.first,
-           let bottomContainer = rightView.subviews.last {
-            setupTopLabel(in: topContainer, text: "12", leftOffset: 2)
-            setupBottomLabel(in: bottomContainer, text: "Friends", leftOffset: 2)
-        }
-         */
         if let topContainer = rightView.subviews.first {
             setupTopLabel(in: topContainer, text: "12", leftOffset: 2)
         }
@@ -397,6 +390,13 @@ class UserProfileFollowers: UIView {
 }
  */
 
+/*
+if let topContainer = rightView.subviews.first,
+   let bottomContainer = rightView.subviews.last {
+    setupTopLabel(in: topContainer, text: "12", leftOffset: 2)
+    setupBottomLabel(in: bottomContainer, text: "Friends", leftOffset: 2)
+}
+ */
 
 //WORKS: text not centered
 /*

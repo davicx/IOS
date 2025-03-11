@@ -7,6 +7,54 @@
 
 import UIKit
 
+
+class GroupsViewController: UIViewController {
+    
+    private let userProfileLayout = UserProfileLayoutExample()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        userProfileLayout.setup(in: view)
+    }
+}
+
+
+//WORKS
+/*
+class GroupsViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+    }
+    
+    private func setupViews() {
+        let topView = SimpleTopView()
+        let bottomStackView = SimpleBottomStackView()
+        
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(topView)
+        view.addSubview(bottomStackView)
+        
+        NSLayoutConstraint.activate([
+            topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topView.heightAnchor.constraint(equalToConstant: 220),
+            
+            bottomStackView.topAnchor.constraint(equalTo: topView.bottomAnchor),
+            bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomStackView.heightAnchor.constraint(equalToConstant: 220)
+        ])
+    }
+}
+*/
+
+
+//WORKS
+/*
 class GroupsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +74,9 @@ class GroupsViewController: UIViewController {
         ])
     }
     
-
-
 }
+*/
+
 
 /*
  // Set constraints for custom view
