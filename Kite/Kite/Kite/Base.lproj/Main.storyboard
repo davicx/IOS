@@ -405,91 +405,11 @@
                                     <segue destination="YDc-cX-3oX" kind="show" identifier="showEditProfileViewController" id="KPg-mi-ju6"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dDv-3x-gPD">
-                                <rect key="frame" x="0.0" y="103" width="393" height="120"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4B9-I5-MxU">
-                                        <rect key="frame" x="146.66666666666666" y="10" width="100" height="100"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="100" id="2XQ-5O-7lT"/>
-                                            <constraint firstAttribute="width" constant="100" id="A74-J7-N7i"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemPinkColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="6LM-Ge-LkI"/>
-                                    <constraint firstItem="4B9-I5-MxU" firstAttribute="centerY" secondItem="dDv-3x-gPD" secondAttribute="centerY" id="F4W-SR-xim"/>
-                                    <constraint firstItem="4B9-I5-MxU" firstAttribute="centerX" secondItem="dDv-3x-gPD" secondAttribute="centerX" id="Yxy-TY-7GA"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="47f-Hm-SCP">
-                                <rect key="frame" x="0.0" y="223" width="393" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RC-SP-TyZ">
-                                        <rect key="frame" x="20" y="4" width="353" height="22"/>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                        <color key="textColor" red="0.086274509803921567" green="0.090196078431372548" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBlueColor"/>
-                                <constraints>
-                                    <constraint firstItem="9RC-SP-TyZ" firstAttribute="leading" secondItem="47f-Hm-SCP" secondAttribute="leading" constant="20" id="cyM-xc-LBa"/>
-                                    <constraint firstAttribute="bottom" secondItem="9RC-SP-TyZ" secondAttribute="bottom" constant="4" id="fdl-tx-9ud"/>
-                                    <constraint firstAttribute="trailing" secondItem="9RC-SP-TyZ" secondAttribute="trailing" constant="20" id="lR6-UL-U3i"/>
-                                    <constraint firstItem="9RC-SP-TyZ" firstAttribute="top" secondItem="47f-Hm-SCP" secondAttribute="top" constant="4" id="st7-k4-rTq"/>
-                                    <constraint firstAttribute="height" constant="30" id="yYH-qe-nA9"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OHy-JF-tqo">
-                                <rect key="frame" x="0.0" y="253" width="393" height="48"/>
-                                <color key="backgroundColor" systemColor="systemGreenColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="OtP-x2-Dp5"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yrp-dt-9Bu">
-                                <rect key="frame" x="0.0" y="301" width="393" height="60"/>
-                                <color key="backgroundColor" systemColor="systemBlueColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="zIH-oz-btf"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rEX-g8-1Ei">
-                                <rect key="frame" x="0.0" y="361" width="393" height="30"/>
-                                <color key="backgroundColor" systemColor="systemPurpleColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="wI9-5U-pzM"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mUS-n7-XhL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="rEX-g8-1Ei" secondAttribute="trailing" id="0gh-Xr-CEP"/>
-                            <constraint firstItem="rEX-g8-1Ei" firstAttribute="top" secondItem="yrp-dt-9Bu" secondAttribute="bottom" id="162-Xn-ryM"/>
-                            <constraint firstItem="47f-Hm-SCP" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" id="2jV-sG-fpz"/>
-                            <constraint firstItem="rEX-g8-1Ei" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" id="56M-Gt-cYS"/>
-                            <constraint firstItem="47f-Hm-SCP" firstAttribute="top" secondItem="dDv-3x-gPD" secondAttribute="bottom" id="Afg-kk-kHW"/>
-                            <constraint firstItem="OHy-JF-tqo" firstAttribute="top" secondItem="47f-Hm-SCP" secondAttribute="bottom" id="FCg-BF-IXR"/>
-                            <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="yrp-dt-9Bu" secondAttribute="trailing" id="FEA-Dk-CMj"/>
-                            <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="47f-Hm-SCP" secondAttribute="trailing" id="SYl-5A-mos"/>
-                            <constraint firstItem="yrp-dt-9Bu" firstAttribute="top" secondItem="OHy-JF-tqo" secondAttribute="bottom" id="YC5-0Y-Fm7"/>
-                            <constraint firstItem="dDv-3x-gPD" firstAttribute="top" secondItem="mUS-n7-XhL" secondAttribute="top" id="YI3-jE-sIb"/>
-                            <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="OHy-JF-tqo" secondAttribute="trailing" id="a6N-iv-xCl"/>
-                            <constraint firstItem="yrp-dt-9Bu" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" id="cNl-EZ-ePZ"/>
-                            <constraint firstItem="dDv-3x-gPD" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" id="sNw-FG-h9Y"/>
-                            <constraint firstItem="mUS-n7-XhL" firstAttribute="trailing" secondItem="dDv-3x-gPD" secondAttribute="trailing" id="uuz-Ke-F8z"/>
-                            <constraint firstItem="OHy-JF-tqo" firstAttribute="leading" secondItem="mUS-n7-XhL" secondAttribute="leading" id="vRq-1C-Ks8"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qM6-KM-At1"/>
-                    <connections>
-                        <outlet property="profileImageView" destination="4B9-I5-MxU" id="wq3-p8-xcM"/>
-                        <outlet property="userFollowerView" destination="OHy-JF-tqo" id="BZo-wm-r4B"/>
-                        <outlet property="userNameLabel" destination="9RC-SP-TyZ" id="NIC-L2-XCa"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v6R-Ed-7mn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -678,17 +598,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPurpleColor">
-            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
