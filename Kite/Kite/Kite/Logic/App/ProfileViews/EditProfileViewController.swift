@@ -60,7 +60,6 @@ class EditProfileViewController: UIViewController {
     }
     
     
-    
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         let currentUser = userDefaultManager.getLoggedInUser()
         let updatedFirstName = userNameField.text ?? ""
@@ -121,7 +120,6 @@ class EditProfileViewController: UIViewController {
     }
 
   
-    
     // New function to handle full profile update when image is changed
     func fullProfileUpdate() {
         print("Updating full profile with new image...")

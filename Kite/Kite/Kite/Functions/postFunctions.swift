@@ -12,7 +12,7 @@ let networker = PostsAPI()
 var tempURL = Constants.VariableConstants.tempURL
 
 
-//Function A1: Create Posts from API
+//Function A1: Create Posts from API this converts the Post Reponse into an array of Posts
 func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Post]{
     let postsTemp = postsResponseModel.data
     var postsArray = [Post]()
@@ -33,6 +33,7 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.fileNameServer = post.fileURL
         currentPost.fileUrl = post.fileURL
         
+        currentPost.cloudBucket = post.cloudBucket
         currentPost.cloudKey = post.cloudKey
         currentPost.videoURL = post.videoURL
         currentPost.videoCode = post.videoCode
@@ -46,14 +47,11 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.commentsArray = post.commentsArray
         currentPost.postLikesArray = post.postLikesArray
         currentPost.simpleLikesArray = post.simpleLikesArray
-        
 
         //STEP 3: Append to Array
         postsArray.append(currentPost)
 
     }
-    
-
     
     return postsArray
 }

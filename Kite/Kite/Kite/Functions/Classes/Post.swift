@@ -20,6 +20,7 @@ class Post {
     var fileName: String?
     var fileNameServer: String?
     var fileUrl: String?
+    var cloudBucket: String?
     var cloudKey: String?
     var videoURL: String?
     var videoCode: String?

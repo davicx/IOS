@@ -5,122 +5,195 @@
 //  Created by David Vasquez on 12/15/24.
 //
 
+
 import UIKit
+
 
 class HomeViewController: UIViewController {
     let loginAPI = LoginAPI()
     let postsAPI = PostsAPI()
     let userDefaultManager = UserDefaultManager()
+
+    var postsArrayNoImage = [Post]()
+    var postsArray = [Post]()
     
-    @IBOutlet weak var sayHiButtonStyle: UIButton!
+    @IBOutlet weak var postsTableView: UITableView!
+    
+    // Timer for polling
+    var pollingTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Temp.styleTextField(userNameTextField)
-        Buttons.styleLoginFilledButton(sayHiButtonStyle)
-        sayHiButtonStyle.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        let groupID = 72
 
+        // Initial data fetch
+        fetchPosts()
+
+        // Start polling for updates every 10 seconds
+        startPolling()
+
+        setupTableView()
     }
 
-    @IBAction func sayHiButton(_ sender: UIButton) {
-        print("hi!")
-    }
-    
-    @IBAction func getLoginStatusTemp(_ sender: UIButton) {
-        let loginStatus = userDefaultManager.getLoggedInUserStatus()
-        print("User is Logged in \(loginStatus)")
-    }
-    
-    
-    @IBAction func logoutButton(_ sender: UIButton) {
-        let loggedInUser = userDefaultManager.getLoggedInUser()
-        AuthManager.shared.logoutCurrentUser()
-     
-    }
-    
-}
+    // Function to fetch posts from API
+    func fetchPosts() {
+        Task {
+            do {
+                let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
 
+                // Process posts and add images from S3
+                postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
+                postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
 
-//Get Posts
-/*
-Task{
-    do{
-        //Get Posts from the API
-        let postResponseModel = try await postsAPI.getPostsAPI()
-        print(postResponseModel.data[0].postCaption)
-        
-        
-    } catch{
-        print("yo man error!")
-        print(error)
-    }
-}
- */
-
-/*
- Task{
-     do{
-         //Get Posts from the API
-         let loginResponseModel = try await loginAPI.loginUser(username: "davey", password: "password")
-        
-         //API
-         if(loginResponseModel.data.loginSuccess == true) {
-             
-             //Local Storage
-             let loginOutcome = userDefaultManager.logUserIn(userName: loggedInUser)
-             
-             if(loginOutcome) {
-                 print("You just logged \(loggedInUser) in")
-                 print("API \(loginResponseModel.data.loggedInUser) \(loginResponseModel.data.loginSuccess)")
-                 
-             } else {
-                 print("Was an error logging in!")
-             }
-             
-             
-         } else {
-             print("API Was an error logging in!")
-         }
-         
-     } catch{
-         print("yo man error!")
-         print(error)
-     }
- }
-
- 
- */
-
-/*
-//STEP 1: Set User Defaults
-let loginOutcome = userDefaultManager.logUserOut()
-
-if(loginOutcome) {
-    print("You just logged out")
-} else {
-    print("Was an error logging out!")
-}
-
-//STEP 2: Call Logout API
-Task{
-    do{
-        let logoutResponseModel = try await loginAPI.logoutUser(username: loggedInUser)
-        
-        print(logoutResponseModel)
-       
-        if(logoutResponseModel.success == true) {
-            print("API Logout worked!")
-   
-        } else {
-            print("API Was an error logging out!")
+                // Reload table view with new posts
+                postsTableView.reloadData()
+            } catch {
+                print("Error fetching posts: \(error)")
+            }
         }
-        
-    } catch{
-        print("yo man error!")
-        print(error)
+    }
+
+    // Function to start polling
+    func startPolling() {
+        pollingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.fetchPosts()  // Fetch new posts every 10 seconds
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pollingTimer?.invalidate()  // Stop polling when the view disappears
+    }
+
+    // TABLEVIEW
+    func setupTableView() {
+        postsTableView.delegate = self
+        postsTableView.dataSource = self
+        postsTableView.estimatedRowHeight = 250
+        postsTableView.rowHeight = UITableView.automaticDimension
+        postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+    }
+    
+    // DATA SEND: Send Data to New Cell
+    var currentPost: Post!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Segue.showIndividualPost,
+           let destinationVC = segue.destination as? PostViewController,
+           let postToSend = sender as? Post {
+            destinationVC.currentPost = postToSend
+        }
     }
 }
 
-//STEP 3: Navigate to Login Screen
-PresenterManager.shared.showOnboarding()
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return postsArray.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let post = postsArray[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell") as! IndividualPostCell
+        cell.setPost(post: post)
+
+        return cell
+    }
+
+    // DATA SEND: Send Data to New Cell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = postsArray[indexPath.row]
+        performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
+    }
+}
+
+/*
+
+class HomeViewController: UIViewController {
+    let loginAPI = LoginAPI()
+    let postsAPI = PostsAPI()
+    let userDefaultManager = UserDefaultManager()
+
+    var postsArrayNoImage = [Post]()
+    var postsArray = [Post]()
+
+    
+    @IBOutlet weak var postsTableView: UITableView!
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let groupID = 72
+
+        Task{
+
+            do{
+
+                let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
+                //print(postsResponseModel)
+                
+                //Add Post Images from S3
+                postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
+                postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
+   
+                for post in postsArray {
+                    //print("POST: \(post.postCaption) \(post.fileUrl)")
+                }
+                
+                postsTableView.reloadData()
+
+            } catch{
+                print("yo man error!")
+                print(error)
+            }
+        }
+
+        setupTableView()
+        
+    }
+
+    //TABLEVIEW
+    func setupTableView() {
+        postsTableView.delegate = self
+        postsTableView.dataSource = self
+        postsTableView.estimatedRowHeight = 250
+        postsTableView.rowHeight = UITableView.automaticDimension
+        postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+    }
+    
+    //DATA SEND: Send Data to New Cell
+    var currentPost:Post!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Segue.showIndividualPost,
+           let destinationVC = segue.destination as? PostViewController,
+           let postToSend = sender as? Post {
+            destinationVC.currentPost = postToSend
+        }
+    }
+    
+}
+
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return postsArray.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let post = postsArray[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell") as! IndividualPostCell
+        cell.setPost(post: post)
+
+        return cell
+    }
+
+    
+    //DATA SEND: Send Data to New Cell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = postsArray[indexPath.row]
+        performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
+    }
+
+}
+
+
 */
