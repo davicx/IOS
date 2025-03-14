@@ -52,7 +52,6 @@ class UserProfileLayout: UIView {
             userProfileSocialsView.trailingAnchor.constraint(equalTo: trailingAnchor),
             userProfileSocialsView.heightAnchor.constraint(equalToConstant: 48),
             
-            
             userProfileEditView.topAnchor.constraint(equalTo: userProfileSocialsView.bottomAnchor),
             userProfileEditView.leadingAnchor.constraint(equalTo: leadingAnchor),
             userProfileEditView.trailingAnchor.constraint(equalTo: trailingAnchor),

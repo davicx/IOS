@@ -394,18 +394,6 @@
                     <view key="view" contentMode="scaleToFill" id="8X8-CQ-9UL">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rG9-YH-ggV">
-                                <rect key="frame" x="20.000000000000004" y="623" width="53.333333333333343" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Edit"/>
-                                <connections>
-                                    <action selector="editButton:" destination="Y10-MI-AGo" eventType="touchUpInside" id="LXW-Dm-JSy"/>
-                                    <segue destination="YDc-cX-3oX" kind="show" identifier="showEditProfileViewController" id="KPg-mi-ju6"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="mUS-n7-XhL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -418,13 +406,13 @@
         <!--Edit Profile View Controller-->
         <scene sceneID="9We-OY-eaE">
             <objects>
-                <viewController id="YDc-cX-3oX" customClass="EditProfileViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditProfileViewController" id="YDc-cX-3oX" customClass="EditProfileViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wPc-UQ-lDy">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QfN-8T-sX0">
-                                <rect key="frame" x="20" y="383" width="353" height="40"/>
+                                <rect key="frame" x="20" y="339" width="353" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Rpf-h6-ePE"/>
                                 </constraints>
@@ -432,7 +420,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hxx-EF-p7s">
-                                <rect key="frame" x="20" y="443" width="353" height="40"/>
+                                <rect key="frame" x="20" y="399" width="353" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Tby-Xc-Ysr"/>
                                 </constraints>
@@ -440,13 +428,13 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8gk-JO-QUY">
-                                <rect key="frame" x="20" y="123" width="353" height="180"/>
+                                <rect key="frame" x="20" y="79" width="353" height="180"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="5FH-nS-jqY"/>
                                 </constraints>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sGC-gh-hoi">
-                                <rect key="frame" x="20" y="503" width="353" height="120"/>
+                                <rect key="frame" x="20" y="459" width="353" height="120"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="a33-kp-8Sc"/>
@@ -457,7 +445,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEW-tL-1Lm">
-                                <rect key="frame" x="20" y="643" width="353" height="40"/>
+                                <rect key="frame" x="20" y="599" width="353" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="P8c-C5-yge"/>
                                 </constraints>
@@ -468,7 +456,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fUE-IZ-mbs">
-                                <rect key="frame" x="20" y="323" width="353" height="40"/>
+                                <rect key="frame" x="20" y="279" width="353" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Pip-BB-19C"/>
                                 </constraints>

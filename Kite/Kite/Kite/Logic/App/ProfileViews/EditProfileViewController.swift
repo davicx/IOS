@@ -60,7 +60,6 @@ class EditProfileViewController: UIViewController {
     }
     
     
-    
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         let currentUser = userDefaultManager.getLoggedInUser()
         let updatedFirstName = userNameField.text ?? ""
