@@ -57,6 +57,30 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
 }
     
 //Function A2: Add Image to Post
+func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+    
+    for (index, post) in updatedPosts.enumerated() {
+        if let fileUrlString = post.fileUrl,
+           let imageUrl = URL(string: fileUrlString),
+           fileUrlString.lowercased() != "empty" {
+            do {
+                let data = try await networker.downloadImageData(from: imageUrl)
+                updatedPosts[index].postImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading image for postID \(post.postID): \(error)")
+                updatedPosts[index].postImageData = UIImage(named: "background_1") // Default image
+            }
+        } else {
+            print("Invalid or missing fileURL for postID \(post.postID), using default image")
+            updatedPosts[index].postImageData = UIImage(named: "background_1") // Default image
+        }
+    }
+    
+    return updatedPosts
+}
+
+/*
 func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post]{
     for post in postsArray {
         let imageUrl = URL(string: post.fileUrl!)!
@@ -66,7 +90,7 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post]{
     
    return postsArray
 }
-
+*/
 
 func printPostLikes(post: Post) {
     let simpleLikesArray : Array = post.simpleLikesArray ?? []

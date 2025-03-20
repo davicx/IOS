@@ -13,32 +13,49 @@ class LoginViewController: UIViewController {
     let userDefaultManager = UserDefaultManager()
     let loginAPI = LoginAPI()
     
-    @IBOutlet weak var userNameTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    
-    @IBOutlet weak var loginButtonStyle: UIButton!
-    @IBOutlet weak var loginMessageLabel: UILabel!
-    
     var activityIndicator = UIActivityIndicatorView()
     var errrorMessage = ""
+    
+    
+    //VIEWS
+    let logoView = UIView()
+    let loginView = UIView()
+    let dividerView = UIView()
+    let registerView = UIView()
+    let footerView = UIView()
+    
+    //LABELS
+    let usernameTextField = UITextField()
+    let passwordTextField = UITextField()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("LoginViewController")
         setupElements()
+        setupViews()
+        setupConstraints()
+        setupLoginLabels()
     }
     
     func setupElements() {
         
+        //LABELS
+        //Style.styleUsernameLabel(usernameLabel)
+        //Style.styleUsernameLabel(passwordLabel)
+        
+        //BUTTONS
+        //Buttons.styleForgotPasswordButton(forgotPasswordButton)
+        //Buttons.styleLoginButton(loginButton)
+        
         //Error Label
-        loginMessageLabel.alpha = 0
+        //loginMessageLabel.alpha = 0
         
         //Style Buttons and Fields
-        Temp.styleTextField(userNameTextField)
-        Temp.styleTextField(passwordTextField)
+        //Temp.styleTextField(userNameTextField)
+        //Temp.styleTextField(passwordTextField)
         
-        Buttons.styleTwitterButton(loginButtonStyle)
+        //Buttons.styleLoginFilledButton(loginButtonStyle)
         
         //Set Up Spinner
         activityIndicator.center = self.view.center
@@ -48,10 +65,91 @@ class LoginViewController: UIViewController {
 
     }
     
+    
+    
+    
+    func setupViews() {
+        logoView.backgroundColor = .systemBlue
+        loginView.backgroundColor = .white
+        dividerView.backgroundColor = .gray
+        registerView.backgroundColor = .systemGreen
+        footerView.backgroundColor = .lightGray
+        
+        [logoView, loginView, dividerView, registerView, footerView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
+    }
+    
+    func setupConstraints() {
+           NSLayoutConstraint.activate([
+               // LogoView - 20%
+               logoView.topAnchor.constraint(equalTo: view.topAnchor),
+               logoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+               logoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+               logoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
+
+               // LoginView - 20%
+               loginView.topAnchor.constraint(equalTo: logoView.bottomAnchor),
+               loginView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+               loginView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+               loginView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.375),
+               
+               // DividerView - 15%
+               dividerView.topAnchor.constraint(equalTo: loginView.bottomAnchor),
+               dividerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+               dividerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+               dividerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.02),
+               
+               // RegisterView - 15%
+               registerView.topAnchor.constraint(equalTo: dividerView.bottomAnchor),
+               registerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+               registerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+               registerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
+
+               // FooterView - Remaining 30%
+               footerView.topAnchor.constraint(equalTo: registerView.bottomAnchor),
+               footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+               footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+               footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+           ])
+       }
+
+    func setupLoginLabels() {
+        // Configure text fields
+        usernameTextField.placeholder = "Username"
+        passwordTextField.placeholder = "Password"
+        passwordTextField.isSecureTextEntry = true // Hide password input
+        
+        Style.styleLoginTextField(usernameTextField)
+        Style.styleLoginTextField(passwordTextField)
+
+        usernameTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+
+        loginView.addSubview(usernameTextField)
+        loginView.addSubview(passwordTextField)
+        
+        NSLayoutConstraint.activate([
+            // Username TextField - 12 from top
+            usernameTextField.topAnchor.constraint(equalTo: loginView.topAnchor, constant: 12),
+            usernameTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
+            usernameTextField.widthAnchor.constraint(equalToConstant: 320),
+            usernameTextField.heightAnchor.constraint(equalToConstant: 40),
+            
+            // Password TextField - 20 below username
+            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
+            passwordTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
+            passwordTextField.widthAnchor.constraint(equalToConstant: 320),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
     @IBAction func loginButton(_ sender: UIButton) {
 
+    
         //STEP 1: Get Login Information
-        let logInUser = userNameTextField.text ?? ""
+        let logInUser = usernameTextField.text ?? ""
         let logInPassword = passwordTextField.text ?? ""
    
         
@@ -94,8 +192,9 @@ class LoginViewController: UIViewController {
                             print("Was an error logging in!")
                         }
                     } else {
-                        loginMessageLabel.alpha = 1
-                        loginMessageLabel.text = "Username or Password was wrong!"
+                        //Make this the error message
+                        //loginMessageLabel.alpha = 1
+                        //loginMessageLabel.text = "Username or Password was wrong!"
                         print("Username or Password was wrong!")
                     }
                 } catch{
@@ -117,10 +216,12 @@ class LoginViewController: UIViewController {
                 print("STEP 2:  Please enter a Valid username and password")
             }
             
-            loginMessageLabel.alpha = 1
-            loginMessageLabel.text = errrorMessage
+            //Make this the error message
+            //loginMessageLabel.alpha = 1
+            //loginMessageLabel.text = errrorMessage
         
         }
+         
     
     }
 
@@ -129,11 +230,6 @@ class LoginViewController: UIViewController {
         print("Register")
     }
     
-
-    @IBAction func getLoginStatusButton(_ sender: UIButton) {
-        let loginStatus = userDefaultManager.getLoggedInUserStatus()
-        print("User is Logged in \(loginStatus)")
-    }
     
     func loginUser(username: String, password: String, deviceID: String) async throws -> String {
         var outcome = ""
@@ -167,6 +263,78 @@ class LoginViewController: UIViewController {
 
     
 }
+
+
+
+//FULL CODE
+/*
+ import UIKit
+
+ class LoginViewController: UIViewController {
+     
+     private let forgotPasswordButton: UIButton = {
+         let button = UIButton()
+         button.setTitle("Forgot Password?", for: .normal)
+         button.setTitleColor(UIColor(hex: "#3797EF"), for: .normal)
+         button.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 12)
+         button.backgroundColor = .clear
+         return button
+     }()
+     
+     private let loginButton: UIButton = {
+         let button = UIButton()
+         button.setTitle("Login", for: .normal)
+         button.setTitleColor(.white, for: .normal)
+         button.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 12)
+         button.backgroundColor = UIColor(hex: "#3797EF")
+         button.layer.cornerRadius = 5
+         button.translatesAutoresizingMaskIntoConstraints = false
+         return button
+     }()
+     
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         
+         view.addSubview(forgotPasswordButton)
+         view.addSubview(loginButton)
+         
+         setupConstraints()
+     }
+     
+     private func setupConstraints() {
+         forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
+         loginButton.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             forgotPasswordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+             forgotPasswordButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+             
+             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+             loginButton.topAnchor.constraint(equalTo: forgotPasswordButton.bottomAnchor, constant: 20),
+             loginButton.widthAnchor.constraint(equalToConstant: 200),
+             loginButton.heightAnchor.constraint(equalToConstant: 40)
+         ])
+     }
+ }
+
+ // UIColor Extension for Hex Colors
+ extension UIColor {
+     convenience init(hex: String) {
+         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+         var rgb: UInt64 = 0
+         Scanner(string: hexSanitized).scanHexInt64(&rgb)
+
+         let r = CGFloat((rgb >> 16) & 0xFF) / 255.0
+         let g = CGFloat((rgb >> 8) & 0xFF) / 255.0
+         let b = CGFloat(rgb & 0xFF) / 255.0
+
+         self.init(red: r, green: g, blue: b, alpha: 1.0)
+     }
+ }
+
+ */
 
 /*
  @IBOutlet weak var startLabel: UILabel!
