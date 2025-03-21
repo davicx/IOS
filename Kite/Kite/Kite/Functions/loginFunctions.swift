@@ -21,6 +21,37 @@ func loginUser(userName: String) async throws -> Bool {
 
 //Function A2: Logout User
 
+//NEW!!!
+/*
+ import Foundation
+
+ class LoginManager {
+     let loginAPI = LoginAPI()
+     let userDefaultManager = UserDefaultManager()
+     
+     func login(username: String, password: String, deviceID: String, completion: @escaping (Bool, String) -> Void) {
+         Task {
+             do {
+                 let loginResponseModel = try await loginAPI.loginUser(username: username, password: password, deviceID: deviceID)
+                 
+                 if loginResponseModel.data.loginSuccess {
+                     let loginOutcome = userDefaultManager.logUserIn(userName: username)
+                     if loginOutcome {
+                         completion(true, "Login successful for \(username).")
+                     } else {
+                         completion(false, "Error during login.")
+                     }
+                 } else {
+                     completion(false, "Incorrect username or password.")
+                 }
+             } catch {
+                 completion(false, "An error occurred: \(error.localizedDescription)")
+             }
+         }
+     }
+ }
+
+ */
 
 /*
  func loginUser(postsArray: [Post]) async throws -> [Post]{
