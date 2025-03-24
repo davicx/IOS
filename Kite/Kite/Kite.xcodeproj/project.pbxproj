@@ -79,7 +79,8 @@
 		D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7C02D824D5B00A08602 /* UserProfileBiographyView.swift */; };
 		D74C9F052D5981AB00947ECE /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F042D5981AB00947ECE /* KeyChainManager.swift */; };
 		D74C9F092D59820400947ECE /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F082D59820400947ECE /* KeychainHelper.swift */; };
-		D771351A2D71211400DC51CE /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77135192D71211400DC51CE /* PostViewController.swift */; };
+		D771351A2D71211400DC51CE /* SinglePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77135192D71211400DC51CE /* SinglePostViewController.swift */; };
+		D77ED6A52D90DB9800FA4F71 /* PollingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */; };
 		D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */; };
 		D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */; };
 		D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */; };
@@ -92,6 +93,7 @@
 		D7D3DD322D518D8F00B9DAA7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */; };
 		D7D3DD342D51940000B9DAA7 /* AccessTokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */; };
 		D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */; };
+		D7D5F3062D921DAB00EE0A09 /* Doc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D5F3052D921DAB00EE0A09 /* Doc.swift */; };
 		D7D609F12D52E99E00ED615B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D609F02D52E99E00ED615B /* NetworkManager.swift */; };
 		D7D88BA02D62B8DF002B3084 /* GroupsResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */; };
 		D7D88BA42D62B92B002B3084 /* GroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D88BA32D62B92B002B3084 /* GroupModel.swift */; };
@@ -192,7 +194,8 @@
 		D747F7C02D824D5B00A08602 /* UserProfileBiographyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileBiographyView.swift; sourceTree = "<group>"; };
 		D74C9F042D5981AB00947ECE /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		D74C9F082D59820400947ECE /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
-		D77135192D71211400DC51CE /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		D77135192D71211400DC51CE /* SinglePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePostViewController.swift; sourceTree = "<group>"; };
+		D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingManager.swift; sourceTree = "<group>"; };
 		D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowers.swift; sourceTree = "<group>"; };
 		D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPIBackup.swift; sourceTree = "<group>"; };
 		D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -205,6 +208,7 @@
 		D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseModel.swift; sourceTree = "<group>"; };
 		D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenModel.swift; sourceTree = "<group>"; };
+		D7D5F3052D921DAB00EE0A09 /* Doc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doc.swift; sourceTree = "<group>"; };
 		D7D609F02D52E99E00ED615B /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsResponseModel.swift; sourceTree = "<group>"; };
 		D7D88BA32D62B92B002B3084 /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
@@ -364,6 +368,7 @@
 				519B24D82D18CFAF00159385 /* PresenterManager.swift */,
 				D74C9F042D5981AB00947ECE /* KeyChainManager.swift */,
 				D74C9F082D59820400947ECE /* KeychainHelper.swift */,
+				D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -506,7 +511,8 @@
 			isa = PBXGroup;
 			children = (
 				D7FB876A2D6FE0090054CDF7 /* IndividualPostCell.swift */,
-				D77135192D71211400DC51CE /* PostViewController.swift */,
+				D77135192D71211400DC51CE /* SinglePostViewController.swift */,
+				D7D5F3052D921DAB00EE0A09 /* Doc.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -645,6 +651,7 @@
 				51C69B142D0E54D700C46759 /* Networker.swift in Sources */,
 				D7D3DD322D518D8F00B9DAA7 /* AuthManager.swift in Sources */,
 				D747F7BD2D824D3200A08602 /* UserProfileSocialsView.swift in Sources */,
+				D7D5F3062D921DAB00EE0A09 /* Doc.swift in Sources */,
 				51C69B122D0E54CE00C46759 /* PostsAPI.swift in Sources */,
 				51C69B282D0E575700C46759 /* Login.swift in Sources */,
 				51C69B512D0E62A000C46759 /* LoadingViewController.swift in Sources */,
@@ -691,7 +698,7 @@
 				D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */,
 				D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */,
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,
-				D771351A2D71211400DC51CE /* PostViewController.swift in Sources */,
+				D771351A2D71211400DC51CE /* SinglePostViewController.swift in Sources */,
 				5139A6312D28B5980029024E /* Buttons.swift in Sources */,
 				51C69AE12D0E549100C46759 /* AppDelegate.swift in Sources */,
 				51EC39182D3495850001B6E7 /* EditProfileViewController.swift in Sources */,
@@ -721,6 +728,7 @@
 				51ED446A2D2E0B540036DB4B /* UpdateUserProfileResponseModel.swift in Sources */,
 				51C69B1E2D0E554A00C46759 /* Constants.swift in Sources */,
 				D7A3C1222D810097000B4EB7 /* UserProfileLayout.swift in Sources */,
+				D77ED6A52D90DB9800FA4F71 /* PollingManager.swift in Sources */,
 				D7400EA12D8CC45800646E94 /* LoginLayoutManager.swift in Sources */,
 				D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */,
 				51C69B3E2D0E584B00C46759 /* PostModel.swift in Sources */,

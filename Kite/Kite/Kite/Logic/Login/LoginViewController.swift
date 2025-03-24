@@ -9,105 +9,79 @@
 import UIKit
 
 
-//COMPARE TO WORKING STUFF
 class LoginViewController: UIViewController, LoginLayoutManagerDelegate {
-    let userDefaultManager = UserDefaultManager()
-    let loginAPI = LoginAPI()
     let layoutManager = LoginLayoutManager()
+    let loginManager = LoginFunctions()
+    let userDefaultManager = UserDefaultManager()
     var activityIndicator = UIActivityIndicatorView()
     var errrorMessage = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print("LoginViewController")
         
         layoutManager.delegate = self
-        
         layoutManager.setupViews(in: view)
         layoutManager.setupConstraints(in: view)
         layoutManager.setupTextFields()
         layoutManager.setupButtons(in: view)
         setupElements()
-        
-      
     }
     
     func setupElements() {
-        // Error Label
-        //loginMessageLabel.alpha = 0
-        
-        // Set Up Spinner
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = UIActivityIndicatorView.Style.medium
         self.view.addSubview(activityIndicator)
     }
     
-    // Called when the user taps the Forgot Password button
-    func didTapForgotPasswordButton() {
-        print("Forgot Password")
-    }
-    
-    // Called when the user taps the Login button
     func didTapLoginButton() {
         print("Login Button Tapped")
         
-        // STEP 1: Get Login Information
         let logInUser = layoutManager.usernameTextField.text ?? ""
         let logInPassword = layoutManager.passwordTextField.text ?? ""
         
-        // STEP 2: Validate Login Information
+        // Validate inputs
         let validUsername = validateUserName(userName: logInUser)
         let validPassword = validatePassword(password: logInPassword)
         
-        // STEP 3: Login User
-        if(validUsername == true && validPassword == true) {
-            let deviceID = KeychainHelper.shared.getOrCreateDeviceId()
-
-            print("Device ID:", deviceID)
-
-            Task {
-                do {
-                    activityIndicator.startAnimating()
-                    view.isUserInteractionEnabled = false
-                    let loginResponseModel = try await loginAPI.loginUser(username: logInUser, password: logInPassword, deviceID: deviceID)
-                    
-                    activityIndicator.stopAnimating()
-                    self.view.isUserInteractionEnabled = true
-                    
-                    if(loginResponseModel.data.loginSuccess == true) {
-                        let loginOutcome = userDefaultManager.logUserIn(userName: logInUser)
-                        
-                        if(loginOutcome) {
-                            print("You just logged \(logInUser) in")
-                            PresenterManager.shared.showMainApp()
-                        } else {
-                            print("Was an error logging in!")
-                        }
-                    } else {
-                        print("Username or Password was wrong!")
-                    }
-                } catch {
-                    print("yo man error!")
-                    print(error)
+        if !validUsername || !validPassword {
+            print("Invalid username or password.")
+            return
+        }
+        
+        let deviceID = KeychainHelper.shared.getOrCreateDeviceId()
+        print("Device ID:", deviceID)
+        
+        activityIndicator.startAnimating()
+        view.isUserInteractionEnabled = false
+        
+        loginManager.loginUser(username: logInUser, password: logInPassword, deviceID: deviceID) { success, message in
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.view.isUserInteractionEnabled = true
+                print(message)
+                
+                if success {
+                    PresenterManager.shared.showMainApp()
                 }
-            }
-        } else {
-            if(validUsername == false && validPassword == true) {
-                errrorMessage = "STEP 2: Please enter a Valid username"
-                print("STEP 2: Please enter a Valid username")
-            } else if(validPassword == false && validUsername == true) {
-                errrorMessage = "STEP 2: Please enter a Valid password"
-                print("STEP 2: Please enter a Valid password")
-            } else {
-                errrorMessage = "STEP 2: Please enter a Valid username and password"
-                print("STEP 2:  Please enter a Valid username and password")
             }
         }
     }
     
+    func didTapForgotPasswordButton() {
+        print("Forgot Password")
+    }
     
+    func didTapRegisterButton() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let registrationVC = storyboard.instantiateViewController(withIdentifier: "RegistrationViewController") as? RegistrationViewController {
+            navigationController?.pushViewController(registrationVC, animated: true)
+        } else {
+            print("Error: Could not instantiate RegistrationViewController")
+        }
+    }
+
     
     func loginUser(username: String, password: String, deviceID: String) async throws -> String {
         var outcome = ""

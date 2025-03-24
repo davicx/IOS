@@ -56,6 +56,7 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
     return postsArray
 }
     
+
 //Function A2: Add Image to Post
 func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
@@ -80,6 +81,8 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     return updatedPosts
 }
 
+
+//FORCE an Error
 /*
 func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post]{
     for post in postsArray {

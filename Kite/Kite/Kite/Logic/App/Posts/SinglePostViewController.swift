@@ -8,7 +8,7 @@
 import UIKit
 
 
-class PostViewController: UIViewController {
+class SinglePostViewController: UIViewController {
     
     var currentPost: Post!  // This should receive data from HomeViewController
 
@@ -26,8 +26,6 @@ class PostViewController: UIViewController {
         }
     }
     
-    
-
 }
 
 /*

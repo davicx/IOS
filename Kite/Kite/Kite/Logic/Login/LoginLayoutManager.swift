@@ -11,6 +11,7 @@ import UIKit
 protocol LoginLayoutManagerDelegate: AnyObject {
     func didTapLoginButton()
     func didTapForgotPasswordButton()
+    func didTapRegisterButton() // New method
 }
 
 class LoginLayoutManager {
@@ -25,19 +26,26 @@ class LoginLayoutManager {
     let usernameTextField = UITextField()
     let passwordTextField = UITextField()
     
+
     func setupViews(in view: UIView) {
         // Background Colors for visualization
         logoView.backgroundColor = .systemBlue
         loginView.backgroundColor = .white
-        dividerView.backgroundColor = .gray
-        registerView.backgroundColor = .systemGreen
+        dividerView.backgroundColor = .clear
+        registerView.backgroundColor = .clear
         footerView.backgroundColor = .lightGray
         
+        // Add all views to the parent view
         [logoView, loginView, dividerView, registerView, footerView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
+        
+        setupDividerView()
+        setupRegisterView()
     }
+
+
     
     func setupConstraints(in view: UIView) {
         NSLayoutConstraint.activate([
@@ -99,36 +107,6 @@ class LoginLayoutManager {
         ])
     }
 
-    //WORKS
-    /*
-    func setupTextFields() {
-        usernameTextField.placeholder = "Username"
-        passwordTextField.placeholder = "Password"
-        passwordTextField.isSecureTextEntry = true
-        
-        Style.styleLoginTextField(usernameTextField)
-        Style.styleLoginTextField(passwordTextField)
-        
-        usernameTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        
-        loginView.addSubview(usernameTextField)
-        loginView.addSubview(passwordTextField)
-        
-        NSLayoutConstraint.activate([
-            usernameTextField.topAnchor.constraint(equalTo: loginView.topAnchor, constant: 12),
-            usernameTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
-            usernameTextField.widthAnchor.constraint(equalToConstant: 320),
-            usernameTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
-            passwordTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
-            passwordTextField.widthAnchor.constraint(equalToConstant: 320),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 40)
-        ])
-    }
-    */
-    
     func setupButtons(in view: UIView) {
         // Create Forgot Password Button
         let forgotPasswordButton = UIButton(type: .system)
@@ -162,6 +140,53 @@ class LoginLayoutManager {
         ])
     }
 
+    //DIVIDER
+    func setupDividerView() {
+        let dividerWithLabel = DividerWithLabel()
+        dividerWithLabel.translatesAutoresizingMaskIntoConstraints = false
+        dividerView.addSubview(dividerWithLabel)
+
+        // Center the DividerWithLabel inside the dividerView
+        NSLayoutConstraint.activate([
+            dividerWithLabel.centerXAnchor.constraint(equalTo: dividerView.centerXAnchor),
+            dividerWithLabel.centerYAnchor.constraint(equalTo: dividerView.centerYAnchor),
+            dividerWithLabel.leadingAnchor.constraint(equalTo: dividerView.leadingAnchor, constant: 20),
+            dividerWithLabel.trailingAnchor.constraint(equalTo: dividerView.trailingAnchor, constant: -20),
+            dividerWithLabel.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    
+    //REGISTER
+    func setupRegisterView() {
+        let registerLabel = UILabel()
+        registerLabel.text = "Don’t have an account?"
+        registerLabel.textColor = .black
+        registerLabel.font = UIFont.systemFont(ofSize: 14)
+
+        let signUpButton = UIButton(type: .system)
+        signUpButton.setTitle("Sign Up", for: .normal)
+        signUpButton.setTitleColor(UIColor(hex: "#3797EF"), for: .normal)
+        signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        signUpButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
+
+        registerLabel.translatesAutoresizingMaskIntoConstraints = false
+        signUpButton.translatesAutoresizingMaskIntoConstraints = false
+
+        registerView.addSubview(registerLabel)
+        registerView.addSubview(signUpButton)
+
+        NSLayoutConstraint.activate([
+            registerLabel.centerXAnchor.constraint(equalTo: registerView.centerXAnchor, constant: -30),
+            registerLabel.centerYAnchor.constraint(equalTo: registerView.centerYAnchor),
+            
+            signUpButton.leadingAnchor.constraint(equalTo: registerLabel.trailingAnchor, constant: 5),
+            signUpButton.centerYAnchor.constraint(equalTo: registerLabel.centerYAnchor)
+        ])
+    }
+
+
+    //BUTTON LOGIC
     @objc func forgotPasswordTapped() {
         delegate?.didTapForgotPasswordButton()
     }
@@ -170,4 +195,56 @@ class LoginLayoutManager {
         delegate?.didTapLoginButton()
     }
     
+    @objc func registerTapped() {
+        delegate?.didTapRegisterButton()
+    }
+    
 }
+
+
+//WORKS
+/*
+func setupTextFields() {
+    usernameTextField.placeholder = "Username"
+    passwordTextField.placeholder = "Password"
+    passwordTextField.isSecureTextEntry = true
+    
+    Style.styleLoginTextField(usernameTextField)
+    Style.styleLoginTextField(passwordTextField)
+    
+    usernameTextField.translatesAutoresizingMaskIntoConstraints = false
+    passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+    
+    loginView.addSubview(usernameTextField)
+    loginView.addSubview(passwordTextField)
+    
+    NSLayoutConstraint.activate([
+        usernameTextField.topAnchor.constraint(equalTo: loginView.topAnchor, constant: 12),
+        usernameTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
+        usernameTextField.widthAnchor.constraint(equalToConstant: 320),
+        usernameTextField.heightAnchor.constraint(equalToConstant: 40),
+        
+        passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
+        passwordTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
+        passwordTextField.widthAnchor.constraint(equalToConstant: 320),
+        passwordTextField.heightAnchor.constraint(equalToConstant: 40)
+    ])
+}
+*/
+
+/*
+func setupViews(in view: UIView) {
+    // Background Colors for visualization
+    logoView.backgroundColor = .systemBlue
+    loginView.backgroundColor = .white
+    dividerView.backgroundColor = .gray
+    registerView.backgroundColor = .systemGreen
+    footerView.backgroundColor = .lightGray
+    
+    [logoView, loginView, dividerView, registerView, footerView].forEach {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview($0)
+    }
+}
+
+*/

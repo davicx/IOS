@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ebe-z7-kyR">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -79,7 +78,7 @@
         <!--Registration View Controller-->
         <scene sceneID="7vu-3s-sdj">
             <objects>
-                <viewController id="loQ-bv-9zk" customClass="RegistrationViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegistrationViewController" id="loQ-bv-9zk" customClass="RegistrationViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="huo-pr-x2U">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -178,10 +177,10 @@
             </objects>
             <point key="canvasLocation" x="-3254" y="1017"/>
         </scene>
-        <!--Post View Controller-->
+        <!--Single Post View Controller-->
         <scene sceneID="01D-Zp-yEQ">
             <objects>
-                <viewController id="UIT-vI-uFH" customClass="PostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="UIT-vI-uFH" customClass="SinglePostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k5Y-F6-wbg">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
