@@ -9,7 +9,8 @@ import UIKit
 
 
 class Buttons {
-    
+
+        //LOGIN BUTTON
     static func styleLoginFilledButton(_ button:UIButton) {
         button.backgroundColor = UIColor(hex: "#EA4359")
         button.layer.cornerRadius = 16.0
@@ -17,6 +18,20 @@ class Buttons {
 
         // Set the font to Helvetica Neue, size 18, bold
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+    }
+    
+    static func styleForgotPasswordButton(_ button: UIButton) {
+        button.setTitleColor(UIColor(hex: "#3797EF"), for: .normal) // Font color
+        button.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 8) // Font
+        button.backgroundColor = .clear // Transparent background
+    }
+     
+    
+    static func styleLoginButton(_ button: UIButton) {
+        button.setTitleColor(.white, for: .normal) // White text color
+        button.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 12) // Font
+        button.backgroundColor = UIColor(hex: "#3797EF") // Background color
+        button.layer.cornerRadius = 5 // Rounded corners
     }
     
     
@@ -38,34 +53,50 @@ class Buttons {
         button.setTitleColor(UIColor(hex: "#000000"), for: .normal) // Set text color
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
     }
-    
-    /*
-    static func styleTikTokButton(_ button: UIButton) {
-        button.backgroundColor = .clear // Clear background
-        button.layer.cornerRadius = 4.0
-        button.layer.borderWidth = 1.0 // Thin 1-point border
-        button.layer.borderColor = UIColor(hex: "#E3E3E4").cgColor
-        button.tintColor = UIColor.white
-        button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
-    }
-     */
-    /*
-    static func styleTikTokButton(_ button:UIButton) {
-        //button.backgroundColor = UIColor(hex: "#EA4359")
-        button.layer.cornerRadius = 4.0
-        button.tintColor = UIColor.white
-        
-        //E3E3E4
 
-        // Set the font to Helvetica Neue, size 18, bold
-        button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
-    }
-     */
-    
 
 
     
 }
+
+
+
+
+/*
+static func loginButton(_ button: UIButton) {
+    button.backgroundColor = UIColor(hex: "#FAFAFA") // Background color
+
+    button.layer.cornerRadius = 5.0 // Rounded corners
+    button.layer.borderWidth = 0.5 // Thin border
+    button.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor // Border at 10% opacity
+
+    button.setTitleColor(UIColor.black.withAlphaComponent(0.2), for: .normal) // Text color at 20% opacity
+    button.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 14) // SF Pro Text, Regular, size 14
+}
+ */
+
+/*
+static func styleTikTokButton(_ button: UIButton) {
+    button.backgroundColor = .clear // Clear background
+    button.layer.cornerRadius = 4.0
+    button.layer.borderWidth = 1.0 // Thin 1-point border
+    button.layer.borderColor = UIColor(hex: "#E3E3E4").cgColor
+    button.tintColor = UIColor.white
+    button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+}
+ */
+/*
+static func styleTikTokButton(_ button:UIButton) {
+    //button.backgroundColor = UIColor(hex: "#EA4359")
+    button.layer.cornerRadius = 4.0
+    button.tintColor = UIColor.white
+    
+    //E3E3E4
+
+    // Set the font to Helvetica Neue, size 18, bold
+    button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+}
+ */
 
 
 //Temp.styleTextField(userNameTextField)

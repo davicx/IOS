@@ -221,8 +221,11 @@ class PostsAPI {
     //Function B1: Get all Group Posts
     //func getPostsAPI() async throws -> PostResponseModel {
     func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
+        print("GET POSTS!!!")
+        
         //let endpoint = "http://localhost:3003/posts/group/72"
         let endpoint = "http://localhost:3003/posts/group/\(groupID)"
+        print("URL \(endpoint)")
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

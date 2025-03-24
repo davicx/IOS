@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 class IndividualPostCell: UITableViewCell {
     
     let postImageView: UIImageView = {
@@ -58,17 +57,30 @@ class IndividualPostCell: UITableViewCell {
 
 
 /*
-class VideoCell: UITableViewCell {
-    
-    @IBOutlet weak var videoImageView: UIImageView!
-    @IBOutlet weak var videoTitleLabel: UILabel!
+class IndividualPostCell: UITableViewCell {
     
     
-    func setVideo(video: Video) {
-        videoImageView.image = video.image
-        videoTitleLabel.text = video.title
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setPost(post: Post) {
+        print("Caption: \(post.postCaption)")
+        //postImageView.image = post.postImageData
+        //postCaption.text = post.postCaption
+    }
+    
+ 
 }
+ */
+
+
+//WORKS
+/*
 
 */
