@@ -8,6 +8,33 @@
 import UIKit
 
 
+import UIKit
+
+class IndividualPostCell: UITableViewCell {
+    
+    // Layout Manager
+    private let layoutManager = IndividualPostCellLayoutManager()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        // Setup layout using Layout Manager
+        layoutManager.setupLayout(in: contentView)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setPost(post: Post) {
+        print("Caption: \(post.postCaption)")
+    }
+}
+
+
+//WORKS
+/*
+
 class IndividualPostCell: UITableViewCell {
     
     let postImageView: UIImageView = {
@@ -55,32 +82,5 @@ class IndividualPostCell: UITableViewCell {
     }
 }
 
-
-/*
-class IndividualPostCell: UITableViewCell {
-    
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setPost(post: Post) {
-        print("Caption: \(post.postCaption)")
-        //postImageView.image = post.postImageData
-        //postCaption.text = post.postCaption
-    }
-    
- 
-}
- */
-
-
-//WORKS
-/*
 
 */
