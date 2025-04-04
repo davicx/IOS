@@ -40,7 +40,9 @@ class IndividualPostCell: UITableViewCell {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         bodyView.translatesAutoresizingMaskIntoConstraints = false
         footerView.translatesAutoresizingMaskIntoConstraints = false
+        
         divider.translatesAutoresizingMaskIntoConstraints = false
+        
         myImageView.translatesAutoresizingMaskIntoConstraints = false
         myCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
 

@@ -66,13 +66,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         //STEP 2: Get Caption Height
         let captionTextHeight = round(calculateLabelHeight(text: postCaption))
-        
-        
-        print("POST \(indexPath.row)")
-        print("postImageHeight \(postImageHeight)")
-        print("captionTextHeight \(captionTextHeight)")
-        print("Row Height \(postImageHeight  + captionTextHeight + 2)")
-        print(" ")
       
         //footer + postImageHeight + captionTextHeight + 8 + comments
         return 10 + postImageHeight + captionTextHeight + 8 + 40
@@ -81,3 +74,13 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 
+
+/*
+ 
+ 
+ print("POST \(indexPath.row)")
+ print("postImageHeight \(postImageHeight)")
+ print("captionTextHeight \(captionTextHeight)")
+ print("Row Height \(postImageHeight  + captionTextHeight + 2)")
+ print(" ")
+ */

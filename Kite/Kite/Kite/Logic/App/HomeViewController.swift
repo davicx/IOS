@@ -89,7 +89,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource and UITableViewDelegate
+
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postsArray.count
