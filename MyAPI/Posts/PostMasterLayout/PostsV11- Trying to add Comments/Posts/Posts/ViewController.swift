@@ -77,7 +77,37 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 /*
- 
+ //TABLE VIEW: Code to add table view information
+ extension ViewController: UITableViewDataSource, UITableViewDelegate {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return postsArray.count // Use the count of images
+     }
+
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! IndividualPostCell
+         let currentImage = postsArray[indexPath.row].postImage
+         let postCaption = postsArray[indexPath.row].postCaption
+         
+         cell.updatePost(with: currentImage, postCaption: postCaption)
+         
+         return cell
+     }
+
+
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+         let currentPostImage = postsArray[indexPath.row].postImage
+         let postCaption = postsArray[indexPath.row].postCaption
+         
+         //STEP 1: Get Image Height
+         let postImageHeight = round(getImageHeight(image: currentPostImage))
+         
+         //STEP 2: Get Caption Height
+         let captionTextHeight = round(calculateLabelHeight(text: postCaption))
+       
+         //footer + postImageHeight + captionTextHeight + 8 + comments
+         return 10 + postImageHeight + captionTextHeight + 8 + 40
+
+     }
  
  print("POST \(indexPath.row)")
  print("postImageHeight \(postImageHeight)")

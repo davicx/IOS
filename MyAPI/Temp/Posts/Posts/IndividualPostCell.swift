@@ -7,9 +7,16 @@
 
 import UIKit
 
+//GO TO HERE
+//GO TO HERE
+//GO TO HERE
+//GO TO HERE
+//GO TO HERE
+//GO TO HERE
 
 class IndividualPostCell: UITableViewCell {
     
+    //USER
     let postUserView = createHeaderView()
     //let bodyView = createBodyView()
     //let footerView = createFooterView()
