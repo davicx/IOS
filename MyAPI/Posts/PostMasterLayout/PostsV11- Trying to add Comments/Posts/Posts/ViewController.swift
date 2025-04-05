@@ -69,6 +69,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
       
         //footer + postImageHeight + captionTextHeight + 8 + comments
         return 10 + postImageHeight + captionTextHeight + 8 + 40
+
     }
 }
 

@@ -14,6 +14,7 @@ class IndividualPostCell: UITableViewCell {
     let bodyView = createBodyView()
     let footerView = createFooterView()
     let divider = createDividerView()
+    
     let myImageView = createImageHeaderView()
     let myCaptionLabel = createLabelView()
 
@@ -34,6 +35,7 @@ class IndividualPostCell: UITableViewCell {
         addSubview(bodyView)
         addSubview(footerView)
         addSubview(divider)
+        
         headerView.addSubview(myImageView)
         bodyView.addSubview(myCaptionLabel)
         
