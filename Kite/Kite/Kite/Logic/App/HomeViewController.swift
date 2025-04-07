@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class HomeViewController: UIViewController {
     let loginAPI = LoginAPI()
     let postsAPI = PostsAPI()
@@ -50,15 +51,21 @@ class HomeViewController: UIViewController {
 
     // Fetch posts using the API
     func fetchPosts() {
-        print("STEP 1: fetchPosts")
+        //print("STEP 1: fetchPosts")
         Task {
             do {
-                print("STEP 2: postsResponseModel")
+                //print("STEP 2: postsResponseModel")
                 let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
                 
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
 
+                for post in postsArray {
+                    //print("post caption! \(post.postID)")
+                    //print(post.postCaption)
+                    //print("")
+                }
+                
                 DispatchQueue.main.async {
                     self.postsTableView.reloadData()
                     self.pollingManager.resetFailureCount()
@@ -122,12 +129,18 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let postCaption = currentPost.postCaption ?? "no caption"
         let postCaptionHeight = round(calculateLabelHeight(text: postCaption))
         
+        
         //print("heightForRowAt postImageHeight \(postImageHeight) postCaptionHeight \(postCaptionHeight)")
+        print(" ")
+        print("We need this for our Caption Height \(postCaptionHeight) \(currentPost.postID)")
+        print(postCaption)
         
         
         //footer + postImageHeight + captionTextHeight + 8 + comments
         //return 10 + postImageHeight + captionTextHeight + 8 + 40
-        return 40 + postImageHeight
+        
+        //Post User + Post Image + Post Socials + divider
+        return 40 + postImageHeight + 40 
     }
     
 }
