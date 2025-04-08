@@ -139,8 +139,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //footer + postImageHeight + captionTextHeight + 8 + comments
         //return 10 + postImageHeight + captionTextHeight + 8 + 40
         
-        //Post User + Post Image + Post Socials + divider
-        return 40 + postImageHeight + 40 
+        //Post User + Post Image + Post Socials + Post Caption + divider
+        return 40 + postImageHeight + 40 + postCaptionHeight + 5
+        
     }
     
 }

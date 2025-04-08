@@ -25,7 +25,10 @@ class IndividualPostCell: UITableViewCell {
     //Post Caption
     let postCaptionView = createPostCaptionView()
     let postCaptionLabel = createPostCaptionText()
-     
+    
+    //Post Divider
+    let postDividerView = createPostDividerView()
+    
     
     //Heights for Dynamic Content
     var postImageHeightConstraint: NSLayoutConstraint?
@@ -67,7 +70,19 @@ class IndividualPostCell: UITableViewCell {
         postSocialsView.addSubview(postSocialsLabel)
         
         //POST: Post Caption
+        postCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        addSubview(postCaptionView)
+        postCaptionView.addSubview(postCaptionLabel)
+        
+        postCaptionHeightConstraint = postCaptionView.heightAnchor.constraint(equalToConstant: 100)  // Initial height
+        postCaptionHeightConstraint?.isActive = true
+        
+        //POST: Divider
+        postDividerView.translatesAutoresizingMaskIntoConstraints = false
+   
+        addSubview(postDividerView)
         
         NSLayoutConstraint.activate([
             
@@ -102,36 +117,75 @@ class IndividualPostCell: UITableViewCell {
             postSocialsLabel.leftAnchor.constraint(equalTo: postSocialsView.leftAnchor, constant: 0),
             postSocialsLabel.rightAnchor.constraint(equalTo: postSocialsView.rightAnchor, constant: -0),
             postSocialsLabel.bottomAnchor.constraint(equalTo: postSocialsView.bottomAnchor, constant: -0),
-   
+            
+            //Post Caption View
+            postCaptionView.topAnchor.constraint(equalTo: postSocialsLabel.bottomAnchor, constant: 0),
+            postCaptionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            postCaptionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+            postCaptionLabel.topAnchor.constraint(equalTo: postCaptionView.topAnchor, constant: 0),
+            postCaptionLabel.leftAnchor.constraint(equalTo: postCaptionView.leftAnchor, constant: 0),
+            postCaptionLabel.rightAnchor.constraint(equalTo: postCaptionView.rightAnchor, constant: -0),
+            postCaptionLabel.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: -0),
+            
+            //Post Divider View
+            postDividerView.topAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: 0),
+            postDividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            postDividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            postDividerView.heightAnchor.constraint(equalToConstant: 5),
+            
+            //Chat Maybe
+            //postDividerView.bottomAnchor.constraint(equalTo: bottomAnchor)
+
         ])
         
-        
-
-        
-        
     }
+    
 
     func updatePost(with post: Post) {
         let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
-        //let postCaption = post.postCaption ?? "no caption"
+        let postCaption = post.postCaption ?? "no caption"
         
         let imageHeight = getImageHeight(image: currentImage)
         
         postImageHeightConstraint?.constant = imageHeight
         postImage.image = currentImage
-        //let captionHeight = round(calculateLabelHeight(text: postCaption))
+        
+        let captionHeight = round(calculateLabelHeight(text: postCaption))
+        
+        postCaptionHeightConstraint?.constant = captionHeight
+        postCaptionLabel.text = postCaption
+        
         //print("imageHeight \(imageHeight) captionHeight \(captionHeight)")
-        
-        // Example usage (you can update this to fit your actual UI components)
-        // postImageView.image = currentImage
-        // captionLabel.text = postCaption
-        
+
         layoutIfNeeded()
         
     }
     
 
 }
+
+
+//POST: Post User
+func createPostUserView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .systemRed
+    
+    return view
+
+}
+
+func createPostUserName() -> UILabel {
+    let label = UILabel()
+    label.text = "HEADER: Post User"
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0 // Allow for multiple lines
+    label.textAlignment = .center
+    label.backgroundColor = .white
+    
+    return label
+}
+
 
 //POST: Post Image
 func createPostImageView() -> UIView {
@@ -149,26 +203,6 @@ func createPostImage() -> UIImageView {
     
     return imageView
 
-}
-
-//POST: Post User
-func createPostUserView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .blue
-    
-    return view
-
-}
-
-func createPostUserName() -> UILabel {
-    let label = UILabel()
-    label.text = "HEADER: Post User"
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.numberOfLines = 0 // Allow for multiple lines
-    label.textAlignment = .center
-    label.backgroundColor = .blue
-    
-    return label
 }
 
 //POST: Post Socials
@@ -194,7 +228,7 @@ func createPostSocialsText() -> UILabel {
 //POST: Post Caption
 func createPostCaptionView() -> UIView {
     let view = UIView()
-    view.backgroundColor = .systemBlue
+    view.backgroundColor = .green
     
     return view
 
@@ -205,14 +239,19 @@ func createPostCaptionText() -> UILabel {
     label.text = "CAPTION: My Caption"
     label.translatesAutoresizingMaskIntoConstraints = false
     label.numberOfLines = 0
-    label.textAlignment = .center
-    label.backgroundColor = .white
+    //label.textAlignment = .center
+    label.backgroundColor = .green
     
     return label
 }
 
-
-
+//POST: Post Divider
+func createPostDividerView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .systemRed
+    
+    return view
+}
 
 
 //SORT
@@ -231,12 +270,7 @@ func createFooterView() -> UIView {
 }
 
 
-func createDividerView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .black
-    
-    return view
-}
+
 
 
 
