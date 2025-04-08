@@ -30,7 +30,6 @@ class IndividualPostViewController: UIViewController {
 
         setUpView(selectedPost: selectedPost)
         
-        
     }
     
 
