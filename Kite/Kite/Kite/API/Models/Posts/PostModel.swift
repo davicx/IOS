@@ -29,6 +29,7 @@ struct PostModel: Codable {
     let postTime: String
     let timeMessage: String
     let created: String
+    var isLikedByCurrentUser: Bool
     let commentsArray: [CommentModel]
     let postLikesArray: [LikeModel]
     let simpleLikesArray: [String]
