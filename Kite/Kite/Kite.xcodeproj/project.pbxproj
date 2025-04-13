@@ -90,6 +90,7 @@
 		D7A3C1202D80FB2E000B4EB7 /* UserProfileLayoutExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A3C11F2D80FB2E000B4EB7 /* UserProfileLayoutExample.swift */; };
 		D7A3C1222D810097000B4EB7 /* UserProfileLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A3C1212D810097000B4EB7 /* UserProfileLayout.swift */; };
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
+		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
 		D7D3DD322D518D8F00B9DAA7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */; };
 		D7D3DD342D51940000B9DAA7 /* AccessTokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */; };
 		D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */; };
@@ -205,6 +206,7 @@
 		D7A3C11F2D80FB2E000B4EB7 /* UserProfileLayoutExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileLayoutExample.swift; sourceTree = "<group>"; };
 		D7A3C1212D810097000B4EB7 /* UserProfileLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileLayout.swift; sourceTree = "<group>"; };
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
+		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
 		D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseModel.swift; sourceTree = "<group>"; };
 		D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenModel.swift; sourceTree = "<group>"; };
@@ -500,6 +502,7 @@
 			isa = PBXGroup;
 			children = (
 				D77135192D71211400DC51CE /* SinglePostViewController.swift */,
+				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 				51CA9DD02D0FAA75008C36F0 /* ProfileViewController.swift in Sources */,
 				51C69B3C2D0E584500C46759 /* NewPostResponseModel.swift in Sources */,
 				51C69B222D0E572B00C46759 /* LoginAPI.swift in Sources */,
+				D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */,
 				D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */,
 				51C69B422D0E585900C46759 /* UnlikePostResponseModel.swift in Sources */,
 				51CA9DC52D0FA711008C36F0 /* RegistrationViewController.swift in Sources */,

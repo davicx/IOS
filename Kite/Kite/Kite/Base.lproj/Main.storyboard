@@ -178,10 +178,10 @@
             </objects>
             <point key="canvasLocation" x="-3254" y="1017"/>
         </scene>
-        <!--Single Post View Controller-->
+        <!--Individual Post View Controller-->
         <scene sceneID="01D-Zp-yEQ">
             <objects>
-                <viewController id="UIT-vI-uFH" customClass="SinglePostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="UIT-vI-uFH" customClass="IndividualPostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k5Y-F6-wbg">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

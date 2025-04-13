@@ -12,8 +12,13 @@ import UIKit
 class HomeViewController: UIViewController {
     let loginAPI = LoginAPI()
     let postsAPI = PostsAPI()
+    
     let userDefaultManager = UserDefaultManager()
-
+    
+    lazy var currentUser: String = {
+        return userDefaultManager.getLoggedInUser()
+    }()
+    
     var postsArrayNoImage = [Post]()
     var postsArray = [Post]()
 
@@ -22,6 +27,31 @@ class HomeViewController: UIViewController {
     // Polling Manager
     private let pollingManager = PollingManager()
 
+    //DELEGATE FUNCTIONS
+    //Function D1: Like a Post
+    func userLikePost(currentPostID: Int) {
+        print("DELEGATE VC YOOO Liked update the MAIN VIEW MA MAN \(currentPostID)")
+        for post in postsArray {
+            if(post.postID == currentPostID) {
+                post.simpleLikesArray?.append(currentUser)
+            }
+        }
+    }
+    
+    //Function D2: UnlikePost
+    func userUnlikePost(currentPostID: Int) {
+        print("DELEGATE VC  YOOO Un like me dude update the MAIN VIEW MA MAN \(currentPostID)")
+        for post in postsArray {
+            if(post.postID == currentPostID) {
+                if let index = post.simpleLikesArray!.firstIndex(of: "davey") {
+                    post.simpleLikesArray?.remove(at: index)
+                }
+            }
+        }
+    }
+    
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,7 +81,7 @@ class HomeViewController: UIViewController {
 
     // Fetch posts using the API
     func fetchPosts() {
-        //print("STEP 1: fetchPosts")
+        print("STEP 1: fetchPosts")
         Task {
             do {
                 //print("STEP 2: postsResponseModel")
@@ -61,7 +91,7 @@ class HomeViewController: UIViewController {
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
 
                 for post in postsArray {
-                    //print("post caption! \(post.postID)")
+                    print("post Liked! \(post.isLikedByCurrentUser)")
                     //print(post.postCaption)
                     //print("")
                 }
@@ -89,7 +119,7 @@ class HomeViewController: UIViewController {
     // Data Passing with Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Segue.showIndividualPost,
-           let postViewController = segue.destination as? SinglePostViewController,
+           let postViewController = segue.destination as? IndividualPostViewController,
            let selectedPost = sender as? Post {
             postViewController.currentPost = selectedPost
         }
