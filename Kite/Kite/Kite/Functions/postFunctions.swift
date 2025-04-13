@@ -43,6 +43,7 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.timeMessage = post.timeMessage
         
         currentPost.created = post.created
+        currentPost.isLikedByCurrentUser = post.isLikedByCurrentUser
         
         currentPost.commentsArray = post.commentsArray
         currentPost.postLikesArray = post.postLikesArray

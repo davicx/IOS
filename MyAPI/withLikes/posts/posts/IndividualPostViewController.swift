@@ -143,7 +143,6 @@ class IndividualPostViewController: UIViewController {
         }
         
     }
-    
    
 }
 

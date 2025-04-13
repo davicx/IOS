@@ -17,7 +17,7 @@ struct PostResponseModel: Codable {
     let currentUser: String
     
     init() {
-        self.data = [PostModel(postID: 0, postType: "", groupID: 0, listID: 0, postFrom: "", postTo: "", postCaption: "", fileName: "", fileNameServer: "", fileURL: "", cloudBucket: "", cloudKey: "", videoURL: "", videoCode: "", postDate: "", postTime: "", timeMessage: "", created: "", commentsArray: [], postLikesArray: [], simpleLikesArray: [])]
+        self.data = [PostModel(postID: 0, postType: "", groupID: 0, listID: 0, postFrom: "", postTo: "", postCaption: "", fileName: "", fileNameServer: "", fileURL: "", cloudBucket: "", cloudKey: "", videoURL: "", videoCode: "", postDate: "", postTime: "", timeMessage: "", created: "", isLikedByCurrentUser: false, commentsArray: [], postLikesArray: [], simpleLikesArray: [])]
         self.message = ""
         self.success = false
         self.statusCode = 500
