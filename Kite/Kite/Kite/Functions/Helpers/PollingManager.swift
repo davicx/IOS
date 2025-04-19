@@ -20,7 +20,7 @@ class PollingManager {
     
     var onFetchPosts: (() -> Void)?
     
-    init(pollingInterval: TimeInterval = 5.0) {
+    init(pollingInterval: TimeInterval = 1005.0) {
         self.pollingInterval = pollingInterval
     }
     
