@@ -64,43 +64,7 @@ class HomeViewController: UIViewController, LikePostDelegate {
             }
         }
     }
-    
-    //WORKS
-    /*
-    //Function D1: Like a Post
-    func userLikePost(currentPostID: Int, likeModel: LikeModel) {
-        print("DELEGATE VC YOOO Liked update the MAIN VIEW MA MAN \(currentPostID)")
-        
-        /*
-        for post in postsArray {
-            if(post.postID == currentPostID) {
-                //postLikesArray
-                post.simpleLikesArray?.append(currentUser)
-                post.isLikedByCurrentUser = true
-                post.postLikesArray?.append(likeModel)
-            }
-        }
-         */
-    }
-    
-    //Function D2: UnlikePost
-    func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
-        print("DELEGATE VC  YOOO Un like me dude update the MAIN VIEW MA MAN \(currentPostID)")
-        /*
-        for post in postsArray {
-            if(post.postID == currentPostID) {
-                if let index = post.simpleLikesArray!.firstIndex(of: "davey") {
-                    //postLikesArray
-                    post.simpleLikesArray?.remove(at: index)
-                    post.isLikedByCurrentUser = false
-                    //remove the postLikesArray that matches the current user
-                }
-            }
-        }
-         */
-    }
-     */
-     
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,12 +83,19 @@ class HomeViewController: UIViewController, LikePostDelegate {
         setupTableView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        postsTableView.reloadData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         for post in postsArray {
             print(post.postID)
-            print(post.simpleLikesArray)
+            print(post.isLikedByCurrentUser)
+            //print(post.simpleLikesArray)
+            //print(post.postLikesArray)
             print(" ")
         }
         
@@ -224,6 +195,44 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 
+
+
+//WORKS
+/*
+//Function D1: Like a Post
+func userLikePost(currentPostID: Int, likeModel: LikeModel) {
+    print("DELEGATE VC YOOO Liked update the MAIN VIEW MA MAN \(currentPostID)")
+    
+    /*
+    for post in postsArray {
+        if(post.postID == currentPostID) {
+            //postLikesArray
+            post.simpleLikesArray?.append(currentUser)
+            post.isLikedByCurrentUser = true
+            post.postLikesArray?.append(likeModel)
+        }
+    }
+     */
+}
+
+//Function D2: UnlikePost
+func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
+    print("DELEGATE VC  YOOO Un like me dude update the MAIN VIEW MA MAN \(currentPostID)")
+    /*
+    for post in postsArray {
+        if(post.postID == currentPostID) {
+            if let index = post.simpleLikesArray!.firstIndex(of: "davey") {
+                //postLikesArray
+                post.simpleLikesArray?.remove(at: index)
+                post.isLikedByCurrentUser = false
+                //remove the postLikesArray that matches the current user
+            }
+        }
+    }
+     */
+}
+ */
+ 
 
 
 

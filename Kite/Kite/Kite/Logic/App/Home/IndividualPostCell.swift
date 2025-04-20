@@ -141,7 +141,25 @@ class IndividualPostCell: UITableViewCell {
         
     }
     
+    func updatePost(with post: Post) {
+        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let postCaption = post.postCaption ?? "no caption"
+        
+        let imageHeight = getImageHeight(image: currentImage)
+        postImageHeightConstraint?.constant = imageHeight
+        postImage.image = currentImage
+        
+        let captionHeight = round(calculateLabelHeight(text: postCaption))
+        postCaptionHeightConstraint?.constant = captionHeight
+        postCaptionLabel.text = postCaption
+        
+        postSocialsLabel.text = "Post Count: \(post.simpleLikesArray?.count ?? 0)"
+        
+        layoutIfNeeded()
+    }
 
+    
+    /*
     func updatePost(with post: Post) {
         let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
         let postCaption = post.postCaption ?? "no caption"
@@ -161,6 +179,7 @@ class IndividualPostCell: UITableViewCell {
         layoutIfNeeded()
         
     }
+     */
     
 
 }
