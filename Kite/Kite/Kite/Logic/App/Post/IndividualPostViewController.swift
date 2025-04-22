@@ -33,6 +33,8 @@ class IndividualPostViewController: UIViewController {
     let likeCountLabel = UILabel()
     let likeStackView = UIStackView()
     
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -45,9 +47,9 @@ class IndividualPostViewController: UIViewController {
     
     func setUpViews() {
         guard let currentPost = currentPost else { return }
-        var postLikedByCurrentUser : Bool = currentPost.isLikedByCurrentUser ?? false
-        var likeCount : Int = currentPost.simpleLikesArray?.count ?? 0
-        var simpleLikesArray : Array = currentPost.simpleLikesArray ?? []
+        //var postLikedByCurrentUser : Bool = currentPost.isLikedByCurrentUser ?? false
+        //var likeCount : Int = currentPost.simpleLikesArray?.count ?? 0
+        //var simpleLikesArray : Array = currentPost.simpleLikesArray ?? []
 
         // Image View
         postImage.contentMode = .scaleAspectFill
@@ -99,8 +101,11 @@ class IndividualPostViewController: UIViewController {
             likeStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
             likeStackView.heightAnchor.constraint(equalToConstant: 40)
             
-            
         ])
+        
+        activityIndicator.center = view.center;
+        view.addSubview(activityIndicator);
+        
     }
     
     
@@ -115,6 +120,26 @@ class IndividualPostViewController: UIViewController {
         }
     }
     
+    //NEW
+    /*
+     @IBAction func likeButtonTapped(_ sender: UIButton) {
+         guard let post = currentPost else {
+             print("Error: currentPost is nil")
+             return
+         }
+
+         let groupID: Int = post.groupID ?? 0
+
+         // TODO: Replace this with call to handleLike / handleUnlike for better readability
+         if post.isLikedByCurrentUser {
+             handleUnlike(post, groupID: groupID)
+         } else {
+             handleLike(post, groupID: groupID)
+         }
+     }
+     */
+    //NEW
+    
 
     @IBAction func likeButtonTapped(_ sender: UIButton) {
         guard let post = currentPost else {
@@ -124,118 +149,178 @@ class IndividualPostViewController: UIViewController {
 
         let groupID: Int = post.groupID ?? 0
 
+        if post.isLikedByCurrentUser == true {
+            handleUnlike(post: post, groupID: groupID)
+        } else {
+            handleLike(post: post, groupID: groupID)
+        }
+        
+        /*
         //UNLIKE
         if post.isLikedByCurrentUser == true {
-            print("UNLIKE API \(post.isLikedByCurrentUser)")
-            Task{
-                do{
-                    
-                    //STEP 1: Call API
-                    let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
-
-                    //Success
-                    if(unlikePostResponseModel.success == true) {
-                        print("SUCCESS: unlikePostResponseModel")
-                        
-  
-                        let data = unlikePostResponseModel.data
-                        
-                        let newLike = LikeModel(
-                            postLikeID: data.postLikeID,
-                            postID: data.postID,
-                            likedByUserName: data.likedByUserName,
-                            likedByImage: data.likedByImage,
-                            likedByFirstName: data.likedByFirstName,
-                            likedByLastName: data.likedByLastName,
-                            timestamp: data.timestamp,
-                            friendshipStatus: data.friendshipStatus
-                        )
-               
-                        // STEP 2: Update Current Post Values to remove like
-                        post.isLikedByCurrentUser = false
-
-                        // Remove LikeModel with matching postLikeID
-                        let likeIDToRemove = newLike.postLikeID
-                        post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeIDToRemove }
-                        
-                        // Remove username from simpleLikesArray
-                        let currentUsername = unlikePostResponseModel.currentUser
-                        post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != currentUsername }
-                        
-                        DispatchQueue.main.async {
-                            self.toggleLikeUI()
-                        }
-                        
-                    //Error: Handled by API
-                    } else {
-                        print("NOT SUCCESS: unlikePostResponseModel")
-                        print(unlikePostResponseModel.data)
-            
-                    }
-         
-                //Error: Not expected
-                } catch {
-                    print("yo man error!")
-                    print(error)
-                }
-            }
+           
                  
             
         //LIKE
         } else {
 
-            // LIKE API CALL
-            print("LIKE API \(post.isLikedByCurrentUser)")
-            
-            Task{
-                //activityIndicator.startAnimating()
-                do{
-                    //STEP 1: Call API
-                    let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
-                    
-                    if(likePostResponseModel.success == true) {
-                        
-                        let data = likePostResponseModel.data
-                        
-                        let newLike = LikeModel(
-                            postLikeID: data.postLikeID,
-                            postID: data.postID,
-                            likedByUserName: data.likedByUserName,
-                            likedByImage: data.likedByImage,
-                            likedByFirstName: data.likedByFirstName,
-                            likedByLastName: data.likedByLastName,
-                            timestamp: data.timestamp,
-                            friendshipStatus: data.friendshipStatus
-                        )
-                        
-                        //STEP 2: Update Current Post Values to add like
-                        post.isLikedByCurrentUser = true
-                        post.postLikesArray?.append(newLike)
-                        post.simpleLikesArray?.append(newLike.likedByUserName)
-                        
-                        DispatchQueue.main.async {
-                            self.toggleLikeUI()
-                        }
-                        
 
-                    } else {
-                        print(likePostResponseModel)
-                        print("error dudee!")
-                        
-                    }
-                    
-                    //Error: Not expected
-                } catch{
-                    print("yo man error!")
-                    print(error)
-                }
-            }
             
         }
+         */
 
+    }
+    
+    func handleUnlike(post: Post, groupID: Int) {
+        print("UNLIKE API \(post.isLikedByCurrentUser)")
+        Task{
+            do{
+                
+                //STEP 1: Call API
+                let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
+
+                //Success
+                if(unlikePostResponseModel.success == true) {
+                    print("SUCCESS: unlikePostResponseModel")
+                    
+                    let newLike = unlikePostResponseModel.data
+          
+                    // STEP 2: Update Current Post Values to remove like
+                    post.isLikedByCurrentUser = false
+
+                    // Remove LikeModel with matching postLikeID
+                    let likeIDToRemove = newLike.postLikeID
+                    post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeIDToRemove }
+                    
+                    // Remove username from simpleLikesArray
+                    let currentUsername = unlikePostResponseModel.currentUser
+                    post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != currentUsername }
+                    
+                    DispatchQueue.main.async {
+                        self.toggleLikeUI()
+                    }
+                    
+                //Error: Handled by API
+                } else {
+                    print("NOT SUCCESS: unlikePostResponseModel")
+                    print(unlikePostResponseModel.data)
+        
+                }
+     
+            //Error: Not expected
+            } catch {
+                print("yo man error!")
+                print(error)
+            }
+        }
     }
 
     
+    func handleLike(post: Post, groupID: Int) {
+        print("LIKE API \(post.isLikedByCurrentUser)")
+        
+        Task{
+            //activityIndicator.startAnimating()
+            //likeButton.isEnabled = false // Prevent rapid tapping
+            do{
+                //STEP 1: Call API
+                let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+                
+                if(likePostResponseModel.success == true) {
+  
+                    let newLike = likePostResponseModel.data
+                    
+                    //STEP 2: Update Current Post Values to add like
+                    post.isLikedByCurrentUser = true
+                    post.postLikesArray?.append(newLike)
+                    post.simpleLikesArray?.append(newLike.likedByUserName)
+                    
+                    DispatchQueue.main.async {
+                        //self.activityIndicator.stopAnimating()
+                        //likeButton.isEnabled = true
+                        self.toggleLikeUI()
+                    }
+                    
+
+                } else {
+                    print(likePostResponseModel)
+                    print("error dudee!")
+                    
+                }
+                
+                //Error: Not expected
+            } catch{
+                print("yo man error!")
+                print(error)
+            }
+        }
+    }
+
+
+
+
+    /*
+    //NEW
+    func handleUnlike(_ post: Post, groupID: Int) {
+        Task {
+            do {
+                let response = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
+                
+                guard response.success else {
+                    print("UNLIKE NOT SUCCESS:", response.data)
+                    return
+                }
+
+                let newLike = LikeModel.from(data: response.data)
+                post.isLikedByCurrentUser = false
+                post.postLikesArray?.removeAll { $0.postLikeID == newLike.postLikeID }
+                post.simpleLikesArray?.removeAll { $0 == response.currentUser }
+
+                DispatchQueue.main.async { self.toggleLikeUI() }
+
+                // Optional: notify delegate
+                likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: newLike)
+
+            } catch {
+                print("yo man error!")
+                print(error)
+            }
+        }
+    }
+
+    //NEW
+    //NEW
+    // TODO: Extract this whole block into handleLike(post: Post, groupID: Int)
+     func handleUnlike(post: Post, groupID: Int)
+        Task {
+            do {
+                let response = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+
+                guard response.success else {
+                    print("LIKE NOT SUCCESS:", response.data)
+                    return
+                }
+
+                let newLike = LikeModel.from(data: response.data)
+                post.isLikedByCurrentUser = true
+                post.postLikesArray?.append(newLike)
+                post.simpleLikesArray?.append(newLike.likedByUserName)
+
+                DispatchQueue.main.async { self.toggleLikeUI() }
+
+                // Optional: notify delegate
+                likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: newLike)
+
+            } catch {
+                print("yo man error!")
+                print(error)
+            }
+        }
+    }
+
+    //NEW
+    
+    */
     func toggleLikeUI() {
         guard let post = currentPost else { return }
 
@@ -249,8 +334,6 @@ class IndividualPostViewController: UIViewController {
             likeCountLabel.text = likeCount
             likeButton.setImage(UIImage(named: "like"), for: .normal)
         }
-        
-
 
     }
     

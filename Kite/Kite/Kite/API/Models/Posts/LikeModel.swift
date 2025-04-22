@@ -17,6 +17,7 @@ struct LikeModel: Codable {
     let likedByLastName: String
     let timestamp: String
     let friendshipStatus: String
+    
 }
 
 

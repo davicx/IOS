@@ -94,8 +94,8 @@ class HomeViewController: UIViewController, LikePostDelegate {
         for post in postsArray {
             print(post.postID)
             print(post.isLikedByCurrentUser)
-            //print(post.simpleLikesArray)
-            //print(post.postLikesArray)
+            print(post.simpleLikesArray)
+            print(post.postLikesArray)
             print(" ")
         }
         

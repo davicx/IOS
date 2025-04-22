@@ -16,7 +16,6 @@ struct LikePostResponseModel: Codable {
     let errors: [String]
     let currentUser: String
     
-    
     init() {
         self.data = LikeModel(postLikeID: 0, postID: 0, likedByUserName: "", likedByImage: "", likedByFirstName: "", likedByLastName: "", timestamp: "", friendshipStatus: "")
         self.message = ""
