@@ -8,6 +8,569 @@
 import UIKit
 
 
+
+
+
+//WORKS
+/*
+//Function D1: Like a Post
+func userLikePost(currentPostID: Int, likeModel: LikeModel) {
+    print("DELEGATE VC YOOO Liked update the MAIN VIEW MA MAN \(currentPostID)")
+    
+    /*
+    for post in postsArray {
+        if(post.postID == currentPostID) {
+            //postLikesArray
+            post.simpleLikesArray?.append(currentUser)
+            post.isLikedByCurrentUser = true
+            post.postLikesArray?.append(likeModel)
+        }
+    }
+     */
+}
+
+//Function D2: UnlikePost
+func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
+    print("DELEGATE VC  YOOO Un like me dude update the MAIN VIEW MA MAN \(currentPostID)")
+    /*
+    for post in postsArray {
+        if(post.postID == currentPostID) {
+            if let index = post.simpleLikesArray!.firstIndex(of: "davey") {
+                //postLikesArray
+                post.simpleLikesArray?.remove(at: index)
+                post.isLikedByCurrentUser = false
+                //remove the postLikesArray that matches the current user
+            }
+        }
+    }
+     */
+}
+ */
+ 
+
+
+
+
+// Data Passing with Segue
+/*
+ /*
+ func userLikePost(currentPostID: Int, likeModel: LikeModel) {
+     print("DELEGATE VC YOOO Liked update the MAIN VIEW MA MAN \(currentPostID)")
+     // Optional: handle likeModel here if needed
+ }
+
+ func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
+     print("DELEGATE VC YOOO Un like me dude update the MAIN VIEW MA MAN \(currentPostID)")
+     // Optional: handle likeModel here if needed
+ }
+  */
+ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == Constants.Segue.showIndividualPost,
+       let postViewController = segue.destination as? IndividualPostViewController,
+       let selectedPost = sender as? Post {
+        postViewController.currentPost = selectedPost
+    }
+}
+*/
+
+//print("heightForRowAt postImageHeight \(postImageHeight) postCaptionHeight \(postCaptionHeight)")
+//print(" ")
+//print("We need this for our Caption Height \(postCaptionHeight) \(currentPost.postID)")
+//print(postCaption)
+
+//footer + postImageHeight + captionTextHeight + 8 + comments
+//return 10 + postImageHeight + captionTextHeight + 8 + 40
+
+//Post User + Post Image + Post Socials + Post Caption + divider
+
+/*
+func userDidLikePost(postID: Int, likeModel: LikeModel) {
+    guard let index = postsArray.firstIndex(where: { $0.postID == postID }) else { return }
+
+    var post = postsArray[index]
+
+    if !post.simpleLikesArray.contains(likeModel.likedByUserName) {
+        post.simpleLikesArray.append(likeModel.likedByUserName)
+    }
+
+    post.isLikedByCurrentUser = true
+    post.postLikesArray.append(likeModel)
+
+    postsArray[index] = post
+    postsTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+}
+
+func userDidUnlikePost(postID: Int, unlikedByUser: String) {
+    guard let index = postsArray.firstIndex(where: { $0.postID == postID }) else { return }
+
+    var post = postsArray[index]
+
+    post.simpleLikesArray.removeAll { $0 == unlikedByUser }
+    post.postLikesArray.removeAll { $0.likedByUserName == unlikedByUser }
+    post.isLikedByCurrentUser = false
+
+    postsArray[index] = post
+    postsTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+}
+ */
+
+
+
+
+
+
+//print("")
+//print(post.isLikedByCurrentUser)
+//print(post.simpleLikesArray)
+//print(post.postLikesArray)
+//print("")
+
+/*
+guard let post = self.post else { return }
+
+let isLiked = post.isLikedByCurrentUser ?? false
+let likeImage = UIImage(systemName: isLiked ? "heart.fill" : "heart")
+likeButton.setImage(likeImage, for: .normal)
+likeButton.tintColor = isLiked ? .systemRed : .gray
+
+likeCountLabel.text = "\(post.postLikesArray?.count ?? 0)"
+ */
+
+
+
+/*
+@IBAction func likeButtonTapped(_ sender: UIButton) {
+    guard let post = currentPost else {
+        print("Error: currentPost is nil")
+        return
+    }
+    
+    let groupID : Int = post.groupID ?? 0
+    //likeButton.isEnabled = false // Prevent rapid tapping
+
+    if post.isLikedByCurrentUser == true {
+        
+        // UNLIKE API CALL
+        print("UNLIKE API \(post.isLikedByCurrentUser)")
+    
+        
+        post.isLikedByCurrentUser = false
+        
+        
+    } else {
+        
+        // LIKE API CALL
+        print("LIKE API \(post.isLikedByCurrentUser)")
+        
+        post.isLikedByCurrentUser = true
+    }
+    
+    //print(post.simpleLikesArray)
+    print(" isLikedByCurrentUser \(post.isLikedByCurrentUser)")
+    //print(post.postLikesArray)
+}
+*/
+
+
+/*
+ 
+ @objc func likeButtonTappedVersionTWO() {
+     let activityIndicator = UIActivityIndicatorView(style: .large)
+     activityIndicator.center = view.center;
+     view.addSubview(activityIndicator);
+     
+     guard let post = currentPost else {
+         print("Error: currentPost is nil")
+         return
+     }
+     
+     //STEP 1: Determine if Post is Already Liked
+     let simpleLikesArray : Array = post.simpleLikesArray ?? []
+     post.isLikedByCurrentUser = !(post.isLikedByCurrentUser ?? false)
+     let groupID : Int = post.groupID ?? 0
+     
+     
+     //STEP 2: Make Call to API to Like a Post
+     if !simpleLikesArray.contains(currentUser) {
+         print("Like Me")
+         Task{
+             //activityIndicator.startAnimating()
+             do{
+                 //Step 2A: Call API
+                 let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+                 
+                 if(likePostResponseModel.success == true) {
+                     print("SUCCESS: likePostResponseModel")
+                     
+                     //Step 2B: Update API
+                     likeButton.setImage(UIImage(named: "liked")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                     likeButton.imageView?.contentMode = .scaleAspectFit
+                     likeCountLabel.text = String((Int(likeCountLabel.text ?? "0") ?? 0) + 1)
+                     
+                     //Step 2C: Update HomeViewController
+                     let data = likePostResponseModel.data
+                     
+                     let likeModel = LikeModel(
+                         postLikeID: data.postLikeID,
+                         postID: data.postID,
+                         likedByUserName: data.likedByUserName,
+                         likedByImage: data.likedByImage,
+                         likedByFirstName: data.likedByFirstName,
+                         likedByLastName: data.likedByLastName,
+                         timestamp: data.timestamp,
+                         friendshipStatus: data.friendshipStatus
+                     )
+                     likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
+
+                     //Error: Handled by API
+                 } else {
+                     print(likePostResponseModel)
+                     print("error dudee!")
+                     
+                 }
+                 
+                 //Error: Not expected
+             } catch{
+                 print("yo man error!")
+                 print(error)
+             }
+         }
+     
+     //STEP 3: Make Call to API to Unlike a Post
+     } else {
+         print("Already Liked")
+         Task{
+             do{
+                 //Step 3A: Call API
+                 let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
+
+                 //Success
+                 if(unlikePostResponseModel.success == true) {
+                     print("SUCCESS: unlikePostResponseModel")
+                     
+                     //Step 3B: Update API
+                     likeButton.setImage(UIImage(named: "like")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                     likeButton.imageView?.contentMode = .scaleAspectFit
+                     likeCountLabel.text = String(max((Int(likeCountLabel.text ?? "0") ?? 0) - 1, 0))
+                     
+                     //Step 3C: Update HomeViewController
+                     let data = unlikePostResponseModel.data
+                     let likeModel = LikeModel(
+                         postLikeID: data.postLikeID,
+                         postID: data.postID,
+                         likedByUserName: data.likedByUserName,
+                         likedByImage: data.likedByImage,
+                         likedByFirstName: data.likedByFirstName,
+                         likedByLastName: data.likedByLastName,
+                         timestamp: data.timestamp,
+                         friendshipStatus: data.friendshipStatus
+                     )
+                     likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
+
+                 //Error: Handled by API
+                 } else {
+                     print("error dudee!")
+                     
+                 }
+      
+             //Error: Not expected
+             } catch {
+                 
+                 print("yo man error!")
+                 print(error)
+             }
+         }
+
+     }
+     
+     
+ }
+ */
+
+/*
+ 
+ //func handleLikeResponse(_ likeModel: LikeModel) {
+ //func printPostLikes(post: Post)
+ func handleLikeResponse(likeModel: LikeModel, currentUser: String) {
+     guard let post = currentPost else {
+         
+         print("Error: currentPost is nil")
+         return
+     }
+     
+     post.isLikedByCurrentUser = true
+
+     // Ensure no duplicates
+     post.simpleLikesArray?.removeAll(where: { $0 == likeModel.likedByUserName })
+     post.postLikesArray?.removeAll(where: { $0.postLikeID == likeModel.postLikeID })
+
+     post.simpleLikesArray?.append(likeModel.likedByUserName)
+     post.postLikesArray?.append(likeModel)
+
+     //updateLikeButtonUI()
+ }
+
+ //func handleUnlikeResponse(_ likeModel: LikeModel) {
+ func handleUnlikeResponse(likeModel: LikeModel, currentUser: String) {
+     guard let post = currentPost else {
+         print("Error: currentPost is nil")
+         return
+     }
+
+     post.isLikedByCurrentUser = false
+
+     post.simpleLikesArray?.removeAll(where: { $0 == likeModel.likedByUserName })
+     post.postLikesArray?.removeAll(where: { $0.postLikeID == likeModel.postLikeID })
+
+     //updateLikeButtonUI()
+ }
+
+ */
+/*
+ //Need Current Status to update and toggle
+ @objc func likeButtonTappedORIGINAL() {
+     print("Like Button!")
+     guard let post = currentPost else {
+         print("Error: currentPost is nil")
+         return
+     }
+     
+     // Safely unwrap and toggle
+     post.isLikedByCurrentUser = !(post.isLikedByCurrentUser ?? false)
+     
+     // Update button image
+     let newImageName = post.isLikedByCurrentUser == true ? "liked" : "like"
+     likeButton.setImage(UIImage(named: newImageName), for: .normal)
+     
+     // Optional: update like count label if you modify the count
+     let currentLikeCount = post.simpleLikesArray?.count ?? 0
+     likeCountLabel.text = "\(currentLikeCount)"
+ }
+ 
+ 
+ //Like Button
+ @IBAction func likeButtonTappedPULLFROM(_ sender: UIButton) {
+     guard let post = currentPost else {
+         print("Error: currentPost is nil")
+         return
+     }
+     
+     let groupID : Int = post.groupID ?? 0
+     //likeButton.isEnabled = false // Prevent rapid tapping
+
+     if post.isLikedByCurrentUser == true {
+         
+         // UNLIKE API CALL
+         print("UNLIKE API \(post.isLikedByCurrentUser)")
+         Task{
+             do{
+                 //Step 3A: Call API
+                 let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
+
+                 //Success
+                 if(unlikePostResponseModel.success == true) {
+                     print("SUCCESS: unlikePostResponseModel")
+                     
+                     post.isLikedByCurrentUser = false
+                     
+                     //print(unlikePostResponseModel.data.)
+                     
+
+                     let data = unlikePostResponseModel.data
+                     
+                     let likeModel = LikeModel(
+                         postLikeID: data.postLikeID,
+                         postID: data.postID,
+                         likedByUserName: data.likedByUserName,
+                         likedByImage: data.likedByImage,
+                         likedByFirstName: data.likedByFirstName,
+                         likedByLastName: data.likedByLastName,
+                         timestamp: data.timestamp,
+                         friendshipStatus: data.friendshipStatus
+                     )
+                     
+                     print(" UNLIKE ")
+                     print(post.simpleLikesArray)
+                     print(likeModel)
+                     print(" ")
+                     print("____________________________________ ")
+                     
+                     //STEP 1: Update Current Post Values
+                     
+                     //STEP 2: Update UI based on new values
+                     
+                     // Update button image
+                     //let newImageName = post.isLikedByCurrentUser == true ? "liked" : "like"
+                     //likeButton.setImage(UIImage(named: newImageName), for: .normal)
+                     
+                     // Optional: update like count label if you modify the count
+                     //let currentLikeCount = post.simpleLikesArray?.count ?? 0
+                     //likeCountLabel.text = "\(currentLikeCount)"
+                     
+                     
+                 //Error: Handled by API
+                 } else {
+                     print("NOT SUCCESS: unlikePostResponseModel")
+                     print(unlikePostResponseModel.data)
+                     
+                     
+                 }
+      
+             //Error: Not expected
+             } catch {
+                 print("yo man error!")
+                 print(error)
+             }
+         }
+         
+         
+         //post.isLikedByCurrentUser = false
+         
+         
+     } else {
+         
+         // LIKE API CALL
+         print("LIKE API \(post.isLikedByCurrentUser)")
+         
+         Task{
+             //activityIndicator.startAnimating()
+             do{
+                 //Step 2A: Call API
+                 let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+                 
+                 if(likePostResponseModel.success == true) {
+                     
+                     let data = likePostResponseModel.data
+                     
+                     let likeModel = LikeModel(
+                         postLikeID: data.postLikeID,
+                         postID: data.postID,
+                         likedByUserName: data.likedByUserName,
+                         likedByImage: data.likedByImage,
+                         likedByFirstName: data.likedByFirstName,
+                         likedByLastName: data.likedByLastName,
+                         timestamp: data.timestamp,
+                         friendshipStatus: data.friendshipStatus
+                     )
+                     
+                     print(likeModel)
+                     
+                     post.isLikedByCurrentUser = true
+                     print(" LIKE ")
+                     print(post.simpleLikesArray)
+                     print(" ")
+                     print("____________________________________ ")
+
+                 } else {
+                     print(likePostResponseModel)
+                     print("error dudee!")
+                     
+                 }
+                 
+                 //Error: Not expected
+             } catch{
+                 print("yo man error!")
+                 print(error)
+             }
+         }
+         
+         post.isLikedByCurrentUser = true
+     }
+     
+     //print(post.simpleLikesArray)
+     print(" isLikedByCurrentUser \(post.isLikedByCurrentUser)")
+     //print(post.postLikesArray)
+ }
+
+ */
+
+
+
+
+//NEW CODE TO USE
+/*
+ protocol LikePostDelegate: AnyObject {
+     func userDidLikePost(postID: Int, likeModel: LikeModel)
+     func userDidUnlikePost(postID: Int, unlikedByUser: String)
+ }
+
+ 
+ class IndividualPostViewController: UIViewController {
+
+     @IBOutlet weak var likeButton: UIButton!
+     @IBOutlet weak var likeCountLabel: UILabel!
+     
+     var post: Post?
+
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         updateLikeButtonUI()
+     }
+
+
+
+
+
+ }
+
+ */
+
+//NOTES
+
+
+ //print("likePostResponseModel")
+ //print(likePostResponseModel.data)
+ //print("likePostResponseModel")
+ 
+/*
+ print("unlikePostResponseModel")
+ print(unlikePostResponseModel.message)
+ print(unlikePostResponseModel.data)
+ print("unlikePostResponseModel")
+ {
+     "postLikeID": 220,
+     "postID": 722,
+     "likedByUserName": "frodo",
+     "likedByImage": "frodo.jpg",
+     "likedByFirstName": "frodo",
+     "likedByLastName": "v",
+     "timestamp": "2025-04-08T23:36:10.000Z",
+     "friendshipStatus": "friends"
+ },
+ 
+ LikeModel(postLikeID: 236, postID: 722, likedByUserName: "davey", likedByImage: "frodo.jpg", likedByFirstName: "David", likedByLastName: "Vasquez", timestamp: "2025-04-15T23:32:16.000Z", friendshipStatus: "you")
+ */
+
+/*
+//flipButton(withString: "", on: sender)
+likeCountLabel.text = String(simpleLikesArray.count + 1)
+let likedImage = UIImage(named: "liked")
+//let imageName = currentPost.isLikedByCurrentUser == true ? "liked" : "like"
+//likeButton.setImage(UIImage(named: imageName), for: .normal)
+
+likeButton.setImage(likedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+likeButton.imageView?.contentMode = .scaleAspectFit
+
+
+if (likePostDelegate != nil) {
+    print("DELEGATE: Individual Post VC You liked the Post with post ID \(post.postID) and group ID \(groupID)")
+    likePostDelegate!.userLikePost(currentPostID: post.postID)
+}
+ */
+
+/*
+likeCountLabel.text = String(simpleLikesArray.count - 1)
+let likedImage = UIImage(named: "like")
+likeButton.setImage(likedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+likeButton.imageView?.contentMode = .scaleAspectFit
+
+if (likePostDelegate != nil) {
+    print("DELEGATE: Individual Post VC You unliked the Post with post ID \(post.postID) and group ID \(groupID)")
+    likePostDelegate!.userUnlikePost(currentPostID: post.postID)
+}
+ */
+
+
 /*
 class ViewControllerEXAMPLE: UIViewController {
 

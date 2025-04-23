@@ -90,7 +90,7 @@ class HomeViewController: UIViewController, LikePostDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        /*
         for post in postsArray {
             print(post.postID)
             print(post.isLikedByCurrentUser)
@@ -98,6 +98,7 @@ class HomeViewController: UIViewController, LikePostDelegate {
             print(post.postLikesArray)
             print(" ")
         }
+         */
         
         pollingManager.startPolling() // Restart polling if view reappears
     }
@@ -118,11 +119,13 @@ class HomeViewController: UIViewController, LikePostDelegate {
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
 
+                /*
                 for post in postsArray {
-                    //print("post Liked! \(post.isLikedByCurrentUser)")
-                    //print(post.postCaption)
-                    //print("")
+                    print("post Liked! \(post.isLikedByCurrentUser)")
+                    print(post.postCaption)
+                    print("")
                 }
+                 */
                 
                 DispatchQueue.main.async {
                     self.postsTableView.reloadData()
@@ -193,112 +196,5 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
-
-
-
-
-//WORKS
-/*
-//Function D1: Like a Post
-func userLikePost(currentPostID: Int, likeModel: LikeModel) {
-    print("DELEGATE VC YOOO Liked update the MAIN VIEW MA MAN \(currentPostID)")
-    
-    /*
-    for post in postsArray {
-        if(post.postID == currentPostID) {
-            //postLikesArray
-            post.simpleLikesArray?.append(currentUser)
-            post.isLikedByCurrentUser = true
-            post.postLikesArray?.append(likeModel)
-        }
-    }
-     */
-}
-
-//Function D2: UnlikePost
-func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
-    print("DELEGATE VC  YOOO Un like me dude update the MAIN VIEW MA MAN \(currentPostID)")
-    /*
-    for post in postsArray {
-        if(post.postID == currentPostID) {
-            if let index = post.simpleLikesArray!.firstIndex(of: "davey") {
-                //postLikesArray
-                post.simpleLikesArray?.remove(at: index)
-                post.isLikedByCurrentUser = false
-                //remove the postLikesArray that matches the current user
-            }
-        }
-    }
-     */
-}
- */
- 
-
-
-
-
-// Data Passing with Segue
-/*
- /*
- func userLikePost(currentPostID: Int, likeModel: LikeModel) {
-     print("DELEGATE VC YOOO Liked update the MAIN VIEW MA MAN \(currentPostID)")
-     // Optional: handle likeModel here if needed
- }
-
- func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
-     print("DELEGATE VC YOOO Un like me dude update the MAIN VIEW MA MAN \(currentPostID)")
-     // Optional: handle likeModel here if needed
- }
-  */
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == Constants.Segue.showIndividualPost,
-       let postViewController = segue.destination as? IndividualPostViewController,
-       let selectedPost = sender as? Post {
-        postViewController.currentPost = selectedPost
-    }
-}
-*/
-
-//print("heightForRowAt postImageHeight \(postImageHeight) postCaptionHeight \(postCaptionHeight)")
-//print(" ")
-//print("We need this for our Caption Height \(postCaptionHeight) \(currentPost.postID)")
-//print(postCaption)
-
-//footer + postImageHeight + captionTextHeight + 8 + comments
-//return 10 + postImageHeight + captionTextHeight + 8 + 40
-
-//Post User + Post Image + Post Socials + Post Caption + divider
-
-/*
-func userDidLikePost(postID: Int, likeModel: LikeModel) {
-    guard let index = postsArray.firstIndex(where: { $0.postID == postID }) else { return }
-
-    var post = postsArray[index]
-
-    if !post.simpleLikesArray.contains(likeModel.likedByUserName) {
-        post.simpleLikesArray.append(likeModel.likedByUserName)
-    }
-
-    post.isLikedByCurrentUser = true
-    post.postLikesArray.append(likeModel)
-
-    postsArray[index] = post
-    postsTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
-}
-
-func userDidUnlikePost(postID: Int, unlikedByUser: String) {
-    guard let index = postsArray.firstIndex(where: { $0.postID == postID }) else { return }
-
-    var post = postsArray[index]
-
-    post.simpleLikesArray.removeAll { $0 == unlikedByUser }
-    post.postLikesArray.removeAll { $0.likedByUserName == unlikedByUser }
-    post.isLikedByCurrentUser = false
-
-    postsArray[index] = post
-    postsTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
-}
- */
-
 
 

@@ -33,4 +33,13 @@ struct Constants {
         static let mainTabBarController = "MainTabBarController"
         static let onboardingViewController = "MainOnboardingViewController"
     }
+
+    //Image Constants
+    struct Image {
+        static let liked = "liked"
+        static let unliked = "like"
+        static let fallbackPostImage = "background_10"
+    }
+    
 }
+
