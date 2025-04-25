@@ -21,8 +21,14 @@ class IndividualPostViewController: UIViewController {
 
     var likePostDelegate: LikePostDelegate? = nil
     var currentPost: Post!
+
     
-    //STEP 1: Set up UI Elements
+    //STEP 1: Set up Table View
+    let commentsTableView = UITableView()
+    var comments: [String] = []
+    
+    
+    //STEP 2: Set up UI Elements
     let postImage = UIImageView()
     let postCaptionLabel = UILabel()
     
@@ -42,6 +48,19 @@ class IndividualPostViewController: UIViewController {
         
         setUpViews()
         setInitialUI()
+        
+        //TEMP
+        comments = [
+            "This is an awesome post!",
+            "Nice picture",
+            "Where did you take this?",
+            "Wow, I love the vibes here.",
+            "Great shot!",
+            "Great shot!",
+            "Great shot!"
+        ]
+        commentsTableView.reloadData()
+        //TEMP
 
     }
     
@@ -49,6 +68,7 @@ class IndividualPostViewController: UIViewController {
     func setUpViews() {
         guard let currentPost = currentPost else { return }
 
+        //POST
         // Image View
         postImage.contentMode = .scaleAspectFill
         postImage.clipsToBounds = true
@@ -86,6 +106,7 @@ class IndividualPostViewController: UIViewController {
         dividerView.backgroundColor = .blue
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dividerView)
+
         
         // Constraints
         NSLayoutConstraint.activate([
@@ -98,14 +119,7 @@ class IndividualPostViewController: UIViewController {
             postCaptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             postCaptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             postCaptionLabel.heightAnchor.constraint(equalToConstant: 200),
-            
-            /*
-            likeStackView.topAnchor.constraint(equalTo: postCaptionLabel.bottomAnchor, constant: 16),
-            likeStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            likeStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            likeStackView.heightAnchor.constraint(equalToConstant: 40),
-            */
-            
+
             likeStackView.topAnchor.constraint(equalTo: postCaptionLabel.bottomAnchor, constant: 16),
             likeStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             likeStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
@@ -117,11 +131,32 @@ class IndividualPostViewController: UIViewController {
             dividerView.heightAnchor.constraint(equalToConstant: 2)
         ])
         
+        //COMMENTS: Configure Comments Table View
+        commentsTableView.translatesAutoresizingMaskIntoConstraints = false
+        commentsTableView.isScrollEnabled = true
+        commentsTableView.dataSource = self
+        commentsTableView.delegate = self
+        commentsTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
+        commentsTableView.separatorStyle = .none
+        commentsTableView.rowHeight = UITableView.automaticDimension
+        commentsTableView.estimatedRowHeight = 44
+        
+        view.addSubview(commentsTableView)
+
+        // TableView Constraints
+        NSLayoutConstraint.activate([
+            commentsTableView.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: 8),
+            commentsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            commentsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            commentsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        
+        //ACTIVITY Indicator
         activityIndicator.center = view.center;
         view.addSubview(activityIndicator);
         
     }
-    
 
     func setInitialUI() {
         if let selectedPost = currentPost {
@@ -288,4 +323,92 @@ class IndividualPostViewController: UIViewController {
     
 }
 
+extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
 
+    // Number of rows = number of comments
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return comments.count
+    }
+
+    // Populate each cell with comment data
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentTableViewCell
+        let comment = comments[indexPath.row]
+        cell.configure(with: comment)
+        return cell
+    }
+
+    // Optional: Set row height (or use auto layout in cell)
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+}
+
+
+
+
+//NEW
+/*
+ class IndividualPostViewController: UIViewController, UITableViewDataSource {
+
+     let tableView = UITableView()
+     var comments: [String] = [
+         "This is amazing!", "Love it", "What a great post!"
+     ]
+
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         view.backgroundColor = .white
+         setUpTableView()
+         setInitialUI()
+     }
+
+     func setUpTableView() {
+         tableView.translatesAutoresizingMaskIntoConstraints = false
+         tableView.dataSource = self
+         tableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentCell")
+         view.addSubview(tableView)
+
+         NSLayoutConstraint.activate([
+             tableView.topAnchor.constraint(equalTo: view.topAnchor),
+             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+         ])
+
+         // Create the header view from your existing UI
+         let headerView = UIView()
+         headerView.translatesAutoresizingMaskIntoConstraints = false
+         // add postImage, caption, likeStackView, dividerView like before
+         // but to headerView instead of self.view
+
+         // For example:
+         headerView.addSubview(postImage)
+         headerView.addSubview(postCaptionLabel)
+         headerView.addSubview(likeStackView)
+         headerView.addSubview(dividerView)
+         // layout as before with constraints
+
+         // Important: size the header view properly!
+         let headerHeight: CGFloat = 400 + 200 + 40 + 8 + 2 // adjust based on your layout
+         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: headerHeight)
+         tableView.tableHeaderView = headerView
+     }
+
+     // MARK: - UITableViewDataSource
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return comments.count
+     }
+
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentTableViewCell
+         cell.configure(with: comments[indexPath.row])
+         return cell
+     }
+ }
+
+ */
