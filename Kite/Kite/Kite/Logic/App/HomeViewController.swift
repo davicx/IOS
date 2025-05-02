@@ -8,6 +8,13 @@
 
 import UIKit
 
+// MARK: - UI Setup
+// MARK: - Actions
+// MARK: - Network
+// MARK: - UITableViewDataSource
+// MARK: - PostCellDelegate
+
+
 
 class HomeViewController: UIViewController, LikePostDelegate {
     let loginAPI = LoginAPI()
@@ -147,7 +154,18 @@ class HomeViewController: UIViewController, LikePostDelegate {
         postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Segue.showIndividualPost,
+           let postViewController = segue.destination as? IndividualPostViewController,
+           let selectedPost = sender as? Post {
+            postViewController.currentPost = selectedPost
+            postViewController.likePostDelegate = self
+            postViewController.commentsArray = selectedPost.commentsArray ?? [] // 👈 Pass comments here
+        }
+    }
 
+
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Segue.showIndividualPost,
            let postViewController = segue.destination as? IndividualPostViewController,
@@ -156,6 +174,7 @@ class HomeViewController: UIViewController, LikePostDelegate {
             postViewController.likePostDelegate = self
         }
     }
+     */
 }
 
 
