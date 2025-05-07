@@ -140,7 +140,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
                 let comment = comments[indexPath.row - 1]
                 cell.configure(with: comment)  // <-- pass the whole comment
             } else {
-                let emptyComment = CommentModel(commentID: nil, postID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil)
+                let emptyComment = CommentModel(commentID: nil, postID: nil, groupID: nil, listID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil)
                 cell.configure(with: emptyComment)
             }
             
