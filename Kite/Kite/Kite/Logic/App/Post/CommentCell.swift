@@ -9,13 +9,13 @@
 import UIKit
 
 //Need a Did Like Comment Delegate
-/*
- protocol CommentCellDelegate: AnyObject {
+protocol CommentCellDelegate: AnyObject {
      func didTapLikeCommentButton(in cell: CommentCell)
- }
- */
+}
+
 
 class CommentCell: UITableViewCell {
+    weak var delegate: CommentCellDelegate?
     
     // MAIN: Views
     let userView = UIView()
@@ -161,16 +161,52 @@ class CommentCell: UITableViewCell {
     }
 
     private func setupActions() {
-        likeButton.addTarget(self, action: #selector(didTapLike), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(didTapLikeComment), for: .touchUpInside)
     }
 
-    // MARK: - Actions
-    @objc private func didTapLike() {
+
+    @objc private func didTapLikeComment() {
         print("Like button tapped")
         // Handle UI update or delegate callback here
+        delegate?.didTapLikeCommentButton(in: self)
     }
+    
+    func configureComment(with comment: CommentModel) {
+        //print(comment.commentID)
+        
+        userNameLabel.text = comment.commentFrom
+        commentTextView.text = comment.commentCaption
 
-    // MARK: - Constraints
+        let likeCount = comment.commentLikes?.count ?? comment.commentLikeCount ?? 0
+        likesLabel.text = "\(likeCount) likes"
+
+        let imageName = comment.commentLikedByCurrentUser == true ? "liked" : "like"
+        likeButton.setImage(UIImage(named: imageName), for: .normal)
+    }
+    
+    /*
+     func setupButtonTarget() {
+         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+     }
+
+     @objc private func likeButtonTapped() {
+         delegate?.didTapLikeButton(in: self)
+     }
+
+     func configurePost(with post: Post) {
+         postImage.image = post.postImageData ?? UIImage(named: Constants.Image.fallbackPostImage)
+         postCaptionLabel.text = post.postCaption
+         likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
+
+         let imageName = post.isLikedByCurrentUser == true ? "liked" : "like"
+         likeButton.setImage(UIImage(named: imageName), for: .normal)
+         
+
+         stopLoading()
+     }
+     */
+    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             userView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -200,22 +236,9 @@ class CommentCell: UITableViewCell {
         ])
     }
 
-    // MARK: - Configure
-    func configure(with comment: CommentModel) {
-        print(comment.commentID)
-        print(comment.postID)
-        print(comment.groupID)
-        
-        userNameLabel.text = comment.commentFrom
-        commentTextView.text = comment.commentCaption
-
-        let likeCount = comment.commentLikes?.count ?? comment.commentLikeCount ?? 0
-        likesLabel.text = "\(likeCount) likes"
-
-        let imageName = comment.commentLikedByCurrentUser == true ? "liked" : "like"
-        likeButton.setImage(UIImage(named: imageName), for: .normal)
-    }
 }
+
+
 
 
 //WORKING

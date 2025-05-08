@@ -88,7 +88,7 @@ class IndividualPostViewController: UIViewController {
                 
                     //NEW NEED?
                     likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
-                    //NEW NEED?
+
                 }
                 completion()
             } catch {
@@ -108,13 +108,13 @@ extension IndividualPostViewController: PostCellDelegate {
             if currentPost.isLikedByCurrentUser == true {
                 handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
                     DispatchQueue.main.async {
-                        cell.configure(with: self.currentPost)
+                        cell.configurePost(with: self.currentPost)
                     }
                 }
             } else {
                 handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
                     DispatchQueue.main.async {
-                        cell.configure(with: self.currentPost)
+                        cell.configurePost(with: self.currentPost)
                     }
                 }
             }
@@ -167,7 +167,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-            cell.configure(with: currentPost)
+            cell.configurePost(with: currentPost)
             cell.delegate = self
             return cell
         } else {
@@ -176,10 +176,10 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
             if let comments = currentPost.commentsArray, indexPath.row - 1 < comments.count {
                 let comment = comments[indexPath.row - 1]
                 
-                cell.configure(with: comment)  // <-- pass the whole comment
+                cell.configureComment(with: comment)  // <-- pass the whole comment
             } else {
                 let emptyComment = CommentModel(commentID: nil, postID: nil, groupID: nil, listID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil, commentLikedByCurrentUser: false)
-                cell.configure(with: emptyComment)
+                cell.configureComment(with: emptyComment)
             }
             
    

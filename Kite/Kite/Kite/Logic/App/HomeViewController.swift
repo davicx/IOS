@@ -165,21 +165,10 @@ class HomeViewController: UIViewController, LikePostDelegate {
            let selectedPost = sender as? Post {
             postViewController.currentPost = selectedPost
             postViewController.likePostDelegate = self
-            postViewController.commentsArray = selectedPost.commentsArray ?? [] // 👈 Pass comments here
+            postViewController.commentsArray = selectedPost.commentsArray ?? []
         }
     }
 
-
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segue.showIndividualPost,
-           let postViewController = segue.destination as? IndividualPostViewController,
-           let selectedPost = sender as? Post {
-            postViewController.currentPost = selectedPost
-            postViewController.likePostDelegate = self
-        }
-    }
-     */
 }
 
 

@@ -96,7 +96,7 @@ class PostCell: UITableViewCell {
         delegate?.didTapLikeButton(in: self)
     }
 
-    func configure(with post: Post) {
+    func configurePost(with post: Post) {
         postImage.image = post.postImageData ?? UIImage(named: Constants.Image.fallbackPostImage)
         postCaptionLabel.text = post.postCaption
         likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
