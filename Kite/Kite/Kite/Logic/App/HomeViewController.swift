@@ -57,6 +57,7 @@ class HomeViewController: UIViewController, LikePostDelegate {
             }
         }
     }
+    
     // Function D2: Unlike a Post
     func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
         print("DELEGATE: Unliked post \(currentPostID) \(currentUser)")
@@ -71,7 +72,11 @@ class HomeViewController: UIViewController, LikePostDelegate {
             }
         }
     }
+    
+    // Function D3: Like a Comment
+    // Function D4: UnLike a Comment
 
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

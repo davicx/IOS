@@ -122,6 +122,43 @@ extension IndividualPostViewController: PostCellDelegate {
     }
 }
 
+//Need an extension for comment liked 
+/*
+
+ extension IndividualPostViewController: PostCellDelegate {
+     func didTapLikeButton(in cell: PostCell) {
+         guard let indexPath = postTableView.indexPath(for: cell) else { return }
+         if indexPath.row == 0 {
+             cell.startLoading()
+
+             if currentPost.isLikedByCurrentUser == true {
+                 handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                     DispatchQueue.main.async {
+                         cell.configure(with: self.currentPost)
+                     }
+                 }
+             } else {
+                 handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                     DispatchQueue.main.async {
+                         cell.configure(with: self.currentPost)
+                     }
+                 }
+             }
+         }
+     }
+ }*/
+
+/*
+ Need this data
+ {
+     "currentUser": "frodo",
+     "postID": 722,
+     "commentID": 229,
+     "groupID": 72
+ }
+
+ */
+
 extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1 + commentsArray.count
@@ -138,9 +175,10 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
             
             if let comments = currentPost.commentsArray, indexPath.row - 1 < comments.count {
                 let comment = comments[indexPath.row - 1]
+                
                 cell.configure(with: comment)  // <-- pass the whole comment
             } else {
-                let emptyComment = CommentModel(commentID: nil, postID: nil, groupID: nil, listID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil)
+                let emptyComment = CommentModel(commentID: nil, postID: nil, groupID: nil, listID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil, commentLikedByCurrentUser: false)
                 cell.configure(with: emptyComment)
             }
             

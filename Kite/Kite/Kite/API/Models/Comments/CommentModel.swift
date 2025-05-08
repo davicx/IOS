@@ -27,5 +27,7 @@ struct CommentModel: Codable {
      let created: String?
      let friendshipStatus: String?
      let commentLikeCount: Int?
+     let commentLikedByCurrentUser: Bool?
+     
 }
 
