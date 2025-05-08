@@ -11,6 +11,8 @@ import Foundation
 struct CommentModel: Codable {
      let commentID: Int?
      let postID: Int?
+     let groupID: Int?
+     let listID: Int?
      let commentCaption: String?
      let commentFrom: String?
      let commentType: String?
@@ -25,5 +27,7 @@ struct CommentModel: Codable {
      let created: String?
      let friendshipStatus: String?
      let commentLikeCount: Int?
+     let commentLikedByCurrentUser: Bool?
+     
 }
 

@@ -21,271 +21,196 @@ class IndividualPostViewController: UIViewController {
 
     var likePostDelegate: LikePostDelegate? = nil
     var currentPost: Post!
-    
-    //STEP 1: Set up UI Elements
-    let postImage = UIImageView()
-    let postCaptionLabel = UILabel()
-    
-    let likeButton = UIButton(type: .system)
-    let likeCountLabel = UILabel()
-    let likeStackView = UIStackView()
-    let dividerView = UIView()
 
+    let postTableView = UITableView()
     
-    //Activity Indicator
-    var activityIndicator = UIActivityIndicatorView(style: .medium)
+    var commentsArray: [CommentModel] = []
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        setUpViews()
-        setInitialUI()
-
+        setupPostTableView()
     }
-    
-    
-    func setUpViews() {
-        guard let currentPost = currentPost else { return }
 
-        // Image View
-        postImage.contentMode = .scaleAspectFill
-        postImage.clipsToBounds = true
-        postImage.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(postImage)
-        
-        // Caption Label
-        postCaptionLabel.numberOfLines = 0
-        postCaptionLabel.font = UIFont.systemFont(ofSize: 16)
-        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(postCaptionLabel)
+    private func setupPostTableView() {
+        postTableView.translatesAutoresizingMaskIntoConstraints = false
+        postTableView.isScrollEnabled = true
+        postTableView.dataSource = self
+        postTableView.delegate = self
+        postTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+        postTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
+        postTableView.separatorStyle = .none
+        postTableView.rowHeight = UITableView.automaticDimension
+        postTableView.estimatedRowHeight = 44
 
-        //Like Button
-        let imageName = currentPost.isLikedByCurrentUser == true ? "liked" : "like"
-        likeButton.setImage(UIImage(named: imageName), for: .normal)
-        likeButton.translatesAutoresizingMaskIntoConstraints = false
-        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        view.addSubview(postTableView)
 
-        // Like Count Label
-        likeCountLabel.text = "0" // Default value
-        likeCountLabel.font = UIFont.systemFont(ofSize: 18)
-        likeCountLabel.textAlignment = .center
-        likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Stack View
-        likeStackView.axis = .horizontal
-        likeStackView.distribution = .fillEqually
-        likeStackView.spacing = 8
-        likeStackView.translatesAutoresizingMaskIntoConstraints = false
-        likeStackView.addArrangedSubview(likeCountLabel)
-        likeStackView.addArrangedSubview(likeButton)
-        view.addSubview(likeStackView)
-        
-        // Divider View
-        dividerView.backgroundColor = .blue
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(dividerView)
-        
-        // Constraints
         NSLayoutConstraint.activate([
-            postImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            postImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            postImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            postImage.heightAnchor.constraint(equalToConstant: 400),
-            
-            postCaptionLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor),
-            postCaptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            postCaptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            postCaptionLabel.heightAnchor.constraint(equalToConstant: 200),
-            
-            /*
-            likeStackView.topAnchor.constraint(equalTo: postCaptionLabel.bottomAnchor, constant: 16),
-            likeStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            likeStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            likeStackView.heightAnchor.constraint(equalToConstant: 40),
-            */
-            
-            likeStackView.topAnchor.constraint(equalTo: postCaptionLabel.bottomAnchor, constant: 16),
-            likeStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            likeStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            likeStackView.heightAnchor.constraint(equalToConstant: 40),
-            
-            dividerView.topAnchor.constraint(equalTo: likeStackView.bottomAnchor, constant: 8),
-            dividerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            dividerView.heightAnchor.constraint(equalToConstant: 2)
+            postTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            postTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            postTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            postTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        activityIndicator.center = view.center;
-        view.addSubview(activityIndicator);
-        
-    }
-    
-
-    func setInitialUI() {
-        if let selectedPost = currentPost {
-
-            if let image = selectedPost.postImageData {
-                postImage.image = image
-            } else {
-
-                postImage.image = UIImage(named: Constants.Image.fallbackPostImage)
-            }
-
-            postCaptionLabel.text = selectedPost.postCaption
-
-            let currentLikeCount = selectedPost.simpleLikesArray?.count ?? 0
-            likeCountLabel.text = "\(currentLikeCount)"
-            
-        } else {
-            print("Error: currentPost is nil")
-        }
     }
 
-    @IBAction func likeButtonTapped(_ sender: UIButton) {
-        guard let post = currentPost else {
-            print("Error: currentPost is nil")
-            return
-        }
-
-        let groupID: Int = post.groupID ?? 0
-
-        if post.isLikedByCurrentUser == true {
-            handleUnlike(post: post, groupID: groupID)
-        } else {
-            handleLike(post: post, groupID: groupID)
-        }
-    }
-    
-    
-    //FUNCTIONS: Like Functions
-    //Function 1: Handle Post Like
-    func handleLike(post: Post, groupID: Int) {
-        Task{
-            do{
-                DispatchQueue.main.async {
-                    self.activityIndicator.startAnimating()
-                    self.likeStackView.isUserInteractionEnabled = false
-                }
-                
-                //STEP 1: Call API
+    func handleLike(post: Post, groupID: Int, completion: @escaping () -> Void) {
+        Task {
+            do {
                 let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
-                
-                if(likePostResponseModel.success == true) {
-  
+                if likePostResponseModel.success == true {
                     let likeModel = likePostResponseModel.data
-                    
-                    //STEP 2: Update Current Post Values to add like
                     post.isLikedByCurrentUser = true
                     post.postLikesArray?.append(likeModel)
                     post.simpleLikesArray?.append(likeModel.likedByUserName)
-
-                    DispatchQueue.main.async {
-                       self.toggleLikeUI()
-                       self.activityIndicator.stopAnimating()
-                       self.likeStackView.isUserInteractionEnabled = true
-                   }
                     
-                } else {
-                    print(likePostResponseModel)
-                    print("error dudee!")
-                    self.makeUIActiveAgain()
-                    
+                    //NEW NEED?
+                    likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
+                    //NEW NEED?
                 }
                 
-                //Error: Not expected
-            } catch{
-                print("yo man error!")
-                print(error)
-                
-                self.makeUIActiveAgain()
-                
-            }
-        }
-    }
-
-
-    
-    //Function 2: Handle Post UnLike
-    func handleUnlike(post: Post, groupID: Int) {
-        Task{
-            do{
-                DispatchQueue.main.async {
-                    self.activityIndicator.startAnimating()
-                    self.likeStackView.isUserInteractionEnabled = false
-                }
-                //STEP 1: Call API
-                let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
-
-                //Success
-                if(unlikePostResponseModel.success == true) {
-                    print("SUCCESS: unlikePostResponseModel")
-                    
-                    let likeModel = unlikePostResponseModel.data
-          
-                    // STEP 2: Update Current Post Values to remove like
-                    post.isLikedByCurrentUser = false
-
-                    // Remove LikeModel with matching postLikeID
-                    let likeIDToRemove = likeModel.postLikeID
-                    post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeIDToRemove }
-                    
-                    // Remove username from simpleLikesArray
-                    let currentUsername = unlikePostResponseModel.currentUser
-                    post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != currentUsername }
-                    
-                    DispatchQueue.main.async {
-                       self.toggleLikeUI()
-                       self.activityIndicator.stopAnimating()
-                       self.likeStackView.isUserInteractionEnabled = true
-                   }
-        
-                //Error: Handled by API
-                } else {
-                    print("NOT SUCCESS: unlikePostResponseModel")
-                    print(unlikePostResponseModel.data)
-                    
-                    self.makeUIActiveAgain()
-                    
-                }
-     
-            //Error: Not expected
+                completion()
             } catch {
-                print("yo man error!")
-                print(error)
-                self.makeUIActiveAgain()
-                
+                print("Error liking post:", error)
+                completion()
             }
         }
     }
 
-    // Function 3: Handle Post UI Toggle
-    func toggleLikeUI() {
-        guard let post = currentPost else { return }
+    func handleUnlike(post: Post, groupID: Int, completion: @escaping () -> Void) {
+        Task {
+            do {
+                let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
+                if unlikePostResponseModel.success == true {
+                    let likeModel = unlikePostResponseModel.data
+                    post.isLikedByCurrentUser = false
+                    post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeModel.postLikeID }
+                    post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != unlikePostResponseModel.currentUser }
+                
+                    //NEW NEED?
+                    likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
+                    //NEW NEED?
+                }
+                completion()
+            } catch {
+                print("Error unliking post:", error)
+                completion()
+            }
+        }
+    }
+}
 
-        // Determine new like count
-        var likeCount = String(post.simpleLikesArray?.count ?? 0)
-        
-        if post.isLikedByCurrentUser == true {
-            likeCountLabel.text = likeCount
-            likeButton.setImage(UIImage(named: "liked"), for: .normal)
+extension IndividualPostViewController: PostCellDelegate {
+    func didTapLikeButton(in cell: PostCell) {
+        guard let indexPath = postTableView.indexPath(for: cell) else { return }
+        if indexPath.row == 0 {
+            cell.startLoading()
+
+            if currentPost.isLikedByCurrentUser == true {
+                handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                    DispatchQueue.main.async {
+                        cell.configure(with: self.currentPost)
+                    }
+                }
+            } else {
+                handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                    DispatchQueue.main.async {
+                        cell.configure(with: self.currentPost)
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Need an extension for comment liked 
+/*
+
+ extension IndividualPostViewController: PostCellDelegate {
+     func didTapLikeButton(in cell: PostCell) {
+         guard let indexPath = postTableView.indexPath(for: cell) else { return }
+         if indexPath.row == 0 {
+             cell.startLoading()
+
+             if currentPost.isLikedByCurrentUser == true {
+                 handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                     DispatchQueue.main.async {
+                         cell.configure(with: self.currentPost)
+                     }
+                 }
+             } else {
+                 handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                     DispatchQueue.main.async {
+                         cell.configure(with: self.currentPost)
+                     }
+                 }
+             }
+         }
+     }
+ }*/
+
+/*
+ Need this data
+ {
+     "currentUser": "frodo",
+     "postID": 722,
+     "commentID": 229,
+     "groupID": 72
+ }
+
+ */
+
+extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1 + commentsArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+            cell.configure(with: currentPost)
+            cell.delegate = self
+            return cell
         } else {
-            likeCountLabel.text = likeCount
-            likeButton.setImage(UIImage(named: "like"), for: .normal)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+            
+            if let comments = currentPost.commentsArray, indexPath.row - 1 < comments.count {
+                let comment = comments[indexPath.row - 1]
+                
+                cell.configure(with: comment)  // <-- pass the whole comment
+            } else {
+                let emptyComment = CommentModel(commentID: nil, postID: nil, groupID: nil, listID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil, commentLikedByCurrentUser: false)
+                cell.configure(with: emptyComment)
+            }
+            
+   
+            cell.alpha = 0
+            UIView.animate(withDuration: 0.4, delay: 0.05 * Double(indexPath.row), options: [.curveEaseIn], animations: {
+                cell.alpha = 1
+            }, completion: nil)
+            
+            return cell
         }
-
-    }
-    
-    //Function 4: Finish API call
-    func makeUIActiveAgain() {
-        DispatchQueue.main.async {
-            self.activityIndicator.stopAnimating()
-            self.likeStackView.isUserInteractionEnabled = true
-        }
     }
 
-    
+
+
 }
 
 
+
+//WORKS: Above is animation
+/*
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if indexPath.row == 0 {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+        cell.configure(with: currentPost)
+        cell.delegate = self
+        return cell
+    } else {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+        let comment = commentsArray[indexPath.row - 1] // 👈 Subtract 1 because first row is post
+        cell.configure(with: comment.commentCaption ?? "")
+        return cell
+    }
+}
+ */
