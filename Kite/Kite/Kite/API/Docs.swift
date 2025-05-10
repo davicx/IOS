@@ -6,7 +6,152 @@
 //
 
 import Foundation
+/*
+extension IndividualPostViewController: CommentCellDelegate {
+    func didTapLikeCommentButton(in cell: CommentCell) {
+        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
 
+        let commentIndex = indexPath.row - 1
+        if let comment = currentPost.commentsArray?[commentIndex] {
+            print("IndividualPostViewController: Current comment at index \(indexPath.row): \(comment.commentID)")
+            
+            if comment.commentLikedByCurrentUser == true {
+                print("Should Unlike")
+             
+                //Call
+                //handleUnLikeComment
+                
+            } else {
+                print("Should Like")
+                //Call
+                //handleLikeComment
+            }
+            
+        } else {
+            print("IndividualPostViewController: No comment found at index \(indexPath.row)")
+        }
+    }
+}
+*/
+
+
+/*
+ extension IndividualPostViewController: CommentCellDelegate {
+     func didTapLikeCommentButton(in cell: CommentCell) {
+         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
+
+         let commentIndex = indexPath.row - 1
+         guard var comment = currentPost.commentsArray?[commentIndex] else { return }
+
+         // Simulate Like/Unlike toggle
+         comment.commentLikedByCurrentUser = !(comment.commentLikedByCurrentUser ?? false)
+         
+         // Update the array so it's in sync
+         currentPost.commentsArray?[commentIndex] = comment
+
+         // Update the UI
+         cell.configureComment(with: comment)
+     }
+ }
+ */
+
+
+
+/*
+extension IndividualPostViewController: CommentCellDelegate {
+    func didTapLikeCommentButton(in cell: CommentCell) {
+        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
+
+        cell.startLoading()
+
+        let commentIndex = indexPath.row - 1
+        var comment = currentPost.commentsArray?[commentIndex]
+
+        guard let unwrappedComment = comment else { return }
+
+        if unwrappedComment.commentLikedByCurrentUser == true {
+            handleUnLikeComment(comment: unwrappedComment, postID: unwrappedComment.postID ?? 0, groupID: unwrappedComment.groupID ?? 0) {
+                DispatchQueue.main.async {
+                    // Update the local model and reload cell
+                    self.currentPost.commentsArray?[commentIndex].commentLikedByCurrentUser = false
+                    if let count = self.currentPost.commentsArray?[commentIndex].commentLikeCount, count > 0 {
+                        self.currentPost.commentsArray?[commentIndex].commentLikeCount = count - 1
+                    }
+                    cell.configureComment(with: self.currentPost.commentsArray![commentIndex])
+                }
+            }
+        } else {
+            handleLikeComment(comment: unwrappedComment, postID: unwrappedComment.postID ?? 0, groupID: unwrappedComment.groupID ?? 0) {
+                DispatchQueue.main.async {
+                    // Update the local model and reload cell
+                    self.currentPost.commentsArray?[commentIndex].commentLikedByCurrentUser = true
+                    if let count = self.currentPost.commentsArray?[commentIndex].commentLikeCount {
+                        self.currentPost.commentsArray?[commentIndex].commentLikeCount = count + 1
+                    } else {
+                        self.currentPost.commentsArray?[commentIndex].commentLikeCount = 1
+                    }
+                    cell.configureComment(with: self.currentPost.commentsArray![commentIndex])
+                }
+            }
+        }
+    }
+}
+*/
+
+
+//Need an extension for comment liked
+/*
+
+ extension IndividualPostViewController: PostCellDelegate {
+     func didTapLikeButton(in cell: PostCell) {
+         guard let indexPath = postTableView.indexPath(for: cell) else { return }
+         if indexPath.row == 0 {
+             cell.startLoading()
+
+             if currentPost.isLikedByCurrentUser == true {
+                 handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                     DispatchQueue.main.async {
+                         cell.configure(with: self.currentPost)
+                     }
+                 }
+             } else {
+                 handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
+                     DispatchQueue.main.async {
+                         cell.configure(with: self.currentPost)
+                     }
+                 }
+             }
+         }
+     }
+ }*/
+
+/*
+ Need this data
+ {
+     "currentUser": "frodo",
+     "postID": 722,
+     "commentID": 229,
+     "groupID": 72
+ }
+
+ */
+
+//WORKS: Above is animation
+/*
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if indexPath.row == 0 {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+        cell.configure(with: currentPost)
+        cell.delegate = self
+        return cell
+    } else {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+        let comment = commentsArray[indexPath.row - 1] // 👈 Subtract 1 because first row is post
+        cell.configure(with: comment.commentCaption ?? "")
+        return cell
+    }
+}
+ */
 
 
 //print("heightForRowAt postImageHeight \(postImageHeight) postCaptionHeight \(postCaptionHeight)")

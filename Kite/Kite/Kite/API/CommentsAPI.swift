@@ -65,18 +65,8 @@ class CommentsAPI {
             return commentResponseModel
         }
     }
-    
-    //Function 2: Like Comment
-    /*
-     {
-         "currentUser": "frodo",
-         "postID": 722,
-         "commentID": 216,
-         "groupID": 72
-     }
-     */
-    
-    func likeComment(currentUser: String, postID: Int, commentID: Int, groupID: Int) async throws -> CommentResponseModel {
+
+    func likeComment(currentUser: String, postID: Int, commentID: Int, groupID: Int) async throws -> CommentLikeResponseModel {
         
         let endpoint = "http://localhost:3003/comment/like"
         
@@ -92,9 +82,9 @@ class CommentsAPI {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-            let commentResponseModel = CommentResponseModel()
+            let commentLikeResponseModel = CommentLikeResponseModel()
             print("Error setting JSON")
-            return commentResponseModel
+            return commentLikeResponseModel
         }
         
         request.httpBody = httpBody
@@ -106,19 +96,20 @@ class CommentsAPI {
         }
         
         do {
+
             let decoder = JSONDecoder()
-            let commentResponseModel = try decoder.decode(CommentResponseModel.self, from: data)
-            return commentResponseModel
+            let commentLikeResponseModel = try decoder.decode(CommentLikeResponseModel.self, from: data)
+            return commentLikeResponseModel
             
         } catch {
-            let commentResponseModel = CommentResponseModel()
+            let commentLikeResponseModel = CommentLikeResponseModel()
             print("Error decoding data")
-            return commentResponseModel
+            return commentLikeResponseModel
         }
     }
     
     //Function 3: Unlike Comment
-    func unlikeComment(currentUser: String, postID: Int, commentID: Int, groupID: Int) async throws -> CommentResponseModel {
+    func unlikeComment(currentUser: String, postID: Int, commentID: Int, groupID: Int) async throws -> CommentLikeResponseModel {
         
         let endpoint = "http://localhost:3003/comment/unlike"
         
@@ -134,9 +125,9 @@ class CommentsAPI {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-            let commentResponseModel = CommentResponseModel()
+            let commentLikeResponseModel = CommentLikeResponseModel()
             print("Error setting JSON")
-            return commentResponseModel
+            return commentLikeResponseModel
         }
         
         request.httpBody = httpBody
@@ -149,13 +140,13 @@ class CommentsAPI {
         
         do {
             let decoder = JSONDecoder()
-            let commentResponseModel = try decoder.decode(CommentResponseModel.self, from: data)
-            return commentResponseModel
+            let commentLikeResponseModel = try decoder.decode(CommentLikeResponseModel.self, from: data)
+            return commentLikeResponseModel
             
         } catch {
-            let commentResponseModel = CommentResponseModel()
+            let commentLikeResponseModel = CommentLikeResponseModel()
             print("Error decoding data")
-            return commentResponseModel
+            return commentLikeResponseModel
         }
     }
 }

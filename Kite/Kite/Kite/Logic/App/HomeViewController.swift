@@ -16,7 +16,8 @@ import UIKit
 
 
 
-class HomeViewController: UIViewController, LikePostDelegate {
+class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
+
     let loginAPI = LoginAPI()
     let postsAPI = PostsAPI()
     
@@ -34,6 +35,70 @@ class HomeViewController: UIViewController, LikePostDelegate {
     // Polling Manager
     private let pollingManager = PollingManager()
 
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Setup PollingManager callback
+        pollingManager.onFetchPosts = { [weak self] in
+            self?.fetchPosts()
+        }
+
+        // Initial data fetch
+        fetchPosts()
+
+        // Start polling
+        pollingManager.startPolling()
+
+        setupTableView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        postsTableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        pollingManager.startPolling() // Restart polling if view reappears
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pollingManager.stopPolling() // Stop polling when view goes away
+    }
+
+    // Fetch posts using the API
+    func fetchPosts() {
+        print("STEP 1: fetchPosts")
+        Task {
+            do {
+                //print("STEP 2: postsResponseModel")
+                let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
+                
+                postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
+                postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
+
+                /*
+                for post in postsArray {
+                    print("post Liked! \(post.isLikedByCurrentUser)")
+                    print(post.postCaption)
+                    print("")
+                }
+                 */
+                
+                DispatchQueue.main.async {
+                    self.postsTableView.reloadData()
+                    self.pollingManager.resetFailureCount()
+                }
+            } catch {
+                print("Error fetching posts: \(error)")
+                pollingManager.handlePollingFailure()
+            }
+        }
+    }
+    
     //DELEGATE FUNCTIONS
     // Function D1: Like a Post
     func userLikePost(currentPostID: Int, likeModel: LikeModel) {
@@ -74,88 +139,23 @@ class HomeViewController: UIViewController, LikePostDelegate {
     }
     
     // Function D3: Like a Comment
+    func userLikeComment(currentPostID: Int, commentLikeModel: CommentLikeModel) {
+        print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
+        print(commentLikeModel)
+    }
+    
+
     // Function D4: UnLike a Comment
+    func userUnlikeComment(currentPostID: Int, commentLikeModel: CommentLikeModel) {
+        print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
+        print(commentLikeModel)
+    }
 
     
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Setup PollingManager callback
-        pollingManager.onFetchPosts = { [weak self] in
-            self?.fetchPosts()
-        }
-
-        // Initial data fetch
-        fetchPosts()
-
-        // Start polling
-        pollingManager.startPolling()
-
-        setupTableView()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        postsTableView.reloadData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        /*
-        for post in postsArray {
-            print(post.postID)
-            print(post.isLikedByCurrentUser)
-            print(post.simpleLikesArray)
-            print(post.postLikesArray)
-            print(" ")
-        }
-         */
-        
-        pollingManager.startPolling() // Restart polling if view reappears
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        pollingManager.stopPolling() // Stop polling when view goes away
-    }
-
-    // Fetch posts using the API
-    func fetchPosts() {
-        print("STEP 1: fetchPosts")
-        Task {
-            do {
-                //print("STEP 2: postsResponseModel")
-                let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
-                
-                postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
-                postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
-
-                /*
-                for post in postsArray {
-                    print("post Liked! \(post.isLikedByCurrentUser)")
-                    print(post.postCaption)
-                    print("")
-                }
-                 */
-                
-                DispatchQueue.main.async {
-                    self.postsTableView.reloadData()
-                    self.pollingManager.resetFailureCount()
-                }
-            } catch {
-                print("Error fetching posts: \(error)")
-                pollingManager.handlePollingFailure()
-            }
-        }
-    }
-    
-    // TableView Setup
+    //TABLE VIEW: Setup
     func setupTableView() {
         postsTableView.delegate = self
         postsTableView.dataSource = self
-        //postsTableView.estimatedRowHeight = 100
-        //postsTableView.rowHeight = UITableView.automaticDimension
         postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
     }
 
@@ -172,6 +172,7 @@ class HomeViewController: UIViewController, LikePostDelegate {
 }
 
 
+//TABLE VIEW: For Posts
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postsArray.count

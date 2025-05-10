@@ -9,7 +9,7 @@ import UIKit
 
 
 struct CommentLikeResponseModel: Codable {
-    let data: CommentModel
+    let data: CommentLikeModel
     let message: String
     let success: Bool
     let statusCode: Int
@@ -17,7 +17,7 @@ struct CommentLikeResponseModel: Codable {
     let currentUser: String
 
     init() {
-        self.data = CommentModel(commentID: 0, postID: 0, groupID: 0, listID: 0, commentCaption: "", commentFrom: "", commentType: "", userName: "", imageName: "", firstName: "", lastName: "", commentDate: "", commentTime: "", timeMessage: "", commentLikes: [], created: "", friendshipStatus: "", commentLikeCount: 0, commentLikedByCurrentUser: false)
+        self.data = CommentLikeModel(commentLikeID: 0, commentID: 0, likedByUserName: "", likedByImage: "", likedByFirstName: "", likedByLastName: "", commentCreated: "")
         self.message = ""
         self.success = false
         self.statusCode = 500
@@ -25,5 +25,7 @@ struct CommentLikeResponseModel: Codable {
         self.currentUser = ""
     }
 }
+
+
 
 

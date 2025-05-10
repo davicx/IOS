@@ -43,14 +43,49 @@ class CommentCell: UITableViewCell {
         setupCommentViews()
         setupConstraints()
         setupDividerView()
-        setupActions() // <--- New
+        setupActions()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Setup
+    
+    //ACTIONS
+    private func setupActions() {
+        likeButton.addTarget(self, action: #selector(didTapLikeComment), for: .touchUpInside)
+    }
+
+
+    @objc private func didTapLikeComment() {
+        print("Like button tapped")
+        delegate?.didTapLikeCommentButton(in: self)
+    }
+    
+    //CELL SETUP
+    func configureComment(with comment: CommentModel) {
+        //print(comment.commentID)
+        
+        userNameLabel.text = comment.commentFrom
+        commentTextView.text = comment.commentCaption
+
+        let likeCount = comment.commentLikes?.count ?? comment.commentLikeCount ?? 0
+        likesLabel.text = "\(likeCount) likes"
+
+        let imageName = comment.commentLikedByCurrentUser == true ? "liked" : "like"
+        likeButton.setImage(UIImage(named: imageName), for: .normal)
+    }
+ 
+    
+    
+    
+    
+    
+    
+    //FUNCTIONS
+ 
+ 
+    //STYLE
     private func setupMainViews() {
         userView.backgroundColor = .white
         commentView.backgroundColor = .clear
@@ -160,52 +195,8 @@ class CommentCell: UITableViewCell {
         ])
     }
 
-    private func setupActions() {
-        likeButton.addTarget(self, action: #selector(didTapLikeComment), for: .touchUpInside)
-    }
 
 
-    @objc private func didTapLikeComment() {
-        print("Like button tapped")
-        // Handle UI update or delegate callback here
-        delegate?.didTapLikeCommentButton(in: self)
-    }
-    
-    func configureComment(with comment: CommentModel) {
-        //print(comment.commentID)
-        
-        userNameLabel.text = comment.commentFrom
-        commentTextView.text = comment.commentCaption
-
-        let likeCount = comment.commentLikes?.count ?? comment.commentLikeCount ?? 0
-        likesLabel.text = "\(likeCount) likes"
-
-        let imageName = comment.commentLikedByCurrentUser == true ? "liked" : "like"
-        likeButton.setImage(UIImage(named: imageName), for: .normal)
-    }
-    
-    /*
-     func setupButtonTarget() {
-         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-     }
-
-     @objc private func likeButtonTapped() {
-         delegate?.didTapLikeButton(in: self)
-     }
-
-     func configurePost(with post: Post) {
-         postImage.image = post.postImageData ?? UIImage(named: Constants.Image.fallbackPostImage)
-         postCaptionLabel.text = post.postCaption
-         likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
-
-         let imageName = post.isLikedByCurrentUser == true ? "liked" : "like"
-         likeButton.setImage(UIImage(named: imageName), for: .normal)
-         
-
-         stopLoading()
-     }
-     */
-    
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
