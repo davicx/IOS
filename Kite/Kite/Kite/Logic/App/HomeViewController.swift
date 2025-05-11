@@ -8,13 +8,6 @@
 
 import UIKit
 
-// MARK: - UI Setup
-// MARK: - Actions
-// MARK: - Network
-// MARK: - UITableViewDataSource
-// MARK: - PostCellDelegate
-
-
 
 class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
 
@@ -139,17 +132,18 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     }
     
     // Function D3: Like a Comment
-    func userLikeComment(currentPostID: Int, commentLikeModel: CommentLikeModel) {
+    func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
         print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
         print(commentLikeModel)
     }
     
 
     // Function D4: UnLike a Comment
-    func userUnlikeComment(currentPostID: Int, commentLikeModel: CommentLikeModel) {
+    func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
         print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
         print(commentLikeModel)
     }
+
 
     
     //TABLE VIEW: Setup
@@ -165,6 +159,7 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
            let selectedPost = sender as? Post {
             postViewController.currentPost = selectedPost
             postViewController.likePostDelegate = self
+            postViewController.likeCommentDelegate = self 
             postViewController.commentsArray = selectedPost.commentsArray ?? []
         }
     }
@@ -172,7 +167,7 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
 }
 
 
-//TABLE VIEW: For Posts
+//TABLE VIEW: For Individual Posts in Home Feed
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postsArray.count
