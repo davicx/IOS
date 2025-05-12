@@ -29,7 +29,8 @@ class Post {
     var timeMessage: String?
     var created: String?
     var isLikedByCurrentUser: Bool?
-    var commentsArray: [CommentModel]?
+    //var commentsArray: [CommentModel]?
+    var commentsArray: [Comment]?
     var postLikesArray: [LikeModel]?
     var simpleLikesArray: [String]?
     

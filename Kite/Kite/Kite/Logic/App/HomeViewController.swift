@@ -53,6 +53,27 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        //TEMP
+        if let firstPost = postsArray.first {
+            print("viewDidAppear - First Post:")
+            print("ID: \(firstPost.postID)")
+
+            if let comments = firstPost.commentsArray, !comments.isEmpty {
+                for (index, comment) in comments.enumerated() {
+                    let commentID = comment.commentID ?? -1
+                    let likeCount = comment.commentLikeCount ?? 0
+                    print("Comment \(index + 1): ID = \(commentID), Likes = \(likeCount)")
+                }
+            } else {
+                print("No comments for this post.")
+            }
+
+        } else {
+            print("viewDidAppear - No posts available.")
+        }
+        //TEMP
+
 
         pollingManager.startPolling() // Restart polling if view reappears
     }
@@ -135,6 +156,10 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
         print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
         print(commentLikeModel)
+        for post in postsArray {
+            print(post.postID)
+        }
+        
     }
     
 
@@ -142,6 +167,10 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
         print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
         print(commentLikeModel)
+        for post in postsArray {
+            print(post.postID)
+        }
+        
     }
 
 
