@@ -8,6 +8,10 @@
 
 import UIKit
 
+//let likeSummary = post.comments.map { "ID:\($0.commentID.prefix(5)) Likes:\($0.commentLikes?.count ?? 0)" }.joined(separator: " | ")
+//post.caption += "\n[CommentLikes] \(likeSummary)"
+
+
 
 class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
 
@@ -154,6 +158,65 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     
     // Function D3: Like a Comment
     func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+        print("DELEGATE: Liked comment \(currentCommentID) on post \(currentPostID)")
+
+        for post in postsArray {
+            if post.postID == currentPostID {
+                if post.commentsArray == nil {
+                    post.commentsArray = []
+                }
+
+                for comment in post.commentsArray ?? [] {
+                    if comment.commentID == currentCommentID {
+                        comment.commentLikedByCurrentUser = true
+                        comment.commentLikeCount = (comment.commentLikeCount ?? 0) + 1
+                        if comment.commentLikes == nil {
+                            comment.commentLikes = []
+                        }
+                        comment.commentLikes?.append(commentLikeModel)
+                        break
+                    }
+                }
+
+                break
+            }
+        }
+    }
+   
+    // Function D4: UnLike a Comment
+    func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+        print("DELEGATE: Unliked comment \(currentCommentID) on post \(currentPostID)")
+
+        for post in postsArray {
+            if post.postID == currentPostID {
+                for comment in post.commentsArray ?? [] {
+                    if comment.commentID == currentCommentID {
+                        comment.commentLikedByCurrentUser = false
+                        comment.commentLikeCount = max(0, (comment.commentLikeCount ?? 0) - 1)
+                        comment.commentLikes?.removeAll(where: { $0.commentLikeID == commentLikeModel.commentLikeID })
+                        //comment.commentLikes = (comment.commentLikes ?? []).filter {$0.likedByUserName != currentUser
+                        break
+                        
+                        /*
+                         //comment.commentLikedByCurrentUser = false
+                         //comment.commentLikeCount = max(0, (comment.commentLikeCount ?? 0) - 1)
+                         //comment.commentLikes = (comment.commentLikes ?? []).filter {
+                         //    $0.likedByUserName != currentUser
+                        // }
+
+                         */
+                    }
+                }
+
+                break
+            }
+        }
+    }
+
+    
+    /*
+    //WORKS
+    func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
         print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
         print(commentLikeModel)
         for post in postsArray {
@@ -161,19 +224,24 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         }
         
     }
+     */
     
 
-    // Function D4: UnLike a Comment
+    /*
+    //WORKS
+
     func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
         print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
         print(commentLikeModel)
         for post in postsArray {
             print(post.postID)
         }
-        
     }
+     */
+    
+    /*
 
-
+     */
     
     //TABLE VIEW: Setup
     func setupTableView() {
@@ -205,6 +273,16 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
         let post = postsArray[indexPath.row]
+        
+        // Put the debug code here
+        
+        //print(post.commentsArray?[0])
+        //let likeSummary = post.commentsArray.map {
+        //    "ID:\($0.commentID.prefix(5)) Likes:\($0.commentLikes?.count ?? 0)"
+        //}.joined(separator: " | ")
+        //post.postCaption = (post.postCaption ?? "") + "\n[CommentLikes] \(likeSummary)"
+
+        
         cell.updatePost(with: post)
         return cell
 

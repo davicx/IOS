@@ -158,29 +158,7 @@ class IndividualPostCell: UITableViewCell {
         layoutIfNeeded()
     }
 
-    
-    /*
-    func updatePost(with post: Post) {
-        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
-        let postCaption = post.postCaption ?? "no caption"
-        
-        let imageHeight = getImageHeight(image: currentImage)
-        
-        postImageHeightConstraint?.constant = imageHeight
-        postImage.image = currentImage
-        
-        let captionHeight = round(calculateLabelHeight(text: postCaption))
-        
-        postCaptionHeightConstraint?.constant = captionHeight
-        postCaptionLabel.text = postCaption
-        
-        //print("imageHeight \(imageHeight) captionHeight \(captionHeight)")
 
-        layoutIfNeeded()
-        
-    }
-     */
-    
 
 }
 
@@ -301,6 +279,7 @@ func createFooterView() -> UIView {
 
 
 //APPENDIX
+
 /*
 class IndividualPostCell: UITableViewCell {
     

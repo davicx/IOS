@@ -35,6 +35,26 @@ class IndividualPostViewController: UIViewController {
         view.backgroundColor = .white
         setupPostTableView()
     }
+    
+    //NEW
+    let screenSpinner = UIActivityIndicatorView(style: .large)
+
+    func showScreenSpinner() {
+        screenSpinner.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(screenSpinner)
+        NSLayoutConstraint.activate([
+            screenSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            screenSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        screenSpinner.startAnimating()
+    }
+
+    func hideScreenSpinner() {
+        screenSpinner.stopAnimating()
+        screenSpinner.removeFromSuperview()
+    }
+
+    //NEW
 
     //DELEGATES
     var likePostDelegate: LikePostDelegate? = nil
@@ -83,30 +103,24 @@ class IndividualPostViewController: UIViewController {
     }
     
 
-
-    
     //Function 3: Like Comment
     func handleLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
         print("LIKE COMMENT DELEGATE: handleLikeComment")
         Task {
             do {
                 let response = try await CommentsAPI.shared.likeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
-   
                 
                 if response.success == true {
-                    var commentLikeModel = response.data
+                    let commentLikeModel = response.data
                     print("LIKE A COMMENT")
-                    //print(commentLikeModel)
-                    
-                    comment.commentLikedByCurrentUser = true
-                    
-                    print("comment")
-                    
-                    print(comment.commentID)
-                    print(comment.commentLikedByCurrentUser)
+
+                    //MAY NOT NEED NOW
+                    //comment.commentLikedByCurrentUser = true
+                    //comment.commentLikeCount = (comment.commentLikeCount ?? 0) + 1
+                    //comment.commentLikes = (comment.commentLikes ?? []) + [commentLikeModel]
                     
                     likeCommentDelegate?.userLikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentLikeModel)
-          
+     
                 }
 
                 completion()
@@ -116,29 +130,8 @@ class IndividualPostViewController: UIViewController {
             }
         }
     }
-     
-    /*
-     func handleLike(post: Post, groupID: Int, completion: @escaping () -> Void) {
-         Task {
-             do {
-                 let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
-                 if likePostResponseModel.success == true {
-                     let likeModel = likePostResponseModel.data
-                     post.isLikedByCurrentUser = true
-                     post.postLikesArray?.append(likeModel)
-                     post.simpleLikesArray?.append(likeModel.likedByUserName)
-                     likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
-                 }
-                 
-                 completion()
-             } catch {
-                 print("Error liking post:", error)
-                 completion()
-             }
-         }
-     }
-     */
 
+     
     //Function 4: Unlike Comment
     func handleUnLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
         print("LIKE COMMENT DELEGATE: handleUnLikeComment")
@@ -146,19 +139,20 @@ class IndividualPostViewController: UIViewController {
             do {
                 let response = try await CommentsAPI.shared.unlikeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
                 
-                print(response.success)
                 if response.success == true {
-        
+                    let commentUnlikeModel = response.data
                     print("UNLIKE A COMMENT")
-                    var commentUnlikeModel = response.data
-                    comment.commentLikedByCurrentUser = false
 
-                    print(comment.commentID)
-                    print(comment.commentLikedByCurrentUser)
-                    
+                    //MAY NOT NEED NOW
+                    //comment.commentLikedByCurrentUser = false
+                    //comment.commentLikeCount = max(0, (comment.commentLikeCount ?? 0) - 1)
+                    //comment.commentLikes = (comment.commentLikes ?? []).filter {
+                    //    $0.likedByUserName != currentUser
+                   // }
 
                     likeCommentDelegate?.userUnlikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentUnlikeModel)
                 }
+
                 completion()
             } catch {
                 print("Error unliking comment:", error)
@@ -167,7 +161,7 @@ class IndividualPostViewController: UIViewController {
         }
     }
 
-    
+
     //STYLE
     private func setupPostTableView() {
         postTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -199,18 +193,22 @@ extension IndividualPostViewController: PostCellDelegate {
     func didTapLikePostButton(in cell: PostCell) {
         guard let indexPath = postTableView.indexPath(for: cell) else { return }
         if indexPath.row == 0 {
+            
             cell.startLoading()
+            showScreenSpinner()
 
             if currentPost.isLikedByCurrentUser == true {
                 handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
                     DispatchQueue.main.async {
                         cell.configurePost(with: self.currentPost)
+                        self.hideScreenSpinner()
                     }
                 }
             } else {
                 handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
                     DispatchQueue.main.async {
                         cell.configurePost(with: self.currentPost)
+                        self.hideScreenSpinner()
                     }
                 }
             }
@@ -226,6 +224,9 @@ extension IndividualPostViewController: CommentCellDelegate {
     func didTapLikeCommentButton(in cell: CommentCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
 
+        cell.startLoading()
+        showScreenSpinner()
+        
         let commentIndex = indexPath.row - 1
         guard var comment = currentPost.commentsArray?[commentIndex] else {
             print("IndividualPostViewController: No comment found at index \(indexPath.row)")
@@ -238,16 +239,32 @@ extension IndividualPostViewController: CommentCellDelegate {
             //handleUnLikeComment is located in IndividualPostViewController
             handleUnLikeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0) {
                 print("API IndividualPostViewController Finished Unlike API Call for commentID \(comment.commentID ?? -1)")
-                
+                DispatchQueue.main.async {
+                    cell.configureComment(with: comment)
+                    self.hideScreenSpinner()
+                }
             }
 
         } else {
             //handleLikeComment is located in IndividualPostViewController
             handleLikeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0) {
                 print("API IndividualPostViewController Finished Like API Call for commentID \(comment.commentID ?? -1)")
+                DispatchQueue.main.async {
+                    cell.configureComment(with: comment)
+                    self.hideScreenSpinner()
+                }
             }
         }
     }
+    
+    /*
+     DispatchQueue.main.async {
+         self.updatePostCaptionWithCommentLikes()
+         self.postTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+         self.hideScreenSpinner()
+     }
+
+     */
 }
 
 
@@ -291,7 +308,6 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     }
 
 }
-
 
 
 

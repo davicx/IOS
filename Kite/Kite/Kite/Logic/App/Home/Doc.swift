@@ -12,6 +12,69 @@ import UIKit
 
 //WORKS
 
+
+
+/*
+func handleUnLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
+    print("LIKE COMMENT DELEGATE: handleUnLikeComment")
+    Task {
+        do {
+            let response = try await CommentsAPI.shared.unlikeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
+            
+            print(response.success)
+            if response.success == true {
+    
+                print("UNLIKE A COMMENT")
+                //TO DO
+                var commentUnlikeModel = response.data
+                comment.commentLikedByCurrentUser = false
+                //UPDATE subtract 1 from comment.commentLikeCount
+                //ADD remove the commentLikeModel from comment.commentLikes array where the likedByUserName is the currentUser
+
+              
+
+                likeCommentDelegate?.userUnlikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentUnlikeModel)
+            }
+            completion()
+        } catch {
+            print("Error unliking comment:", error)
+            completion()
+        }
+    }
+}
+ */
+
+/*
+func handleLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
+    print("LIKE COMMENT DELEGATE: handleLikeComment")
+    Task {
+        do {
+            let response = try await CommentsAPI.shared.likeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
+
+            
+            if response.success == true {
+                var commentLikeModel = response.data
+                print("LIKE A COMMENT")
+                
+                //TO DO
+                comment.commentLikedByCurrentUser = true
+                //UPDATE comment.commentLikeCount by 1
+                //ADD commentLikeModel to comment.commentLikes array
+    
+                likeCommentDelegate?.userLikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentLikeModel)
+      
+            }
+
+            completion()
+        } catch {
+            print("Error liking comment:", error)
+            completion()
+        }
+    }
+}
+ */
+
+
 /*
 class CommentCell: UITableViewCell {
 

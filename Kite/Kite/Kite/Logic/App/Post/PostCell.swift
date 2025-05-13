@@ -49,21 +49,23 @@ class PostCell: UITableViewCell {
 
         let imageName = post.isLikedByCurrentUser == true ? "liked" : "like"
         likeButton.setImage(UIImage(named: imageName), for: .normal)
-
+        
+        print("POST CONFIGURE CALLED stopLoading()")
         stopLoading()
+
     }
     
 
     
     //FUNCTIONS
     func startLoading() {
-        likeButton.isHidden = true
-        activityIndicator.startAnimating()
+        likeButton.isEnabled = false
+        //activityIndicator.startAnimating()
     }
 
     func stopLoading() {
-        activityIndicator.stopAnimating()
-        likeButton.isHidden = false
+        //activityIndicator.stopAnimating()
+        likeButton.isEnabled = true
     }
     
     //STYLE

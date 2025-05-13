@@ -34,7 +34,10 @@ class CommentCell: UITableViewCell {
     let userNameLabel = UILabel()
     let commentTextView = UITextView()
     let likesLabel = UILabel()
-    let likeButton = UIButton(type: .system) // <--- New
+    let likeCommentButton = UIButton(type: .system) // <--- New
+    
+    let activityIndicator = UIActivityIndicatorView(style: .medium)
+
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,7 +56,7 @@ class CommentCell: UITableViewCell {
     
     //ACTIONS
     private func setupActions() {
-        likeButton.addTarget(self, action: #selector(didTapLikeComment), for: .touchUpInside)
+        likeCommentButton.addTarget(self, action: #selector(didTapLikeComment), for: .touchUpInside)
     }
 
 
@@ -73,17 +76,24 @@ class CommentCell: UITableViewCell {
         likesLabel.text = "\(likeCount) likes"
 
         let imageName = comment.commentLikedByCurrentUser == true ? "liked" : "like"
-        likeButton.setImage(UIImage(named: imageName), for: .normal)
+        likeCommentButton.setImage(UIImage(named: imageName), for: .normal)
+        
+        //NEW
+        stopLoading()
     }
- 
-    
-    
-    
-    
-    
+
     
     //FUNCTIONS
- 
+    func startLoading() {
+        likeCommentButton.isEnabled = false
+        //activityIndicator.startAnimating()
+        //bringSubviewToFront(activityIndicator)
+    }
+
+    func stopLoading() {
+        likeCommentButton.isEnabled = true
+        //activityIndicator.stopAnimating()
+    }
  
     //STYLE
     private func setupMainViews() {
@@ -117,6 +127,10 @@ class CommentCell: UITableViewCell {
 
     private func setupCommentViews() {
         bodyView.backgroundColor = .systemPurple.withAlphaComponent(0.3)
+
+
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 
         [headerView, bodyView, footerView].forEach {
             commentView.addSubview($0)
@@ -159,26 +173,35 @@ class CommentCell: UITableViewCell {
     }
 
     private func setupFooterView() {
-        likeButton.tintColor = .systemRed
-        likeButton.setImage(UIImage(named: "like"), for: .normal)
-        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeCommentButton.tintColor = .systemRed
+        likeCommentButton.setImage(UIImage(named: "like"), for: .normal)
+        likeCommentButton.translatesAutoresizingMaskIntoConstraints = false
 
         likesLabel.font = UIFont.systemFont(ofSize: 14)
         likesLabel.textColor = .darkGray
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        footerView.addSubview(likeButton)
+        footerView.addSubview(likeCommentButton)
         footerView.addSubview(likesLabel)
+        //footerView.addSubview(activityIndicator)
 
         NSLayoutConstraint.activate([
-            likeButton.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
-            likeButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor),
-            likeButton.widthAnchor.constraint(equalToConstant: 24),
-            likeButton.heightAnchor.constraint(equalToConstant: 24),
+            likeCommentButton.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
+            likeCommentButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor),
+            likeCommentButton.widthAnchor.constraint(equalToConstant: 24),
+            likeCommentButton.heightAnchor.constraint(equalToConstant: 24),
 
             likesLabel.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
-            likesLabel.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 8),
+            likesLabel.leadingAnchor.constraint(equalTo: likeCommentButton.trailingAnchor, constant: 8),
             likesLabel.trailingAnchor.constraint(lessThanOrEqualTo: footerView.trailingAnchor)
+        ])
+        
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        footerView.addSubview(activityIndicator)
+
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: likeCommentButton.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: likeCommentButton.centerYAnchor)
         ])
     }
 
@@ -194,9 +217,6 @@ class CommentCell: UITableViewCell {
             dividerView.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
         ])
     }
-
-
-
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
