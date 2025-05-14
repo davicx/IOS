@@ -36,7 +36,22 @@ class IndividualPostViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupPostTableView()
+        
+        LikeManager.shared.likePostDelegate = self.likePostDelegate
+        LikeManager.shared.likeCommentDelegate = self.likeCommentDelegate
     }
+    
+    /*
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         view.backgroundColor = .white
+         setupPostTableView()
+         
+         // Inject delegates
+
+     }
+
+     */
 
 
     //DELEGATES
@@ -113,10 +128,10 @@ class IndividualPostViewController: UIViewController {
 
     //STYLE
     private func setupPostTableView() {
+        self.postTableView.dataSource = self
+        self.postTableView.delegate = self
         postTableView.translatesAutoresizingMaskIntoConstraints = false
         postTableView.isScrollEnabled = true
-        postTableView.dataSource = self
-        postTableView.delegate = self
         postTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
         postTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
         postTableView.separatorStyle = .none
@@ -136,14 +151,33 @@ class IndividualPostViewController: UIViewController {
 }
 
 
-
 //LIKE POST DELEGATE: Extension
 extension IndividualPostViewController: PostCellDelegate {
     func didTapLikePostButton(in cell: PostCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
 
         cell.startLoading()
-        //showScreenSpinner()
+        spinnerHelper.show(in: self.view)
+
+        Task {
+            if currentPost.isLikedByCurrentUser == true {
+                await LikeManager.shared.unlikePost(post: currentPost, groupID: currentPost.groupID ?? 0)
+            } else {
+                await LikeManager.shared.likePost(post: currentPost, groupID: currentPost.groupID ?? 0)
+            }
+
+            DispatchQueue.main.async {
+                cell.configurePost(with: self.currentPost)
+                self.spinnerHelper.hide()
+            }
+        }
+    }
+     
+    /*
+    func didTapLikePostButton(in cell: PostCell) {
+        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
+
+        cell.startLoading()
         spinnerHelper.show(in: self.view)
 
         Task {
@@ -160,7 +194,7 @@ extension IndividualPostViewController: PostCellDelegate {
             }
         }
     }
-  
+  */
 }
 
 //LIKE COMMENT DELEGATE: Extension
@@ -169,7 +203,33 @@ extension IndividualPostViewController: CommentCellDelegate {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
 
         cell.startLoading()
-        //showScreenSpinner()
+        spinnerHelper.show(in: self.view)
+
+        let commentIndex = indexPath.row - 1
+        guard let comment = currentPost.commentsArray?[commentIndex] else {
+            print("IndividualPostViewController: No comment found at index \(indexPath.row)")
+            return
+        }
+
+        Task {
+            if comment.commentLikedByCurrentUser == true {
+                await LikeManager.shared.unlikeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0)
+            } else {
+                await LikeManager.shared.likeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0)
+            }
+
+            DispatchQueue.main.async {
+                cell.configureComment(with: comment)
+                self.spinnerHelper.hide()
+            }
+        }
+    }
+
+    /*
+    func didTapLikeCommentButton(in cell: CommentCell) {
+        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
+
+        cell.startLoading()
         spinnerHelper.show(in: self.view)
         
         let commentIndex = indexPath.row - 1
@@ -192,6 +252,7 @@ extension IndividualPostViewController: CommentCellDelegate {
             }
         }
     }
+     */
 }
 
 
