@@ -8,8 +8,8 @@
 import Foundation
 
 //postLikeFunctions
-class LikeManager {
-    static let shared = LikeManager()
+class postLikeFunctions {
+    static let shared = postLikeFunctions()
     private init() {}
     
     let postAPI = PostsAPI()
@@ -27,7 +27,7 @@ class LikeManager {
                 post.isLikedByCurrentUser = true
                 post.postLikesArray?.append(likeModel)
                 post.simpleLikesArray?.append(likeModel.likedByUserName)
-                likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
+                likePostDelegate?.updatePostsArrayWithLikePost(currentPostID: post.postID, likeModel: likeModel)
             }
         } catch {
             print("Error liking post:", error)
@@ -42,7 +42,7 @@ class LikeManager {
                 post.isLikedByCurrentUser = false
                 post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeModel.postLikeID }
                 post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != response.currentUser }
-                likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
+                likePostDelegate?.updatePostsArrayWithUnlikePost(currentPostID: post.postID, likeModel: likeModel)
             }
         } catch {
             print("Error unliking post:", error)
@@ -54,7 +54,7 @@ class LikeManager {
             let response = try await commentsAPI.likeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
             if response.success == true {
                 let commentLikeModel = response.data
-                likeCommentDelegate?.userLikeComment(currentPostID: comment.postID ?? 0, currentCommentID: comment.commentID ?? 0, commentLikeModel: commentLikeModel)
+                likeCommentDelegate?.updatePostsArrayWithLikeComment(currentPostID: comment.postID ?? 0, currentCommentID: comment.commentID ?? 0, commentLikeModel: commentLikeModel)
             }
         } catch {
             print("Error liking comment:", error)
@@ -66,7 +66,7 @@ class LikeManager {
             let response = try await commentsAPI.unlikeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
             if response.success == true {
                 let commentUnlikeModel = response.data
-                likeCommentDelegate?.userUnlikeComment(currentPostID: comment.postID ?? 0, currentCommentID: comment.commentID ?? 0, commentLikeModel: commentUnlikeModel)
+                likeCommentDelegate?.updatePostsArrayWithUnlikeComment(currentPostID: comment.postID ?? 0, currentCommentID: comment.commentID ?? 0, commentLikeModel: commentUnlikeModel)
             }
         } catch {
             print("Error unliking comment:", error)

@@ -17,6 +17,33 @@ import UIKit
 
 //STYLE
 
+
+/*
+//WORKS
+func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+    print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
+    print(commentLikeModel)
+    for post in postsArray {
+        print(post.postID)
+    }
+    
+}
+ */
+
+
+/*
+//WORKS
+
+func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+    print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
+    print(commentLikeModel)
+    for post in postsArray {
+        print(post.postID)
+    }
+}
+ */
+
+
 /*
 class IndividualPostCell: UITableViewCell {
     

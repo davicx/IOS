@@ -11,8 +11,6 @@ import UIKit
 //let likeSummary = post.comments.map { "ID:\($0.commentID.prefix(5)) Likes:\($0.commentLikes?.count ?? 0)" }.joined(separator: " | ")
 //post.caption += "\n[CommentLikes] \(likeSummary)"
 
-
-
 class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
 
     let loginAPI = LoginAPI()
@@ -60,14 +58,14 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         
         //TEMP
         if let firstPost = postsArray.first {
-            print("viewDidAppear - First Post:")
-            print("ID: \(firstPost.postID)")
+            //print("viewDidAppear - First Post:")
+            //print("ID: \(firstPost.postID)")
 
             if let comments = firstPost.commentsArray, !comments.isEmpty {
                 for (index, comment) in comments.enumerated() {
                     let commentID = comment.commentID ?? -1
                     let likeCount = comment.commentLikeCount ?? 0
-                    print("Comment \(index + 1): ID = \(commentID), Likes = \(likeCount)")
+                    //print("Comment \(index + 1): ID = \(commentID), Likes = \(likeCount)")
                 }
             } else {
                 print("No comments for this post.")
@@ -89,7 +87,7 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
 
     // Fetch posts using the API
     func fetchPosts() {
-        print("STEP 1: fetchPosts")
+        //print("STEP 1: fetchPosts")
         Task {
             do {
                 //print("STEP 2: postsResponseModel")
@@ -119,8 +117,8 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     
     //DELEGATE FUNCTIONS
     // Function D1: Like a Post
-    func userLikePost(currentPostID: Int, likeModel: LikeModel) {
-        print("DELEGATE: Liked post \(currentPostID) \(currentUser)")
+    func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel) {
+        //print("DELEGATE: Liked post \(currentPostID) \(currentUser)")
 
         for post in postsArray {
             if post.postID == currentPostID {
@@ -142,8 +140,8 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     }
     
     // Function D2: Unlike a Post
-    func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
-        print("DELEGATE: Unliked post \(currentPostID) \(currentUser)")
+    func updatePostsArrayWithUnlikePost(currentPostID: Int, likeModel: LikeModel) {
+        //print("DELEGATE: Unliked post \(currentPostID) \(currentUser)")
 
         for post in postsArray {
             if post.postID == currentPostID {
@@ -157,8 +155,8 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     }
     
     // Function D3: Like a Comment
-    func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("DELEGATE: Liked comment \(currentCommentID) on post \(currentPostID)")
+    func updatePostsArrayWithLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+        print("STEP 4: HomeViewController DELEGATE userLikeComment: We are updating our postsArray with the liked comment \(currentCommentID) on post \(currentPostID)")
 
         for post in postsArray {
             if post.postID == currentPostID {
@@ -184,9 +182,9 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     }
    
     // Function D4: UnLike a Comment
-    func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("DELEGATE: Unliked comment \(currentCommentID) on post \(currentPostID)")
-
+    func updatePostsArrayWithUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+        //print("DELEGATE: Unliked comment \(currentCommentID) on post \(currentPostID)")
+        print("STEP 4: HomeViewController DELEGATE userUnlikeComment: We are updating our postsArray with the liked comment \(currentCommentID) on post \(currentPostID)")
         for post in postsArray {
             if post.postID == currentPostID {
                 for comment in post.commentsArray ?? [] {
@@ -196,53 +194,13 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
                         comment.commentLikes?.removeAll(where: { $0.commentLikeID == commentLikeModel.commentLikeID })
                         //comment.commentLikes = (comment.commentLikes ?? []).filter {$0.likedByUserName != currentUser
                         break
-                        
-                        /*
-                         //comment.commentLikedByCurrentUser = false
-                         //comment.commentLikeCount = max(0, (comment.commentLikeCount ?? 0) - 1)
-                         //comment.commentLikes = (comment.commentLikes ?? []).filter {
-                         //    $0.likedByUserName != currentUser
-                        // }
-
-                         */
                     }
                 }
-
                 break
             }
         }
     }
 
-    
-    /*
-    //WORKS
-    func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
-        print(commentLikeModel)
-        for post in postsArray {
-            print(post.postID)
-        }
-        
-    }
-     */
-    
-
-    /*
-    //WORKS
-
-    func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
-        print(commentLikeModel)
-        for post in postsArray {
-            print(post.postID)
-        }
-    }
-     */
-    
-    /*
-
-     */
-    
     //TABLE VIEW: Setup
     func setupTableView() {
         postsTableView.delegate = self
@@ -282,7 +240,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //}.joined(separator: " | ")
         //post.postCaption = (post.postCaption ?? "") + "\n[CommentLikes] \(likeSummary)"
 
-        
         cell.updatePost(with: post)
         return cell
 
