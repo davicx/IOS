@@ -83,6 +83,7 @@
 		D74C9F052D5981AB00947ECE /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F042D5981AB00947ECE /* KeyChainManager.swift */; };
 		D74C9F092D59820400947ECE /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F082D59820400947ECE /* KeychainHelper.swift */; };
 		D77ED6A52D90DB9800FA4F71 /* PollingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */; };
+		D78C165C2DD55AD900EEDD91 /* SpinnerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */; };
 		D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */; };
 		D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */; };
 		D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */; };
@@ -203,6 +204,7 @@
 		D74C9F042D5981AB00947ECE /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		D74C9F082D59820400947ECE /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingManager.swift; sourceTree = "<group>"; };
+		D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerHelper.swift; sourceTree = "<group>"; };
 		D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowers.swift; sourceTree = "<group>"; };
 		D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPIBackup.swift; sourceTree = "<group>"; };
 		D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				D74C9F042D5981AB00947ECE /* KeyChainManager.swift */,
 				D74C9F082D59820400947ECE /* KeychainHelper.swift */,
 				D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */,
+				D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -753,6 +756,7 @@
 				D7A3C1202D80FB2E000B4EB7 /* UserProfileLayoutExample.swift in Sources */,
 				D742D6AB2D7A76F7000A1E62 /* UserFollowersView.swift in Sources */,
 				51848FB42D139D7500E629CD /* NewGroupResponseModel.swift in Sources */,
+				D78C165C2DD55AD900EEDD91 /* SpinnerHelper.swift in Sources */,
 				D74C9F092D59820400947ECE /* KeychainHelper.swift in Sources */,
 				51848FB62D139D7E00E629CD /* NewGroupModel.swift in Sources */,
 				51C69B2C2D0E57AD00C46759 /* validationFunctions.swift in Sources */,
