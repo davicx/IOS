@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PostCellDelegate: AnyObject {
-    func didTapLikeButton(in cell: PostCell)
+    func didTapLikePostButton(in cell: PostCell)
 }
 
 class PostCell: UITableViewCell {
@@ -31,7 +31,41 @@ class PostCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //ACTIONS
+    func setupButtonTarget() {
+        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+    }
 
+    @objc private func likeButtonTapped() {
+        delegate?.didTapLikePostButton(in: self)
+    }
+
+    //CELL SETUP
+    func configurePost(with post: Post) {
+        postImage.image = post.postImageData ?? UIImage(named: Constants.Image.fallbackPostImage)
+        postCaptionLabel.text = post.postCaption
+        likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
+
+        let imageName = post.isLikedByCurrentUser == true ? "liked" : "like"
+        likeButton.setImage(UIImage(named: imageName), for: .normal)
+        
+        print("POST CONFIGURE CALLED stopLoading()")
+        stopLoading()
+
+    }
+    
+    
+    //FUNCTIONS
+    func startLoading() {
+        likeButton.isEnabled = false
+    }
+
+    func stopLoading() {
+        likeButton.isEnabled = true
+    }
+    
+    //STYLE
     private func setupPostViews() {
         contentView.addSubview(postImage)
         contentView.addSubview(postCaptionLabel)
@@ -87,34 +121,6 @@ class PostCell: UITableViewCell {
             dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
 
-    func setupButtonTarget() {
-        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-    }
-
-    @objc private func likeButtonTapped() {
-        delegate?.didTapLikeButton(in: self)
-    }
-
-    func configure(with post: Post) {
-        postImage.image = post.postImageData ?? UIImage(named: Constants.Image.fallbackPostImage)
-        postCaptionLabel.text = post.postCaption
-        likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
-
-        let imageName = post.isLikedByCurrentUser == true ? "liked" : "like"
-        likeButton.setImage(UIImage(named: imageName), for: .normal)
-        
-
-        stopLoading()
-    }
-
-    func startLoading() {
-        likeButton.isHidden = true
-        activityIndicator.startAnimating()
-    }
-
-    func stopLoading() {
-        activityIndicator.stopAnimating()
-        likeButton.isHidden = false
-    }
 }

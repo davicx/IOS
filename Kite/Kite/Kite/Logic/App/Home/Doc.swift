@@ -10,7 +10,153 @@ import UIKit
 
 
 
+//APPENDIX
+//CELL SETUP
+
+//FUNCTIONS
+
+//STYLE
+
+/*
+class IndividualPostCell: UITableViewCell {
+    
+    // Layout Manager
+    private let layoutManager = IndividualPostCellLayoutManager()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        // Setup layout using Layout Manager
+        layoutManager.setupLayout(in: contentView)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setPost(post: Post) {
+        print("Caption: \(post.postCaption)")
+    }
+}
+*/
+
 //WORKS
+/*
+
+class IndividualPostCell: UITableViewCell {
+    
+    let postImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let postCaption: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        contentView.addSubview(postImageView)
+        contentView.addSubview(postCaption)
+        
+        NSLayoutConstraint.activate([
+            postImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            postImageView.heightAnchor.constraint(equalToConstant: 200),
+            
+            postCaption.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 8),
+            postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            postCaption.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setPost(post: Post) {
+        postImageView.image = post.postImageData
+        postCaption.text = post.postCaption
+    }
+}
+
+
+*/
+
+
+
+//WORKS
+
+/*
+func handleUnLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
+    print("LIKE COMMENT DELEGATE: handleUnLikeComment")
+    Task {
+        do {
+            let response = try await CommentsAPI.shared.unlikeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
+            
+            print(response.success)
+            if response.success == true {
+    
+                print("UNLIKE A COMMENT")
+                //TO DO
+                var commentUnlikeModel = response.data
+                comment.commentLikedByCurrentUser = false
+                //UPDATE subtract 1 from comment.commentLikeCount
+                //ADD remove the commentLikeModel from comment.commentLikes array where the likedByUserName is the currentUser
+
+              
+
+                likeCommentDelegate?.userUnlikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentUnlikeModel)
+            }
+            completion()
+        } catch {
+            print("Error unliking comment:", error)
+            completion()
+        }
+    }
+}
+ */
+
+/*
+func handleLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
+    print("LIKE COMMENT DELEGATE: handleLikeComment")
+    Task {
+        do {
+            let response = try await CommentsAPI.shared.likeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
+
+            
+            if response.success == true {
+                var commentLikeModel = response.data
+                print("LIKE A COMMENT")
+                
+                //TO DO
+                comment.commentLikedByCurrentUser = true
+                //UPDATE comment.commentLikeCount by 1
+                //ADD commentLikeModel to comment.commentLikes array
+    
+                likeCommentDelegate?.userLikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentLikeModel)
+      
+            }
+
+            completion()
+        } catch {
+            print("Error liking comment:", error)
+            completion()
+        }
+    }
+}
+ */
+
 
 /*
 class CommentCell: UITableViewCell {

@@ -45,7 +45,10 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.created = post.created
         currentPost.isLikedByCurrentUser = post.isLikedByCurrentUser
         
-        currentPost.commentsArray = post.commentsArray
+        //Convert Comments
+        currentPost.commentsArray = post.commentsArray.map { convertToCommentClass(from: $0) }
+        
+        //currentPost.commentsArray = post.commentsArray
         currentPost.postLikesArray = post.postLikesArray
         currentPost.simpleLikesArray = post.simpleLikesArray
 
@@ -56,6 +59,31 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
     
     return postsArray
 }
+
+func convertToCommentClass(from model: CommentModel) -> Comment {
+    return Comment(
+        commentID: model.commentID,
+        postID: model.postID,
+        groupID: model.groupID,
+        listID: model.listID,
+        commentCaption: model.commentCaption,
+        commentFrom: model.commentFrom,
+        commentType: model.commentType,
+        userName: model.userName,
+        imageName: model.imageName,
+        firstName: model.firstName,
+        lastName: model.lastName,
+        commentDate: model.commentDate,
+        commentTime: model.commentTime,
+        timeMessage: model.timeMessage,
+        commentLikes: model.commentLikes,
+        created: model.created,
+        friendshipStatus: model.friendshipStatus,
+        commentLikeCount: model.commentLikeCount,
+        commentLikedByCurrentUser: model.commentLikedByCurrentUser
+    )
+}
+
     
 
 //Function A2: Add Image to Post

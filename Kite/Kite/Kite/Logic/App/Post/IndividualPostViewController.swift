@@ -9,29 +9,192 @@
 import UIKit
 
 
+//LIKE POST DELEGATE
 protocol LikePostDelegate: AnyObject {
     func userLikePost(currentPostID: Int, likeModel: LikeModel)
     func userUnlikePost(currentPostID: Int, likeModel: LikeModel)
+}
+
+//COMMENT POST DELEGATE
+protocol LikeCommentDelegate: AnyObject {
+    func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel)
+    func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel)
 }
 
 
 class IndividualPostViewController: UIViewController {
     let postAPI = PostsAPI()
     let currentUser = userDefaultManager.getLoggedInUser()
-
-    var likePostDelegate: LikePostDelegate? = nil
     var currentPost: Post!
 
     let postTableView = UITableView()
-    
-    var commentsArray: [CommentModel] = []
+    var commentsArray: [Comment] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupPostTableView()
     }
+    let screenSpinner = UIActivityIndicatorView(style: .large)
 
+
+
+
+    //DELEGATES
+    var likePostDelegate: LikePostDelegate? = nil
+    var likeCommentDelegate: LikeCommentDelegate? = nil
+    
+
+    //FUNCTIONS
+    func showScreenSpinner() {
+        screenSpinner.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(screenSpinner)
+        NSLayoutConstraint.activate([
+            screenSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            screenSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        screenSpinner.startAnimating()
+    }
+
+    func hideScreenSpinner() {
+        screenSpinner.stopAnimating()
+        screenSpinner.removeFromSuperview()
+    }
+
+    //Function 1: Like Post
+    func handleLike(post: Post, groupID: Int) async {
+        do {
+            let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+            if likePostResponseModel.success == true {
+                let likeModel = likePostResponseModel.data
+                post.isLikedByCurrentUser = true
+                post.postLikesArray?.append(likeModel)
+                post.simpleLikesArray?.append(likeModel.likedByUserName)
+                likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
+            }
+        } catch {
+            print("Error liking post:", error)
+        }
+    }
+    /*
+    func handleLike(post: Post, groupID: Int, completion: @escaping () -> Void) {
+        Task {
+            do {
+                let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+                if likePostResponseModel.success == true {
+                    let likeModel = likePostResponseModel.data
+                    post.isLikedByCurrentUser = true
+                    post.postLikesArray?.append(likeModel)
+                    post.simpleLikesArray?.append(likeModel.likedByUserName)
+                    likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
+                }
+                
+                completion()
+            } catch {
+                print("Error liking post:", error)
+                completion()
+            }
+        }
+    }
+    */
+    
+    //Function 2: Unlike Post
+    func handleUnlike(post: Post, groupID: Int) async {
+        do {
+            let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+            if unlikePostResponseModel.success == true {
+                let likeModel = unlikePostResponseModel.data
+                post.isLikedByCurrentUser = false
+                post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeModel.postLikeID }
+                post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != unlikePostResponseModel.currentUser }
+                likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
+            }
+        } catch {
+            print("Error unliking post:", error)
+        }
+    }
+    /*
+    func handleUnlike(post: Post, groupID: Int, completion: @escaping () -> Void) {
+        Task {
+            do {
+                let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
+                if unlikePostResponseModel.success == true {
+                    let likeModel = unlikePostResponseModel.data
+                    post.isLikedByCurrentUser = false
+                    post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeModel.postLikeID }
+                    post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != unlikePostResponseModel.currentUser }
+                    likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
+
+                }
+                completion()
+            } catch {
+                print("Error unliking post:", error)
+                completion()
+            }
+        }
+    }
+    */
+
+    //Function 3: Like Comment
+    func handleLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
+        print("LIKE COMMENT DELEGATE: handleLikeComment")
+        Task {
+            do {
+                let response = try await CommentsAPI.shared.likeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
+                
+                if response.success == true {
+                    let commentLikeModel = response.data
+                    print("LIKE A COMMENT")
+
+                    //MAY NOT NEED NOW
+                    //comment.commentLikedByCurrentUser = true
+                    //comment.commentLikeCount = (comment.commentLikeCount ?? 0) + 1
+                    //comment.commentLikes = (comment.commentLikes ?? []) + [commentLikeModel]
+                    
+                    likeCommentDelegate?.userLikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentLikeModel)
+     
+                }
+
+                completion()
+            } catch {
+                print("Error liking comment:", error)
+                completion()
+            }
+        }
+    }
+
+     
+    //Function 4: Unlike Comment
+    func handleUnLikeComment(comment: Comment, postID: Int, groupID: Int, completion: @escaping () -> Void) {
+        print("LIKE COMMENT DELEGATE: handleUnLikeComment")
+        Task {
+            do {
+                let response = try await CommentsAPI.shared.unlikeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
+                
+                if response.success == true {
+                    let commentUnlikeModel = response.data
+                    print("UNLIKE A COMMENT")
+
+                    //MAY NOT NEED NOW
+                    //comment.commentLikedByCurrentUser = false
+                    //comment.commentLikeCount = max(0, (comment.commentLikeCount ?? 0) - 1)
+                    //comment.commentLikes = (comment.commentLikes ?? []).filter {
+                    //    $0.likedByUserName != currentUser
+                   // }
+
+                    likeCommentDelegate?.userUnlikeComment(currentPostID: comment.postID!, currentCommentID: comment.commentID!, commentLikeModel: commentUnlikeModel)
+                }
+
+                completion()
+            } catch {
+                print("Error unliking comment:", error)
+                completion()
+            }
+        }
+    }
+
+
+    //STYLE
     private func setupPostTableView() {
         postTableView.translatesAutoresizingMaskIntoConstraints = false
         postTableView.isScrollEnabled = true
@@ -53,164 +216,144 @@ class IndividualPostViewController: UIViewController {
         ])
     }
 
-    func handleLike(post: Post, groupID: Int, completion: @escaping () -> Void) {
-        Task {
-            do {
-                let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
-                if likePostResponseModel.success == true {
-                    let likeModel = likePostResponseModel.data
-                    post.isLikedByCurrentUser = true
-                    post.postLikesArray?.append(likeModel)
-                    post.simpleLikesArray?.append(likeModel.likedByUserName)
-                    
-                    //NEW NEED?
-                    likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
-                    //NEW NEED?
-                }
-                
-                completion()
-            } catch {
-                print("Error liking post:", error)
-                completion()
-            }
-        }
-    }
-
-    func handleUnlike(post: Post, groupID: Int, completion: @escaping () -> Void) {
-        Task {
-            do {
-                let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: "davey", postID: post.postID, groupID: groupID)
-                if unlikePostResponseModel.success == true {
-                    let likeModel = unlikePostResponseModel.data
-                    post.isLikedByCurrentUser = false
-                    post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeModel.postLikeID }
-                    post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != unlikePostResponseModel.currentUser }
-                
-                    //NEW NEED?
-                    likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
-                    //NEW NEED?
-                }
-                completion()
-            } catch {
-                print("Error unliking post:", error)
-                completion()
-            }
-        }
-    }
 }
 
+
+
+//LIKE POST DELEGATE: Extension
 extension IndividualPostViewController: PostCellDelegate {
-    func didTapLikeButton(in cell: PostCell) {
+    func didTapLikePostButton(in cell: PostCell) {
+        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
+
+        cell.startLoading()
+        showScreenSpinner()
+
+        Task {
+            if currentPost.isLikedByCurrentUser == true {
+                await handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0)
+            } else {
+                await handleLike(post: currentPost, groupID: currentPost.groupID ?? 0)
+            }
+
+            DispatchQueue.main.async {
+                cell.configurePost(with: self.currentPost)
+                self.hideScreenSpinner()
+            }
+        }
+    }
+    /*
+    func didTapLikePostButton(in cell: PostCell) {
         guard let indexPath = postTableView.indexPath(for: cell) else { return }
         if indexPath.row == 0 {
+            
             cell.startLoading()
+            showScreenSpinner()
 
             if currentPost.isLikedByCurrentUser == true {
                 handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
                     DispatchQueue.main.async {
-                        cell.configure(with: self.currentPost)
+                        cell.configurePost(with: self.currentPost)
+                        self.hideScreenSpinner()
                     }
                 }
             } else {
                 handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
                     DispatchQueue.main.async {
-                        cell.configure(with: self.currentPost)
+                        cell.configurePost(with: self.currentPost)
+                        self.hideScreenSpinner()
                     }
                 }
             }
         }
     }
+    */
 }
 
-//Need an extension for comment liked 
-/*
+//LIKE COMMENT DELEGATE: Extension
+extension IndividualPostViewController: CommentCellDelegate {
+    
+    //didTapLikeCommentButton is located in the Comment Cell
+    func didTapLikeCommentButton(in cell: CommentCell) {
+        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
 
- extension IndividualPostViewController: PostCellDelegate {
-     func didTapLikeButton(in cell: PostCell) {
-         guard let indexPath = postTableView.indexPath(for: cell) else { return }
-         if indexPath.row == 0 {
-             cell.startLoading()
+        cell.startLoading()
+        showScreenSpinner()
+        
+        let commentIndex = indexPath.row - 1
+        guard var comment = currentPost.commentsArray?[commentIndex] else {
+            print("IndividualPostViewController: No comment found at index \(indexPath.row)")
+            return
+        }
 
-             if currentPost.isLikedByCurrentUser == true {
-                 handleUnlike(post: currentPost, groupID: currentPost.groupID ?? 0) {
-                     DispatchQueue.main.async {
-                         cell.configure(with: self.currentPost)
-                     }
-                 }
-             } else {
-                 handleLike(post: currentPost, groupID: currentPost.groupID ?? 0) {
-                     DispatchQueue.main.async {
-                         cell.configure(with: self.currentPost)
-                     }
-                 }
-             }
-         }
-     }
- }*/
+        //COMMENT: Unlike Comment
+        if comment.commentLikedByCurrentUser == true {
+   
+            //handleUnLikeComment is located in IndividualPostViewController
+            handleUnLikeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0) {
+                print("API IndividualPostViewController Finished Unlike API Call for commentID \(comment.commentID ?? -1)")
+                DispatchQueue.main.async {
+                    cell.configureComment(with: comment)
+                    self.hideScreenSpinner()
+                }
+            }
 
-/*
- Need this data
- {
-     "currentUser": "frodo",
-     "postID": 722,
-     "commentID": 229,
-     "groupID": 72
- }
+        } else {
+            //handleLikeComment is located in IndividualPostViewController
+            handleLikeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0) {
+                print("API IndividualPostViewController Finished Like API Call for commentID \(comment.commentID ?? -1)")
+                DispatchQueue.main.async {
+                    cell.configureComment(with: comment)
+                    self.hideScreenSpinner()
+                }
+            }
+        }
+    }
+    
+}
 
- */
 
+
+//TABLE VIEW
 extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1 + commentsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        //INDIVIDUAL POST:
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-            cell.configure(with: currentPost)
-            cell.delegate = self
-            return cell
+            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+            postCell.configurePost(with: currentPost)
+            postCell.delegate = self
+            return postCell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+            
+            //COMMENTS: Comments inside table view
+            let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
             
             if let comments = currentPost.commentsArray, indexPath.row - 1 < comments.count {
                 let comment = comments[indexPath.row - 1]
                 
-                cell.configure(with: comment)  // <-- pass the whole comment
+                commentCell.configureComment(with: comment)  // <-- pass the whole comment
+                commentCell.delegate = self 
             } else {
-                let emptyComment = CommentModel(commentID: nil, postID: nil, groupID: nil, listID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil, commentLikedByCurrentUser: false)
-                cell.configure(with: emptyComment)
+                let emptyComment = Comment(commentID: nil, postID: nil, groupID: nil, listID: nil, commentCaption: "No comment", commentFrom: nil, commentType: nil, userName: nil, imageName: nil, firstName: nil, lastName: nil, commentDate: nil, commentTime: nil, timeMessage: nil, commentLikes: nil, created: nil, friendshipStatus: nil, commentLikeCount: nil, commentLikedByCurrentUser: false)
+                commentCell.configureComment(with: emptyComment)
             }
-            
    
-            cell.alpha = 0
+            commentCell.alpha = 0
             UIView.animate(withDuration: 0.4, delay: 0.05 * Double(indexPath.row), options: [.curveEaseIn], animations: {
-                cell.alpha = 1
+                commentCell.alpha = 1
             }, completion: nil)
             
-            return cell
+            return commentCell
         }
     }
 
-
-
 }
 
 
 
-//WORKS: Above is animation
-/*
-func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if indexPath.row == 0 {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-        cell.configure(with: currentPost)
-        cell.delegate = self
-        return cell
-    } else {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
-        let comment = commentsArray[indexPath.row - 1] // 👈 Subtract 1 because first row is post
-        cell.configure(with: comment.commentCaption ?? "")
-        return cell
-    }
-}
- */
+
+

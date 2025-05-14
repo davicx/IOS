@@ -9,12 +9,12 @@ import Foundation
 
 
 struct CommentLikeModel: Codable {
-    let commentLikeID: Int
-    let commentID: Int
-    let likedByUserName: String
-    let likedByImage: String
-    let likedByFirstName: String
-    let likedByLastName: String
-    let commentCreated: String
+    var commentLikeID: Int
+    var commentID: Int
+    var likedByUserName: String
+    var likedByImage: String
+    var likedByFirstName: String
+    var likedByLastName: String
+    var commentCreated: String
 }
 
