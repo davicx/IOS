@@ -29,7 +29,6 @@ class IndividualPostCell: UITableViewCell {
     //Post Divider
     let postDividerView = createPostDividerView()
     
-    
     //Heights for Dynamic Content
     var postImageHeightConstraint: NSLayoutConstraint?
     var postCaptionHeightConstraint: NSLayoutConstraint?
@@ -153,11 +152,10 @@ class IndividualPostCell: UITableViewCell {
         postCaptionHeightConstraint?.constant = captionHeight
         postCaptionLabel.text = postCaption
         
-        postSocialsLabel.text = "Post Count: \(post.simpleLikesArray?.count ?? 0)"
+        postSocialsLabel.text = "Post Like Count: \(post.simpleLikesArray?.count ?? 0)"
         
         layoutIfNeeded()
     }
-
 
 
 }
@@ -275,83 +273,3 @@ func createFooterView() -> UIView {
 
 
 
-
-
-
-//APPENDIX
-
-/*
-class IndividualPostCell: UITableViewCell {
-    
-    // Layout Manager
-    private let layoutManager = IndividualPostCellLayoutManager()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        // Setup layout using Layout Manager
-        layoutManager.setupLayout(in: contentView)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setPost(post: Post) {
-        print("Caption: \(post.postCaption)")
-    }
-}
-*/
-
-//WORKS
-/*
-
-class IndividualPostCell: UITableViewCell {
-    
-    let postImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let postCaption: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        contentView.addSubview(postImageView)
-        contentView.addSubview(postCaption)
-        
-        NSLayoutConstraint.activate([
-            postImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            postImageView.heightAnchor.constraint(equalToConstant: 200),
-            
-            postCaption.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 8),
-            postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            postCaption.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
-        ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setPost(post: Post) {
-        postImageView.image = post.postImageData
-        postCaption.text = post.postCaption
-    }
-}
-
-
-*/

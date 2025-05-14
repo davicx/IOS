@@ -55,16 +55,13 @@ class PostCell: UITableViewCell {
 
     }
     
-
     
     //FUNCTIONS
     func startLoading() {
         likeButton.isEnabled = false
-        //activityIndicator.startAnimating()
     }
 
     func stopLoading() {
-        //activityIndicator.stopAnimating()
         likeButton.isEnabled = true
     }
     

@@ -67,8 +67,6 @@ class CommentCell: UITableViewCell {
     
     //CELL SETUP
     func configureComment(with comment: Comment) {
-        //print(comment.commentID)
-        
         userNameLabel.text = comment.commentFrom
         commentTextView.text = comment.commentCaption
 
@@ -78,7 +76,6 @@ class CommentCell: UITableViewCell {
         let imageName = comment.commentLikedByCurrentUser == true ? "liked" : "like"
         likeCommentButton.setImage(UIImage(named: imageName), for: .normal)
         
-        //NEW
         stopLoading()
     }
 
@@ -86,13 +83,10 @@ class CommentCell: UITableViewCell {
     //FUNCTIONS
     func startLoading() {
         likeCommentButton.isEnabled = false
-        //activityIndicator.startAnimating()
-        //bringSubviewToFront(activityIndicator)
     }
 
     func stopLoading() {
         likeCommentButton.isEnabled = true
-        //activityIndicator.stopAnimating()
     }
  
     //STYLE
