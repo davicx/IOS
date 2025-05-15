@@ -46,7 +46,6 @@ class IndividualPostViewController: UIViewController {
     var likePostDelegate: LikePostDelegate? = nil
     var likeCommentDelegate: LikeCommentDelegate? = nil
     
-
     //STYLE
     private func setupPostTableView() {
         self.postTableView.dataSource = self
@@ -73,7 +72,9 @@ class IndividualPostViewController: UIViewController {
 
 
 //LIKE POST DELEGATE: Extension
-extension IndividualPostViewController: PostCellDelegate {
+extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
+    
+    //POST CELL
     func didTapLikePostButton(in cell: PostCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
 
@@ -93,11 +94,8 @@ extension IndividualPostViewController: PostCellDelegate {
             }
         }
     }
-
-}
-
-//LIKE COMMENT DELEGATE: Extension
-extension IndividualPostViewController: CommentCellDelegate {
+    
+    //COMMENT CELL
     func didTapLikeCommentButton(in cell: CommentCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
 
@@ -129,6 +127,7 @@ extension IndividualPostViewController: CommentCellDelegate {
         }
     }
 
+
 }
 
 
@@ -142,14 +141,14 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         
         //INDIVIDUAL POST:
         if indexPath.row == 0 {
-            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+            let postCell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.post, for: indexPath) as! PostCell
             postCell.configurePost(with: currentPost)
             postCell.delegate = self
             return postCell
         } else {
             
             //COMMENTS: Comments inside table view
-            let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+            let commentCell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.comment, for: indexPath) as! CommentCell
             
             if let comments = currentPost.commentsArray, indexPath.row - 1 < comments.count {
                 let comment = comments[indexPath.row - 1]
@@ -170,6 +169,14 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         }
     }
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row > 0 { // Apply animation only to comment cells
+            cell.alpha = 0
+            UIView.animate(withDuration: 0.4, delay: 0.05 * Double(indexPath.row), options: [.curveEaseIn], animations: {
+                cell.alpha = 1
+            }, completion: nil)
+        }
+    }
 }
 
 

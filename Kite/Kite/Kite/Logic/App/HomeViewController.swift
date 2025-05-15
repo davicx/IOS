@@ -13,6 +13,7 @@ import UIKit
 
 class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
 
+    //HOME: API and data
     let loginAPI = LoginAPI()
     let postsAPI = PostsAPI()
     
@@ -24,7 +25,7 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     
     var postsArrayNoImage = [Post]()
     var postsArray = [Post]()
-
+    
     @IBOutlet weak var postsTableView: UITableView!
 
     // Polling Manager
@@ -55,27 +56,6 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        //TEMP
-        if let firstPost = postsArray.first {
-            //print("viewDidAppear - First Post:")
-            //print("ID: \(firstPost.postID)")
-
-            if let comments = firstPost.commentsArray, !comments.isEmpty {
-                for (index, comment) in comments.enumerated() {
-                    let commentID = comment.commentID ?? -1
-                    let likeCount = comment.commentLikeCount ?? 0
-                    //print("Comment \(index + 1): ID = \(commentID), Likes = \(likeCount)")
-                }
-            } else {
-                print("No comments for this post.")
-            }
-
-        } else {
-            print("viewDidAppear - No posts available.")
-        }
-        //TEMP
-
 
         pollingManager.startPolling() // Restart polling if view reappears
     }
@@ -85,24 +65,33 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         pollingManager.stopPolling() // Stop polling when view goes away
     }
 
-    // Fetch posts using the API
+    
+    //TABLE VIEW: Setup
+    func setupTableView() {
+        postsTableView.delegate = self
+        postsTableView.dataSource = self
+        postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Segue.showIndividualPost,
+           let postViewController = segue.destination as? IndividualPostViewController,
+           let selectedPost = sender as? Post {
+            postViewController.currentPost = selectedPost
+            postViewController.likePostDelegate = self
+            postViewController.likeCommentDelegate = self
+            postViewController.commentsArray = selectedPost.commentsArray ?? []
+        }
+    }
+    
+    //FUNCTIONS
     func fetchPosts() {
-        //print("STEP 1: fetchPosts")
         Task {
             do {
-                //print("STEP 2: postsResponseModel")
                 let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
                 
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
-
-                /*
-                for post in postsArray {
-                    print("post Liked! \(post.isLikedByCurrentUser)")
-                    print(post.postCaption)
-                    print("")
-                }
-                 */
                 
                 DispatchQueue.main.async {
                     self.postsTableView.reloadData()
@@ -114,8 +103,7 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             }
         }
     }
-    
-    //DELEGATE FUNCTIONS
+
     // Function D1: Like a Post
     func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel) {
         //print("DELEGATE: Liked post \(currentPostID) \(currentUser)")
@@ -201,24 +189,6 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         }
     }
 
-    //TABLE VIEW: Setup
-    func setupTableView() {
-        postsTableView.delegate = self
-        postsTableView.dataSource = self
-        postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segue.showIndividualPost,
-           let postViewController = segue.destination as? IndividualPostViewController,
-           let selectedPost = sender as? Post {
-            postViewController.currentPost = selectedPost
-            postViewController.likePostDelegate = self
-            postViewController.likeCommentDelegate = self 
-            postViewController.commentsArray = selectedPost.commentsArray ?? []
-        }
-    }
-
 }
 
 
@@ -232,14 +202,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
         let post = postsArray[indexPath.row]
         
-        // Put the debug code here
-        
-        //print(post.commentsArray?[0])
-        //let likeSummary = post.commentsArray.map {
-        //    "ID:\($0.commentID.prefix(5)) Likes:\($0.commentLikes?.count ?? 0)"
-        //}.joined(separator: " | ")
-        //post.postCaption = (post.postCaption ?? "") + "\n[CommentLikes] \(likeSummary)"
-
         cell.updatePost(with: post)
         return cell
 
@@ -269,5 +231,4 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
-
 
