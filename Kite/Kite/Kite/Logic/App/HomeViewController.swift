@@ -6,16 +6,14 @@
 //
 
 
-//CURRENT: May 14
 import UIKit
 
 //let likeSummary = post.comments.map { "ID:\($0.commentID.prefix(5)) Likes:\($0.commentLikes?.count ?? 0)" }.joined(separator: " | ")
 //post.caption += "\n[CommentLikes] \(likeSummary)"
 
-
-
 class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
 
+    //HOME: API and data
     let loginAPI = LoginAPI()
     let postsAPI = PostsAPI()
     
@@ -27,7 +25,7 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     
     var postsArrayNoImage = [Post]()
     var postsArray = [Post]()
-
+    
     @IBOutlet weak var postsTableView: UITableView!
 
     // Polling Manager
@@ -58,27 +56,6 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        //TEMP
-        if let firstPost = postsArray.first {
-            print("viewDidAppear - First Post:")
-            print("ID: \(firstPost.postID)")
-
-            if let comments = firstPost.commentsArray, !comments.isEmpty {
-                for (index, comment) in comments.enumerated() {
-                    let commentID = comment.commentID ?? -1
-                    let likeCount = comment.commentLikeCount ?? 0
-                    print("Comment \(index + 1): ID = \(commentID), Likes = \(likeCount)")
-                }
-            } else {
-                print("No comments for this post.")
-            }
-
-        } else {
-            print("viewDidAppear - No posts available.")
-        }
-        //TEMP
-
 
         pollingManager.startPolling() // Restart polling if view reappears
     }
@@ -88,24 +65,33 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         pollingManager.stopPolling() // Stop polling when view goes away
     }
 
-    // Fetch posts using the API
+    
+    //TABLE VIEW: Setup
+    func setupTableView() {
+        postsTableView.delegate = self
+        postsTableView.dataSource = self
+        postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Segue.showIndividualPost,
+           let postViewController = segue.destination as? IndividualPostViewController,
+           let selectedPost = sender as? Post {
+            postViewController.currentPost = selectedPost
+            postViewController.likePostDelegate = self
+            postViewController.likeCommentDelegate = self
+            postViewController.commentsArray = selectedPost.commentsArray ?? []
+        }
+    }
+    
+    //FUNCTIONS
     func fetchPosts() {
-        print("STEP 1: fetchPosts")
         Task {
             do {
-                //print("STEP 2: postsResponseModel")
                 let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
                 
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
-
-                /*
-                for post in postsArray {
-                    print("post Liked! \(post.isLikedByCurrentUser)")
-                    print(post.postCaption)
-                    print("")
-                }
-                 */
                 
                 DispatchQueue.main.async {
                     self.postsTableView.reloadData()
@@ -117,11 +103,10 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             }
         }
     }
-    
-    //DELEGATE FUNCTIONS
+
     // Function D1: Like a Post
-    func userLikePost(currentPostID: Int, likeModel: LikeModel) {
-        print("DELEGATE: Liked post \(currentPostID) \(currentUser)")
+    func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel) {
+        //print("DELEGATE: Liked post \(currentPostID) \(currentUser)")
 
         for post in postsArray {
             if post.postID == currentPostID {
@@ -143,8 +128,8 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     }
     
     // Function D2: Unlike a Post
-    func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
-        print("DELEGATE: Unliked post \(currentPostID) \(currentUser)")
+    func updatePostsArrayWithUnlikePost(currentPostID: Int, likeModel: LikeModel) {
+        //print("DELEGATE: Unliked post \(currentPostID) \(currentUser)")
 
         for post in postsArray {
             if post.postID == currentPostID {
@@ -158,8 +143,8 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     }
     
     // Function D3: Like a Comment
-    func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("DELEGATE: Liked comment \(currentCommentID) on post \(currentPostID)")
+    func updatePostsArrayWithLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+        print("STEP 4: HomeViewController DELEGATE userLikeComment: We are updating our postsArray with the liked comment \(currentCommentID) on post \(currentPostID)")
 
         for post in postsArray {
             if post.postID == currentPostID {
@@ -185,9 +170,9 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
     }
    
     // Function D4: UnLike a Comment
-    func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("DELEGATE: Unliked comment \(currentCommentID) on post \(currentPostID)")
-
+    func updatePostsArrayWithUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+        //print("DELEGATE: Unliked comment \(currentCommentID) on post \(currentPostID)")
+        print("STEP 4: HomeViewController DELEGATE userUnlikeComment: We are updating our postsArray with the liked comment \(currentCommentID) on post \(currentPostID)")
         for post in postsArray {
             if post.postID == currentPostID {
                 for comment in post.commentsArray ?? [] {
@@ -197,68 +182,10 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
                         comment.commentLikes?.removeAll(where: { $0.commentLikeID == commentLikeModel.commentLikeID })
                         //comment.commentLikes = (comment.commentLikes ?? []).filter {$0.likedByUserName != currentUser
                         break
-                        
-                        /*
-                         //comment.commentLikedByCurrentUser = false
-                         //comment.commentLikeCount = max(0, (comment.commentLikeCount ?? 0) - 1)
-                         //comment.commentLikes = (comment.commentLikes ?? []).filter {
-                         //    $0.likedByUserName != currentUser
-                        // }
-
-                         */
                     }
                 }
-
                 break
             }
-        }
-    }
-
-    
-    /*
-    //WORKS
-    func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
-        print(commentLikeModel)
-        for post in postsArray {
-            print(post.postID)
-        }
-        
-    }
-     */
-    
-
-    /*
-    //WORKS
-
-    func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
-        print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
-        print(commentLikeModel)
-        for post in postsArray {
-            print(post.postID)
-        }
-    }
-     */
-    
-    /*
-
-     */
-    
-    //TABLE VIEW: Setup
-    func setupTableView() {
-        postsTableView.delegate = self
-        postsTableView.dataSource = self
-        postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segue.showIndividualPost,
-           let postViewController = segue.destination as? IndividualPostViewController,
-           let selectedPost = sender as? Post {
-            postViewController.currentPost = selectedPost
-            postViewController.likePostDelegate = self
-            postViewController.likeCommentDelegate = self 
-            postViewController.commentsArray = selectedPost.commentsArray ?? []
         }
     }
 
@@ -274,15 +201,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
         let post = postsArray[indexPath.row]
-        
-        // Put the debug code here
-        
-        //print(post.commentsArray?[0])
-        //let likeSummary = post.commentsArray.map {
-        //    "ID:\($0.commentID.prefix(5)) Likes:\($0.commentLikes?.count ?? 0)"
-        //}.joined(separator: " | ")
-        //post.postCaption = (post.postCaption ?? "") + "\n[CommentLikes] \(likeSummary)"
-
         
         cell.updatePost(with: post)
         return cell
@@ -313,5 +231,4 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
-
 

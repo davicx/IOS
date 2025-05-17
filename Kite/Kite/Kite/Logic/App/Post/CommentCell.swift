@@ -61,12 +61,13 @@ class CommentCell: UITableViewCell {
 
 
     @objc private func didTapLikeComment() {
-        print("Like button tapped")
+        print("STEP 1: CommentCell- User tapped Like button and called didTapLikeCommentButton inside IndividualPostViewController")
         delegate?.didTapLikeCommentButton(in: self)
     }
     
     //CELL SETUP
     func configureComment(with comment: Comment) {
+        print("CommentCell: configureComment was called to set up cell")
         userNameLabel.text = comment.commentFrom
         commentTextView.text = comment.commentCaption
 

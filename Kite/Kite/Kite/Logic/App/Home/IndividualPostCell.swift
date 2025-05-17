@@ -140,6 +140,7 @@ class IndividualPostCell: UITableViewCell {
         
     }
     
+    //CELL SETUP
     func updatePost(with post: Post) {
         let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
         let postCaption = post.postCaption ?? "no caption"

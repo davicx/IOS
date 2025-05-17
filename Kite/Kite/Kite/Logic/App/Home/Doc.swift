@@ -17,6 +17,58 @@ import UIKit
 
 //STYLE
 
+
+//TEMP
+
+/*
+if let firstPost = postsArray.first {
+    //print("viewDidAppear - First Post:")
+    //print("ID: \(firstPost.postID)")
+
+    if let comments = firstPost.commentsArray, !comments.isEmpty {
+        for (index, comment) in comments.enumerated() {
+            let commentID = comment.commentID ?? -1
+            let likeCount = comment.commentLikeCount ?? 0
+            //print("Comment \(index + 1): ID = \(commentID), Likes = \(likeCount)")
+        }
+    } else {
+        print("No comments for this post.")
+    }
+
+} else {
+    print("viewDidAppear - No posts available.")
+}
+//TEMP
+
+
+ */
+
+/*
+//WORKS
+func userLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+    print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
+    print(commentLikeModel)
+    for post in postsArray {
+        print(post.postID)
+    }
+    
+}
+ */
+
+
+/*
+//WORKS
+
+func userUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
+    print("HOMEVIEW CONTROLLER: Unliked post \(currentPostID) \(currentUser)")
+    print(commentLikeModel)
+    for post in postsArray {
+        print(post.postID)
+    }
+}
+ */
+
+
 /*
 class IndividualPostCell: UITableViewCell {
     

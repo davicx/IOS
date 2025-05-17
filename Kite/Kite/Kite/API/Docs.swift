@@ -8,6 +8,75 @@
 import Foundation
 
 
+/*
+ //FUNCTIONS
+ //Function 1: Like Post
+ func handleLike(post: Post, groupID: Int) async {
+     do {
+         let likePostResponseModel = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+         if likePostResponseModel.success == true {
+             let likeModel = likePostResponseModel.data
+             post.isLikedByCurrentUser = true
+             post.postLikesArray?.append(likeModel)
+             post.simpleLikesArray?.append(likeModel.likedByUserName)
+             likePostDelegate?.userLikePost(currentPostID: post.postID, likeModel: likeModel)
+         }
+     } catch {
+         print("Error liking post:", error)
+     }
+ }
+
+ //Function 2: Unlike Post
+ func handleUnlike(post: Post, groupID: Int) async {
+     do {
+         let unlikePostResponseModel = try await postAPI.unlikePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
+         if unlikePostResponseModel.success == true {
+             let likeModel = unlikePostResponseModel.data
+             post.isLikedByCurrentUser = false
+             post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeModel.postLikeID }
+             post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != unlikePostResponseModel.currentUser }
+             likePostDelegate?.userUnlikePost(currentPostID: post.postID, likeModel: likeModel)
+         }
+     } catch {
+         print("Error unliking post:", error)
+     }
+ }
+
+
+ //Function 3: Like Comment
+ func handleLikeComment(comment: Comment, postID: Int, groupID: Int) async {
+     print("LIKE COMMENT DELEGATE: handleLikeComment")
+     do {
+         let response = try await CommentsAPI.shared.likeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID
+         )
+         
+         if response.success == true {
+             let commentLikeModel = response.data
+             print("LIKE A COMMENT")
+             likeCommentDelegate?.userLikeComment(currentPostID: comment.postID ?? 0, currentCommentID: comment.commentID ?? 0, commentLikeModel: commentLikeModel)
+         }
+     } catch {
+         print("Error liking comment:", error)
+     }
+ }
+
+ //Function 4: Unlike Comment
+ func handleUnLikeComment(comment: Comment, postID: Int, groupID: Int) async {
+     print("LIKE COMMENT DELEGATE: handleUnLikeComment")
+     do {
+         let response = try await CommentsAPI.shared.unlikeComment(currentUser: currentUser, postID: postID, commentID: comment.commentID ?? 0, groupID: groupID)
+         
+         if response.success == true {
+             let commentUnlikeModel = response.data
+             print("UNLIKE A COMMENT")
+             likeCommentDelegate?.userUnlikeComment(currentPostID: comment.postID ?? 0, currentCommentID: comment.commentID ?? 0, commentLikeModel: commentUnlikeModel)
+         }
+     } catch {
+         print("Error unliking comment:", error)
+     }
+ }
+ */
+
 
 //WORKING
 /*
