@@ -18,7 +18,443 @@ import UIKit
 //STYLE
 
 
+/*
+ For my Swift UIKit app I have a User Profile and Posts. How can I navigate back and forth for example if I do this action. basically moving in and out of multiple view controllers but really it is just PostViewController and ProfileViewController
+
+ 1) click Post
+ 2) click on post from and go to "frodo" profile
+ 3) scroll down on frodos Posts
+ 4) Click a new person "sam" profile from a like he made
+ 5) Scroll down Sams posts
+ 
+ Code Strategy
+ 1. From Post to Profile
+
+ let profileVC = ProfileViewController(user: post.user)
+ navigationController?.pushViewController(profileVC, animated: true)
+
+ 2. From Profile to Another Profile
+
+ When clicking a username or avatar inside a profile:
+
+ let newProfileVC = ProfileViewController(user: likedByUser)
+ navigationController?.pushViewController(newProfileVC, animated: true)
+
+ 3. Back Navigation
+
+ Each tap adds a view controller to the stack. The system handles the back navigation automatically via the navigation bar, or you can programmatically call:
+
+ navigationController?.popViewController(animated: true)
+
+Best Practices
+ Don’t reuse the same view controller instance
+
+ Each profile view should be a new instance of ProfileViewController, even if it's the same user, unless you're intentionally avoiding duplicates.
+ Make ProfileViewController configurable
+
+ init(user: User) {
+     self.user = user
+     super.init(nibName: nil, bundle: nil)
+ }
+
+Handle deep stacks gracefully
+
+ You can optionally detect and prevent pushing the same profile multiple times:
+
+ if let last = navigationController?.viewControllers.last as? ProfileViewController,
+    last.user.id == tappedUser.id {
+     // already on this profile
+ } else {
+     let profileVC = ProfileViewController(user: tappedUser)
+     navigationController?.pushViewController(profileVC, animated: true)
+ }
+
+Optional: Animated pop to existing profile
+
+ If you want to pop back to an already existing profile (e.g. if the user goes to Sam, then back to Frodo), use:
+
+ if let frodoVC = navigationController?.viewControllers.first(where: {
+     ($0 as? ProfileViewController)?.user.id == frodo.id
+ }) {
+     navigationController?.popToViewController(frodoVC, animated: true)
+ } else {
+     let frodoVC = ProfileViewController(user: frodo)
+     navigationController?.pushViewController(frodoVC, animated: true)
+ }
+
+Summary
+
+     Use UINavigationController to manage the view hierarchy.
+
+     Push a new ProfileViewController or PostViewController each time the user navigates deeper.
+
+     Use .popViewController(animated:) or .popToViewController(...) to go back.
+
+     Make ProfileViewController and PostViewController take a User or Post during init so you can initialize and display the appropriate content easily.
+
+ Let me know if you'd like me to help design this with dependency injection, scroll state saving, or using a coordinator pattern for more control.
+ */
+
 //TEMP
+
+/*
+private func setupUserInfoView() {
+    userInfoView.translatesAutoresizingMaskIntoConstraints = false
+    userInfoView.backgroundColor = .yellow
+    commentView.addSubview(userInfoView)
+
+    let userNameView = UIView()
+    userNameView.backgroundColor = .lightGray
+    userNameView.translatesAutoresizingMaskIntoConstraints = false
+
+    let userFirstNameView = UIView()
+    userFirstNameView.backgroundColor = .systemRed
+    userFirstNameView.translatesAutoresizingMaskIntoConstraints = false
+
+    let commentMenuView = UIView()
+    commentMenuView.backgroundColor = .systemBlue
+    commentMenuView.translatesAutoresizingMaskIntoConstraints = false
+
+    userInfoView.addSubview(userNameView)
+    userInfoView.addSubview(userFirstNameView)
+    userInfoView.addSubview(commentMenuView)
+
+    // Add and configure labels
+    userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+    userNameLabel.font = UIFont.systemFont(ofSize: 14)
+    userNameLabel.textColor = .black
+    userNameLabel.lineBreakMode = .byTruncatingTail
+
+    userFirstNameLabel.translatesAutoresizingMaskIntoConstraints = false
+    userFirstNameLabel.font = UIFont.systemFont(ofSize: 14)
+    userFirstNameLabel.textColor = .black
+    userFirstNameLabel.lineBreakMode = .byTruncatingTail
+
+    userNameView.addSubview(userNameLabel)
+    userFirstNameView.addSubview(userFirstNameLabel)
+
+    NSLayoutConstraint.activate([
+        userInfoView.topAnchor.constraint(equalTo: commentView.topAnchor),
+        userInfoView.leadingAnchor.constraint(equalTo: commentView.leadingAnchor),
+        userInfoView.trailingAnchor.constraint(equalTo: commentView.trailingAnchor),
+        userInfoView.heightAnchor.constraint(equalToConstant: 48),
+
+        commentMenuView.topAnchor.constraint(equalTo: userInfoView.topAnchor),
+        commentMenuView.trailingAnchor.constraint(equalTo: userInfoView.trailingAnchor),
+        commentMenuView.widthAnchor.constraint(equalToConstant: 80),
+        commentMenuView.bottomAnchor.constraint(equalTo: userInfoView.bottomAnchor),
+
+        userNameView.topAnchor.constraint(equalTo: userInfoView.topAnchor),
+        userNameView.leadingAnchor.constraint(equalTo: userInfoView.leadingAnchor),
+        userNameView.trailingAnchor.constraint(equalTo: commentMenuView.leadingAnchor),
+        userNameView.heightAnchor.constraint(equalToConstant: 24),
+
+        userFirstNameView.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
+        userFirstNameView.leadingAnchor.constraint(equalTo: userInfoView.leadingAnchor),
+        userFirstNameView.trailingAnchor.constraint(equalTo: commentMenuView.leadingAnchor),
+        userFirstNameView.heightAnchor.constraint(equalToConstant: 24),
+
+        // userNameLabel: left aligned vertically centered
+        userNameLabel.leadingAnchor.constraint(equalTo: userNameView.leadingAnchor, constant: 8),
+        userNameLabel.centerYAnchor.constraint(equalTo: userNameView.centerYAnchor),
+        userNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: userNameView.trailingAnchor, constant: -4),
+
+        // userFirstNameLabel: left aligned vertically centered
+        userFirstNameLabel.leadingAnchor.constraint(equalTo: userFirstNameView.leadingAnchor, constant: 8),
+        userFirstNameLabel.centerYAnchor.constraint(equalTo: userFirstNameView.centerYAnchor),
+        userFirstNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: userFirstNameView.trailingAnchor, constant: -4)
+    ])
+}
+*/
+
+
+/*
+private func setupUserInfoView() {
+    userInfoView.translatesAutoresizingMaskIntoConstraints = false
+    userInfoView.backgroundColor = .yellow
+    commentView.addSubview(userInfoView)
+
+    // Add subviews
+    let userNameView = UIView()
+    userNameView.backgroundColor = .lightGray
+    userNameView.translatesAutoresizingMaskIntoConstraints = false
+
+    let userFirstNameView = UIView()
+    userFirstNameView.backgroundColor = .systemRed
+    userFirstNameView.translatesAutoresizingMaskIntoConstraints = false
+
+    let commentMenuView = UIView()
+    commentMenuView.backgroundColor = .systemBlue
+    commentMenuView.translatesAutoresizingMaskIntoConstraints = false
+
+    userInfoView.addSubview(userNameView)
+    userInfoView.addSubview(userFirstNameView)
+    userInfoView.addSubview(commentMenuView)
+
+    // Constraints
+    NSLayoutConstraint.activate([
+        userInfoView.topAnchor.constraint(equalTo: commentView.topAnchor),
+        userInfoView.leadingAnchor.constraint(equalTo: commentView.leadingAnchor),
+        userInfoView.trailingAnchor.constraint(equalTo: commentView.trailingAnchor),
+        userInfoView.heightAnchor.constraint(equalToConstant: 48),
+
+        commentMenuView.topAnchor.constraint(equalTo: userInfoView.topAnchor),
+        commentMenuView.trailingAnchor.constraint(equalTo: userInfoView.trailingAnchor),
+        commentMenuView.widthAnchor.constraint(equalToConstant: 80),
+        commentMenuView.bottomAnchor.constraint(equalTo: userInfoView.bottomAnchor),
+
+        userNameView.topAnchor.constraint(equalTo: userInfoView.topAnchor),
+        userNameView.leadingAnchor.constraint(equalTo: userInfoView.leadingAnchor),
+        userNameView.trailingAnchor.constraint(equalTo: commentMenuView.leadingAnchor),
+        userNameView.heightAnchor.constraint(equalToConstant: 24),
+
+        userFirstNameView.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
+        userFirstNameView.leadingAnchor.constraint(equalTo: userInfoView.leadingAnchor),
+        userFirstNameView.trailingAnchor.constraint(equalTo: commentMenuView.leadingAnchor),
+        userFirstNameView.heightAnchor.constraint(equalToConstant: 24)
+    ])
+}
+ */
+
+
+//WORKING
+/*
+ 
+ class CommentCell: UITableViewCell {
+     weak var delegate: CommentCellDelegate?
+     
+     // MAIN: Views
+     let userView = UIView()
+     let commentView = UIView()
+     let dividerView = UIView()
+     
+     // USER: Views
+     let userImageView = UIImageView()
+     
+     // COMMENT: Views
+     let headerView = UIView()
+     let bodyView = UIView()
+     let footerView = UIView()
+     
+     // Header, Body, Footer Content
+     let userNameLabel = UILabel()
+     let commentTextView = UITextView()
+     let likesLabel = UILabel()
+     let likeCommentButton = UIButton(type: .system) // <--- New
+     
+     let activityIndicator = UIActivityIndicatorView(style: .medium)
+
+     
+     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+         super.init(style: style, reuseIdentifier: reuseIdentifier)
+         setupMainViews()
+         setupUserViews()
+         setupCommentViews()
+         setupConstraints()
+         setupDividerView()
+         setupActions()
+     }
+     
+     required init?(coder: NSCoder) {
+         fatalError("init(coder:) has not been implemented")
+     }
+
+     
+     //ACTIONS
+     private func setupActions() {
+         likeCommentButton.addTarget(self, action: #selector(didTapLikeComment), for: .touchUpInside)
+     }
+
+
+     @objc private func didTapLikeComment() {
+         print("STEP 1: CommentCell- User tapped Like button and called didTapLikeCommentButton inside IndividualPostViewController")
+         delegate?.didTapLikeCommentButton(in: self)
+     }
+     
+     //CELL SETUP
+     func configureComment(with comment: Comment) {
+         print("CommentCell: configureComment was called to set up cell")
+         userNameLabel.text = comment.commentFrom
+         commentTextView.text = comment.commentCaption
+
+         let likeCount = comment.commentLikes?.count ?? comment.commentLikeCount ?? 0
+         likesLabel.text = "\(likeCount) likes"
+
+         let imageName = comment.commentLikedByCurrentUser == true ? "liked" : "like"
+         likeCommentButton.setImage(UIImage(named: imageName), for: .normal)
+         
+         stopLoading()
+     }
+
+     
+     //FUNCTIONS
+     func startLoading() {
+         likeCommentButton.isEnabled = false
+     }
+
+     func stopLoading() {
+         likeCommentButton.isEnabled = true
+     }
+  
+     //STYLE
+     private func setupMainViews() {
+         userView.backgroundColor = .white
+         commentView.backgroundColor = .clear
+         
+         contentView.addSubview(userView)
+         contentView.addSubview(commentView)
+         
+         [userView, commentView].forEach {
+             $0.translatesAutoresizingMaskIntoConstraints = false
+         }
+     }
+
+     private func setupUserViews() {
+         userImageView.image = UIImage(named: "user")
+         userImageView.contentMode = .scaleAspectFill
+         userImageView.clipsToBounds = true
+         userImageView.layer.cornerRadius = 30
+         
+         userView.addSubview(userImageView)
+         userImageView.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             userImageView.centerXAnchor.constraint(equalTo: userView.centerXAnchor),
+             userImageView.topAnchor.constraint(equalTo: userView.topAnchor, constant: 10),
+             userImageView.widthAnchor.constraint(equalToConstant: 65),
+             userImageView.heightAnchor.constraint(equalToConstant: 65)
+         ])
+     }
+
+     private func setupCommentViews() {
+         bodyView.backgroundColor = .systemPurple.withAlphaComponent(0.3)
+
+
+         activityIndicator.hidesWhenStopped = true
+         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
+         [headerView, bodyView, footerView].forEach {
+             commentView.addSubview($0)
+             $0.translatesAutoresizingMaskIntoConstraints = false
+         }
+         
+         setupHeaderView()
+         setupBodyView()
+         setupFooterView()
+     }
+
+     private func setupHeaderView() {
+         headerView.backgroundColor = .systemPink
+
+         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+         headerView.addSubview(userNameLabel)
+
+         NSLayoutConstraint.activate([
+             userNameLabel.topAnchor.constraint(equalTo: headerView.topAnchor),
+             userNameLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+             userNameLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+             userNameLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
+         ])
+     }
+
+     private func setupBodyView() {
+         commentTextView.isScrollEnabled = false
+         commentTextView.isEditable = false
+         commentTextView.font = UIFont.systemFont(ofSize: 16)
+         commentTextView.translatesAutoresizingMaskIntoConstraints = false
+
+         bodyView.addSubview(commentTextView)
+
+         NSLayoutConstraint.activate([
+             commentTextView.topAnchor.constraint(equalTo: bodyView.topAnchor),
+             commentTextView.leadingAnchor.constraint(equalTo: bodyView.leadingAnchor),
+             commentTextView.trailingAnchor.constraint(equalTo: bodyView.trailingAnchor),
+             commentTextView.bottomAnchor.constraint(equalTo: bodyView.bottomAnchor)
+         ])
+     }
+
+     private func setupFooterView() {
+         likeCommentButton.tintColor = .systemRed
+         likeCommentButton.setImage(UIImage(named: "like"), for: .normal)
+         likeCommentButton.translatesAutoresizingMaskIntoConstraints = false
+
+         likesLabel.font = UIFont.systemFont(ofSize: 14)
+         likesLabel.textColor = .darkGray
+         likesLabel.translatesAutoresizingMaskIntoConstraints = false
+
+         footerView.addSubview(likeCommentButton)
+         footerView.addSubview(likesLabel)
+         //footerView.addSubview(activityIndicator)
+
+         NSLayoutConstraint.activate([
+             likeCommentButton.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
+             likeCommentButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor),
+             likeCommentButton.widthAnchor.constraint(equalToConstant: 24),
+             likeCommentButton.heightAnchor.constraint(equalToConstant: 24),
+
+             likesLabel.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
+             likesLabel.leadingAnchor.constraint(equalTo: likeCommentButton.trailingAnchor, constant: 8),
+             likesLabel.trailingAnchor.constraint(lessThanOrEqualTo: footerView.trailingAnchor)
+         ])
+         
+         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+         footerView.addSubview(activityIndicator)
+
+         NSLayoutConstraint.activate([
+             activityIndicator.centerXAnchor.constraint(equalTo: likeCommentButton.centerXAnchor),
+             activityIndicator.centerYAnchor.constraint(equalTo: likeCommentButton.centerYAnchor)
+         ])
+     }
+
+     private func setupDividerView() {
+         dividerView.backgroundColor = .lightGray
+         contentView.addSubview(dividerView)
+         dividerView.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+             dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+             dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+             dividerView.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+         ])
+     }
+
+     private func setupConstraints() {
+         NSLayoutConstraint.activate([
+             userView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+             userView.topAnchor.constraint(equalTo: contentView.topAnchor),
+             userView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+             userView.widthAnchor.constraint(equalToConstant: 80),
+
+             commentView.leadingAnchor.constraint(equalTo: userView.trailingAnchor),
+             commentView.topAnchor.constraint(equalTo: contentView.topAnchor),
+             commentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+             commentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+
+             headerView.topAnchor.constraint(equalTo: commentView.topAnchor),
+             headerView.leadingAnchor.constraint(equalTo: commentView.leadingAnchor),
+             headerView.trailingAnchor.constraint(equalTo: commentView.trailingAnchor),
+             headerView.heightAnchor.constraint(equalToConstant: 24),
+
+             bodyView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+             bodyView.leadingAnchor.constraint(equalTo: commentView.leadingAnchor),
+             bodyView.trailingAnchor.constraint(equalTo: commentView.trailingAnchor),
+
+             footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
+             footerView.leadingAnchor.constraint(equalTo: commentView.leadingAnchor),
+             footerView.trailingAnchor.constraint(equalTo: commentView.trailingAnchor),
+             footerView.heightAnchor.constraint(equalToConstant: 40),
+             footerView.bottomAnchor.constraint(equalTo: commentView.bottomAnchor)
+         ])
+     }
+
+ }
+
+
+
+ */
+
+
 
 /*
 if let firstPost = postsArray.first {
