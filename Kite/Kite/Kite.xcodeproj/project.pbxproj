@@ -97,6 +97,8 @@
 		D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */; };
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
 		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
+		D7D076862DDA96C000F0843C /* TEMPCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D076852DDA96C000F0843C /* TEMPCommentCell.swift */; };
+		D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */; };
 		D7D3DD322D518D8F00B9DAA7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */; };
 		D7D3DD342D51940000B9DAA7 /* AccessTokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */; };
 		D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */; };
@@ -219,6 +221,8 @@
 		D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentResponseModel.swift; sourceTree = "<group>"; };
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
 		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
+		D7D076852DDA96C000F0843C /* TEMPCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEMPCommentCell.swift; sourceTree = "<group>"; };
+		D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
 		D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseModel.swift; sourceTree = "<group>"; };
 		D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenModel.swift; sourceTree = "<group>"; };
@@ -473,6 +477,7 @@
 				D71828782D839ED00084F071 /* layouts */,
 				D747F7B72D824CCF00A08602 /* original */,
 				51EC39172D3495850001B6E7 /* EditProfileViewController.swift */,
+				D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */,
 			);
 			path = ProfileViews;
 			sourceTree = "<group>";
@@ -518,6 +523,7 @@
 				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
 				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 				D71809482DBC3C52003BC46D /* PostCell.swift */,
+				D7D076852DDA96C000F0843C /* TEMPCommentCell.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -703,6 +709,7 @@
 				51C58F302D1B6D4200942386 /* LogoutModel.swift in Sources */,
 				D7A0BB332D7FACEB007EB34C /* UserInformation.swift in Sources */,
 				D7D88BA02D62B8DF002B3084 /* GroupsResponseModel.swift in Sources */,
+				D7D076862DDA96C000F0843C /* TEMPCommentCell.swift in Sources */,
 				D7404B102D6801510015B42E /* Docs.swift in Sources */,
 				D7A3C11E2D80F542000B4EB7 /* SimpleTopView.swift in Sources */,
 				51CA9DCA2D0FAA5A008C36F0 /* GroupsViewController.swift in Sources */,
@@ -728,6 +735,7 @@
 				51C69AE52D0E549100C46759 /* ViewController.swift in Sources */,
 				51C69B342D0E580600C46759 /* CommentModel.swift in Sources */,
 				D747F7BF2D824D4400A08602 /* UserProfileEditView.swift in Sources */,
+				D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */,
 				D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */,
 				51ED446C2D2E0B5D0036DB4B /* UpdateUserProfileModel.swift in Sources */,
 				519B24D72D18CD9900159385 /* UserDefaultManager.swift in Sources */,
