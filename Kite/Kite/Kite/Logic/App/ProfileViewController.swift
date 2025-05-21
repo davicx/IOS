@@ -109,14 +109,7 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    /*
-    @objc private func followingButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let followingVC = storyboard.instantiateViewController(withIdentifier: "FollowingViewController") as! FollowingViewController
-        navigationController?.pushViewController(followingVC, animated: true)
-    }
-    
-    */
+
     // EDIT
     @objc private func editButtonTapped() {
         guard let userResponse = userResponseModel else { return }

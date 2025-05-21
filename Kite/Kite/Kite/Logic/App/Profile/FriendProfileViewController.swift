@@ -7,12 +7,19 @@
 
 import UIKit
 
+
 class FriendProfileViewController: UIViewController {
+    var friend: FriendModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .white  // Optional: to see something while testing
+
+         if let friend = friend {
+             print("Friend profile for: \(friend.friendName)")
+         }
+        
     }
  
 }

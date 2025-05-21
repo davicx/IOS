@@ -45,6 +45,8 @@ struct Constants {
     struct TableViewCellIdentifier {
         static let post = "PostCell"
         static let comment = "CommentCell"
+        static let friendCell = "friendCell"
+
     }
 }
 
