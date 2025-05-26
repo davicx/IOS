@@ -21,3 +21,4 @@ struct FriendModel: Codable {
     let friendshipKey: String
     let alsoYourFriend: Int
 }
+

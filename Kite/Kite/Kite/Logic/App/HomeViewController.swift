@@ -90,8 +90,16 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             do {
                 let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
                 
+                print(postsResponseModel.data)
+                
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
+                
+                //TEMP
+                for post in postsArray {
+                    print("Post ID: \(post.postID)")
+                }
+                //TEMP
                 
                 DispatchQueue.main.async {
                     self.postsTableView.reloadData()
@@ -103,6 +111,8 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             }
         }
     }
+    
+
 
     // Function D1: Like a Post
     func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel) {
@@ -188,6 +198,20 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             }
         }
     }
+    
+    /*
+     struct CommentLikeModel: Codable {
+         var commentLikeID: Int
+         var commentID: Int
+         var likedByUserName: String
+         var likedByImage: String
+         var likedByFirstName: String
+         var likedByLastName: String
+         var commentCreated: String
+     }
+
+
+     */
 
 }
 

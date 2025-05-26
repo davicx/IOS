@@ -9,7 +9,7 @@ import UIKit
 
 
 class FriendProfileViewController: UIViewController {
-    var friend: FriendModel?
+    var friend: Friend?
 
     override func viewDidLoad() {
         super.viewDidLoad()

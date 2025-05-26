@@ -26,7 +26,7 @@ class Comment: Codable {
     var timeMessage: String?
     var commentLikes: [CommentLikeModel]?
     var created: String?
-    var friendshipStatus: String?
+    var friendshipStatus: Int?
     var commentLikeCount: Int?
     var commentLikedByCurrentUser: Bool?
     
@@ -47,7 +47,7 @@ class Comment: Codable {
         timeMessage: String? = nil,
         commentLikes: [CommentLikeModel]? = nil,
         created: String? = nil,
-        friendshipStatus: String? = nil,
+        friendshipStatus: Int? = nil,
         commentLikeCount: Int? = nil,
         commentLikedByCurrentUser: Bool? = nil
     ) {

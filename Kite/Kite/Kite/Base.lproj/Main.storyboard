@@ -430,6 +430,21 @@
             </objects>
             <point key="canvasLocation" x="964" y="1751"/>
         </scene>
+        <!--Friend View Controller-->
+        <scene sceneID="tqA-VB-WTs">
+            <objects>
+                <viewController storyboardIdentifier="FriendViewController" id="V94-SC-msq" customClass="FriendViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jfm-9w-IZe">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="XJX-cf-EDm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SEU-x0-1yM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1795" y="1751"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="hki-Xl-qiY">
             <objects>

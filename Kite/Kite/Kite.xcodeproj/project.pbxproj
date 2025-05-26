@@ -71,6 +71,11 @@
 		D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7096A762DDE92DE00A51D32 /* FriendTableUserCell.swift */; };
 		D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71809462DBC37F5003BC46D /* CommentCell.swift */; };
 		D71809492DBC3C52003BC46D /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71809482DBC3C52003BC46D /* PostCell.swift */; };
+		D720DB382DE136C000F137AD /* CommentLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = D720DB372DE136C000F137AD /* CommentLike.swift */; };
+		D720DB3A2DE13E4400F137AD /* FriendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D720DB392DE13E4400F137AD /* FriendAPI.swift */; };
+		D720DB3C2DE13FA600F137AD /* AddFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D720DB3B2DE13FA600F137AD /* AddFriendResponseModel.swift */; };
+		D721D2A02DE527070002FE4C /* FriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721D29F2DE527070002FE4C /* FriendViewController.swift */; };
+		D721D2A42DE52E8C0002FE4C /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721D2A32DE52E8C0002FE4C /* Friend.swift */; };
 		D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */; };
 		D7400EA12D8CC45800646E94 /* LoginLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */; };
 		D7404B102D6801510015B42E /* Docs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7404B0F2D6801510015B42E /* Docs.swift */; };
@@ -98,7 +103,6 @@
 		D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */; };
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
 		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
-		D7D076862DDA96C000F0843C /* TEMPCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D076852DDA96C000F0843C /* TEMPCommentCell.swift */; };
 		D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */; };
 		D7D3DD322D518D8F00B9DAA7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */; };
 		D7D3DD342D51940000B9DAA7 /* AccessTokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */; };
@@ -199,6 +203,11 @@
 		D7096A762DDE92DE00A51D32 /* FriendTableUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableUserCell.swift; sourceTree = "<group>"; };
 		D71809462DBC37F5003BC46D /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		D71809482DBC3C52003BC46D /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
+		D720DB372DE136C000F137AD /* CommentLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLike.swift; sourceTree = "<group>"; };
+		D720DB392DE13E4400F137AD /* FriendAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAPI.swift; sourceTree = "<group>"; };
+		D720DB3B2DE13FA600F137AD /* AddFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendResponseModel.swift; sourceTree = "<group>"; };
+		D721D29F2DE527070002FE4C /* FriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendViewController.swift; sourceTree = "<group>"; };
+		D721D2A32DE52E8C0002FE4C /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeResponseModel.swift; sourceTree = "<group>"; };
 		D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginLayoutManager.swift; sourceTree = "<group>"; };
 		D7404B0F2D6801510015B42E /* Docs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Docs.swift; sourceTree = "<group>"; };
@@ -226,7 +235,6 @@
 		D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentResponseModel.swift; sourceTree = "<group>"; };
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
 		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
-		D7D076852DDA96C000F0843C /* TEMPCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEMPCommentCell.swift; sourceTree = "<group>"; };
 		D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
 		D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseModel.swift; sourceTree = "<group>"; };
@@ -340,6 +348,7 @@
 				51ED44622D2E09A60036DB4B /* ProfileAPI.swift */,
 				51CA9DD12D0FB268008C36F0 /* GroupsAPI.swift */,
 				51C69B132D0E54D700C46759 /* Networker.swift */,
+				D720DB392DE13E4400F137AD /* FriendAPI.swift */,
 				51C69B212D0E572B00C46759 /* LoginAPI.swift */,
 				D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */,
 				D7404B0F2D6801510015B42E /* Docs.swift */,
@@ -383,6 +392,8 @@
 				51C69B252D0E575200C46759 /* Group.swift */,
 				51C69B272D0E575700C46759 /* Login.swift */,
 				D7D609F02D52E99E00ED615B /* NetworkManager.swift */,
+				D720DB372DE136C000F137AD /* CommentLike.swift */,
+				D721D2A32DE52E8C0002FE4C /* Friend.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -488,6 +499,7 @@
 				51EC39172D3495850001B6E7 /* EditProfileViewController.swift */,
 				D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */,
 				D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */,
+				D721D29F2DE527070002FE4C /* FriendViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -501,6 +513,7 @@
 				51ED446B2D2E0B5D0036DB4B /* UpdateUserProfileModel.swift */,
 				D7E7037F2DDD44EE00BF4AE5 /* FriendListResponseModel.swift */,
 				D7E703832DDD457900BF4AE5 /* FriendModel.swift */,
+				D720DB3B2DE13FA600F137AD /* AddFriendResponseModel.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -543,7 +556,6 @@
 				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
 				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 				D71809482DBC3C52003BC46D /* PostCell.swift */,
-				D7D076852DDA96C000F0843C /* TEMPCommentCell.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -729,7 +741,6 @@
 				51C58F302D1B6D4200942386 /* LogoutModel.swift in Sources */,
 				D7A0BB332D7FACEB007EB34C /* UserInformation.swift in Sources */,
 				D7D88BA02D62B8DF002B3084 /* GroupsResponseModel.swift in Sources */,
-				D7D076862DDA96C000F0843C /* TEMPCommentCell.swift in Sources */,
 				D7404B102D6801510015B42E /* Docs.swift in Sources */,
 				D7A3C11E2D80F542000B4EB7 /* SimpleTopView.swift in Sources */,
 				51CA9DCA2D0FAA5A008C36F0 /* GroupsViewController.swift in Sources */,
@@ -752,15 +763,18 @@
 				D7FB876B2D6FE0090054CDF7 /* IndividualPostCell.swift in Sources */,
 				51C69B4B2D0E595D00C46759 /* RegistrationResponseModel.swift in Sources */,
 				51B109BA2D276403006E4CCF /* Temp.swift in Sources */,
+				D720DB3C2DE13FA600F137AD /* AddFriendResponseModel.swift in Sources */,
 				51C69AE52D0E549100C46759 /* ViewController.swift in Sources */,
 				51C69B342D0E580600C46759 /* CommentModel.swift in Sources */,
 				D747F7BF2D824D4400A08602 /* UserProfileEditView.swift in Sources */,
 				D7E703802DDD44EE00BF4AE5 /* FriendListResponseModel.swift in Sources */,
 				D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */,
 				D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */,
+				D720DB3A2DE13E4400F137AD /* FriendAPI.swift in Sources */,
 				D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */,
 				51ED446C2D2E0B5D0036DB4B /* UpdateUserProfileModel.swift in Sources */,
 				519B24D72D18CD9900159385 /* UserDefaultManager.swift in Sources */,
+				D721D2A02DE527070002FE4C /* FriendViewController.swift in Sources */,
 				D7AEA9762DC8286700272944 /* CommentsAPI.swift in Sources */,
 				51CA9DD22D0FB268008C36F0 /* GroupsAPI.swift in Sources */,
 				D7D3DD342D51940000B9DAA7 /* AccessTokenResponseModel.swift in Sources */,
@@ -797,6 +811,7 @@
 				51848FB62D139D7E00E629CD /* NewGroupModel.swift in Sources */,
 				51C69B2C2D0E57AD00C46759 /* validationFunctions.swift in Sources */,
 				51C69B202D0E556600C46759 /* Post.swift in Sources */,
+				D720DB382DE136C000F137AD /* CommentLike.swift in Sources */,
 				51C69B1C2D0E553C00C46759 /* Extensions.swift in Sources */,
 				51CA9DC82D0FAA54008C36F0 /* HomeViewController.swift in Sources */,
 				51C69B382D0E583500C46759 /* LikeModel.swift in Sources */,
@@ -807,6 +822,7 @@
 				D77ED6A52D90DB9800FA4F71 /* PollingManager.swift in Sources */,
 				D7400EA12D8CC45800646E94 /* LoginLayoutManager.swift in Sources */,
 				D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */,
+				D721D2A42DE52E8C0002FE4C /* Friend.swift in Sources */,
 				51C69B3E2D0E584B00C46759 /* PostModel.swift in Sources */,
 				51CA9DCC2D0FAA67008C36F0 /* NewPostViewController.swift in Sources */,
 			);

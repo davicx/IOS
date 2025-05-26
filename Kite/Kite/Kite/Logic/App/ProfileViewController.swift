@@ -11,6 +11,7 @@ import UIKit
 class ProfileViewController: UIViewController {
     let postsAPI = PostsAPI()
     let profileAPI = ProfileAPI()
+    let friendAPI = FriendAPI()
     let loginAPI = LoginAPI()
     let userDefaultManager = UserDefaultManager()
     
@@ -39,12 +40,6 @@ class ProfileViewController: UIViewController {
 
         Task {
             do {
-                //TEMP
-                //WORKS
-                //let friendsResponse = try await profileAPI.getAllCurrentUserFriends(currentUser: currentUser)
-                //print("DEBUG - Friends Response: \(friendsResponse.data[0])")
-
-                //TEMP
                 userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
                 
                 if let statusCode = userResponseModel?.statusCode, statusCode == 401 {
@@ -92,16 +87,17 @@ class ProfileViewController: UIViewController {
 
     @objc private func followingButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let followingVC = storyboard.instantiateViewController(withIdentifier: "FollowingViewController") as! FollowingViewController
+        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendViewController
 
         Task {
             do {
                 let currentUser = userDefaultManager.getLoggedInUser()
-                let friendsResponse = try await profileAPI.getAllCurrentUserFriends(currentUser: currentUser)
-
+                let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
+                let friendObjects = friendAPI.convertToFriendObjects(from: friendsResponse.data)
+        
                 DispatchQueue.main.async {
-                    followingVC.users = friendsResponse.data
-                    self.navigationController?.pushViewController(followingVC, animated: true)
+                    friendVC.users = friendObjects
+                    self.navigationController?.pushViewController(friendVC, animated: true)
                 }
             } catch {
                 print("Error fetching friends: \(error)")

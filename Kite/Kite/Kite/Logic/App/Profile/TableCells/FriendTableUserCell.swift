@@ -10,9 +10,6 @@ import UIKit
 
 
 class FriendTableViewCell: UITableViewCell {
-
-    var followButtonTapped: (() -> Void)?  // Closure for follow button action
-
     let profileImageView = UIImageView()
     let usernameLabel = UILabel()
     let fullNameLabel = UILabel()
@@ -63,28 +60,43 @@ class FriendTableViewCell: UITableViewCell {
 
             fullNameLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 4),
             fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
-
             fullNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
 
             followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            followButton.widthAnchor.constraint(equalToConstant: 96)
         ])
+
     }
 
     @objc private func handleFollowTapped() {
-        followButtonTapped?()
+        //followButtonTapped?()
+        print("HIYA!")
     }
+    
+    let pinkColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0) // #FF2D7E
 
-    func configure(with user: FriendModel) {
+    func configure(with user: Friend) {
         usernameLabel.text = "@\(user.friendName)"
         fullNameLabel.text = "\(user.firstName) \(user.lastName)"
         profileImageView.image = UIImage(named: "background_1") // Placeholder
-        followButton.setTitle("Following", for: .normal)
-        followButton.backgroundColor = .white
-        followButton.setTitleColor(.black, for: .normal)
-        followButton.layer.borderWidth = 1
-        followButton.layer.borderColor = UIColor.lightGray.cgColor
+
+        if user.requestPending == 1 {
+            // Show pink Follow button
+            followButton.setTitle("Add Friend", for: .normal)
+            followButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0) // Pink
+            followButton.setTitleColor(.white, for: .normal)
+            followButton.layer.borderWidth = 0
+        } else {
+            // Show default "Following" style
+            followButton.setTitle("Friends", for: .normal)
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(.black, for: .normal)
+            followButton.layer.borderWidth = 1
+            followButton.layer.borderColor = UIColor.lightGray.cgColor
+        }
     }
+
 }
 
 

@@ -253,6 +253,17 @@ class PostsAPI {
         }
     }
     
+    /*
+     do {
+         let decoder = JSONDecoder()
+         decoder.keyDecodingStrategy = .useDefaultKeys // or .convertFromSnakeCase if needed
+         let decoded = try decoder.decode(PostResponseModel.self, from: jsonData)
+         print("Decoded successfully!")
+     } catch {
+         print("Decoding error: \(error)")
+     }
+     */
+    
     //CHAT
     /*
      func getPostsAPI(groupID: Int) async throws -> PostResponseModel {

@@ -11,7 +11,7 @@ import UIKit
 
 class FollowingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var users: [FriendModel] = []
+    var users: [Friend] = []
 
     private let tableView = UITableView()
 
@@ -19,7 +19,11 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
         title = "Following"
         view.backgroundColor = .white
-
+        
+        for user in users {
+            print("User: \(user.requestSentBy),  \(user.friendName), requestPending: \(user.requestPending)")
+        }
+        
         setupTableView()
     }
 
