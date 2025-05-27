@@ -10,6 +10,77 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    let tableView = UITableView()
+    let segmentedControl = UISegmentedControl(items: ["Hobbits", "Elves"])
+
+    let hobbitNames = ["Frodo", "Samwise", "Merry", "Pippin"]
+    let elvenNames = ["Legolas", "Elrond", "Galadriel", "Thranduil"]
+
+    var currentData: [String] = []
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+
+        setupSegmentedControl()
+        setupTableView()
+
+        // Default selection
+        segmentedControl.selectedSegmentIndex = 0
+        currentData = hobbitNames
+    }
+
+    @objc private func segmentChanged() {
+        currentData = segmentedControl.selectedSegmentIndex == 0 ? hobbitNames : elvenNames
+        tableView.reloadData()
+    }
+
+    private func setupSegmentedControl() {
+        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.selectedSegmentTintColor = .systemBlue
+    }
+
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+
+        // Create a wrapper view to size the header
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        segmentedControl.frame = CGRect(x: 16, y: 8, width: view.frame.width - 32, height: 34)
+        headerView.addSubview(segmentedControl)
+        tableView.tableHeaderView = headerView
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+
+    // MARK: - TableView DataSource
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return currentData.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = currentData[indexPath.row]
+        return cell
+    }
+}
+
+
+//WORKS
+/*
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
     struct User {
         let username: String
         let fullName: String
@@ -150,7 +221,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 }
 
-
+ */
 /*
 class ViewController: UIViewController {
 

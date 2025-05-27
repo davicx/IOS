@@ -8,7 +8,7 @@
 import UIKit
 
 
-class FriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class YourFriendsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var users: [Friend] = []
 
@@ -44,7 +44,7 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.estimatedRowHeight = 72
 
         // Register your custom cell
-        tableView.register(FriendTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+        tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
     }
 
     // MARK: - TableView DataSource
@@ -55,7 +55,7 @@ class FriendViewController: UIViewController, UITableViewDataSource, UITableView
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let user = users[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! FriendTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! YourFriendsTableViewCell
         cell.configure(with: user)
         return cell
     }

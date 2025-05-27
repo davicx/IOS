@@ -87,7 +87,7 @@ class ProfileViewController: UIViewController {
 
     @objc private func followingButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendViewController
+        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
 
         Task {
             do {
@@ -95,6 +95,10 @@ class ProfileViewController: UIViewController {
                 let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
                 let friendObjects = friendAPI.convertToFriendObjects(from: friendsResponse.data)
         
+                for friend in friendObjects {
+                    print(friend.friendName)
+                }
+                
                 DispatchQueue.main.async {
                     friendVC.users = friendObjects
                     self.navigationController?.pushViewController(friendVC, animated: true)
@@ -106,7 +110,7 @@ class ProfileViewController: UIViewController {
     }
 
 
-    // EDIT
+    // EDIT: User Profile
     @objc private func editButtonTapped() {
         guard let userResponse = userResponseModel else { return }
         
