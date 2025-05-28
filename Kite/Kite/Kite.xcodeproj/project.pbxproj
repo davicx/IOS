@@ -77,6 +77,7 @@
 		D721D2A02DE527070002FE4C /* YourFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721D29F2DE527070002FE4C /* YourFriendsViewController.swift */; };
 		D721D2A42DE52E8C0002FE4C /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721D2A32DE52E8C0002FE4C /* Friend.swift */; };
 		D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */; };
+		D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */; };
 		D7400EA12D8CC45800646E94 /* LoginLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */; };
 		D7404B102D6801510015B42E /* Docs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7404B0F2D6801510015B42E /* Docs.swift */; };
 		D742D6AB2D7A76F7000A1E62 /* UserFollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D742D6AA2D7A76F7000A1E62 /* UserFollowersView.swift */; };
@@ -209,6 +210,7 @@
 		D721D29F2DE527070002FE4C /* YourFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFriendsViewController.swift; sourceTree = "<group>"; };
 		D721D2A32DE52E8C0002FE4C /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeResponseModel.swift; sourceTree = "<group>"; };
+		D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageFunctions.swift; sourceTree = "<group>"; };
 		D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginLayoutManager.swift; sourceTree = "<group>"; };
 		D7404B0F2D6801510015B42E /* Docs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Docs.swift; sourceTree = "<group>"; };
 		D742D6AA2D7A76F7000A1E62 /* UserFollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowersView.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				51C58F2B2D1B64B600942386 /* loginFunctions.swift */,
 				51C69B2B2D0E57AD00C46759 /* validationFunctions.swift */,
 				D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */,
+				D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */,
 				51C69B2D2D0E57BF00C46759 /* Functions.swift */,
 				51C58F292D1B642000942386 /* Appendix.swift */,
 			);
@@ -787,6 +790,7 @@
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,
 				5139A6312D28B5980029024E /* Buttons.swift in Sources */,
 				51C69AE12D0E549100C46759 /* AppDelegate.swift in Sources */,
+				D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */,
 				D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */,
 				51EC39182D3495850001B6E7 /* EditProfileViewController.swift in Sources */,
 				51C69B1A2D0E552500C46759 /* Enums.swift in Sources */,

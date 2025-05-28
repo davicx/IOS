@@ -264,49 +264,13 @@ class PostsAPI {
      }
      */
     
-    //CHAT
-    /*
-     func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
-         let endpoint = "http://localhost:3003/posts/group/\(groupID)"
-         
-         guard let url = URL(string: endpoint) else {
-             throw networkError.invalidURL
-         }
-         
-         let apiURL = URLRequest(url: url)
-         
-         let (data, response) = try await URLSession.shared.data(for: apiURL)
-                
-         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-             throw networkError.invalidResponse
-         }
-         
-         do {
-             let decoder = JSONDecoder()
-             let postResponseModel = try decoder.decode(PostResponseModel.self, from: data)
 
-             return postResponseModel
-             
-         } catch {
-             print("Error decoding data:", error)
-             throw error
-         }
-     }
-
-     */
     
     //Function B2: Get all User Posts
     //Function B3: Get Single Post by ID
     //Function B4: Get All Posts
     
-    //Function: Download Image
-    func downloadImageData(from url: URL) async throws -> Data {
-        let request = URLRequest(url: url)
-        let (data, _) = try await URLSession.shared.data(for: request)
-        return data
-    }
 
-    
     //FUNCTIONS C: All Functions Related to Post Actions
     //Function C1: Like a Post
     func likePostAPI(currentUser: String, postID: Int, groupID: Int) async throws -> LikePostResponseModel {
@@ -406,3 +370,34 @@ class PostsAPI {
 
 
 }
+
+//CHAT
+/*
+ func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
+     let endpoint = "http://localhost:3003/posts/group/\(groupID)"
+     
+     guard let url = URL(string: endpoint) else {
+         throw networkError.invalidURL
+     }
+     
+     let apiURL = URLRequest(url: url)
+     
+     let (data, response) = try await URLSession.shared.data(for: apiURL)
+            
+     guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+         throw networkError.invalidResponse
+     }
+     
+     do {
+         let decoder = JSONDecoder()
+         let postResponseModel = try decoder.decode(PostResponseModel.self, from: data)
+
+         return postResponseModel
+         
+     } catch {
+         print("Error decoding data:", error)
+         throw error
+     }
+ }
+
+ */

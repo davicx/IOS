@@ -51,11 +51,13 @@ class ProfileAPI {
             throw networkError.invalidResponse
         }
         
+        
         switch httpResponse.statusCode {
         case 200:
             print("PROFILE API - 200 Success")
             let decoder = JSONDecoder ()
             let userProfileResponseModel = try decoder.decode(UserProfileResponseModel.self, from: data)
+            
             
             return userProfileResponseModel
             
@@ -87,7 +89,7 @@ class ProfileAPI {
             throw networkError.serverError(statusCode: httpResponse.statusCode)
         }
         
-        printFooter()
+        
         
     }
     

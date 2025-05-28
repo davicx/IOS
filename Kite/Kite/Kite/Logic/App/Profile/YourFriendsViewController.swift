@@ -25,7 +25,6 @@ class YourFriendsViewController: UIViewController, UITableViewDataSource, UITabl
         title = "Friends"
         view.backgroundColor = .white
 
-        // 1️⃣ Build your two buckets
         friends = users.filter {
             $0.friendshipKey == "friends" ||
             $0.friendshipKey == "request_pending"
@@ -40,31 +39,71 @@ class YourFriendsViewController: UIViewController, UITableViewDataSource, UITabl
         currentData = friends
     }
 
-    // MARK: - Segmented Control
     @objc private func segmentChanged() {
         if segmentedControl.selectedSegmentIndex == 0 {
             currentData = friends
         } else {
             currentData = friendRequests
         }
+        addUnderlineForSelectedSegment()
         tableView.reloadData()
     }
 
-    private func setupSegmentedControl() {
-        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
-        segmentedControl.selectedSegmentTintColor = .systemBlue
+    private func addUnderlineForSelectedSegment() {
+        segmentedControl.subviews
+            .filter { $0.tag == 999 }
+            .forEach { $0.removeFromSuperview() }
 
-        let headerView = UIView(frame: CGRect(x: 0, y: 0,
-                                              width: view.frame.width,
-                                              height: 50))
-        segmentedControl.frame = CGRect(x: 16, y: 8,
-                                        width: view.frame.width - 32,
-                                        height: 34)
+        let underlineWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
+        let underlineHeight: CGFloat = 2.0
+        let underlineX = CGFloat(segmentedControl.selectedSegmentIndex) * underlineWidth
+        let underlineFrame = CGRect(
+            x: underlineX,
+            y: segmentedControl.frame.height - underlineHeight,
+            width: underlineWidth,
+            height: underlineHeight
+        )
+
+        let underline = UIView(frame: underlineFrame)
+        underline.backgroundColor = UIColor.label
+        underline.tag = 999
+        segmentedControl.addSubview(underline)
+    }
+
+
+    private func setupSegmentedControl() {
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.removeBackgroundAndDivider() // We'll define this below
+
+        // Underline-style: transparent background
+        segmentedControl.backgroundColor = .clear
+        segmentedControl.selectedSegmentTintColor = .clear
+
+        // Set text styles
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemGray,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+        let selectedAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.label,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+        segmentedControl.setTitleTextAttributes(normalAttributes, for: .normal)
+        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
+
+        // Add underline manually
+        addUnderlineForSelectedSegment()
+
+        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+
+        // Layout in header
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+        segmentedControl.frame = CGRect(x: 16, y: 4, width: view.frame.width - 32, height: 36)
         headerView.addSubview(segmentedControl)
         tableView.tableHeaderView = headerView
     }
 
-    // MARK: - Table View
+
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -85,7 +124,6 @@ class YourFriendsViewController: UIViewController, UITableViewDataSource, UITabl
                            forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
     }
 
-    // MARK: - DataSource & Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentData.count
     }
@@ -128,12 +166,7 @@ class YourFriendsViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }
 
-        /*
-        cell.cancelRequestTapped = {
-            // cancel outgoing request API call
-            print("Cancel request to \(user.friendName)")
-        }
-        */
+
         cell.acceptInviteTapped = {
             // accept invite API call
             print("Accept invite from \(user.friendName)")
@@ -160,6 +193,15 @@ class YourFriendsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
 }
+
+extension UISegmentedControl {
+    func removeBackgroundAndDivider() {
+        setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
+        setBackgroundImage(UIImage(), for: .selected, barMetrics: .default)
+        setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+    }
+}
+
 
 
 //WORKING

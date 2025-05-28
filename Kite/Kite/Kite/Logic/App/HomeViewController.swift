@@ -95,12 +95,6 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)
                 
-                //TEMP
-                for post in postsArray {
-                    print("Post ID: \(post.postID)")
-                }
-                //TEMP
-                
                 DispatchQueue.main.async {
                     self.postsTableView.reloadData()
                     self.pollingManager.resetFailureCount()
@@ -112,7 +106,6 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         }
     }
     
-
 
     // Function D1: Like a Post
     func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel) {
@@ -209,10 +202,17 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
          var likedByLastName: String
          var commentCreated: String
      }
+     
+     //TEMP
+     for post in postsArray {
+         print("Post ID: \(post.postID)")
+     }
+     //TEMP
 
 
      */
 
+    
 }
 
 

@@ -13,6 +13,7 @@ class ProfileViewController: UIViewController {
     let profileAPI = ProfileAPI()
     let friendAPI = FriendAPI()
     let loginAPI = LoginAPI()
+    let imageFunctions = ImageFunctions()
     let userDefaultManager = UserDefaultManager()
     
     private let userProfileLayout = UserProfileLayout()
@@ -48,8 +49,9 @@ class ProfileViewController: UIViewController {
                 }
                 
                 if let currentUser = userResponseModel?.data {
+                    
                     //STEP 1: Fetch image asynchronously before updating UI
-                    let profileImage = await fetchImage(from: currentUser.userImage)
+                    let profileImage = await imageFunctions.fetchImage(from: currentUser.userImage)
 
                     DispatchQueue.main.async {
                         //STEP 2: Set UI Elements
@@ -91,6 +93,7 @@ class ProfileViewController: UIViewController {
 
         Task {
             do {
+                //API: Get all your friends
                 let currentUser = userDefaultManager.getLoggedInUser()
                 let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
                 let friendObjects = friendAPI.convertToFriendObjects(from: friendsResponse.data)

@@ -27,15 +27,9 @@ class YourFriendsTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
 
-        followButton.addTarget(self,
-                               action: #selector(handleFollowTapped),
-                               for: .touchUpInside)
-        acceptButton.addTarget(self,
-                               action: #selector(handleAcceptTapped),
-                               for: .touchUpInside)
-        declineButton.addTarget(self,
-                                action: #selector(handleDeclineTapped),
-                                for: .touchUpInside)
+        followButton.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
+        acceptButton.addTarget(self, action: #selector(handleAcceptTapped),for: .touchUpInside)
+        declineButton.addTarget(self, action: #selector(handleDeclineTapped),for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
