@@ -104,15 +104,64 @@ class YourFriendsTableViewCell: UITableViewCell {
         ])
     }
 
+    /*
     func configure(with user: Friend) {
         usernameLabel.text = "@\(user.friendName)"
         fullNameLabel.text = "\(user.firstName) \(user.lastName)"
-        profileImageView.image = UIImage(named: "background_1") // Placeholder
+        //profileImageView.image = UIImage(named: "background_1") // Placeholder
+        profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
+
+        // Reset all buttons
+        followButton.isHidden = true
+        followButton.isUserInteractionEnabled = false
+        acceptButton.isHidden = true
+        declineButton.isHidden = true
+
+        switch user.friendshipKey {
+        case "friends":
+            followButton.isHidden = false
+            followButton.setTitle("Friends", for: .normal)
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(.black, for: .normal)
+            followButton.layer.borderWidth = 1
+            followButton.layer.borderColor = UIColor.lightGray.cgColor
+            followButton.isUserInteractionEnabled = false
+
+        case "request_pending":
+            followButton.isHidden = false
+            followButton.setTitle("Cancel", for: .normal)
+            followButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0) // pink
+            followButton.setTitleColor(.white, for: .normal)
+            followButton.layer.borderWidth = 0
+            followButton.isUserInteractionEnabled = true
+
+        case "invite_pending":
+            acceptButton.isHidden = false
+            declineButton.isHidden = false
+
+            acceptButton.setTitleColor(.white, for: .normal)
+            acceptButton.backgroundColor = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
+
+            declineButton.setTitleColor(.white, for: .normal)
+            declineButton.backgroundColor = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
+
+        default:
+            break
+        }
+    }
+*/
+    
+    func configure(with user: Friend) {
+        usernameLabel.text = "@\(user.friendName)"
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+        //profileImageView.image = UIImage(named: "background_1") // Placeholder
+        profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
 
         // Hide all by default
         followButton.isHidden = true
         acceptButton.isHidden = true
         declineButton.isHidden = true
+        followButton.isUserInteractionEnabled = true
 
         switch user.friendshipKey {
         case "friends":
@@ -150,6 +199,7 @@ class YourFriendsTableViewCell: UITableViewCell {
             break
         }
     }
+     
 
     @objc private func handleFollowTapped() {
         cancelRequestTapped?()

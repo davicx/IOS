@@ -54,6 +54,7 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         return users.count
     }
 
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let user = users[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! YourFriendsTableViewCell

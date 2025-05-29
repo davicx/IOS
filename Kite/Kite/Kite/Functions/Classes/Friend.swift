@@ -5,20 +5,22 @@
 //  Created by David Vasquez on 5/26/25.
 //
 
-import Foundation
+import UIKit
 
 
 class Friend {
     let friendID: Int
     let friendName: String
-    let friendImage: String
-    let firstName: String
-    let lastName: String
-    let friendBiography: String
-    let requestPending: Int
-    let requestSentBy: String
-    let friendshipKey: String
-    let alsoYourFriend: Int
+    var friendImage: String
+    var firstName: String
+    var lastName: String
+    var friendBiography: String
+    var requestPending: Int
+    var requestSentBy: String
+    var friendshipKey: String
+    var alsoYourFriend: Int
+    
+    var profileImage: UIImage?
     
     init(from model: FriendModel) {
         self.friendID = model.friendID
@@ -31,5 +33,7 @@ class Friend {
         self.requestSentBy = model.requestSentBy
         self.friendshipKey = model.friendshipKey
         self.alsoYourFriend = model.alsoYourFriend
+        
+        self.profileImage = UIImage(named: "background_1")
     }
 }

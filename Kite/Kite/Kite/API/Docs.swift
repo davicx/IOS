@@ -9,6 +9,166 @@ import Foundation
 
 //PROFILE
 
+
+//WORKING
+/*
+class YourFriendsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    var users: [Friend] = []
+
+    private var friends: [Friend] = []
+    private var friendRequests: [Friend] = []
+    private var currentData: [Friend] = []
+
+    private let tableView = UITableView()
+    private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Friends"
+        view.backgroundColor = .white
+
+        // Split data into friends and requests
+        friends = users.filter { $0.requestPending == 0 }
+        friendRequests = users.filter { $0.requestPending == 1 }
+
+        setupSegmentedControl()
+        setupTableView()
+
+        segmentedControl.selectedSegmentIndex = 0
+        currentData = friends
+    }
+
+    // MARK: - Segmented Control
+    @objc private func segmentChanged() {
+        currentData = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
+        tableView.reloadData()
+    }
+
+    private func setupSegmentedControl() {
+        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        segmentedControl.selectedSegmentTintColor = .systemBlue
+
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        segmentedControl.frame = CGRect(x: 16, y: 8, width: view.frame.width - 32, height: 34)
+        headerView.addSubview(segmentedControl)
+
+        tableView.tableHeaderView = headerView
+    }
+
+    // MARK: - Table View
+    private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 72
+
+        tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+    }
+
+    // MARK: - DataSource & Delegate
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return currentData.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = currentData[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! YourFriendsTableViewCell
+        cell.configure(with: user)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedFriend = currentData[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
+            vc.friend = selectedFriend
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+ */
+/*
+ //SIMPLE WORKS
+class YourFriendsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    var users: [Friend] = []
+
+    private let tableView = UITableView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Friends"
+        view.backgroundColor = .white
+        
+        for user in users {
+            print("User: \(user.requestSentBy),  \(user.friendName), requestPending: \(user.requestPending)")
+        }
+        
+        setupTableView()
+    }
+
+    private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 72
+
+        // Register your custom cell
+        tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+    }
+
+    // MARK: - TableView DataSource
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = users[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! YourFriendsTableViewCell
+        cell.configure(with: user)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedFriend = users[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
+            vc.friend = selectedFriend
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+*/
+
+
 /*
 class UserCell: UITableViewCell {
     static let identifier = "UserCell"

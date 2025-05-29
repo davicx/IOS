@@ -173,7 +173,7 @@ func createPostUserView() -> UIView {
 
 func createPostUserName() -> UILabel {
     let label = UILabel()
-    label.text = "HEADER: Post User"
+    label.text = "Garden Party"
     label.translatesAutoresizingMaskIntoConstraints = false
     label.numberOfLines = 0 // Allow for multiple lines
     label.textAlignment = .center

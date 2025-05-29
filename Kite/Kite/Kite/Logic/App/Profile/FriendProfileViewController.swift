@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class FriendProfileViewController: UIViewController {
     var friend: Friend?
 

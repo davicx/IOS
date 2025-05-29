@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController {
             userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        // Add action to Edit Button
+        // Add action to Buttons
         userProfileLayout.userProfileEditView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         userProfileLayout.userProfileSocialsView.followingButton.addTarget(self, action: #selector(followingButtonTapped), for: .touchUpInside)
 
@@ -54,6 +54,7 @@ class ProfileViewController: UIViewController {
                     let profileImage = await imageFunctions.fetchImage(from: currentUser.userImage)
 
                     DispatchQueue.main.async {
+                        
                         //STEP 2: Set UI Elements
                         
                         //Step 2A: Set Username
@@ -97,9 +98,12 @@ class ProfileViewController: UIViewController {
                 let currentUser = userDefaultManager.getLoggedInUser()
                 let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
                 let friendObjects = friendAPI.convertToFriendObjects(from: friendsResponse.data)
-        
+              
+                let imageHelper = ImageFunctions()
+                await loadFriendImages(for: friendObjects, using: imageHelper)
+
                 for friend in friendObjects {
-                    print(friend.friendName)
+                    //print(friend.friendName)
                 }
                 
                 DispatchQueue.main.async {
@@ -111,7 +115,20 @@ class ProfileViewController: UIViewController {
             }
         }
     }
-
+    
+    //NEW
+     func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
+         await withTaskGroup(of: Void.self) { group in
+             for friend in friends {
+                 group.addTask {
+                     if let image = await imageHelper.fetchImage(from: friend.friendImage) {
+                         friend.profileImage = image
+                     }
+                 }
+             }
+         }
+     }
+     
 
     // EDIT: User Profile
     @objc private func editButtonTapped() {
