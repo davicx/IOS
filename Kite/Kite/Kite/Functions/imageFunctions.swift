@@ -19,7 +19,7 @@ class ImageFunctions {
     }
     
     func fetchImage(from urlString: String) async -> UIImage? {
-        print("Function: fetchImage trying to get the urlString \(urlString)")
+        //print("Function: fetchImage trying to get the urlString \(urlString)")
         guard let url = URL(string: urlString) else {
             print("Functions: fetchImage-> Invalid URL \(urlString)")
             return nil

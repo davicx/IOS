@@ -8,6 +8,7 @@
 import UIKit
 
 
+
 class YourFriendsViewController: UIViewController {
     var users: [Friend] = []
 
@@ -19,30 +20,64 @@ class YourFriendsViewController: UIViewController {
     private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
     private var underlineView: UIView?
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Friends"
         view.backgroundColor = .white
 
         friends = users.filter {
-            $0.friendshipKey == "friends" ||
-            $0.friendshipKey == "request_pending"
+            let status = FriendshipStatus(key: $0.friendshipKey)
+            return status == .friends || status == .requestPending
         }
-        friendRequests = users.filter { $0.friendshipKey == "invite_pending" }
+
+        friendRequests = users.filter {
+            FriendshipStatus(key: $0.friendshipKey) == .invitePending
+        }
 
         setupSegmentedControl()
         setupTableView()
 
-        // Default to Friends tab
         segmentedControl.selectedSegmentIndex = 0
         currentData = friends
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("YourFriendsViewController")
+    }
 
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        addUnderlineForSelectedSegment()
+    }
 
-    //STYLE and SETUP
-    //Table View
+    private func setupSegmentedControl() {
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.removeBackgroundAndDivider()
+
+        segmentedControl.backgroundColor = .clear
+        segmentedControl.selectedSegmentTintColor = .clear
+
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemGray,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+        let selectedAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.label,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+
+        segmentedControl.setTitleTextAttributes(normalAttributes, for: .normal)
+        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
+
+        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+        segmentedControl.frame = CGRect(x: 16, y: 4, width: view.frame.width - 32, height: 36)
+        headerView.addSubview(segmentedControl)
+        tableView.tableHeaderView = headerView
+    }
+
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -59,22 +94,11 @@ class YourFriendsViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 72
 
-        tableView.register(YourFriendsTableViewCell.self,
-                           forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
-    }
-    
-    //Segmented Controller
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        addUnderlineForSelectedSegment()
+        tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
     }
 
     @objc private func segmentChanged() {
-        if segmentedControl.selectedSegmentIndex == 0 {
-            currentData = friends
-        } else {
-            currentData = friendRequests
-        }
+        currentData = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
         addUnderlineForSelectedSegment()
         tableView.reloadData()
     }
@@ -86,8 +110,9 @@ class YourFriendsViewController: UIViewController {
         let underlineX = CGFloat(segmentedControl.selectedSegmentIndex) * underlineWidth
 
         if let underline = underlineView {
-            //UIView.animate(withDuration: 0.3) {
-            UIView.animate(withDuration: 0.25) { underline.frame.origin.x = underlineX }
+            UIView.animate(withDuration: 0.25) {
+                underline.frame.origin.x = underlineX
+            }
         } else {
             let underline = UIView(frame: CGRect(x: underlineX, y: underlineY, width: underlineWidth, height: underlineHeight))
             underline.backgroundColor = .label
@@ -97,120 +122,68 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
+    private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
+        let status = FriendshipStatus(key: user.friendshipKey)
 
-    private func setupSegmentedControl() {
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.removeBackgroundAndDivider() // We'll define this below
-
-        // Underline-style: transparent background
-        segmentedControl.backgroundColor = .clear
-        segmentedControl.selectedSegmentTintColor = .clear
-
-        // Set text styles
-        let normalAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.systemGray,
-            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
-        ]
-        let selectedAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.label,
-            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
-        ]
-        segmentedControl.setTitleTextAttributes(normalAttributes, for: .normal)
-        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
-
-        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
-
-        // Layout in header
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
-        segmentedControl.frame = CGRect(x: 16, y: 4, width: view.frame.width - 32, height: 36)
-        headerView.addSubview(segmentedControl)
-        tableView.tableHeaderView = headerView
-    }
-
-    //LOGIC
-
-}
-
-extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentData.count
-    }
-    /*
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let user = currentData[indexPath.row]
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: Constants.TableViewCellIdentifier.friendCell,
-            for: indexPath
-        ) as! YourFriendsTableViewCell
-
-        cell.configure(with: user)
-
-        cell.cancelRequestTapped = { [weak self] in
-            self?.handleCancelTapped(for: user)
-        }
-
-        cell.acceptInviteTapped = { [weak self] in
-            self?.handleAcceptInvite(for: user)
-        }
-
-        cell.declineInviteTapped = { [weak self] in
-            self?.handleDeclineInvite(for: user)
-        }
-
-        return cell
-    }
-    */
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let user = currentData[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: Constants.TableViewCellIdentifier.friendCell,
-            for: indexPath
-        ) as! YourFriendsTableViewCell
-        cell.configure(with: user)
-        cell.selectionStyle = .none
-        
-        // Wire up the closures if you need callbacks:
         cell.cancelRequestTapped = { [weak self] in
             guard let self = self else { return }
-            switch user.friendshipKey {
-            case "request_pending":
-                // Directly cancel outgoing request
-                print("Cancel request to \(user.friendName)")
-                // → your API call to cancel request here
 
-            case "friends":
-                // Ask before removing a confirmed friend
+            switch status {
+            case .requestPending:
+                print("Cancel request to \(user.friendName)")
+                // call cancel request API here
+
+            case .friends:
                 let alert = UIAlertController(
                     title: "Remove Friend",
                     message: "Are you sure you want to remove @\(user.friendName) from your friends?",
                     preferredStyle: .alert
                 )
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
                 alert.addAction(UIAlertAction(title: "Remove", style: .destructive) { _ in
                     print("Removing friend \(user.friendName)")
-                    // → your API call to remove friend here
+                    // call remove friend API here
                 })
-                self.present(alert, animated: true, completion: nil)
+                self.present(alert, animated: true)
 
             default:
                 break
             }
         }
 
-
         cell.acceptInviteTapped = {
-            // accept invite API call
             print("Accept invite from \(user.friendName)")
+            // call accept invite API here
         }
+
         cell.declineInviteTapped = {
-            // decline invite API call
             print("Decline invite from \(user.friendName)")
+            // call decline invite API here
         }
+    }
+}
+
+// MARK: - UITableViewDataSource & UITableViewDelegate
+
+extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return currentData.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = currentData[indexPath.row]
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: Constants.TableViewCellIdentifier.friendCell,
+            for: indexPath
+        ) as! YourFriendsTableViewCell
+
+        cell.configure(with: user)
+        cell.selectionStyle = .none
+        configureCellActions(for: user, cell: cell)
 
         return cell
     }
-     
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedFriend = currentData[indexPath.row]
@@ -225,11 +198,15 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
     }
 }
 
+
+
+// MARK: - Helper
 extension UISegmentedControl {
     func removeBackgroundAndDivider() {
         setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
         setBackgroundImage(UIImage(), for: .selected, barMetrics: .default)
-        setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+        setDividerImage(UIImage(), forLeftSegmentState: .normal,
+                        rightSegmentState: .normal, barMetrics: .default)
     }
 }
 

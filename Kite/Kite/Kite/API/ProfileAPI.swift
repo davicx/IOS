@@ -37,7 +37,7 @@ class ProfileAPI {
     func getUserProfileAPI(currentUser: String) async throws -> UserProfileResponseModel {
         let endpoint = "http://localhost:3003/profile/" + currentUser
         
-        printHeader(headerMessage: "PROFILE API- getUserProfileAPI")
+        //printHeader(headerMessage: "PROFILE API- getUserProfileAPI")
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -54,7 +54,7 @@ class ProfileAPI {
         
         switch httpResponse.statusCode {
         case 200:
-            print("PROFILE API - 200 Success")
+            //print("PROFILE API - 200 Success")
             let decoder = JSONDecoder ()
             let userProfileResponseModel = try decoder.decode(UserProfileResponseModel.self, from: data)
             

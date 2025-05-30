@@ -10,6 +10,464 @@ import Foundation
 //PROFILE
 
 
+
+//WORKING
+/*
+class YourFriendsViewController: UIViewController {
+    var users: [Friend] = []
+
+    private var friends: [Friend] = []
+    private var friendRequests: [Friend] = []
+    private var currentData: [Friend] = []
+
+    private let tableView = UITableView()
+    private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
+    private var underlineView: UIView?
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Friends"
+        view.backgroundColor = .white
+
+        friends = users.filter {
+            $0.friendshipKey == "friends" ||
+            $0.friendshipKey == "request_pending"
+        }
+        friendRequests = users.filter { $0.friendshipKey == "invite_pending" }
+
+        setupSegmentedControl()
+        setupTableView()
+
+        // Default to Friends tab
+        segmentedControl.selectedSegmentIndex = 0
+        currentData = friends
+    }
+
+
+
+    //STYLE and SETUP
+    //Table View
+    private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 72
+
+        tableView.register(YourFriendsTableViewCell.self,
+                           forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+    }
+    
+    //Segmented Controller
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        addUnderlineForSelectedSegment()
+    }
+
+    @objc private func segmentChanged() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            currentData = friends
+        } else {
+            currentData = friendRequests
+        }
+        addUnderlineForSelectedSegment()
+        tableView.reloadData()
+    }
+
+    private func addUnderlineForSelectedSegment() {
+        let underlineWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
+        let underlineHeight: CGFloat = 2.0
+        let underlineY = segmentedControl.frame.height - underlineHeight
+        let underlineX = CGFloat(segmentedControl.selectedSegmentIndex) * underlineWidth
+
+        if let underline = underlineView {
+            //UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.25) { underline.frame.origin.x = underlineX }
+        } else {
+            let underline = UIView(frame: CGRect(x: underlineX, y: underlineY, width: underlineWidth, height: underlineHeight))
+            underline.backgroundColor = .label
+            underline.tag = 999
+            segmentedControl.addSubview(underline)
+            underlineView = underline
+        }
+    }
+
+
+    private func setupSegmentedControl() {
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.removeBackgroundAndDivider() // We'll define this below
+
+        // Underline-style: transparent background
+        segmentedControl.backgroundColor = .clear
+        segmentedControl.selectedSegmentTintColor = .clear
+
+        // Set text styles
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemGray,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+        let selectedAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.label,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+        segmentedControl.setTitleTextAttributes(normalAttributes, for: .normal)
+        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
+
+        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+
+        // Layout in header
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+        segmentedControl.frame = CGRect(x: 16, y: 4, width: view.frame.width - 32, height: 36)
+        headerView.addSubview(segmentedControl)
+        tableView.tableHeaderView = headerView
+    }
+
+    //LOGIC
+
+}
+
+extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return currentData.count
+    }
+    /*
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = currentData[indexPath.row]
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: Constants.TableViewCellIdentifier.friendCell,
+            for: indexPath
+        ) as! YourFriendsTableViewCell
+
+        cell.configure(with: user)
+
+        cell.cancelRequestTapped = { [weak self] in
+            self?.handleCancelTapped(for: user)
+        }
+
+        cell.acceptInviteTapped = { [weak self] in
+            self?.handleAcceptInvite(for: user)
+        }
+
+        cell.declineInviteTapped = { [weak self] in
+            self?.handleDeclineInvite(for: user)
+        }
+
+        return cell
+    }
+    */
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = currentData[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: Constants.TableViewCellIdentifier.friendCell,
+            for: indexPath
+        ) as! YourFriendsTableViewCell
+        cell.configure(with: user)
+        cell.selectionStyle = .none
+        
+        // Wire up the closures if you need callbacks:
+        cell.cancelRequestTapped = { [weak self] in
+            guard let self = self else { return }
+            switch user.friendshipKey {
+            case "request_pending":
+                // Directly cancel outgoing request
+                print("Cancel request to \(user.friendName)")
+                // → your API call to cancel request here
+
+            case "friends":
+                // Ask before removing a confirmed friend
+                let alert = UIAlertController(
+                    title: "Remove Friend",
+                    message: "Are you sure you want to remove @\(user.friendName) from your friends?",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Remove", style: .destructive) { _ in
+                    print("Removing friend \(user.friendName)")
+                    // → your API call to remove friend here
+                })
+                self.present(alert, animated: true, completion: nil)
+
+            default:
+                break
+            }
+        }
+
+
+        cell.acceptInviteTapped = {
+            // accept invite API call
+            print("Accept invite from \(user.friendName)")
+        }
+        cell.declineInviteTapped = {
+            // decline invite API call
+            print("Decline invite from \(user.friendName)")
+        }
+
+        return cell
+    }
+     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedFriend = currentData[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = storyboard.instantiateViewController(
+            withIdentifier: "FriendProfileViewControllerID"
+        ) as? FriendProfileViewController {
+            vc.friend = selectedFriend
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+extension UISegmentedControl {
+    func removeBackgroundAndDivider() {
+        setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
+        setBackgroundImage(UIImage(), for: .selected, barMetrics: .default)
+        setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+    }
+}
+
+*/
+
+
+//WORKING
+/*
+class YourFriendsTableViewCell: UITableViewCell {
+    let profileImageView = UIImageView()
+    let usernameLabel = UILabel()
+    let fullNameLabel = UILabel()
+    let followButton = UIButton(type: .system)
+    let acceptButton = UIButton(type: .system)
+    let declineButton = UIButton(type: .system)
+
+    var cancelRequestTapped: (() -> Void)?
+    var acceptInviteTapped: (() -> Void)?
+    var declineInviteTapped: (() -> Void)?
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+        followButton.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
+        acceptButton.addTarget(self, action: #selector(handleAcceptTapped), for: .touchUpInside)
+        declineButton.addTarget(self, action: #selector(handleDeclineTapped), for: .touchUpInside)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        [profileImageView, usernameLabel, fullNameLabel, followButton, acceptButton, declineButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
+
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.cornerRadius = 24
+        profileImageView.clipsToBounds = true
+
+        usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        fullNameLabel.font = UIFont.systemFont(ofSize: 14)
+        fullNameLabel.textColor = .gray
+
+        [followButton, acceptButton, declineButton].forEach {
+            $0.layer.cornerRadius = 6
+            $0.clipsToBounds = true
+            $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        }
+
+        NSLayoutConstraint.activate([
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 48),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+
+            usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            usernameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+
+            fullNameLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 4),
+            fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            fullNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+
+            followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            followButton.widthAnchor.constraint(equalToConstant: 100),
+
+            acceptButton.trailingAnchor.constraint(equalTo: followButton.leadingAnchor, constant: -8),
+            acceptButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            acceptButton.widthAnchor.constraint(equalToConstant: 60),
+
+            declineButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            declineButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            declineButton.widthAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+
+    func configure(with user: Friend) {
+        usernameLabel.text = "@\(user.friendName)"
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+        profileImageView.image = UIImage(named: "background_1") // Placeholder
+
+        acceptButton.isHidden = true
+        declineButton.isHidden = true
+        followButton.isHidden = false
+
+        switch user.friendshipKey {
+        case "request_pending":
+            followButton.setTitle("Cancel", for: .normal)
+            followButton.backgroundColor = .lightGray
+            followButton.setTitleColor(.white, for: .normal)
+
+        case "invite_pending":
+            followButton.isHidden = true
+            acceptButton.isHidden = false
+            declineButton.isHidden = false
+
+            acceptButton.setTitle("Accept", for: .normal)
+            acceptButton.backgroundColor = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
+            acceptButton.setTitleColor(.white, for: .normal)
+
+            declineButton.setTitle("Decline", for: .normal)
+            declineButton.backgroundColor = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
+            declineButton.setTitleColor(.white, for: .normal)
+
+        default:
+            followButton.setTitle("Friends", for: .normal)
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(.black, for: .normal)
+            followButton.layer.borderWidth = 1
+            followButton.layer.borderColor = UIColor.lightGray.cgColor
+        }
+    }
+
+    @objc private func handleFollowTapped() {
+        //cancelRequestTapped?()
+        print("cancelRequestTapped")
+    }
+
+    @objc private func handleAcceptTapped() {
+        //acceptInviteTapped?()
+        print("acceptInviteTapped")
+
+    }
+
+    @objc private func handleDeclineTapped() {
+        //declineInviteTapped?()
+        print("declineInviteTapped")
+
+    }
+}
+ */
+
+/*
+ //SIMPLE WORKING
+class YourFriendsTableViewCell: UITableViewCell {
+    let profileImageView = UIImageView()
+    let usernameLabel = UILabel()
+    let fullNameLabel = UILabel()
+    let followButton = UIButton(type: .system)
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+        followButton.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.cornerRadius = 24
+        profileImageView.clipsToBounds = true
+
+        usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        fullNameLabel.font = UIFont.systemFont(ofSize: 14)
+        fullNameLabel.textColor = .gray
+        fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        followButton.translatesAutoresizingMaskIntoConstraints = false
+        followButton.layer.cornerRadius = 6
+        followButton.clipsToBounds = true
+        followButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        followButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(fullNameLabel)
+        contentView.addSubview(followButton)
+
+        NSLayoutConstraint.activate([
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 48),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+
+            usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            usernameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+
+            fullNameLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 4),
+            fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            fullNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+
+            followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            followButton.widthAnchor.constraint(equalToConstant: 96)
+        ])
+
+    }
+
+    @objc private func handleFollowTapped() {
+        //followButtonTapped?()
+        print("HIYA!")
+    }
+    
+    let pinkColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0) // #FF2D7E
+
+    func configure(with user: Friend) {
+        usernameLabel.text = "@\(user.friendName)"
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+        profileImageView.image = UIImage(named: "background_1") // Placeholder
+
+        if user.requestPending == 1 {
+            // Show pink Follow button
+            followButton.setTitle("Add Friend", for: .normal)
+            followButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0) // Pink
+            followButton.setTitleColor(.white, for: .normal)
+            followButton.layer.borderWidth = 0
+        } else {
+            // Show default "Following" style
+            followButton.setTitle("Friends", for: .normal)
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(.black, for: .normal)
+            followButton.layer.borderWidth = 1
+            followButton.layer.borderColor = UIColor.lightGray.cgColor
+        }
+    }
+
+}
+
+
+*/
+
+
+
 //WORKING
 /*
 class YourFriendsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {

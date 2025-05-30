@@ -31,8 +31,8 @@ class ProfileAPIBackup {
     //Function A1: Get User Profile Information
     func getUserProfileAPI(currentUser: String) async throws -> UserProfileResponseModel {
         let endpoint = "http://localhost:3003/profile/" + currentUser
-        print("______________________________")
-        print("PROFILE API- getUserProfileAPI")
+        //print("______________________________")
+        //print("PROFILE API- getUserProfileAPI")
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
         }

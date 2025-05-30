@@ -24,7 +24,7 @@ class FriendAPI {
     func getAllCurrentUserFriends(currentUser: String) async throws -> FriendListResponseModel {
         let endpoint = "http://localhost:3003/friends/all/" + currentUser
         
-        printHeader(headerMessage: "PROFILE API - getAllCurrentUserFriends")
+        //printHeader(headerMessage: "PROFILE API - getAllCurrentUserFriends")
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -40,7 +40,7 @@ class FriendAPI {
         
         switch httpResponse.statusCode {
         case 200:
-            print("PROFILE API - 200 Success (Friends List)")
+            //print("PROFILE API - 200 Success (Friends List)")
             let decoder = JSONDecoder()
             let friendsResponse = try decoder.decode(FriendListResponseModel.self, from: data)
             return friendsResponse
@@ -90,7 +90,7 @@ class FriendAPI {
         
         switch httpResponse.statusCode {
         case 200:
-            print("PROFILE API - 200 Success (Friends List)")
+            //print("PROFILE API - 200 Success (Friends List)")
             let decoder = JSONDecoder()
             let friendsResponse = try decoder.decode(FriendListResponseModel.self, from: data)
             return friendsResponse

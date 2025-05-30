@@ -8,8 +8,6 @@
 
 import UIKit
 
-//let likeSummary = post.comments.map { "ID:\($0.commentID.prefix(5)) Likes:\($0.commentLikes?.count ?? 0)" }.joined(separator: " | ")
-//post.caption += "\n[CommentLikes] \(likeSummary)"
 
 class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
 
@@ -89,8 +87,6 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         Task {
             do {
                 let postsResponseModel = try await postsAPI.getPostsAPI(groupID: 72)
-                
-                print(postsResponseModel.data)
                 
                 postsArrayNoImage = try await createPostsArray(postsResponseModel: postsResponseModel)
                 postsArray = try await addPostImageToPostsArray(postsArray: postsArrayNoImage)

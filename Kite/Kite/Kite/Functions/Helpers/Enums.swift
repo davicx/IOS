@@ -18,6 +18,17 @@ enum networkError: Error {
     case serverError(statusCode: Int)
 }
 
+enum FriendshipStatus: String {
+    case friends = "friends"
+    case requestPending = "request_pending"
+    case invitePending = "invite_pending"
+    case unknown
+
+    init(key: String) {
+        self = FriendshipStatus(rawValue: key) ?? .unknown
+    }
+}
+
 
 
 

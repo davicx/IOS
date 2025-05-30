@@ -20,8 +20,11 @@ class ProfileViewController: UIViewController {
     
     var userResponseModel: UserProfileResponseModel?
     
+    var friendListArray: [Friend] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
         let currentUser = userDefaultManager.getLoggedInUser()
         let deviceId = getDeviceId()
         
@@ -39,6 +42,56 @@ class ProfileViewController: UIViewController {
         userProfileLayout.userProfileEditView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         userProfileLayout.userProfileSocialsView.followingButton.addTarget(self, action: #selector(followingButtonTapped), for: .touchUpInside)
 
+        Task {
+            do {
+                let currentUser = userDefaultManager.getLoggedInUser()
+                
+                // Get profile
+                userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
+                guard let statusCode = userResponseModel?.statusCode, statusCode != 401 else {
+                    AuthManager.shared.logoutCurrentUser()
+                    return
+                }
+
+                if let currentUserData = userResponseModel?.data {
+                    let profileImage = await imageFunctions.fetchImage(from: currentUserData.userImage)
+
+                    DispatchQueue.main.async {
+                        self.userProfileLayout.userNameView.nameLabel.text = "@\(currentUserData.userName)"
+                        self.userProfileLayout.userProfileBiography.configure(
+                            firstName: currentUserData.firstName,
+                            lastName: currentUserData.lastName
+                        )
+                        if let profileImage = profileImage {
+                            if let cropped = profileImage.croppedToSquare() {
+                                self.userProfileLayout.profileImageView.imageView.image = cropped
+                            } else {
+                                self.userProfileLayout.profileImageView.imageView.image = profileImage
+                            }
+                        } else {
+                            self.userProfileLayout.profileImageView.imageView.image = UIImage(named: "background_9")
+                        }
+                        self.userProfileLayout.profileImageView.imageView.makeRounded()
+                    }
+                }
+
+                // 🔥 Fetch friends and store in property
+                let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
+                let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
+
+                // Preload images
+                await loadFriendImages(for: friends, using: imageFunctions)
+
+                // Store and log
+                self.friendListArray = friends
+                print("Friend count: \(self.friendListArray.count)")
+
+            } catch {
+                print("Error in viewDidLoad: \(error)")
+            }
+        }
+
+        /*
         Task {
             do {
                 userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
@@ -86,8 +139,24 @@ class ProfileViewController: UIViewController {
                 print(error)
             }
         }
+         */
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("ProfileViewController")
+    }
+    
+    @objc private func followingButtonTapped() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
+
+        friendVC.users = self.friendListArray
+        self.navigationController?.pushViewController(friendVC, animated: true)
     }
 
+    
+    /*
     @objc private func followingButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
@@ -115,8 +184,8 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+    */
     
-    //NEW
      func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
          await withTaskGroup(of: Void.self) { group in
              for friend in friends {
@@ -146,7 +215,6 @@ class ProfileViewController: UIViewController {
             editProfileVC.inputProfileImage = profileImage
         }
 
-        // **Set the delegate**
         editProfileVC.delegate = self
 
         navigationController?.pushViewController(editProfileVC, animated: true)
