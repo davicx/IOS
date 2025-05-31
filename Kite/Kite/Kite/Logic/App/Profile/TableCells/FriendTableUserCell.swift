@@ -18,9 +18,9 @@ class YourFriendsTableViewCell: UITableViewCell {
     let declineButton = UIButton(type: .system)
 
     // Callbacks to your VC
-    var cancelRequestTapped: (() -> Void)?
-    var acceptInviteTapped: (() -> Void)?
-    var declineInviteTapped: (() -> Void)?
+    var cancelFriendRequestTapped: (() -> Void)?
+    var acceptFriendInviteTapped: (() -> Void)?
+    var declineFriendInviteTapped: (() -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -129,15 +129,15 @@ class YourFriendsTableViewCell: UITableViewCell {
      
 
     @objc private func handleFollowTapped() {
-        cancelRequestTapped?()
+        cancelFriendRequestTapped?()
     }
 
     @objc private func handleAcceptTapped() {
-        acceptInviteTapped?()
+        acceptFriendInviteTapped?()
     }
 
     @objc private func handleDeclineTapped() {
-        declineInviteTapped?()
+        declineFriendInviteTapped?()
     }
 }
 

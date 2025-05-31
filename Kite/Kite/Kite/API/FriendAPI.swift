@@ -5,7 +5,7 @@
 //  Created by David Vasquez on 5/23/25.
 //
 
-import Foundation
+import UIKit
 
 
 class FriendAPI {
@@ -19,6 +19,119 @@ class FriendAPI {
         let config = URLSessionConfiguration.default
         session = URLSession(configuration: config)
     }
+    
+    
+    // Function A6: Add Friend Request
+    func addFriend(masterSite: String, currentUser: String, addFriendName: String) async throws -> AddFriendResponseModel {
+        let endpoint = "http://localhost:3003/friend/request/"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: String] = [
+            "masterSite": masterSite,
+            "currentUser": currentUser,
+            "addFriendName": addFriendName
+        ]
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw networkError.invalidResponse
+        }
+
+        switch httpResponse.statusCode {
+        case 200:
+            let decoder = JSONDecoder()
+            let responseModel = try decoder.decode(AddFriendResponseModel.self, from: data)
+            return responseModel
+
+        case 498:
+            print("FRIEND API - 498 Refreshing Token (Add Friend)")
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+            print(newAccessTokenModel.message)
+
+            if newAccessTokenModel.success {
+                print("FRIEND API: 498 If Retry (Add Friend)")
+                return try await addFriend(masterSite: masterSite, currentUser: currentUser, addFriendName: addFriendName)
+            } else {
+                print("FRIEND API: 498 Else logoutCurrentUser")
+                return AddFriendResponseModel()
+            }
+
+        case 401:
+            print("FRIEND API - 401 Unauthorized, Logging Out (Add Friend)")
+            return AddFriendResponseModel()
+
+        default:
+            print("FRIEND API - Unexpected Status Code: \(httpResponse.statusCode)")
+            throw networkError.serverError(statusCode: httpResponse.statusCode)
+        }
+    }
+    
+    
+    // Function A7: Remove Friend
+    func removeFriend(masterSite: String, currentUser: String, removeFriendName: String) async throws -> RemoveFriendResponseModel {
+        let endpoint = "http://localhost:3003/friend/remove/"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: String] = [
+            "masterSite": masterSite,
+            "currentUser": currentUser,
+            "removeFriendName": removeFriendName
+        ]
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw networkError.invalidResponse
+        }
+
+        switch httpResponse.statusCode {
+        case 200:
+            let decoder = JSONDecoder()
+            let responseModel = try decoder.decode(RemoveFriendResponseModel.self, from: data)
+            return responseModel
+
+        case 498:
+            print("FRIEND API - 498 Refreshing Token (Remove Friend)")
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+            print(newAccessTokenModel.message)
+
+            if newAccessTokenModel.success {
+                print("FRIEND API: 498 If Retry (Remove Friend)")
+                return try await removeFriend(masterSite: masterSite, currentUser: currentUser, removeFriendName: removeFriendName)
+            } else {
+                print("FRIEND API: 498 Else logoutCurrentUser")
+                return RemoveFriendResponseModel()
+            }
+
+        case 401:
+            print("FRIEND API - 401 Unauthorized, Logging Out (Remove Friend)")
+            return RemoveFriendResponseModel()
+
+        default:
+            print("FRIEND API - Unexpected Status Code: \(httpResponse.statusCode)")
+            throw networkError.serverError(statusCode: httpResponse.statusCode)
+        }
+    }
+
     
     // Function A4: Get All Your Friends
     func getAllCurrentUserFriends(currentUser: String) async throws -> FriendListResponseModel {
@@ -119,10 +232,87 @@ class FriendAPI {
         
     }
     
+    
+    //Function A3: Update User Profile Information
+    func updateFullUserProfileAPI(currentUser: String, profileImage: UIImage, firstName: String, lastName: String, biography: String) async throws -> UpdateUserProfileResponseModel {
+        print("ProfileAPI updateFullUserProfileAPI")
+        
+        //STEP 1: Create the URL
+        let endpoint = "http://localhost:3003/profile/full/update/"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        //STEP 2: Create the Request
+        var request = URLRequest(url: url)
+        let boundary = UUID().uuidString
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        //STEP 3: Create the Form Data
+        let body = NSMutableData()
+    
+        //Current User
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"currentUser\"\r\n\r\n")
+        body.appendString("\(currentUser)\r\n")
+            
+        if let imageData = profileImage.jpegData(compressionQuality: 1.0) {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"profileImage\"; filename=\"image.jpg\"\r\n")
+            body.appendString("Content-Type: image/jpeg\r\n\r\n")
+            body.append(imageData)
+            body.appendString("\r\n")
+        }
+        
+        //First Name
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"firstName\"\r\n\r\n")
+        body.appendString("\(firstName)\r\n")
+        
+        //Last Name
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"lastName\"\r\n\r\n")
+        body.appendString("\(lastName)\r\n")
+        
+        //Biography
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"biography\"\r\n\r\n")
+        body.appendString("\(biography)\r\n")
+
+        body.appendString("--\(boundary)--\r\n")
+        
+        request.httpBody = body as Data
+        
+        //STEP 4: Handle the Response
+        let (data, response) = try await URLSession.shared.data(for: request)
+               
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder ()
+            let updateProfileResponseModel = try decoder.decode(UpdateUserProfileResponseModel.self, from: data)
+            
+            return updateProfileResponseModel
+            
+        } catch {
+            let updateProfileResponseModel = UpdateUserProfileResponseModel()
+            print("Error decoding data")
+            return updateProfileResponseModel
+        
+        }
+        
+    }
+    
+
     func convertToFriendObjects(from models: [FriendModel]) -> [Friend] {
         return models.map { Friend(from: $0) }
     }
 
+    
 
 }
 

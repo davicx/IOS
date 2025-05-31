@@ -102,6 +102,7 @@
 		D7A3C1222D810097000B4EB7 /* UserProfileLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A3C1212D810097000B4EB7 /* UserProfileLayout.swift */; };
 		D7AEA9762DC8286700272944 /* CommentsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AEA9752DC8286700272944 /* CommentsAPI.swift */; };
 		D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */; };
+		D7B4D1BD2DEA73F400D1630D /* RemoveFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B4D1BC2DEA73F400D1630D /* RemoveFriendResponseModel.swift */; };
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
 		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
 		D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */; };
@@ -235,6 +236,7 @@
 		D7A3C1212D810097000B4EB7 /* UserProfileLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileLayout.swift; sourceTree = "<group>"; };
 		D7AEA9752DC8286700272944 /* CommentsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsAPI.swift; sourceTree = "<group>"; };
 		D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentResponseModel.swift; sourceTree = "<group>"; };
+		D7B4D1BC2DEA73F400D1630D /* RemoveFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveFriendResponseModel.swift; sourceTree = "<group>"; };
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
 		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
 		D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
@@ -517,6 +519,7 @@
 				D7E7037F2DDD44EE00BF4AE5 /* FriendListResponseModel.swift */,
 				D7E703832DDD457900BF4AE5 /* FriendModel.swift */,
 				D720DB3B2DE13FA600F137AD /* AddFriendResponseModel.swift */,
+				D7B4D1BC2DEA73F400D1630D /* RemoveFriendResponseModel.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -766,6 +769,7 @@
 				D7FB876B2D6FE0090054CDF7 /* IndividualPostCell.swift in Sources */,
 				51C69B4B2D0E595D00C46759 /* RegistrationResponseModel.swift in Sources */,
 				51B109BA2D276403006E4CCF /* Temp.swift in Sources */,
+				D7B4D1BD2DEA73F400D1630D /* RemoveFriendResponseModel.swift in Sources */,
 				D720DB3C2DE13FA600F137AD /* AddFriendResponseModel.swift in Sources */,
 				51C69AE52D0E549100C46759 /* ViewController.swift in Sources */,
 				51C69B342D0E580600C46759 /* CommentModel.swift in Sources */,

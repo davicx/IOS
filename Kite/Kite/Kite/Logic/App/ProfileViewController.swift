@@ -75,10 +75,14 @@ class ProfileViewController: UIViewController {
                     }
                 }
 
-                // 🔥 Fetch friends and store in property
+                // Fetch friends and store in property
                 let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
                 let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
-
+                
+                for friend in friends {
+                    print("friends \(friend.friendID)")
+                }
+                
                 // Preload images
                 await loadFriendImages(for: friends, using: imageFunctions)
 
@@ -91,100 +95,24 @@ class ProfileViewController: UIViewController {
             }
         }
 
-        /*
-        Task {
-            do {
-                userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
-                
-                if let statusCode = userResponseModel?.statusCode, statusCode == 401 {
-                    AuthManager.shared.logoutCurrentUser()
-                    return
-                }
-                
-                if let currentUser = userResponseModel?.data {
-                    
-                    //STEP 1: Fetch image asynchronously before updating UI
-                    let profileImage = await imageFunctions.fetchImage(from: currentUser.userImage)
-
-                    DispatchQueue.main.async {
-                        
-                        //STEP 2: Set UI Elements
-                        
-                        //Step 2A: Set Username
-                        self.userProfileLayout.userNameView.nameLabel.text = "@\(currentUser.userName)"
-                        
-                        //Step 2B: Set Image with fetched image
-                        if let profileImage = profileImage {
-                            if let croppedImage = profileImage.croppedToSquare() {
-                                self.userProfileLayout.profileImageView.imageView.image = croppedImage
-                            } else {
-                                self.userProfileLayout.profileImageView.imageView.image = profileImage
-                            }
-                        } else {
-                            self.userProfileLayout.profileImageView.imageView.image = UIImage(named: "background_9")
-                        }
-
-                        self.userProfileLayout.profileImageView.imageView.makeRounded()
-                        
-                        //Step 2C: Set first and last name
-                        self.userProfileLayout.userProfileBiography.configure(
-                            firstName: currentUser.firstName,
-                            lastName: currentUser.lastName
-                        )
-                        
-                    }
-                }
-            } catch {
-                print("CATCH ProfileViewController profileAPI.getUserProfileAPI error!")
-                print(error)
-            }
-        }
-         */
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         print("ProfileViewController")
+
     }
     
     @objc private func followingButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
-
+        friendVC.delegate = self
+        
         friendVC.users = self.friendListArray
         self.navigationController?.pushViewController(friendVC, animated: true)
     }
-
     
-    /*
-    @objc private func followingButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
 
-        Task {
-            do {
-                //API: Get all your friends
-                let currentUser = userDefaultManager.getLoggedInUser()
-                let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
-                let friendObjects = friendAPI.convertToFriendObjects(from: friendsResponse.data)
-              
-                let imageHelper = ImageFunctions()
-                await loadFriendImages(for: friendObjects, using: imageHelper)
-
-                for friend in friendObjects {
-                    //print(friend.friendName)
-                }
-                
-                DispatchQueue.main.async {
-                    friendVC.users = friendObjects
-                    self.navigationController?.pushViewController(friendVC, animated: true)
-                }
-            } catch {
-                print("Error fetching friends: \(error)")
-            }
-        }
-    }
-    */
     
      func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
          await withTaskGroup(of: Void.self) { group in
@@ -222,6 +150,15 @@ class ProfileViewController: UIViewController {
 
 
 }
+
+extension ProfileViewController: YourFriendsViewControllerDelegate {
+    func didDeclineFriend(_ friend: Friend) {
+        // Update local array
+        friendListArray.removeAll { $0.friendID == friend.friendID }
+        print("ProfileVC updated friendListArray after declining \(friend.friendName)")
+    }
+}
+
 
 
 extension ProfileViewController: EditProfileViewControllerDelegate {

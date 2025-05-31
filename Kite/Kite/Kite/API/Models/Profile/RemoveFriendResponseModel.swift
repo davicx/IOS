@@ -1,14 +1,14 @@
 //
-//  AddFriendResponseModel.swift
+//  RemoveFriendResponseModel.swift
 //  Kite
 //
-//  Created by David Vasquez on 5/23/25.
+//  Created by David Vasquez on 5/30/25.
 //
 
 import Foundation
 
 
-struct AddFriendResponseModel: Codable {
+struct RemoveFriendResponseModel: Codable {
     let data: AddFriendModel
     let message: String
     let success: Bool
@@ -27,14 +27,3 @@ struct AddFriendResponseModel: Codable {
 }
 
 
-struct AddFriendModel: Codable {
-    let currentUser: String
-    let friendAddSuccessOutcome: Bool
-    let friendData: FriendModel
-
-    init() {
-        self.currentUser = ""
-        self.friendAddSuccessOutcome = false
-        self.friendData = FriendModel()
-    }
-}

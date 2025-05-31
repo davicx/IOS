@@ -9,13 +9,23 @@ import UIKit
 
 
 
-class YourFriendsViewController: UIViewController {
-    var users: [Friend] = []
+protocol YourFriendsViewControllerDelegate: AnyObject {
+    func didDeclineFriend(_ friend: Friend)
+}
 
+
+class YourFriendsViewController: UIViewController {
+    
+    //API Data
+    var users: [Friend] = []
     private var friends: [Friend] = []
     private var friendRequests: [Friend] = []
     private var currentData: [Friend] = []
 
+    weak var delegate: YourFriendsViewControllerDelegate?
+
+    
+    //Table View
     private let tableView = UITableView()
     private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
     private var underlineView: UIView?
@@ -125,7 +135,7 @@ class YourFriendsViewController: UIViewController {
     private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
         let status = FriendshipStatus(key: user.friendshipKey)
 
-        cell.cancelRequestTapped = { [weak self] in
+        cell.cancelFriendRequestTapped = { [weak self] in
             guard let self = self else { return }
 
             switch status {
@@ -151,15 +161,34 @@ class YourFriendsViewController: UIViewController {
             }
         }
 
-        cell.acceptInviteTapped = {
+        cell.acceptFriendInviteTapped = {
             print("Accept invite from \(user.friendName)")
             // call accept invite API here
         }
 
-        cell.declineInviteTapped = {
+        cell.declineFriendInviteTapped = { [weak self] in
+            guard let self = self else { return }
+            
             print("Decline invite from \(user.friendName)")
-            // call decline invite API here
+            
+            // Simulate success response (pretend API call)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                // 1. Remove from data source
+                if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
+                    self.currentData.remove(at: index)
+                    self.friendRequests.removeAll(where: { $0.friendID == user.friendID })
+                    self.users.removeAll(where: { $0.friendID == user.friendID })
+                    
+                    // 2. Remove from table view
+                    let indexPath = IndexPath(row: index, section: 0)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    
+                    // 3. Notify delegate
+                    self.delegate?.didDeclineFriend(user)
+                }
+            }
         }
+
     }
 }
 
