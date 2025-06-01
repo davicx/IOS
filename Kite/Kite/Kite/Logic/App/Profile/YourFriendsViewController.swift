@@ -13,6 +13,13 @@ protocol YourFriendsViewControllerDelegate: AnyObject {
     func didDeclineFriend(_ friend: Friend)
 }
 
+//ACTIVE FRIEND
+//Current Friend: Remove
+//Current Invite Sent: Cancel it
+
+//FRIEND REQUESTS
+//Accept Request
+//Decline Request
 
 class YourFriendsViewController: UIViewController {
     
@@ -143,6 +150,7 @@ class YourFriendsViewController: UIViewController {
                 print("Cancel request to \(user.friendName)")
                 // call cancel request API here
 
+            //FOR CURRENT FRIENDS
             case .friends:
                 let alert = UIAlertController(
                     title: "Remove Friend",

@@ -13,6 +13,7 @@ class YourFriendsTableViewCell: UITableViewCell {
     let profileImageView = UIImageView()
     let usernameLabel = UILabel()
     let fullNameLabel = UILabel()
+    
     let followButton = UIButton(type: .system)
     let acceptButton = UIButton(type: .system)
     let declineButton = UIButton(type: .system)
