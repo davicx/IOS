@@ -19,7 +19,6 @@ class ProfileViewController: UIViewController {
     private let userProfileLayout = UserProfileLayout()
     
     var userResponseModel: UserProfileResponseModel?
-    
     var friendListArray: [Friend] = []
     
     override func viewDidLoad() {
@@ -94,15 +93,30 @@ class ProfileViewController: UIViewController {
                 print("Error in viewDidLoad: \(error)")
             }
         }
-
     }
-    
+
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         print("ProfileViewController")
 
+        Task {
+            do {
+                let currentUser = userDefaultManager.getLoggedInUser()
+                let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
+                let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
+                await loadFriendImages(for: friends, using: imageFunctions)
+                self.friendListArray = friends
+                print("Updated friend list in viewDidAppear:")
+                for f in friends {
+                    print("Friend: \(f.friendName)")
+                }
+            } catch {
+                print("Error updating friend list: \(error)")
+            }
+        }
     }
-    
+
     @objc private func followingButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
@@ -113,7 +127,6 @@ class ProfileViewController: UIViewController {
     }
     
 
-    
      func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
          await withTaskGroup(of: Void.self) { group in
              for friend in friends {
@@ -157,9 +170,22 @@ extension ProfileViewController: YourFriendsViewControllerDelegate {
         friendListArray.removeAll { $0.friendID == friend.friendID }
         print("ProfileVC updated friendListArray after declining \(friend.friendName)")
     }
+    
+    func didAddFriend(_ friend: Friend) {
+        print("ProfileVC received new friend: \(friend.friendName)")
+        
+        // Only add if not already there
+        if !friendListArray.contains(where: { $0.friendID == friend.friendID }) {
+            friendListArray.append(friend)
+        }
+
+        // Optional: print current friend list
+        for friend in friendListArray {
+            print("Friend in list: \(friend.friendName)")
+        }
+    }
+
 }
-
-
 
 extension ProfileViewController: EditProfileViewControllerDelegate {
     func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {

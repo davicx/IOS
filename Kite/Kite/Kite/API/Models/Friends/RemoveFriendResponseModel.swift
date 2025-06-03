@@ -9,7 +9,7 @@ import Foundation
 
 
 struct RemoveFriendResponseModel: Codable {
-    let data: AddFriendModel
+    let data: RemoveFriendModel
     let message: String
     let success: Bool
     let statusCode: Int
@@ -17,7 +17,7 @@ struct RemoveFriendResponseModel: Codable {
     let currentUser: String
 
     init() {
-        self.data = AddFriendModel()
+        self.data = RemoveFriendModel()
         self.message = "Log user out"
         self.success = false
         self.statusCode = 401
@@ -27,3 +27,14 @@ struct RemoveFriendResponseModel: Codable {
 }
 
 
+struct RemoveFriendModel: Codable {
+    let currentUser: String
+    let friendName: String
+    let friendRemoved: Bool
+
+    init() {
+        self.currentUser = ""
+        self.friendName = ""
+        self.friendRemoved = false
+    }
+}

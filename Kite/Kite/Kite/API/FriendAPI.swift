@@ -21,7 +21,119 @@ class FriendAPI {
     }
     
     
-    // Function A6: Add Friend Request
+    func acceptFriendInvite(masterSite: String, currentUser: String, friendName: String) async throws -> AcceptFriendResponseModel {
+        let endpoint = "http://localhost:3003/friend/accept/"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: String] = [
+            "masterSite": masterSite,
+            "currentUser": currentUser,
+            "friendName": friendName
+        ]
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw networkError.invalidResponse
+        }
+
+        switch httpResponse.statusCode {
+        case 200:
+            let decoder = JSONDecoder()
+            let responseModel = try decoder.decode(AcceptFriendResponseModel.self, from: data)
+            return responseModel
+
+        case 498:
+            print("FRIEND API - 498 Refreshing Token (Accept Friend)")
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+            print(newAccessTokenModel.message)
+
+            if newAccessTokenModel.success {
+                print("FRIEND API: 498 If Retry (Accept Friend)")
+                return try await acceptFriendInvite(masterSite: masterSite, currentUser: currentUser, friendName: friendName)
+            } else {
+                print("FRIEND API: 498 Else logoutCurrentUser")
+                return AcceptFriendResponseModel()
+            }
+
+        case 401:
+            print("FRIEND API - 401 Unauthorized, Logging Out (Accept Friend)")
+            return AcceptFriendResponseModel()
+
+        default:
+            print("FRIEND API - Unexpected Status Code: \(httpResponse.statusCode)")
+            throw networkError.serverError(statusCode: httpResponse.statusCode)
+        }
+    }
+
+    
+    
+    /*
+    func declineFriendInvite(masterSite: String, currentUser: String, friendName: String) async throws -> DeclineFriendResponseModel {
+        let endpoint = "http://localhost:3003/friend/decline/"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: String] = [
+            "masterSite": masterSite,
+            "currentUser": currentUser,
+            "friendName": friendName
+        ]
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw networkError.invalidResponse
+        }
+
+        switch httpResponse.statusCode {
+        case 200:
+            let decoder = JSONDecoder()
+            let responseModel = try decoder.decode(DeclineFriendResponseModel.self, from: data)
+            return responseModel
+
+        case 498:
+            print("FRIEND API - 498 Refreshing Token (Decline Friend)")
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+            print(newAccessTokenModel.message)
+
+            if newAccessTokenModel.success {
+                print("FRIEND API: 498 If Retry (Decline Friend)")
+                return try await declineFriendInvite(masterSite: masterSite, currentUser: currentUser, friendName: friendName)
+            } else {
+                print("FRIEND API: 498 Else logoutCurrentUser")
+                return DeclineFriendResponseModel()
+            }
+
+        case 401:
+            print("FRIEND API - 401 Unauthorized, Logging Out (Decline Friend)")
+            return DeclineFriendResponseModel()
+
+        default:
+            print("FRIEND API - Unexpected Status Code: \(httpResponse.statusCode)")
+            throw networkError.serverError(statusCode: httpResponse.statusCode)
+        }
+    }
+     */
+    
+    // Function A6: Add Friend
     func addFriend(masterSite: String, currentUser: String, addFriendName: String) async throws -> AddFriendResponseModel {
         let endpoint = "http://localhost:3003/friend/request/"
         
@@ -75,8 +187,7 @@ class FriendAPI {
             throw networkError.serverError(statusCode: httpResponse.statusCode)
         }
     }
-    
-    
+
     // Function A7: Remove Friend
     func removeFriend(masterSite: String, currentUser: String, removeFriendName: String) async throws -> RemoveFriendResponseModel {
         let endpoint = "http://localhost:3003/friend/remove/"
@@ -131,6 +242,64 @@ class FriendAPI {
             throw networkError.serverError(statusCode: httpResponse.statusCode)
         }
     }
+
+    
+    //Function: Cancel Friend Request
+    func cancelFriendRequest(masterSite: String, currentUser: String, friendName: String) async throws -> CancelFriendRequestResponseModel {
+        let endpoint = "http://localhost:3003/friend/cancel/"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: String] = [
+            "masterSite": masterSite,
+            "currentUser": currentUser,
+            "friendName": friendName
+        ]
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw networkError.invalidResponse
+        }
+
+        switch httpResponse.statusCode {
+        case 200:
+            let decoder = JSONDecoder()
+            let responseModel = try decoder.decode(CancelFriendRequestResponseModel.self, from: data)
+            return responseModel
+
+        case 498:
+            print("FRIEND API - 498 Refreshing Token (Cancel Friend Request)")
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+            print(newAccessTokenModel.message)
+
+            if newAccessTokenModel.success {
+                print("FRIEND API: 498 If Retry (Cancel Friend Request)")
+                return try await cancelFriendRequest(masterSite: masterSite, currentUser: currentUser, friendName: friendName)
+            } else {
+                print("FRIEND API: 498 Else logoutCurrentUser")
+                return CancelFriendRequestResponseModel()
+            }
+
+        case 401:
+            print("FRIEND API - 401 Unauthorized, Logging Out (Cancel Friend Request)")
+            return CancelFriendRequestResponseModel()
+
+        default:
+            print("FRIEND API - Unexpected Status Code: \(httpResponse.statusCode)")
+            throw networkError.serverError(statusCode: httpResponse.statusCode)
+        }
+    }
+
+
 
     
     // Function A4: Get All Your Friends
