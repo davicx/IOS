@@ -1,15 +1,15 @@
 //
-//  AcceptFriendResponseModel.swift
+//  DeclineFriendResponseModel.swift
 //  Kite
 //
-//  Created by David Vasquez on 6/2/25.
+//  Created by David Vasquez on 6/3/25.
 //
 
-import UIKit
+import Foundation
 
 
-struct AcceptFriendResponseModel: Codable {
-    let data: AcceptFriendModel
+struct DeclineFriendResponseModel: Codable {
+    let data: DeclineFriendModel
     let message: String
     let success: Bool
     let statusCode: Int
@@ -17,7 +17,7 @@ struct AcceptFriendResponseModel: Codable {
     let currentUser: String
 
     init() {
-        self.data = AcceptFriendModel()
+        self.data = DeclineFriendModel()
         self.message = ""
         self.success = true
         self.statusCode = 200
@@ -26,16 +26,14 @@ struct AcceptFriendResponseModel: Codable {
     }
 }
 
-struct AcceptFriendModel: Codable {
-    let friendAdded: Bool
+struct DeclineFriendModel: Codable {
+    let friendInviteDeclined: Bool
     let currentUser: String
     let friendName: String
 
     init() {
-        self.friendAdded = false
+        self.friendInviteDeclined = false
         self.currentUser = ""
         self.friendName = ""
     }
 }
-
-

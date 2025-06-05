@@ -77,7 +77,6 @@ class FriendAPI {
 
     
     
-    /*
     func declineFriendInvite(masterSite: String, currentUser: String, friendName: String) async throws -> DeclineFriendResponseModel {
         let endpoint = "http://localhost:3003/friend/decline/"
         
@@ -131,7 +130,7 @@ class FriendAPI {
             throw networkError.serverError(statusCode: httpResponse.statusCode)
         }
     }
-     */
+     
     
     // Function A6: Add Friend
     func addFriend(masterSite: String, currentUser: String, addFriendName: String) async throws -> AddFriendResponseModel {

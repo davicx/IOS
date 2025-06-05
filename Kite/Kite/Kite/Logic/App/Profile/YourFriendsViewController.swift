@@ -141,204 +141,142 @@ class YourFriendsViewController: UIViewController {
     }
 
     private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
-        let status = FriendshipStatus(key: user.friendshipKey)
-
-        // TYPE 1: Cancel a Friend Request you sent
         cell.cancelFriendInviteTapped = { [weak self] in
-            guard let self = self else { return }
-            let alert = UIAlertController(
+            self?.presentConfirmationAlert(
                 title: "Cancel Friend Request",
-                message: "Are you sure you want to cancel the friend invite to @\(user.friendName)",
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            alert.addAction(UIAlertAction(title: "Remove Request", style: .destructive) { _ in
-                Task {
-                    do {
-                        let currentUser = UserDefaultManager().getLoggedInUser()
-                        let response = try await FriendAPI().cancelFriendRequest(
-                            masterSite: "kite", // Replace with actual value
-                            currentUser: currentUser,
-                            friendName: user.friendName
-                        )
-
-                        if response.success {
-                            DispatchQueue.main.async {
-                                print("Successfully cancelled request to \(user.friendName)")
-
-                                // Remove from local arrays
-                                self.friends.removeAll { $0.friendID == user.friendID }
-                                self.currentData.removeAll { $0.friendID == user.friendID }
-
-                                self.tableView.reloadData()
-
-                                // Inform delegate
-                                self.delegate?.didDeclineFriend(user)
-                            }
-                        } else {
-                            print("Failed to cancel friend request: \(response.message)")
-                        }
-                    } catch {
-                        print("Error cancelling friend request: \(error)")
-                    }
-                }
-            })
-            self.present(alert, animated: true)
+                message: "Are you sure you want to cancel the friend invite to @\(user.friendName)?",
+                confirmTitle: "Remove Request",
+                destructive: true
+            ) {
+                Task { await self?.cancelFriendAPI(for: user) }
+            }
         }
 
-
-        
-        // TYPE 2: Remove an existing friend
         cell.removeFriendTapped = { [weak self] in
-            guard let self = self else { return }
-
-            let alert = UIAlertController(
+            self?.presentConfirmationAlert(
                 title: "Remove Friend",
                 message: "Are you sure you want to remove @\(user.friendName) from your friends?",
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            alert.addAction(UIAlertAction(title: "Remove", style: .destructive) { _ in
-                Task {
-                    do {
-                        let currentUser = UserDefaultManager().getLoggedInUser()
-                        let response = try await FriendAPI().removeFriend(
-                            masterSite: "yourMasterSiteName", // Replace with actual
-                            currentUser: currentUser,
-                            removeFriendName: user.friendName
-                        )
-
-                        if response.success {
-                            DispatchQueue.main.async {
-                                print("Successfully removed friend: \(user.friendName)")
-
-                                // Remove from local arrays
-                                self.friends.removeAll { $0.friendID == user.friendID }
-                                self.currentData.removeAll { $0.friendID == user.friendID }
-
-                                self.tableView.reloadData()
-
-                                // Inform delegate (same as decline)
-                                self.delegate?.didDeclineFriend(user)
-                            }
-                        } else {
-                            print("Failed to remove friend: \(response.message)")
-                        }
-                    } catch {
-                        print("Error removing friend: \(error)")
-                    }
-                }
-            })
-            self.present(alert, animated: true)
-        }
-
-        
-        // TYPE 3: Accept a Friend request
-        // Accept a Friend Request
-        cell.acceptFriendInviteTapped = { [weak self] in
-            guard let self = self else { return }
-
-            Task {
-                do {
-                    let currentUser = UserDefaultManager().getLoggedInUser()
-                    let response = try await FriendAPI().acceptFriendInvite(masterSite: "kite", currentUser: currentUser, friendName: user.friendName)
-
-                    if response.success {
-                        DispatchQueue.main.async {
-                            print("Successfully accepted friend invite from \(user.friendName)")
-
-                            self.friendRequests.removeAll { $0.friendID == user.friendID }
-                            self.currentData.removeAll { $0.friendID == user.friendID }
-
-                            user.friendshipKey = FriendshipStatus.friends.rawValue
-                            self.friends.append(user)
-
-                            if self.segmentedControl.selectedSegmentIndex == 1 {
-                                self.tableView.reloadData()
-                            }
-
-                            // 👇 Notify the delegate to add this friend
-                            self.delegate?.didAddFriend(user)
-                        }
-                    } else {
-                        print("Failed to accept friend invite: \(response.message)")
-                    }
-                } catch {
-                    print("Error accepting friend invite: \(error)")
-                }
+                confirmTitle: "Remove",
+                destructive: true
+            ) {
+                Task { await self?.removeFriendAPI(for: user) }
             }
         }
 
-        /*
         cell.acceptFriendInviteTapped = { [weak self] in
-            guard let self = self else { return }
-
-            Task {
-                do {
-                    let currentUser = UserDefaultManager().getLoggedInUser()
-                    let response = try await FriendAPI().acceptFriendInvite(masterSite: "kite", currentUser: currentUser, friendName: user.friendName)
-
-                    if response.success {
-                        DispatchQueue.main.async {
-                            print("Successfully accepted friend invite from \(user.friendName)")
-
-                            // Remove from friendRequests and current display
-                            self.friendRequests.removeAll { $0.friendID == user.friendID }
-                            self.currentData.removeAll { $0.friendID == user.friendID }
-
-                            // Mark status as .friends if needed and add to friends list
-                            user.friendshipKey = FriendshipStatus.friends.rawValue
-                            self.friends.append(user)
-
-                            // Reload UI if currently showing friend requests
-                            if self.segmentedControl.selectedSegmentIndex == 1 {
-                                self.tableView.reloadData()
-                            }
-
-                            // Notify delegate to update ProfileViewController’s data
-                            self.delegate?.didDeclineFriend(user)
-                        }
-                    } else {
-                        print("Failed to accept friend invite: \(response.message)")
-                    }
-                } catch {
-                    print("Error accepting friend invite: \(error)")
-                }
-            }
+            Task { await self?.acceptInviteAPI(for: user) }
         }
-        */
-        /*
-        cell.acceptFriendInviteTapped = {
-            print("Accept invite from \(user.friendName)")
-            // call accept invite API here
-        }
-        */
 
-        // TYPE 4: Decline a Friend Request
         cell.declineFriendInviteTapped = { [weak self] in
-            guard let self = self else { return }
-
-            print("Decline invite from \(user.friendName)")
-
-            // Simulate success response (pretend API call)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                // 1. Remove from data source
-                if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
-                    self.currentData.remove(at: index)
-                    self.friendRequests.removeAll(where: { $0.friendID == user.friendID })
-                    self.users.removeAll(where: { $0.friendID == user.friendID })
-
-                    // 2. Remove from table view
-                    let indexPath = IndexPath(row: index, section: 0)
-                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
-
-                    // 3. Notify delegate
-                    self.delegate?.didDeclineFriend(user)
-                }
-            }
+            Task { await self?.declineInviteAPI(for: user) }
         }
     }
 
+    //FUNCTIONS: Handle Friend Requests
+    private func cancelFriendAPI(for user: Friend) async {
+        do {
+            let currentUser = UserDefaultManager().getLoggedInUser()
+            let response = try await FriendAPI().cancelFriendRequest(
+                masterSite: "kite",
+                currentUser: currentUser,
+                friendName: user.friendName
+            )
+            if response.success {
+                DispatchQueue.main.async {
+                    print("Successfully cancelled request to \(user.friendName)")
+                    self.removeUserFromLocalData(user)
+                    self.tableView.reloadData()
+                    self.delegate?.didDeclineFriend(user)
+                }
+            } else {
+                print("Cancel friend request failed: \(response.message)")
+            }
+        } catch {
+            print("Error cancelling friend request: \(error)")
+        }
+    }
+
+    private func removeFriendAPI(for user: Friend) async {
+        do {
+            let currentUser = UserDefaultManager().getLoggedInUser()
+            let response = try await FriendAPI().removeFriend(
+                masterSite: "kite",
+                currentUser: currentUser,
+                removeFriendName: user.friendName
+            )
+            if response.success {
+                DispatchQueue.main.async {
+                    print("Successfully removed friend: \(user.friendName)")
+                    self.removeUserFromLocalData(user)
+                    self.tableView.reloadData()
+                    self.delegate?.didDeclineFriend(user)
+                }
+            } else {
+                print("Remove friend failed: \(response.message)")
+            }
+        } catch {
+            print("Error removing friend: \(error)")
+        }
+    }
+
+    private func acceptInviteAPI(for user: Friend) async {
+        do {
+            let currentUser = UserDefaultManager().getLoggedInUser()
+            let response = try await FriendAPI().acceptFriendInvite(
+                masterSite: "kite",
+                currentUser: currentUser,
+                friendName: user.friendName
+            )
+            if response.success {
+                DispatchQueue.main.async {
+                    print("Accepted invite from \(user.friendName)")
+                    self.friendRequests.removeAll { $0.friendID == user.friendID }
+                    self.currentData.removeAll { $0.friendID == user.friendID }
+
+                    user.friendshipKey = FriendshipStatus.friends.rawValue
+                    self.friends.append(user)
+
+                    if self.segmentedControl.selectedSegmentIndex == 1 {
+                        self.tableView.reloadData()
+                    }
+
+                    self.delegate?.didAddFriend(user)
+                }
+            } else {
+                print("Accept invite failed: \(response.message)")
+            }
+        } catch {
+            print("Error accepting invite: \(error)")
+        }
+    }
+
+    //FUNCTIONS: Handle Friend Requests
+    private func declineInviteAPI(for user: Friend) async {
+        do {
+            let currentUser = UserDefaultManager().getLoggedInUser()
+            let response = try await FriendAPI().declineFriendInvite(
+                masterSite: "kite",
+                currentUser: currentUser,
+                friendName: user.friendName
+            )
+            if response.success {
+                DispatchQueue.main.async {
+                    print("Declined invite from \(user.friendName)")
+                    if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
+                        self.removeUserFromLocalData(user)
+                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        self.delegate?.didDeclineFriend(user)
+                    }
+                }
+            } else {
+                print("Decline invite failed: \(response.message)")
+            }
+        } catch {
+            print("Error declining invite: \(error)")
+        }
+    }
+
+    
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
@@ -375,6 +313,29 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         }
     }
     
+    private func removeUserFromLocalData(_ user: Friend) {
+        friends.removeAll { $0.friendID == user.friendID }
+        friendRequests.removeAll { $0.friendID == user.friendID }
+        currentData.removeAll { $0.friendID == user.friendID }
+        users.removeAll { $0.friendID == user.friendID }
+    }
+
+    
+    private func presentConfirmationAlert(
+        title: String,
+        message: String,
+        confirmTitle: String,
+        destructive: Bool = false,
+        onConfirm: @escaping () -> Void
+    ) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        let style: UIAlertAction.Style = destructive ? .destructive : .default
+        alert.addAction(UIAlertAction(title: confirmTitle, style: style) { _ in onConfirm() })
+        present(alert, animated: true)
+    }
+
+    
     
 }
 
@@ -390,3 +351,196 @@ extension UISegmentedControl {
     }
 }
 
+
+/*
+private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
+    let status = FriendshipStatus(key: user.friendshipKey)
+
+    // TYPE 1: Cancel a Friend Request you sent
+    cell.cancelFriendInviteTapped = { [weak self] in
+        guard let self = self else { return }
+        let alert = UIAlertController(
+            title: "Cancel Friend Request",
+            message: "Are you sure you want to cancel the friend invite to @\(user.friendName)",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Remove Request", style: .destructive) { _ in
+            Task {
+                do {
+                    let currentUser = UserDefaultManager().getLoggedInUser()
+                    let response = try await FriendAPI().cancelFriendRequest(
+                        masterSite: "kite", // Replace with actual value
+                        currentUser: currentUser,
+                        friendName: user.friendName
+                    )
+
+                    if response.success {
+                        DispatchQueue.main.async {
+                            print("Successfully cancelled request to \(user.friendName)")
+
+                            // Remove from local arrays
+                            self.friends.removeAll { $0.friendID == user.friendID }
+                            self.currentData.removeAll { $0.friendID == user.friendID }
+
+                            self.tableView.reloadData()
+
+                            // Inform delegate
+                            self.delegate?.didDeclineFriend(user)
+                        }
+                    } else {
+                        print("Failed to cancel friend request: \(response.message)")
+                    }
+                } catch {
+                    print("Error cancelling friend request: \(error)")
+                }
+            }
+        })
+        self.present(alert, animated: true)
+    }
+
+
+    
+    // TYPE 2: Remove an existing friend
+    cell.removeFriendTapped = { [weak self] in
+        guard let self = self else { return }
+
+        let alert = UIAlertController(
+            title: "Remove Friend",
+            message: "Are you sure you want to remove @\(user.friendName) from your friends?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Remove", style: .destructive) { _ in
+            Task {
+                do {
+                    let currentUser = UserDefaultManager().getLoggedInUser()
+                    let response = try await FriendAPI().removeFriend(
+                        masterSite: "yourMasterSiteName", // Replace with actual
+                        currentUser: currentUser,
+                        removeFriendName: user.friendName
+                    )
+
+                    if response.success {
+                        DispatchQueue.main.async {
+                            print("Successfully removed friend: \(user.friendName)")
+
+                            // Remove from local arrays
+                            self.friends.removeAll { $0.friendID == user.friendID }
+                            self.currentData.removeAll { $0.friendID == user.friendID }
+
+                            self.tableView.reloadData()
+
+                            // Inform delegate (same as decline)
+                            self.delegate?.didDeclineFriend(user)
+                        }
+                    } else {
+                        print("Failed to remove friend: \(response.message)")
+                    }
+                } catch {
+                    print("Error removing friend: \(error)")
+                }
+            }
+        })
+        self.present(alert, animated: true)
+    }
+
+    
+    // TYPE 3: Accept a Friend request
+    // Accept a Friend Request
+    cell.acceptFriendInviteTapped = { [weak self] in
+        guard let self = self else { return }
+
+        Task {
+            do {
+                let currentUser = UserDefaultManager().getLoggedInUser()
+                let response = try await FriendAPI().acceptFriendInvite(masterSite: "kite", currentUser: currentUser, friendName: user.friendName)
+
+                if response.success {
+                    DispatchQueue.main.async {
+                        print("Successfully accepted friend invite from \(user.friendName)")
+
+                        self.friendRequests.removeAll { $0.friendID == user.friendID }
+                        self.currentData.removeAll { $0.friendID == user.friendID }
+
+                        user.friendshipKey = FriendshipStatus.friends.rawValue
+                        self.friends.append(user)
+
+                        if self.segmentedControl.selectedSegmentIndex == 1 {
+                            self.tableView.reloadData()
+                        }
+
+                        //Notify the delegate
+                        self.delegate?.didAddFriend(user)
+                    }
+                } else {
+                    print("Failed to accept friend invite: \(response.message)")
+                }
+            } catch {
+                print("Error accepting friend invite: \(error)")
+            }
+        }
+    }
+
+
+    // TYPE 4: Decline a Friend Request
+    cell.declineFriendInviteTapped = { [weak self] in
+        guard let self = self else { return }
+
+        print("Decline invite from \(user.friendName)")
+
+        Task {
+            do {
+                let currentUser = UserDefaultManager().getLoggedInUser()
+                let response = try await FriendAPI().declineFriendInvite(masterSite: "kite", currentUser: currentUser, friendName: user.friendName)
+
+                if response.success {
+                    DispatchQueue.main.async {
+                        
+                        // 1. Remove from data source
+                        if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
+                            self.currentData.remove(at: index)
+                            self.friendRequests.removeAll(where: { $0.friendID == user.friendID })
+                            self.users.removeAll(where: { $0.friendID == user.friendID })
+
+                            // 2. Remove from table view
+                            let indexPath = IndexPath(row: index, section: 0)
+                            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+
+                            // 3. Notify delegate
+                            self.delegate?.didDeclineFriend(user)
+                        }
+                    }
+                    
+                } else {
+                    print("Failed to accept friend invite: \(response.message)")
+                }
+            } catch {
+                print("Error accepting friend invite: \(error)")
+            }
+        }
+
+    }
+}
+ 
+ */
+
+
+/*
+// Simulate success response (pretend API call)
+DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+    // 1. Remove from data source
+    if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
+        self.currentData.remove(at: index)
+        self.friendRequests.removeAll(where: { $0.friendID == user.friendID })
+        self.users.removeAll(where: { $0.friendID == user.friendID })
+
+        // 2. Remove from table view
+        let indexPath = IndexPath(row: index, section: 0)
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+
+        // 3. Notify delegate
+        self.delegate?.didDeclineFriend(user)
+    }
+}
+*/
