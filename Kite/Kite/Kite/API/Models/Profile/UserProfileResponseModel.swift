@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 struct UserProfileResponseModel: Codable {
     let data: UserProfileModel
     let message: String

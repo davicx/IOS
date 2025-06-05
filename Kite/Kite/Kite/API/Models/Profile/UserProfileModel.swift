@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 struct UserProfileModel: Codable {
     let userName: String
     let userID: Int
@@ -23,24 +24,5 @@ struct UserProfileModel: Codable {
         self.firstName = "firstName"
         self.lastName = "lastName"
     }
-    
 }
-
-/*
- {
-     "data": {
-         "userName": "davey",
-         "userID": 1,
-         "userImage": null,
-         "biography": "They are (or were) a little people, about half our height, and smaller than the bearded dwarves",
-         "firstName": "david",
-         "lastName": "david"
-     },
-     "message": "We got the user profile for davey",
-     "success": true,
-     "statusCode": 200,
-     "errors": [],
-     "currentUser": "davey"
- }
- */
 

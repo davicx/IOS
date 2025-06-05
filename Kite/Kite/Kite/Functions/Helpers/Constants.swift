@@ -32,6 +32,7 @@ struct Constants {
         static let main = "Main"
         static let mainTabBarController = "MainTabBarController"
         static let onboardingViewController = "MainOnboardingViewController"
+        static let friendProfileViewControllerID = "FriendProfileViewControllerID"
     }
 
     //Image Constants
@@ -44,6 +45,8 @@ struct Constants {
     struct TableViewCellIdentifier {
         static let post = "PostCell"
         static let comment = "CommentCell"
+        static let friendCell = "friendCell"
+
     }
 }
 

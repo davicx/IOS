@@ -7,6 +7,2303 @@
 
 import Foundation
 
+//PROFILE
+
+//WORKING
+/*
+ //
+ //  FriendViewController.swift
+ //  Kite
+ //
+ //  Created by David Vasquez on 5/26/25.
+ //
+
+ import UIKit
+
+
+
+ protocol YourFriendsViewControllerDelegate: AnyObject {
+     func didDeclineFriend(_ friend: Friend)
+     func didAddFriend(_ friend: Friend)
+ }
+
+ //ACTIVE FRIEND
+ //Current Friend: Remove
+ //Current Invite Sent: Cancel it
+
+ //FRIEND REQUESTS
+ //Accept Request
+ //Decline Request
+
+ class YourFriendsViewController: UIViewController {
+     
+     //API Data
+     var users: [Friend] = []
+     private var friends: [Friend] = []
+     private var friendRequests: [Friend] = []
+     private var currentData: [Friend] = []
+
+     weak var delegate: YourFriendsViewControllerDelegate?
+
+     
+     //Table View
+     private let tableView = UITableView()
+     private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
+     private var underlineView: UIView?
+
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         title = "Friends"
+         view.backgroundColor = .white
+
+         friends = users.filter {
+             let status = FriendshipStatus(key: $0.friendshipKey)
+             return status == .friends || status == .requestPending
+         }
+
+         friendRequests = users.filter {
+             FriendshipStatus(key: $0.friendshipKey) == .invitePending
+         }
+
+         setupSegmentedControl()
+         setupTableView()
+
+         segmentedControl.selectedSegmentIndex = 0
+         currentData = friends
+     }
+     
+     override func viewDidAppear(_ animated: Bool) {
+         print("YourFriendsViewController")
+     }
+
+
+     override func viewDidLayoutSubviews() {
+         super.viewDidLayoutSubviews()
+         addUnderlineForSelectedSegment()
+     }
+
+     private func setupSegmentedControl() {
+         segmentedControl.selectedSegmentIndex = 0
+         segmentedControl.removeBackgroundAndDivider()
+
+         segmentedControl.backgroundColor = .clear
+         segmentedControl.selectedSegmentTintColor = .clear
+
+         let normalAttributes: [NSAttributedString.Key: Any] = [
+             .foregroundColor: UIColor.systemGray,
+             .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+         ]
+         let selectedAttributes: [NSAttributedString.Key: Any] = [
+             .foregroundColor: UIColor.label,
+             .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+         ]
+
+         segmentedControl.setTitleTextAttributes(normalAttributes, for: .normal)
+         segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
+
+         segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+
+         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+         segmentedControl.frame = CGRect(x: 16, y: 4, width: view.frame.width - 32, height: 36)
+         headerView.addSubview(segmentedControl)
+         tableView.tableHeaderView = headerView
+     }
+
+     private func setupTableView() {
+         tableView.translatesAutoresizingMaskIntoConstraints = false
+         view.addSubview(tableView)
+
+         NSLayoutConstraint.activate([
+             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+         ])
+
+         tableView.delegate = self
+         tableView.dataSource = self
+         tableView.rowHeight = UITableView.automaticDimension
+         tableView.estimatedRowHeight = 72
+
+         tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+     }
+
+     @objc private func segmentChanged() {
+         currentData = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
+         addUnderlineForSelectedSegment()
+         tableView.reloadData()
+     }
+
+     private func addUnderlineForSelectedSegment() {
+         let underlineWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
+         let underlineHeight: CGFloat = 2.0
+         let underlineY = segmentedControl.frame.height - underlineHeight
+         let underlineX = CGFloat(segmentedControl.selectedSegmentIndex) * underlineWidth
+
+         if let underline = underlineView {
+             UIView.animate(withDuration: 0.25) {
+                 underline.frame.origin.x = underlineX
+             }
+         } else {
+             let underline = UIView(frame: CGRect(x: underlineX, y: underlineY, width: underlineWidth, height: underlineHeight))
+             underline.backgroundColor = .label
+             underline.tag = 999
+             segmentedControl.addSubview(underline)
+             underlineView = underline
+         }
+     }
+
+     /*
+     private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
+         let status = FriendshipStatus(key: user.friendshipKey)
+
+         // TYPE 1: Cancel a Friend Request you sent
+         cell.cancelFriendInviteTapped = { [weak self] in
+             guard let self = self else { return }
+             let alert = UIAlertController(
+                 title: "Cancel Friend Request",
+                 message: "Are you sure you want to cancel the friend invite to @\(user.friendName)",
+                 preferredStyle: .alert
+             )
+             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+             alert.addAction(UIAlertAction(title: "Remove Request", style: .destructive) { _ in
+                 Task {
+                     do {
+                         let currentUser = UserDefaultManager().getLoggedInUser()
+                         let response = try await FriendAPI().cancelFriendRequest(
+                             masterSite: "kite", // Replace with actual value
+                             currentUser: currentUser,
+                             friendName: user.friendName
+                         )
+
+                         if response.success {
+                             DispatchQueue.main.async {
+                                 print("Successfully cancelled request to \(user.friendName)")
+
+                                 // Remove from local arrays
+                                 self.friends.removeAll { $0.friendID == user.friendID }
+                                 self.currentData.removeAll { $0.friendID == user.friendID }
+
+                                 self.tableView.reloadData()
+
+                                 // Inform delegate
+                                 self.delegate?.didDeclineFriend(user)
+                             }
+                         } else {
+                             print("Failed to cancel friend request: \(response.message)")
+                         }
+                     } catch {
+                         print("Error cancelling friend request: \(error)")
+                     }
+                 }
+             })
+             self.present(alert, animated: true)
+         }
+
+
+         
+         // TYPE 2: Remove an existing friend
+         cell.removeFriendTapped = { [weak self] in
+             guard let self = self else { return }
+
+             let alert = UIAlertController(
+                 title: "Remove Friend",
+                 message: "Are you sure you want to remove @\(user.friendName) from your friends?",
+                 preferredStyle: .alert
+             )
+             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+             alert.addAction(UIAlertAction(title: "Remove", style: .destructive) { _ in
+                 Task {
+                     do {
+                         let currentUser = UserDefaultManager().getLoggedInUser()
+                         let response = try await FriendAPI().removeFriend(
+                             masterSite: "yourMasterSiteName", // Replace with actual
+                             currentUser: currentUser,
+                             removeFriendName: user.friendName
+                         )
+
+                         if response.success {
+                             DispatchQueue.main.async {
+                                 print("Successfully removed friend: \(user.friendName)")
+
+                                 // Remove from local arrays
+                                 self.friends.removeAll { $0.friendID == user.friendID }
+                                 self.currentData.removeAll { $0.friendID == user.friendID }
+
+                                 self.tableView.reloadData()
+
+                                 // Inform delegate (same as decline)
+                                 self.delegate?.didDeclineFriend(user)
+                             }
+                         } else {
+                             print("Failed to remove friend: \(response.message)")
+                         }
+                     } catch {
+                         print("Error removing friend: \(error)")
+                     }
+                 }
+             })
+             self.present(alert, animated: true)
+         }
+
+         
+         // TYPE 3: Accept a Friend request
+         // Accept a Friend Request
+         cell.acceptFriendInviteTapped = { [weak self] in
+             guard let self = self else { return }
+
+             Task {
+                 do {
+                     let currentUser = UserDefaultManager().getLoggedInUser()
+                     let response = try await FriendAPI().acceptFriendInvite(masterSite: "kite", currentUser: currentUser, friendName: user.friendName)
+
+                     if response.success {
+                         DispatchQueue.main.async {
+                             print("Successfully accepted friend invite from \(user.friendName)")
+
+                             self.friendRequests.removeAll { $0.friendID == user.friendID }
+                             self.currentData.removeAll { $0.friendID == user.friendID }
+
+                             user.friendshipKey = FriendshipStatus.friends.rawValue
+                             self.friends.append(user)
+
+                             if self.segmentedControl.selectedSegmentIndex == 1 {
+                                 self.tableView.reloadData()
+                             }
+
+                             //Notify the delegate
+                             self.delegate?.didAddFriend(user)
+                         }
+                     } else {
+                         print("Failed to accept friend invite: \(response.message)")
+                     }
+                 } catch {
+                     print("Error accepting friend invite: \(error)")
+                 }
+             }
+         }
+
+
+         // TYPE 4: Decline a Friend Request
+         cell.declineFriendInviteTapped = { [weak self] in
+             guard let self = self else { return }
+
+             print("Decline invite from \(user.friendName)")
+
+             Task {
+                 do {
+                     let currentUser = UserDefaultManager().getLoggedInUser()
+                     let response = try await FriendAPI().declineFriendInvite(masterSite: "kite", currentUser: currentUser, friendName: user.friendName)
+
+                     if response.success {
+                         DispatchQueue.main.async {
+                             
+                             // 1. Remove from data source
+                             if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
+                                 self.currentData.remove(at: index)
+                                 self.friendRequests.removeAll(where: { $0.friendID == user.friendID })
+                                 self.users.removeAll(where: { $0.friendID == user.friendID })
+
+                                 // 2. Remove from table view
+                                 let indexPath = IndexPath(row: index, section: 0)
+                                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
+
+                                 // 3. Notify delegate
+                                 self.delegate?.didDeclineFriend(user)
+                             }
+                         }
+                         
+                     } else {
+                         print("Failed to accept friend invite: \(response.message)")
+                     }
+                 } catch {
+                     print("Error accepting friend invite: \(error)")
+                 }
+             }
+    
+         }
+     }
+      
+      */
+
+     private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
+         cell.cancelFriendInviteTapped = { [weak self] in
+             self?.presentConfirmationAlert(
+                 title: "Cancel Friend Request",
+                 message: "Are you sure you want to cancel the friend invite to @\(user.friendName)?",
+                 confirmTitle: "Remove Request",
+                 destructive: true
+             ) {
+                 Task { await self?.cancelFriendAPI(for: user) }
+             }
+         }
+
+         cell.removeFriendTapped = { [weak self] in
+             self?.presentConfirmationAlert(
+                 title: "Remove Friend",
+                 message: "Are you sure you want to remove @\(user.friendName) from your friends?",
+                 confirmTitle: "Remove",
+                 destructive: true
+             ) {
+                 Task { await self?.removeFriendAPI(for: user) }
+             }
+         }
+
+         cell.acceptFriendInviteTapped = { [weak self] in
+             Task { await self?.acceptInviteAPI(for: user) }
+         }
+
+         cell.declineFriendInviteTapped = { [weak self] in
+             Task { await self?.declineInviteAPI(for: user) }
+         }
+     }
+
+     //FUNCTIONS: Handle Friend Requests
+     private func cancelFriendAPI(for user: Friend) async {
+         do {
+             let currentUser = UserDefaultManager().getLoggedInUser()
+             let response = try await FriendAPI().cancelFriendRequest(
+                 masterSite: "kite",
+                 currentUser: currentUser,
+                 friendName: user.friendName
+             )
+             if response.success {
+                 DispatchQueue.main.async {
+                     print("Successfully cancelled request to \(user.friendName)")
+                     self.removeUserFromLocalData(user)
+                     self.tableView.reloadData()
+                     self.delegate?.didDeclineFriend(user)
+                 }
+             } else {
+                 print("Cancel friend request failed: \(response.message)")
+             }
+         } catch {
+             print("Error cancelling friend request: \(error)")
+         }
+     }
+
+     private func removeFriendAPI(for user: Friend) async {
+         do {
+             let currentUser = UserDefaultManager().getLoggedInUser()
+             let response = try await FriendAPI().removeFriend(
+                 masterSite: "kite",
+                 currentUser: currentUser,
+                 removeFriendName: user.friendName
+             )
+             if response.success {
+                 DispatchQueue.main.async {
+                     print("Successfully removed friend: \(user.friendName)")
+                     self.removeUserFromLocalData(user)
+                     self.tableView.reloadData()
+                     self.delegate?.didDeclineFriend(user)
+                 }
+             } else {
+                 print("Remove friend failed: \(response.message)")
+             }
+         } catch {
+             print("Error removing friend: \(error)")
+         }
+     }
+
+     private func acceptInviteAPI(for user: Friend) async {
+         do {
+             let currentUser = UserDefaultManager().getLoggedInUser()
+             let response = try await FriendAPI().acceptFriendInvite(
+                 masterSite: "kite",
+                 currentUser: currentUser,
+                 friendName: user.friendName
+             )
+             if response.success {
+                 DispatchQueue.main.async {
+                     print("Accepted invite from \(user.friendName)")
+                     self.friendRequests.removeAll { $0.friendID == user.friendID }
+                     self.currentData.removeAll { $0.friendID == user.friendID }
+
+                     user.friendshipKey = FriendshipStatus.friends.rawValue
+                     self.friends.append(user)
+
+                     if self.segmentedControl.selectedSegmentIndex == 1 {
+                         self.tableView.reloadData()
+                     }
+
+                     self.delegate?.didAddFriend(user)
+                 }
+             } else {
+                 print("Accept invite failed: \(response.message)")
+             }
+         } catch {
+             print("Error accepting invite: \(error)")
+         }
+     }
+
+     //FUNCTIONS: Handle Friend Requests
+     private func declineInviteAPI(for user: Friend) async {
+         do {
+             let currentUser = UserDefaultManager().getLoggedInUser()
+             let response = try await FriendAPI().declineFriendInvite(
+                 masterSite: "kite",
+                 currentUser: currentUser,
+                 friendName: user.friendName
+             )
+             if response.success {
+                 DispatchQueue.main.async {
+                     print("Declined invite from \(user.friendName)")
+                     if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
+                         self.removeUserFromLocalData(user)
+                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                         self.delegate?.didDeclineFriend(user)
+                     }
+                 }
+             } else {
+                 print("Decline invite failed: \(response.message)")
+             }
+         } catch {
+             print("Error declining invite: \(error)")
+         }
+     }
+
+     
+ }
+
+ // MARK: - UITableViewDataSource & UITableViewDelegate
+
+ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return currentData.count
+     }
+
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let user = currentData[indexPath.row]
+         let cell = tableView.dequeueReusableCell(
+             withIdentifier: Constants.TableViewCellIdentifier.friendCell,
+             for: indexPath
+         ) as! YourFriendsTableViewCell
+
+         cell.configure(with: user)
+         cell.selectionStyle = .none
+         configureCellActions(for: user, cell: cell)
+
+         return cell
+     }
+
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         tableView.deselectRow(at: indexPath, animated: true)
+         let selectedFriend = currentData[indexPath.row]
+
+         let storyboard = UIStoryboard(name: "Main", bundle: nil)
+         if let vc = storyboard.instantiateViewController(
+             withIdentifier: "FriendProfileViewControllerID"
+         ) as? FriendProfileViewController {
+             vc.friend = selectedFriend
+             navigationController?.pushViewController(vc, animated: true)
+         }
+     }
+     
+     private func removeUserFromLocalData(_ user: Friend) {
+         friends.removeAll { $0.friendID == user.friendID }
+         friendRequests.removeAll { $0.friendID == user.friendID }
+         currentData.removeAll { $0.friendID == user.friendID }
+         users.removeAll { $0.friendID == user.friendID }
+     }
+
+     
+     private func presentConfirmationAlert(
+         title: String,
+         message: String,
+         confirmTitle: String,
+         destructive: Bool = false,
+         onConfirm: @escaping () -> Void
+     ) {
+         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+         let style: UIAlertAction.Style = destructive ? .destructive : .default
+         alert.addAction(UIAlertAction(title: confirmTitle, style: style) { _ in onConfirm() })
+         present(alert, animated: true)
+     }
+
+     
+     
+ }
+
+
+
+ // MARK: - Helper
+ extension UISegmentedControl {
+     func removeBackgroundAndDivider() {
+         setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
+         setBackgroundImage(UIImage(), for: .selected, barMetrics: .default)
+         setDividerImage(UIImage(), forLeftSegmentState: .normal,
+                         rightSegmentState: .normal, barMetrics: .default)
+     }
+ }
+
+
+
+ /*
+ // Simulate success response (pretend API call)
+ DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+     // 1. Remove from data source
+     if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
+         self.currentData.remove(at: index)
+         self.friendRequests.removeAll(where: { $0.friendID == user.friendID })
+         self.users.removeAll(where: { $0.friendID == user.friendID })
+
+         // 2. Remove from table view
+         let indexPath = IndexPath(row: index, section: 0)
+         self.tableView.deleteRows(at: [indexPath], with: .automatic)
+
+         // 3. Notify delegate
+         self.delegate?.didDeclineFriend(user)
+     }
+ }
+ */
+
+ */
+//WORKING
+
+/*
+ // Function A4: Get All Your Friends
+ func getAllCurrentUserFriends(currentUser: String) async throws -> FriendListResponseModel {
+     let endpoint = "http://localhost:3003/friends/all/" + currentUser
+     
+     printHeader(headerMessage: "PROFILE API - getAllCurrentUserFriends")
+     
+     guard let url = URL(string: endpoint) else {
+         throw networkError.invalidURL
+     }
+     
+     let apiURL = URLRequest(url: url)
+     
+     let (data, response) = try await URLSession.shared.data(for: apiURL)
+     
+     guard let httpResponse = response as? HTTPURLResponse else {
+         throw networkError.invalidResponse
+     }
+     
+     switch httpResponse.statusCode {
+     case 200:
+         print("PROFILE API - 200 Success (Friends List)")
+         let decoder = JSONDecoder()
+         let friendsResponse = try decoder.decode(FriendListResponseModel.self, from: data)
+         return friendsResponse
+         
+     case 498:
+         print("PROFILE API - 498 Refreshing Token (Friends List)")
+         let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+         print(newAccessTokenModel.message)
+         
+         if newAccessTokenModel.success {
+             print("PROFILE API: 498 If Retry (Friends List)")
+             return try await getAllCurrentUserFriends(currentUser: currentUser)
+         } else {
+             print("PROFILE API: 498 Else logoutCurrentUser")
+             return FriendListResponseModel()
+         }
+         
+     case 401:
+         print("PROFILE API - 401 Unauthorized, Logging Out (Friends List)")
+         return FriendListResponseModel()
+         
+     default:
+         print("PROFILE API - Unexpected Status Code: \(httpResponse.statusCode)")
+         throw networkError.serverError(statusCode: httpResponse.statusCode)
+     }
+     
+ }
+ 
+ // Function A5: Get Another Users Friends
+ func getOtherUserFriends(otherUser: String, currentUser: String) async throws -> FriendListResponseModel {
+     //let endpoint = "http://localhost:3003/friends/all/" + currentUser
+     let endpoint = "http://localhost:3003/friend/" + otherUser + "/user/" + currentUser
+
+     printHeader(headerMessage: "PROFILE API - getOtherUserFriends")
+     
+     guard let url = URL(string: endpoint) else {
+         throw networkError.invalidURL
+     }
+     
+     let apiURL = URLRequest(url: url)
+     
+     let (data, response) = try await URLSession.shared.data(for: apiURL)
+     
+     guard let httpResponse = response as? HTTPURLResponse else {
+         throw networkError.invalidResponse
+     }
+     
+     switch httpResponse.statusCode {
+     case 200:
+         print("PROFILE API - 200 Success (Friends List)")
+         let decoder = JSONDecoder()
+         let friendsResponse = try decoder.decode(FriendListResponseModel.self, from: data)
+         return friendsResponse
+         
+     case 498:
+         print("PROFILE API - 498 Refreshing Token (Friends List)")
+         let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+         print(newAccessTokenModel.message)
+         
+         if newAccessTokenModel.success {
+             print("PROFILE API: 498 If Retry (Friends List)")
+             return try await getAllCurrentUserFriends(currentUser: currentUser)
+         } else {
+             print("PROFILE API: 498 Else logoutCurrentUser")
+             return FriendListResponseModel()
+         }
+         
+     case 401:
+         print("PROFILE API - 401 Unauthorized, Logging Out (Friends List)")
+         return FriendListResponseModel()
+         
+     default:
+         print("PROFILE API - Unexpected Status Code: \(httpResponse.statusCode)")
+         throw networkError.serverError(statusCode: httpResponse.statusCode)
+     }
+     
+ }
+
+ */
+
+
+//WORKS
+/*
+if httpResponse.statusCode == 200 {
+    print("PROFILE API- 200")
+
+} else if httpResponse.statusCode == 498 {
+    print("PROFILE API: 498 If Retry")
+    let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+    print(newAccessTokenModel.message)
+    
+} else if httpResponse.statusCode == 401 {
+    print("PROFILE API: 401 logoutCurrentUser")
+    //AuthManager.shared.logoutCurrentUser()
+} else {
+    print("PROFILE API: ELSE networkError.invalidResponse")
+    throw networkError.invalidResponse
+}
+ */
+/*
+if httpResponse.statusCode == 200 {
+    print("PROFILE API- 200")
+    // Continue processing as normal
+} else if httpResponse.statusCode == 498 {
+    print("PROFILE API: 498")
+    let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+    print(newAccessTokenModel)
+    
+    if newAccessTokenModel.success == true {
+        print("PROFILE API: 498 If Retry")
+        //RETRY getUserProfileAPI Request Here
+        return try await getUserProfileAPI(currentUser: currentUser)
+    } else {
+        print("PROFILE API: 498 Else logoutCurrentUser")
+        AuthManager.shared.logoutCurrentUser()
+    }
+    
+} else if httpResponse.statusCode == 401 {
+    print("PROFILE API: 401 logoutCurrentUser")
+    AuthManager.shared.logoutCurrentUser()
+} else {
+    print("PROFILE API: 401 invalidResponse")
+    throw networkError.invalidResponse
+}
+
+
+do {
+    let decoder = JSONDecoder ()
+    let userProfileResponseModel = try decoder.decode(UserProfileResponseModel.self, from: data)
+
+    return userProfileResponseModel
+    
+} catch {
+    let userProfileResponseModel = UserProfileResponseModel()
+    //print("CATCH: Going to use empty response data")
+    return userProfileResponseModel
+    
+}
+ */
+
+
+
+
+//NEW
+//let accessTokenResponse = try await loginAPI.getNewAccessToken(username: currentUser)
+//print(accessTokenResponse)
+//NEW
+//Logout User AuthManager.shared.logoutCurrentUser()
+
+/*
+ func getUserProfileAPITEMP(currentUser: String) async throws -> UserProfileResponseModel {
+     let endpoint = "http://localhost:3003/profile/" + currentUser
+     print("______________________________")
+     print("PROFILE API - getUserProfileAPI")
+     
+     guard let url = URL(string: endpoint) else {
+         throw networkError.invalidURL
+     }
+
+     let apiURL = URLRequest(url: url)
+     
+     let (data, response) = try await URLSession.shared.data(for: apiURL)
+     
+     guard let httpResponse = response as? HTTPURLResponse else {
+         throw networkError.invalidResponse
+     }
+
+     switch httpResponse.statusCode {
+     case 200:
+         print("PROFILE API - 200 Success")
+         do {
+             return try JSONDecoder().decode(UserProfileResponseModel.self, from: data)
+         } catch {
+             print("PROFILE API - Decoding Error:", error)
+             throw networkError.decodingError
+         }
+
+     case 498:
+         print("PROFILE API - 498 Refreshing Token")
+         let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+
+         if newAccessTokenModel.success {
+             print("PROFILE API - 498 Retry Request")
+             return try await getUserProfileAPI(currentUser: currentUser)
+         } else {
+             print("PROFILE API - 498 Refresh Failed, Logging Out")
+             AuthManager.shared.logoutCurrentUser()
+             throw networkError.tokenRefreshFailed
+         }
+
+     case 401:
+         print("PROFILE API - 401 Unauthorized, Logging Out")
+         AuthManager.shared.logoutCurrentUser()
+         throw networkError.unauthorized
+
+     default:
+         print("PROFILE API - Unexpected Status Code: \(httpResponse.statusCode)")
+         throw networkError.serverError(statusCode: httpResponse.statusCode)
+     }
+ }
+
+ */
+
+
+//WORKING
+/*
+class YourFriendsViewController: UIViewController {
+    var users: [Friend] = []
+
+    private var friends: [Friend] = []
+    private var friendRequests: [Friend] = []
+    private var currentData: [Friend] = []
+
+    private let tableView = UITableView()
+    private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
+    private var underlineView: UIView?
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Friends"
+        view.backgroundColor = .white
+
+        friends = users.filter {
+            $0.friendshipKey == "friends" ||
+            $0.friendshipKey == "request_pending"
+        }
+        friendRequests = users.filter { $0.friendshipKey == "invite_pending" }
+
+        setupSegmentedControl()
+        setupTableView()
+
+        // Default to Friends tab
+        segmentedControl.selectedSegmentIndex = 0
+        currentData = friends
+    }
+
+
+
+    //STYLE and SETUP
+    //Table View
+    private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 72
+
+        tableView.register(YourFriendsTableViewCell.self,
+                           forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+    }
+    
+    //Segmented Controller
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        addUnderlineForSelectedSegment()
+    }
+
+    @objc private func segmentChanged() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            currentData = friends
+        } else {
+            currentData = friendRequests
+        }
+        addUnderlineForSelectedSegment()
+        tableView.reloadData()
+    }
+
+    private func addUnderlineForSelectedSegment() {
+        let underlineWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
+        let underlineHeight: CGFloat = 2.0
+        let underlineY = segmentedControl.frame.height - underlineHeight
+        let underlineX = CGFloat(segmentedControl.selectedSegmentIndex) * underlineWidth
+
+        if let underline = underlineView {
+            //UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.25) { underline.frame.origin.x = underlineX }
+        } else {
+            let underline = UIView(frame: CGRect(x: underlineX, y: underlineY, width: underlineWidth, height: underlineHeight))
+            underline.backgroundColor = .label
+            underline.tag = 999
+            segmentedControl.addSubview(underline)
+            underlineView = underline
+        }
+    }
+
+
+    private func setupSegmentedControl() {
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.removeBackgroundAndDivider() // We'll define this below
+
+        // Underline-style: transparent background
+        segmentedControl.backgroundColor = .clear
+        segmentedControl.selectedSegmentTintColor = .clear
+
+        // Set text styles
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemGray,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+        let selectedAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.label,
+            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+        ]
+        segmentedControl.setTitleTextAttributes(normalAttributes, for: .normal)
+        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
+
+        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+
+        // Layout in header
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+        segmentedControl.frame = CGRect(x: 16, y: 4, width: view.frame.width - 32, height: 36)
+        headerView.addSubview(segmentedControl)
+        tableView.tableHeaderView = headerView
+    }
+
+    //LOGIC
+
+}
+
+extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return currentData.count
+    }
+    /*
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = currentData[indexPath.row]
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: Constants.TableViewCellIdentifier.friendCell,
+            for: indexPath
+        ) as! YourFriendsTableViewCell
+
+        cell.configure(with: user)
+
+        cell.cancelRequestTapped = { [weak self] in
+            self?.handleCancelTapped(for: user)
+        }
+
+        cell.acceptInviteTapped = { [weak self] in
+            self?.handleAcceptInvite(for: user)
+        }
+
+        cell.declineInviteTapped = { [weak self] in
+            self?.handleDeclineInvite(for: user)
+        }
+
+        return cell
+    }
+    */
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = currentData[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: Constants.TableViewCellIdentifier.friendCell,
+            for: indexPath
+        ) as! YourFriendsTableViewCell
+        cell.configure(with: user)
+        cell.selectionStyle = .none
+        
+        // Wire up the closures if you need callbacks:
+        cell.cancelRequestTapped = { [weak self] in
+            guard let self = self else { return }
+            switch user.friendshipKey {
+            case "request_pending":
+                // Directly cancel outgoing request
+                print("Cancel request to \(user.friendName)")
+                // → your API call to cancel request here
+
+            case "friends":
+                // Ask before removing a confirmed friend
+                let alert = UIAlertController(
+                    title: "Remove Friend",
+                    message: "Are you sure you want to remove @\(user.friendName) from your friends?",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Remove", style: .destructive) { _ in
+                    print("Removing friend \(user.friendName)")
+                    // → your API call to remove friend here
+                })
+                self.present(alert, animated: true, completion: nil)
+
+            default:
+                break
+            }
+        }
+
+
+        cell.acceptInviteTapped = {
+            // accept invite API call
+            print("Accept invite from \(user.friendName)")
+        }
+        cell.declineInviteTapped = {
+            // decline invite API call
+            print("Decline invite from \(user.friendName)")
+        }
+
+        return cell
+    }
+     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedFriend = currentData[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = storyboard.instantiateViewController(
+            withIdentifier: "FriendProfileViewControllerID"
+        ) as? FriendProfileViewController {
+            vc.friend = selectedFriend
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+extension UISegmentedControl {
+    func removeBackgroundAndDivider() {
+        setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
+        setBackgroundImage(UIImage(), for: .selected, barMetrics: .default)
+        setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+    }
+}
+
+*/
+
+
+//WORKING
+/*
+class YourFriendsTableViewCell: UITableViewCell {
+    let profileImageView = UIImageView()
+    let usernameLabel = UILabel()
+    let fullNameLabel = UILabel()
+    let followButton = UIButton(type: .system)
+    let acceptButton = UIButton(type: .system)
+    let declineButton = UIButton(type: .system)
+
+    var cancelRequestTapped: (() -> Void)?
+    var acceptInviteTapped: (() -> Void)?
+    var declineInviteTapped: (() -> Void)?
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+        followButton.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
+        acceptButton.addTarget(self, action: #selector(handleAcceptTapped), for: .touchUpInside)
+        declineButton.addTarget(self, action: #selector(handleDeclineTapped), for: .touchUpInside)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        [profileImageView, usernameLabel, fullNameLabel, followButton, acceptButton, declineButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
+
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.cornerRadius = 24
+        profileImageView.clipsToBounds = true
+
+        usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        fullNameLabel.font = UIFont.systemFont(ofSize: 14)
+        fullNameLabel.textColor = .gray
+
+        [followButton, acceptButton, declineButton].forEach {
+            $0.layer.cornerRadius = 6
+            $0.clipsToBounds = true
+            $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        }
+
+        NSLayoutConstraint.activate([
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 48),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+
+            usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            usernameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+
+            fullNameLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 4),
+            fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            fullNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+
+            followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            followButton.widthAnchor.constraint(equalToConstant: 100),
+
+            acceptButton.trailingAnchor.constraint(equalTo: followButton.leadingAnchor, constant: -8),
+            acceptButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            acceptButton.widthAnchor.constraint(equalToConstant: 60),
+
+            declineButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            declineButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            declineButton.widthAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+
+    func configure(with user: Friend) {
+        usernameLabel.text = "@\(user.friendName)"
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+        profileImageView.image = UIImage(named: "background_1") // Placeholder
+
+        acceptButton.isHidden = true
+        declineButton.isHidden = true
+        followButton.isHidden = false
+
+        switch user.friendshipKey {
+        case "request_pending":
+            followButton.setTitle("Cancel", for: .normal)
+            followButton.backgroundColor = .lightGray
+            followButton.setTitleColor(.white, for: .normal)
+
+        case "invite_pending":
+            followButton.isHidden = true
+            acceptButton.isHidden = false
+            declineButton.isHidden = false
+
+            acceptButton.setTitle("Accept", for: .normal)
+            acceptButton.backgroundColor = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
+            acceptButton.setTitleColor(.white, for: .normal)
+
+            declineButton.setTitle("Decline", for: .normal)
+            declineButton.backgroundColor = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
+            declineButton.setTitleColor(.white, for: .normal)
+
+        default:
+            followButton.setTitle("Friends", for: .normal)
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(.black, for: .normal)
+            followButton.layer.borderWidth = 1
+            followButton.layer.borderColor = UIColor.lightGray.cgColor
+        }
+    }
+
+    @objc private func handleFollowTapped() {
+        //cancelRequestTapped?()
+        print("cancelRequestTapped")
+    }
+
+    @objc private func handleAcceptTapped() {
+        //acceptInviteTapped?()
+        print("acceptInviteTapped")
+
+    }
+
+    @objc private func handleDeclineTapped() {
+        //declineInviteTapped?()
+        print("declineInviteTapped")
+
+    }
+}
+ */
+
+/*
+ //SIMPLE WORKING
+class YourFriendsTableViewCell: UITableViewCell {
+    let profileImageView = UIImageView()
+    let usernameLabel = UILabel()
+    let fullNameLabel = UILabel()
+    let followButton = UIButton(type: .system)
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+        followButton.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.cornerRadius = 24
+        profileImageView.clipsToBounds = true
+
+        usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        fullNameLabel.font = UIFont.systemFont(ofSize: 14)
+        fullNameLabel.textColor = .gray
+        fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        followButton.translatesAutoresizingMaskIntoConstraints = false
+        followButton.layer.cornerRadius = 6
+        followButton.clipsToBounds = true
+        followButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        followButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(fullNameLabel)
+        contentView.addSubview(followButton)
+
+        NSLayoutConstraint.activate([
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 48),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+
+            usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            usernameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+
+            fullNameLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 4),
+            fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            fullNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+
+            followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            followButton.widthAnchor.constraint(equalToConstant: 96)
+        ])
+
+    }
+
+    @objc private func handleFollowTapped() {
+        //followButtonTapped?()
+        print("HIYA!")
+    }
+    
+    let pinkColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0) // #FF2D7E
+
+    func configure(with user: Friend) {
+        usernameLabel.text = "@\(user.friendName)"
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+        profileImageView.image = UIImage(named: "background_1") // Placeholder
+
+        if user.requestPending == 1 {
+            // Show pink Follow button
+            followButton.setTitle("Add Friend", for: .normal)
+            followButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0) // Pink
+            followButton.setTitleColor(.white, for: .normal)
+            followButton.layer.borderWidth = 0
+        } else {
+            // Show default "Following" style
+            followButton.setTitle("Friends", for: .normal)
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(.black, for: .normal)
+            followButton.layer.borderWidth = 1
+            followButton.layer.borderColor = UIColor.lightGray.cgColor
+        }
+    }
+
+}
+
+
+*/
+
+
+
+//WORKING
+/*
+class YourFriendsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    var users: [Friend] = []
+
+    private var friends: [Friend] = []
+    private var friendRequests: [Friend] = []
+    private var currentData: [Friend] = []
+
+    private let tableView = UITableView()
+    private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Friends"
+        view.backgroundColor = .white
+
+        // Split data into friends and requests
+        friends = users.filter { $0.requestPending == 0 }
+        friendRequests = users.filter { $0.requestPending == 1 }
+
+        setupSegmentedControl()
+        setupTableView()
+
+        segmentedControl.selectedSegmentIndex = 0
+        currentData = friends
+    }
+
+    // MARK: - Segmented Control
+    @objc private func segmentChanged() {
+        currentData = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
+        tableView.reloadData()
+    }
+
+    private func setupSegmentedControl() {
+        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        segmentedControl.selectedSegmentTintColor = .systemBlue
+
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        segmentedControl.frame = CGRect(x: 16, y: 8, width: view.frame.width - 32, height: 34)
+        headerView.addSubview(segmentedControl)
+
+        tableView.tableHeaderView = headerView
+    }
+
+    // MARK: - Table View
+    private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 72
+
+        tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+    }
+
+    // MARK: - DataSource & Delegate
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return currentData.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = currentData[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! YourFriendsTableViewCell
+        cell.configure(with: user)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedFriend = currentData[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
+            vc.friend = selectedFriend
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+ */
+/*
+ //SIMPLE WORKS
+class YourFriendsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    var users: [Friend] = []
+
+    private let tableView = UITableView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Friends"
+        view.backgroundColor = .white
+        
+        for user in users {
+            print("User: \(user.requestSentBy),  \(user.friendName), requestPending: \(user.requestPending)")
+        }
+        
+        setupTableView()
+    }
+
+    private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 72
+
+        // Register your custom cell
+        tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
+    }
+
+    // MARK: - TableView DataSource
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = users[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! YourFriendsTableViewCell
+        cell.configure(with: user)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedFriend = users[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
+            vc.friend = selectedFriend
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+*/
+
+
+/*
+class UserCell: UITableViewCell {
+    static let identifier = "UserCell"
+
+    let profileImageView = UIImageView()
+    let usernameLabel = UILabel()
+    let fullNameLabel = UILabel()
+    let followButton = UIButton(type: .system)
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.cornerRadius = 24
+        profileImageView.clipsToBounds = true
+
+        usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        fullNameLabel.font = UIFont.systemFont(ofSize: 14)
+        fullNameLabel.textColor = .gray
+        fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        followButton.translatesAutoresizingMaskIntoConstraints = false
+        followButton.layer.cornerRadius = 6
+        followButton.clipsToBounds = true
+        followButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        followButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(fullNameLabel)
+        contentView.addSubview(followButton)
+
+        NSLayoutConstraint.activate([
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 48),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+
+            usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            usernameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+
+            fullNameLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 4),
+            fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+
+            followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+    }
+
+    func configure(with user: FriendModel) {
+        usernameLabel.text = "@\(user.friendName)"
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+        profileImageView.image = UIImage(named: "background_1") // Placeholder image
+        followButton.setTitle("Following", for: .normal)
+        followButton.backgroundColor = .white
+        followButton.setTitleColor(.black, for: .normal)
+        followButton.layer.borderWidth = 1
+        followButton.layer.borderColor = UIColor.lightGray.cgColor
+    }
+}
+
+private let tableView = UITableView()
+
+private func setupTableView() {
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.identifier)
+    tableView.dataSource = self
+    tableView.delegate = self
+    tableView.rowHeight = 72
+    view.addSubview(tableView)
+
+    NSLayoutConstraint.activate([
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+    ])
+}
+ */
+
+
+
+/*
+
+class FollowingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    var users: [FriendModel] = [] // Use real model from API
+
+
+    class UserCell: UITableViewCell {
+        static let identifier = "UserCell"
+
+        let profileImageView = UIImageView()
+        let usernameLabel = UILabel()
+        let fullNameLabel = UILabel()
+        let followButton = UIButton(type: .system)
+
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            setupViews()
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        private func setupViews() {
+            profileImageView.translatesAutoresizingMaskIntoConstraints = false
+            profileImageView.contentMode = .scaleAspectFill
+            profileImageView.layer.cornerRadius = 24
+            profileImageView.clipsToBounds = true
+
+            usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+            usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            fullNameLabel.font = UIFont.systemFont(ofSize: 14)
+            fullNameLabel.textColor = .gray
+            fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            followButton.translatesAutoresizingMaskIntoConstraints = false
+            followButton.layer.cornerRadius = 6
+            followButton.clipsToBounds = true
+            followButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            followButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+
+            contentView.addSubview(profileImageView)
+            contentView.addSubview(usernameLabel)
+            contentView.addSubview(fullNameLabel)
+            contentView.addSubview(followButton)
+
+            NSLayoutConstraint.activate([
+                profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                profileImageView.widthAnchor.constraint(equalToConstant: 48),
+                profileImageView.heightAnchor.constraint(equalToConstant: 48),
+
+                usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+                usernameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+
+                fullNameLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 4),
+                fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+
+                followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+                followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            ])
+        }
+
+        /*
+        func configure(with user: User) {
+            profileImageView.image = UIImage(named: user.imageName)
+            usernameLabel.text = user.username
+            fullNameLabel.text = user.fullName
+            let title = user.isFollowing ? "Following" : "Follow"
+            followButton.setTitle(title, for: .normal)
+            followButton.backgroundColor = user.isFollowing ? .white : UIColor.systemRed
+            followButton.setTitleColor(user.isFollowing ? .black : .white, for: .normal)
+            followButton.layer.borderWidth = user.isFollowing ? 1 : 0
+            followButton.layer.borderColor = user.isFollowing ? UIColor.lightGray.cgColor : nil
+        }
+         */
+        func configure(with user: FriendModel) {
+             profileImageView.image = UIImage(named: "background_9") // Dummy image
+             usernameLabel.text = user.friendName
+             fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+             let isFollowing = true // Assume true since this is the "following" list
+             let title = isFollowing ? "Following" : "Follow"
+             followButton.setTitle(title, for: .normal)
+             followButton.backgroundColor = isFollowing ? .white : .systemRed
+             followButton.setTitleColor(isFollowing ? .black : .white, for: .normal)
+             followButton.layer.borderWidth = isFollowing ? 1 : 0
+             followButton.layer.borderColor = isFollowing ? UIColor.lightGray.cgColor : nil
+         }
+    }
+
+    private let tableView = UITableView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        title = "Following"
+
+        setupUsers()
+        setupTableView()
+    }
+
+    private func setupUsers() {
+        // Placeholder users for now, will be replaced with API data later
+        let imageNames = ["background_1", "background_2", "background_3"]
+        for i in 0..<20 {
+            users.append(FriendModel(
+                username: "user\(i)",
+                fullName: "Full Name \(i)",
+                imageName: imageNames[i % imageNames.count],
+                isFollowing: i % 2 == 0
+            ))
+        }
+    }
+
+    private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.identifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.rowHeight = 72
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+
+    // MARK: - TableView DataSource & Delegate
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = users[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.identifier, for: indexPath) as! UserCell
+        cell.configure(with: user)
+        cell.followButton.tag = indexPath.row
+        cell.followButton.addTarget(self, action: #selector(followButtonTapped(_:)), for: .touchUpInside)
+        return cell
+    }
+
+    @objc private func followButtonTapped(_ sender: UIButton) {
+        let index = sender.tag
+        users[index].requestPending.toggle()
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    }
+}
+*/
+
+//WORKING
+/*
+class FollowingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    private let tableView = UITableView()
+    private var placeholderUsers: [String] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        title = "Following"
+        
+        placeholderUsers = (1...20).map { "User \($0)" }
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    // MARK: Table View
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return placeholderUsers.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.textLabel?.text = placeholderUsers[indexPath.row]
+        return cell
+    }
+}
+*/
+
+
+/*
+@objc private func editButtonTapped() {
+    guard let userResponse = userResponseModel else { return }
+    
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let editProfileVC = storyboard.instantiateViewController(withIdentifier: "EditProfileViewController") as! EditProfileViewController
+
+    // Send the data
+    editProfileVC.inputFirstName = userResponse.data.firstName
+    editProfileVC.inputLastName = userResponse.data.lastName
+    editProfileVC.inputBiography = userResponse.data.biography
+
+    if let profileImage = userProfileLayout.profileImageView.imageView.image {
+        editProfileVC.inputProfileImage = profileImage
+    }
+    
+    navigationController?.pushViewController(editProfileVC, animated: true)
+}
+ */
+
+/*
+@objc private func editButtonTapped() {
+    print("EDIT ME!!")
+    let editProfileVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditProfileViewController") as! EditProfileViewController
+    navigationController?.pushViewController(editProfileVC, animated: true)
+}
+ */
+
+//ADD THIS LOGIC
+/*
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == "showEditProfileViewController" {
+        let editProfileViewController = segue.destination as! EditProfileViewController
+        //self.userProfileLayout.editProfileViewController.inputFirstName = userResponseModel?.data.firstName ?? "Error getting User Name"
+        //self.userProfileLayout.editProfileViewController.inputLastName = userResponseModel?.data.lastName ?? "Error getting Full Name"
+        //self.userProfileLayout.editProfileViewController.inputBiography = userResponseModel?.data.biography ?? "Error getting Biography"
+
+    
+        //if let profileImage = profileImageView.image {
+        //    editProfileViewController.inputProfileImage = profileImage
+       // }
+    
+        
+        // Set the delegate
+        //editProfileViewController.delegate = self
+    }
+}
+*/
+//ADD THIS LOGIC
+
+//THIS WORKS!!!!
+/*
+class ProfileViewController: UIViewController {
+    let postsAPI = PostsAPI()
+    let profileAPI = ProfileAPI()
+    let loginAPI = LoginAPI()
+    let userDefaultManager = UserDefaultManager()
+    
+
+    //MAIN VIEWS
+    @IBOutlet weak var UserProfileImageView: UIView!
+    @IBOutlet weak var UserProfileUserNameView: UIView!
+    @IBOutlet weak var UserProfileSocialsView: UIView!
+    @IBOutlet weak var UserProfileEditView: UIView!
+    @IBOutlet weak var UserProfileBiographyView: UIView!
+    
+    private let userProfileLayout = UserProfileLayout()
+    
+    //UI ELEMENTS
+    @IBOutlet weak var profileImageView: UIImageView!
+    
+    /*
+
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    
+    @IBOutlet weak var firstNameLabel: UILabel!
+    @IBOutlet weak var lastNameLabel: UILabel!
+    @IBOutlet weak var biographyLabel: UILabel!
+    */
+     
+    var userResponseModel: UserProfileResponseModel?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let currentUser = userDefaultManager.getLoggedInUser()
+ 
+
+        userProfileLayout.setup(in: view)
+        
+        /*
+        setUpViews()
+        
+
+        let userFollowerView = UserFollowersView()
+        userFollowerView.translatesAutoresizingMaskIntoConstraints = false
+        self.userFollowerView.addSubview(userFollowerView)
+
+        NSLayoutConstraint.activate([
+            userFollowerView.topAnchor.constraint(equalTo: self.userFollowerView.topAnchor),
+            userFollowerView.leadingAnchor.constraint(equalTo: self.userFollowerView.leadingAnchor),
+            userFollowerView.trailingAnchor.constraint(equalTo: self.userFollowerView.trailingAnchor),
+            userFollowerView.bottomAnchor.constraint(equalTo: self.userFollowerView.bottomAnchor)
+        ])
+         */
+        
+        let deviceId = getDeviceId()
+        print("Device ID:", deviceId)
+        
+        Task{
+            do{
+                let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
+                self.userResponseModel = userResponseModel
+                
+                if(userResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
+                
+                //Update Data from API
+                userNameLabel.text = "@\(userResponseModel.data.userName)"
+
+                if let image = await fetchImage(from: userResponseModel.data.userImage) {
+                    if let croppedImage = image.croppedToSquare() {
+                        profileImageView.image = croppedImage
+                    } else {
+                        profileImageView.image = image // Fallback to original if cropping fails
+                    }
+                } else {
+                    profileImageView.image = UIImage(named: "background_9")
+                }
+            
+            } catch{
+                print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
+                print(error)
+                //AuthManager.shared.logoutCurrentUser()
+            }
+        }
+    }
+    
+    @IBAction func editButton(_ sender: UIButton) {
+        print("hi!")
+    }
+    
+    //SEND Data to Edit Profile
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditProfileViewController" {
+            let editProfileViewController = segue.destination as! EditProfileViewController
+            editProfileViewController.inputFirstName = userResponseModel?.data.firstName ?? "Error getting User Name"
+            editProfileViewController.inputLastName = userResponseModel?.data.lastName ?? "Error getting Full Name"
+            editProfileViewController.inputBiography = userResponseModel?.data.biography ?? "Error getting Biography"
+
+            /*
+            if let profileImage = profileImageView.image {
+                editProfileViewController.inputProfileImage = profileImage
+            }
+             */
+            
+            // Set the delegate
+            editProfileViewController.delegate = self
+        }
+    }
+    
+    
+    func setUpViews() {
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
+    }
+     
+}
+
+extension ProfileViewController: EditProfileViewControllerDelegate {
+    func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {
+        // Update UI with the new data
+        
+        firstNameLabel.text = firstName
+        lastNameLabel.text = lastName
+        biographyLabel.text = biography
+
+        // Check if an updated image was provided
+        if let newImage = updatedImage {
+            print("Updating profile image in ProfileViewController")
+            profileImageView.image = newImage
+        }
+
+         
+        print("Profile updated: \(firstName), \(lastName), \(biography)")
+    }
+}
+ */
+
+
+
+
+
+
+/*
+class ProfileViewController: UIViewController {
+
+    
+
+    /*
+
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    
+    @IBOutlet weak var firstNameLabel: UILabel!
+    @IBOutlet weak var lastNameLabel: UILabel!
+    @IBOutlet weak var biographyLabel: UILabel!
+    */
+     
+    var userResponseModel: UserProfileResponseModel?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+
+        userProfileLayout.setup(in: view)
+        
+        /*
+        setUpViews()
+        
+
+        let userFollowerView = UserFollowersView()
+        userFollowerView.translatesAutoresizingMaskIntoConstraints = false
+        self.userFollowerView.addSubview(userFollowerView)
+
+        NSLayoutConstraint.activate([
+            userFollowerView.topAnchor.constraint(equalTo: self.userFollowerView.topAnchor),
+            userFollowerView.leadingAnchor.constraint(equalTo: self.userFollowerView.leadingAnchor),
+            userFollowerView.trailingAnchor.constraint(equalTo: self.userFollowerView.trailingAnchor),
+            userFollowerView.bottomAnchor.constraint(equalTo: self.userFollowerView.bottomAnchor)
+        ])
+         */
+        
+        
+        
+        Task{
+            do{
+                let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
+                self.userResponseModel = userResponseModel
+                
+                if(userResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
+                /*
+                //Update Data from API
+                userNameLabel.text = "@\(userResponseModel.data.userName)"
+
+                if let image = await fetchImage(from: userResponseModel.data.userImage) {
+                    if let croppedImage = image.croppedToSquare() {
+                        profileImageView.image = croppedImage
+                    } else {
+                        profileImageView.image = image // Fallback to original if cropping fails
+                    }
+                } else {
+                    profileImageView.image = UIImage(named: "background_9")
+                }
+            */
+            } catch{
+                print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
+                print(error)
+                //AuthManager.shared.logoutCurrentUser()
+            }
+        }
+    }
+    
+    @IBAction func editButton(_ sender: UIButton) {
+        print("hi!")
+    }
+    
+    //SEND Data to Edit Profile
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditProfileViewController" {
+            let editProfileViewController = segue.destination as! EditProfileViewController
+            editProfileViewController.inputFirstName = userResponseModel?.data.firstName ?? "Error getting User Name"
+            editProfileViewController.inputLastName = userResponseModel?.data.lastName ?? "Error getting Full Name"
+            editProfileViewController.inputBiography = userResponseModel?.data.biography ?? "Error getting Biography"
+
+            /*
+            if let profileImage = profileImageView.image {
+                editProfileViewController.inputProfileImage = profileImage
+            }
+             */
+            
+            // Set the delegate
+            editProfileViewController.delegate = self
+        }
+    }
+    
+    /*
+    func setUpViews() {
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
+    }
+     */
+}
+
+extension ProfileViewController: EditProfileViewControllerDelegate {
+    func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {
+        // Update UI with the new data
+        /*
+        firstNameLabel.text = firstName
+        lastNameLabel.text = lastName
+        biographyLabel.text = biography
+
+        // Check if an updated image was provided
+        if let newImage = updatedImage {
+            print("Updating profile image in ProfileViewController")
+            profileImageView.image = newImage
+        }
+
+         */
+        print("Profile updated: \(firstName), \(lastName), \(biography)")
+    }
+}
+ */
+
+/*
+class ProfileViewController: UIViewController {
+    
+    private let userProfileLayout = UserProfileLayout()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.addSubview(userProfileLayout)
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        userProfileLayout.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            userProfileLayout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            userProfileLayout.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            userProfileLayout.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
+*/
+
+
+
+
+
+
+//ALL BELOW GOOD
+
+
+
+
+
+
+
+/*
+extension ProfileViewController: EditProfileViewControllerDelegate {
+    func didUpdateProfile(firstName: String, lastName: String, biography: String) {
+        // Update the UI with the new data
+        firstNameLabek.text = firstName
+        lastNameLabel.text = lastName
+        biographyLabel.text = biography
+
+        // Optionally, you can save the updated profile to the server or local storage
+        print("Profile updated: \(firstName), \(lastName) \(biography)")
+    }
+}
+ 
+ //biographyLabel.text = userResponseModel.data.biography
+ //firstNameLabek.text = userResponseModel.data.firstName
+ //lastNameLabel.text = userResponseModel.data.lastName
+*/
+
+
+/*
+ //Original Uncroped Image
+ if let originalImage = profileImageView.image,
+           let croppedImage = originalImage.croppedToSquare() {
+            profileImageView.image = croppedImage
+        }
+ 
+ //Use Image Fill
+ profileImageView.contentMode = .scaleAspectFill
+ profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+ profileImageView.clipsToBounds = true
+ */
+
+
+//print("Image URL \(userResponseModel.data.userImage)")
+//print(userResponseModel)
+//print("SUCCESS: Got the User Profile")
+
+/*
+if let image = await fetchImage(from: userResponseModel.data.userImage) {
+    profileImageView.image = image
+    //print("Loaded image")
+} else {
+    profileImageView.image = UIImage(named: "background_9")
+    //print("Failed to load image")
+}
+ */
+
+
+
+/*
+Task {
+    do {
+        let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
+        
+        if userResponseModel.statusCode == 401 {
+            AuthManager.shared.logoutCurrentUser()
+            return
+        }
+        
+        DispatchQueue.main.async {
+            // Set Username
+            self.userProfileLayout.userNameView.nameLabel.text = "@\(userResponseModel.data.userName)"
+            
+            
+            // Set Image Directly from User Model
+            
+            //if let image = await fetchImage(from: userResponseModel.data.userImage) {
+            if let profileImage = userResponseModel.data.userImage {
+                if let croppedImage = profileImage.croppedToSquare() {
+                    self.userProfileLayout.profileImageView.imageView.image = croppedImage
+                } else {
+                    self.userProfileLayout.profileImageView.imageView.image = profileImage
+                }
+            } else {
+                self.userProfileLayout.profileImageView.imageView.image = UIImage(named: "background_9")
+            }
+             
+            
+            self.userProfileLayout.profileImageView.imageView.makeRounded()
+        }
+    } catch {
+        print("CATCH ProfileViewController profileAPI.getUserProfileAPI error!")
+        print(error)
+    }
+}
+ */
+
+
+
+/*
+class ProfileViewController: UIViewController {
+    let postsAPI = PostsAPI()
+    let profileAPI = ProfileAPI()
+    let loginAPI = LoginAPI()
+    let userDefaultManager = UserDefaultManager()
+    
+    private let userProfileLayout = UserProfileLayout()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let currentUser = userDefaultManager.getLoggedInUser()
+        let deviceId = getDeviceId()
+ 
+        
+        view.addSubview(userProfileLayout)
+        userProfileLayout.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            userProfileLayout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            userProfileLayout.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            userProfileLayout.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        Task{
+            do{
+                let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
+                //self.userResponseModel = userResponseModel
+                
+                if(userResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
+                /*
+                 //I WANT IT TO BE LIKE THIS
+                //Update Data from API
+                userNameLabel.text = "@\(userResponseModel.data.userName)"
+
+                if let image = await fetchImage(from: userResponseModel.data.userImage) {
+                    if let croppedImage = image.croppedToSquare() {
+                        profileImageView.image = croppedImage
+                    } else {
+                        profileImageView.image = image // Fallback to original if cropping fails
+                    }
+                } else {
+                    profileImageView.image = UIImage(named: "background_9")
+                }
+            */
+            } catch{
+                print("CATCH ProfileViewController profileAPI.getUserProfileAPI yo man error!")
+                print(error)
+                //AuthManager.shared.logoutCurrentUser()
+            }
+        }
+        
+        //fetchUserProfile()
+    }
+    
+
+    /*
+     //THIS IS CONFUSING
+    private func fetchUserProfile() {
+        let currentUser = userDefaultManager.getLoggedInUser()
+        
+        Task {
+            do {
+                let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
+                
+                if userResponseModel.statusCode == 401 {
+                    AuthManager.shared.logoutCurrentUser()
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.userProfileLayout.profileImageView.updateImage(with: self.fetchImage(from: userResponseModel.data.userImage))
+                    self.userProfileLayout.userNameView.updateName("@\(userResponseModel.data.userName)")
+                }
+                
+            } catch {
+                print("Error fetching user profile:", error)
+            }
+        }
+    }
+    
+    private func fetchImage(from urlString: String?) -> UIImage? {
+        guard let urlString = urlString, let url = URL(string: urlString),
+              let data = try? Data(contentsOf: url),
+              let image = UIImage(data: data) else {
+            return UIImage(named: "default_profile")
+        }
+        return image
+    }
+     */
+     
+}
+*/
+
+
+
+/*
+class ProfileViewController: UIViewController {
+    let postsAPI = PostsAPI()
+    let profileAPI = ProfileAPI()
+    let loginAPI = LoginAPI()
+    let userDefaultManager = UserDefaultManager()
+    
+    private let userProfileLayout = UserProfileLayout()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let currentUser = userDefaultManager.getLoggedInUser()
+        let deviceId = getDeviceId()
+        
+        view.addSubview(userProfileLayout)
+        userProfileLayout.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            userProfileLayout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            userProfileLayout.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            userProfileLayout.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        Task {
+            do {
+                let userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
+                
+                if userResponseModel.statusCode == 401 {
+                    AuthManager.shared.logoutCurrentUser()
+                    return
+                }
+                
+                //STEP 1: Fetch image asynchronously before updating UI
+                let profileImage = await fetchImage(from: userResponseModel.data.userImage)
+
+                DispatchQueue.main.async {
+                    //STEP 2: Set UI Elements
+                    //Step 2A: Set Username
+                    self.userProfileLayout.userNameView.nameLabel.text = "@\(userResponseModel.data.userName)"
+                    
+                    //Step 2B: Set Image with fetched image
+                    if let profileImage = profileImage {
+                        if let croppedImage = profileImage.croppedToSquare() {
+                            self.userProfileLayout.profileImageView.imageView.image = croppedImage
+                        } else {
+                            self.userProfileLayout.profileImageView.imageView.image = profileImage
+                        }
+                    } else {
+                        self.userProfileLayout.profileImageView.imageView.image = UIImage(named: "background_9")
+                    }
+
+                    self.userProfileLayout.profileImageView.imageView.makeRounded()
+                }
+            } catch {
+                print("CATCH ProfileViewController profileAPI.getUserProfileAPI error!")
+                print(error)
+            }
+        }
+
+    }
+}
+*/
+
+
 
 /*
  //FUNCTIONS

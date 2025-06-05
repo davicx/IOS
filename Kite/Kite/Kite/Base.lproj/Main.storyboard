@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ebe-z7-kyR">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -301,6 +300,21 @@
             </objects>
             <point key="canvasLocation" x="64.885496183206101" y="1016.9014084507043"/>
         </scene>
+        <!--Friend Profile View Controller-->
+        <scene sceneID="aR4-9L-r3s">
+            <objects>
+                <viewController storyboardIdentifier="FriendProfileViewControllerID" id="ZgD-Pg-jOG" customClass="FriendProfileViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pnY-jm-9Ln">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="qVB-KY-34k"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BO6-Vg-ijc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="917" y="1017"/>
+        </scene>
         <!--Edit Profile View Controller-->
         <scene sceneID="9We-OY-eaE">
             <objects>
@@ -414,6 +428,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jeh-R5-xHr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="964" y="1751"/>
+        </scene>
+        <!--Your Friends View Controller-->
+        <scene sceneID="tqA-VB-WTs">
+            <objects>
+                <viewController storyboardIdentifier="FriendViewController" id="V94-SC-msq" customClass="YourFriendsViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jfm-9w-IZe">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="XJX-cf-EDm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SEU-x0-1yM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1795" y="1751"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="hki-Xl-qiY">

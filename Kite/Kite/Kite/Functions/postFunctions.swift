@@ -8,8 +8,7 @@
 import UIKit
  
 
-let networker = PostsAPI()
-var tempURL = Constants.VariableConstants.tempURL
+let imageFunctions = ImageFunctions()
 
 
 //Function A1: Create Posts from API this converts the Post Reponse into an array of Posts
@@ -95,7 +94,7 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
            let imageUrl = URL(string: fileUrlString),
            fileUrlString.lowercased() != "empty" {
             do {
-                let data = try await networker.downloadImageData(from: imageUrl)
+                let data = try await imageFunctions.downloadData(from: imageUrl)
                 updatedPosts[index].postImageData = UIImage(data: data)
             } catch {
                 print("Error downloading image for postID \(post.postID): \(error)")
