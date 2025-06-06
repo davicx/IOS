@@ -9,6 +9,115 @@ import Foundation
 
 //PROFILE
 
+
+/*
+class FriendProfileViewController: UIViewController {
+    var friend: Friend?
+
+    let currentUser = userDefaultManager.getLoggedInUser()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .white
+
+        if let friend = friend {
+            print("Friend profile for: \(friend.friendName)")
+            Task {
+                await fetchFriendDetails(friendName: friend.friendName)
+            }
+        }
+    }
+
+    private func fetchFriendDetails(friendName: String) async {
+        do {
+            let response = try await FriendAPI().getSpecificFriendData(otherUser: friendName, currentUser: currentUser)
+            for friendModel in response.data {
+                print("Friend name: \(friendModel.friendName), Friendship Key: \(friendModel.friendshipKey), Friendship Key: \(friendModel.requestPending)")
+            }
+        } catch {
+            print("Failed to fetch friend's friends: \(error)")
+        }
+    }
+}
+
+ */
+
+
+
+
+//WORKING
+/*
+class FriendProfileViewController: UIViewController {
+    var friend: Friend?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .white  // Optional: to see something while testing
+
+         if let friend = friend {
+             print("Friend profile for: \(friend.friendName)")
+         }
+        
+    }
+ 
+}
+*/
+
+
+/*
+ 
+ class Friend {
+     let friendID: Int
+     let friendName: String
+     var friendImage: String
+     var firstName: String
+     var lastName: String
+     var requestPending: Int
+     var requestSentBy: String
+     var friendshipKey: String
+     var alsoYourFriend: Int
+     
+     var profileImage: UIImage?
+     
+     init(from model: FriendModel) {
+         self.friendID = model.friendID
+         self.friendName = model.friendName
+         self.friendImage = model.friendImage
+         self.firstName = model.firstName
+         self.lastName = model.lastName
+         self.requestPending = model.requestPending
+         self.requestSentBy = model.requestSentBy
+         self.friendshipKey = model.friendshipKey
+         self.alsoYourFriend = model.alsoYourFriend
+         
+         self.profileImage = UIImage(named: "background_1")
+     }
+ }
+
+ 
+ struct UserProfileModel: Codable {
+     let userName: String
+     let userID: Int
+     let userImage: String
+     let biography: String
+     let firstName: String
+     let lastName: String
+     
+     init() {
+         self.userName = "userName"
+         self.userID = 0
+         self.userImage = "userImage"
+         self.biography = "biography"
+         self.firstName = "firstName"
+         self.lastName = "lastName"
+     }
+ }
+
+
+ */
+
 //WORKING
 /*
  //

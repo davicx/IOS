@@ -34,6 +34,20 @@ struct FriendModel: Codable {
 }
 
 
+/*
+ {
+     "friendID": 1,
+     "friendName": "davey",
+     "friendImage": "frodo.jpg",
+     "firstName": "david",
+     "lastName": "v2",
+     "friendBiography": "They are (or were) a little people, about half our height, and smaller than the bearded dwarves",
+     "requestPending": 0,
+     "requestSentBy": "merry",
+     "friendshipKey": "you",
+     "alsoYourFriend": 1
+ }
+ */
 
 /*
  {

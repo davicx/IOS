@@ -8,13 +8,11 @@
 import UIKit
 
 
-
-
  class UserProfileSocialsView: UIView {
      
      let followingButton: UIButton = {
          let button = UIButton(type: .system)
-         button.setTitle("Following", for: .normal)
+         button.setTitle("Friends", for: .normal)
          button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
          button.setTitleColor(.white, for: .normal)
          button.backgroundColor = .systemBlue

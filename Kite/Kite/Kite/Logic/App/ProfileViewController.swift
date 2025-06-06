@@ -39,7 +39,7 @@ class ProfileViewController: UIViewController {
         
         // Add action to Buttons
         userProfileLayout.userProfileEditView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-        userProfileLayout.userProfileSocialsView.followingButton.addTarget(self, action: #selector(followingButtonTapped), for: .touchUpInside)
+        userProfileLayout.userProfileSocialsView.followingButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
 
         Task {
             do {
@@ -77,17 +77,13 @@ class ProfileViewController: UIViewController {
                 // Fetch friends and store in property
                 let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
                 let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
-                
-                for friend in friends {
-                    print("friends \(friend.friendID)")
-                }
-                
+
                 // Preload images
                 await loadFriendImages(for: friends, using: imageFunctions)
 
                 // Store and log
                 self.friendListArray = friends
-                print("Friend count: \(self.friendListArray.count)")
+                //print("Friend count: \(self.friendListArray.count)")
 
             } catch {
                 print("Error in viewDidLoad: \(error)")
@@ -107,17 +103,20 @@ class ProfileViewController: UIViewController {
                 let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
                 await loadFriendImages(for: friends, using: imageFunctions)
                 self.friendListArray = friends
+                
+                /*
                 print("Updated friend list in viewDidAppear:")
                 for f in friends {
                     print("Friend: \(f.friendName)")
                 }
+                */
             } catch {
                 print("Error updating friend list: \(error)")
             }
         }
     }
 
-    @objc private func followingButtonTapped() {
+    @objc private func friendsButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
         friendVC.delegate = self
