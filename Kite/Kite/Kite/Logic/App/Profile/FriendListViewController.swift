@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class FriendListViewController: UIViewController {
     var friendUserName: String?
     var friendListArray: [Friend] = []

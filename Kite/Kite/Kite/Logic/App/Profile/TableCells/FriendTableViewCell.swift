@@ -8,6 +8,7 @@
 import UIKit
 
 
+
 class FriendTableViewCell: UITableViewCell {
 
     let profileImageView = UIImageView()
