@@ -10,10 +10,12 @@ import UIKit
 
 
 //LIKE POST DELEGATE
-protocol LikePostDelegate: AnyObject {
+/*
+protocol LikePostDelegateLikePostDelegate: AnyObject {
     func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel)
     func updatePostsArrayWithUnlikePost(currentPostID: Int, likeModel: LikeModel)
 }
+ */
 
 //COMMENT POST DELEGATE
 protocol LikeCommentDelegate: AnyObject {
@@ -37,13 +39,18 @@ class IndividualPostViewController: UIViewController {
         view.backgroundColor = .white
         setupPostTableView()
         
-        postLikeFunctions.shared.likePostDelegate = self.likePostDelegate
+        print("_______________________")
+        print("IndividualPostViewController")
+        print("_______________________")
+        
+        
+        //postLikeFunctions.shared.likePostDelegate = self.likePostDelegate
         postLikeFunctions.shared.likeCommentDelegate = self.likeCommentDelegate
     }
     
 
     //DELEGATES
-    var likePostDelegate: LikePostDelegate? = nil
+    //var likePostDelegate: LikePostDelegate? = nil
     var likeCommentDelegate: LikeCommentDelegate? = nil
     
     //STYLE
@@ -82,6 +89,33 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
         spinnerHelper.show(in: self.view)
 
         Task {
+            let groupID = currentPost.groupID ?? 0
+
+            if currentPost.isLikedByCurrentUser == true {
+                if let likeModel = await postLikeFunctions.shared.unlikePost(post: currentPost, groupID: groupID) {
+                    PostDataController.shared.unlikePost(postID: currentPost.postID ?? 0, likeModel: likeModel)
+                }
+            } else {
+                if let likeModel = await postLikeFunctions.shared.likePost(post: currentPost, groupID: groupID) {
+                    PostDataController.shared.likePost(postID: currentPost.postID ?? 0, likeModel: likeModel)
+                }
+            }
+
+            DispatchQueue.main.async {
+                cell.configurePost(with: self.currentPost)
+                self.spinnerHelper.hide()
+            }
+        }
+    }
+    
+    /*
+    func didTapLikePostButton(in cell: PostCell) {
+        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
+
+        cell.startLoading()
+        spinnerHelper.show(in: self.view)
+
+        Task {
             if currentPost.isLikedByCurrentUser == true {
                 await postLikeFunctions.shared.unlikePost(post: currentPost, groupID: currentPost.groupID ?? 0)
             } else {
@@ -95,6 +129,43 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
         }
     }
     
+
+    func didTapLikePostButtonBROKEN(in cell: PostCell) {
+            guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
+
+            cell.startLoading()
+            spinnerHelper.show(in: self.view)
+
+            Task {
+                let groupID = currentPost.groupID ?? 0
+
+                if currentPost.isLikedByCurrentUser {
+                    await postLikeFunctions.shared.unlikePost(post: currentPost, groupID: groupID) { likeModel in
+                        if let model = likeModel {
+                            PostDataController.shared.unlikePost(postID: self.currentPost.postID ?? 0, likeModel: model)
+                        }
+
+                        DispatchQueue.main.async {
+                            cell.configurePost(with: self.currentPost)
+                            self.spinnerHelper.hide()
+                        }
+                    }
+                } else {
+                    await postLikeFunctions.shared.likePost(post: currentPost, groupID: groupID) { likeModel in
+                        if let model = likeModel {
+                            PostDataController.shared.likePost(postID: self.currentPost.postID ?? 0, likeModel: model)
+                        }
+
+                        DispatchQueue.main.async {
+                            cell.configurePost(with: self.currentPost)
+                            self.spinnerHelper.hide()
+                        }
+                    }
+                }
+            }
+        }
+     */
+     
     //COMMENT CELL
     func didTapLikeCommentButton(in cell: CommentCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
@@ -126,7 +197,6 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
             }
         }
     }
-
 
 }
 

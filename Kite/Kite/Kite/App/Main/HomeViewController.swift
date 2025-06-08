@@ -9,9 +9,11 @@
 import UIKit
 
 
-class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegate {
+class HomeViewController: UIViewController, LikeCommentDelegate {
 
     //HOME: API and data
+    let postDataController = PostDataController.shared
+    
     let loginAPI = LoginAPI()
     let postsAPI = PostsAPI()
     
@@ -32,11 +34,21 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        print("_______________________")
+        print("HomeViewController")
+        print("_______________________")
+        
         // Setup PollingManager callback
         pollingManager.onFetchPosts = { [weak self] in
             self?.fetchPosts()
         }
+        
+        
+         postDataController.onPostsUpdated = { [weak self] in
+             self?.postsTableView.reloadData()
+         }
+         
 
         // Initial data fetch
         fetchPosts()
@@ -76,13 +88,20 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
            let postViewController = segue.destination as? IndividualPostViewController,
            let selectedPost = sender as? Post {
             postViewController.currentPost = selectedPost
-            postViewController.likePostDelegate = self
+            //postViewController.likePostDelegate = self
             postViewController.likeCommentDelegate = self
             postViewController.commentsArray = selectedPost.commentsArray ?? []
         }
     }
     
     //FUNCTIONS
+    func fetchPosts() {
+        Task {
+            await postDataController.fetchPosts(groupID: 72)
+        }
+    }
+
+    /*
     func fetchPosts() {
         Task {
             do {
@@ -101,9 +120,15 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             }
         }
     }
-    
+    */
 
     // Function D1: Like a Post
+    func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel) {
+        postDataController.likePost(postID: currentPostID, likeModel: likeModel)
+    }
+
+
+    /*
     func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel) {
         //print("DELEGATE: Liked post \(currentPostID) \(currentUser)")
 
@@ -125,8 +150,13 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             }
         }
     }
+     */
     
     // Function D2: Unlike a Post
+    func updatePostsArrayWithUnlikePost(currentPostID: Int, likeModel: LikeModel) {
+        postDataController.unlikePost(postID: currentPostID, likeModel: likeModel)
+    }
+    /*
     func updatePostsArrayWithUnlikePost(currentPostID: Int, likeModel: LikeModel) {
         //print("DELEGATE: Unliked post \(currentPostID) \(currentUser)")
 
@@ -140,7 +170,7 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
             }
         }
     }
-    
+    */
     // Function D3: Like a Comment
     func updatePostsArrayWithLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel) {
         print("STEP 4: HomeViewController DELEGATE userLikeComment: We are updating our postsArray with the liked comment \(currentCommentID) on post \(currentPostID)")
@@ -188,13 +218,31 @@ class HomeViewController: UIViewController, LikePostDelegate, LikeCommentDelegat
         }
     }
     
-
-    
 }
 
 
 //TABLE VIEW: For Individual Posts in Home Feed
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return postDataController.posts.count
+     }
+
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
+         let post = postDataController.posts[indexPath.row]
+         cell.updatePost(with: post)
+         return cell
+     }
+
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         let post = postDataController.posts[indexPath.row]
+         performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
+     }
+
+     
+    
+    /*
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postsArray.count
     }
@@ -212,9 +260,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let post = postsArray[indexPath.row]
         performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
     }
+    */
+    
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let currentPost = postsArray[indexPath.row]
+        let currentPost = postDataController.posts[indexPath.row]
+        //let currentPost = postsArray[indexPath.row]
         let currentPostImage = currentPost.postImageData
         
         //STEP 1: Get Image Height

@@ -81,6 +81,7 @@
 		D7400EA12D8CC45800646E94 /* LoginLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */; };
 		D7404B102D6801510015B42E /* Docs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7404B0F2D6801510015B42E /* Docs.swift */; };
 		D742D6AB2D7A76F7000A1E62 /* UserFollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D742D6AA2D7A76F7000A1E62 /* UserFollowersView.swift */; };
+		D74304022DF6496000D7775A /* PostDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74304012DF6496000D7775A /* PostDataController.swift */; };
 		D74471192D88EAE6009677B9 /* DividerWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74471182D88EAE6009677B9 /* DividerWithLabel.swift */; };
 		D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */; };
 		D747F7BB2D824D0800A08602 /* UserNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7BA2D824D0800A08602 /* UserNameView.swift */; };
@@ -223,6 +224,7 @@
 		D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginLayoutManager.swift; sourceTree = "<group>"; };
 		D7404B0F2D6801510015B42E /* Docs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Docs.swift; sourceTree = "<group>"; };
 		D742D6AA2D7A76F7000A1E62 /* UserFollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowersView.swift; sourceTree = "<group>"; };
+		D74304012DF6496000D7775A /* PostDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataController.swift; sourceTree = "<group>"; };
 		D74471182D88EAE6009677B9 /* DividerWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerWithLabel.swift; sourceTree = "<group>"; };
 		D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileImageView.swift; sourceTree = "<group>"; };
 		D747F7BA2D824D0800A08602 /* UserNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameView.swift; sourceTree = "<group>"; };
@@ -572,6 +574,7 @@
 			isa = PBXGroup;
 			children = (
 				D78047882DF507B500702C01 /* PlantDataController.swift */,
+				D74304012DF6496000D7775A /* PostDataController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -818,6 +821,7 @@
 				51C69AE52D0E549100C46759 /* ViewController.swift in Sources */,
 				51C69B342D0E580600C46759 /* CommentModel.swift in Sources */,
 				D747F7BF2D824D4400A08602 /* UserProfileEditView.swift in Sources */,
+				D74304022DF6496000D7775A /* PostDataController.swift in Sources */,
 				D7E703802DDD44EE00BF4AE5 /* FriendListResponseModel.swift in Sources */,
 				D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */,
 				D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */,
