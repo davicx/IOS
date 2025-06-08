@@ -9,21 +9,6 @@
 import UIKit
 
 
-//LIKE POST DELEGATE
-/*
-protocol LikePostDelegateLikePostDelegate: AnyObject {
-    func updatePostsArrayWithLikePost(currentPostID: Int, likeModel: LikeModel)
-    func updatePostsArrayWithUnlikePost(currentPostID: Int, likeModel: LikeModel)
-}
- */
-
-//COMMENT POST DELEGATE
-protocol LikeCommentDelegate: AnyObject {
-    func updatePostsArrayWithLikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel)
-    func updatePostsArrayWithUnlikeComment(currentPostID: Int, currentCommentID: Int, commentLikeModel: CommentLikeModel)
-}
-
-
 class IndividualPostViewController: UIViewController {
     let postAPI = PostsAPI()
     let currentUser = userDefaultManager.getLoggedInUser()
@@ -42,17 +27,9 @@ class IndividualPostViewController: UIViewController {
         print("_______________________")
         print("IndividualPostViewController")
         print("_______________________")
-        
-        
-        //postLikeFunctions.shared.likePostDelegate = self.likePostDelegate
-        postLikeFunctions.shared.likeCommentDelegate = self.likeCommentDelegate
+    
     }
-    
 
-    //DELEGATES
-    //var likePostDelegate: LikePostDelegate? = nil
-    var likeCommentDelegate: LikeCommentDelegate? = nil
-    
     //STYLE
     private func setupPostTableView() {
         self.postTableView.dataSource = self
@@ -78,7 +55,7 @@ class IndividualPostViewController: UIViewController {
 }
 
 
-//LIKE POST DELEGATE: Extension
+//LIKE POST: Extension
 extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
     
     //POST CELL
@@ -107,74 +84,16 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
             }
         }
     }
-    
-    /*
-    func didTapLikePostButton(in cell: PostCell) {
-        guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
 
-        cell.startLoading()
-        spinnerHelper.show(in: self.view)
-
-        Task {
-            if currentPost.isLikedByCurrentUser == true {
-                await postLikeFunctions.shared.unlikePost(post: currentPost, groupID: currentPost.groupID ?? 0)
-            } else {
-                await postLikeFunctions.shared.likePost(post: currentPost, groupID: currentPost.groupID ?? 0)
-            }
-
-            DispatchQueue.main.async {
-                cell.configurePost(with: self.currentPost)
-                self.spinnerHelper.hide()
-            }
-        }
-    }
-    
-
-    func didTapLikePostButtonBROKEN(in cell: PostCell) {
-            guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
-
-            cell.startLoading()
-            spinnerHelper.show(in: self.view)
-
-            Task {
-                let groupID = currentPost.groupID ?? 0
-
-                if currentPost.isLikedByCurrentUser {
-                    await postLikeFunctions.shared.unlikePost(post: currentPost, groupID: groupID) { likeModel in
-                        if let model = likeModel {
-                            PostDataController.shared.unlikePost(postID: self.currentPost.postID ?? 0, likeModel: model)
-                        }
-
-                        DispatchQueue.main.async {
-                            cell.configurePost(with: self.currentPost)
-                            self.spinnerHelper.hide()
-                        }
-                    }
-                } else {
-                    await postLikeFunctions.shared.likePost(post: currentPost, groupID: groupID) { likeModel in
-                        if let model = likeModel {
-                            PostDataController.shared.likePost(postID: self.currentPost.postID ?? 0, likeModel: model)
-                        }
-
-                        DispatchQueue.main.async {
-                            cell.configurePost(with: self.currentPost)
-                            self.spinnerHelper.hide()
-                        }
-                    }
-                }
-            }
-        }
-     */
-     
     //COMMENT CELL
     func didTapLikeCommentButton(in cell: CommentCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
 
         cell.startLoading()
         spinnerHelper.show(in: self.view)
-        
-        print("STEP 2: IndividualPostViewController- didTapLikeCommentButton was pressed and it will either like or unlike a comment")
- 
+
+        print("STEP 2: IndividualPostViewController - didTapLikeCommentButton triggered")
+
         let commentIndex = indexPath.row - 1
         guard let comment = currentPost.commentsArray?[commentIndex] else {
             print("IndividualPostViewController: No comment found at index \(indexPath.row)")
@@ -182,17 +101,28 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
         }
 
         Task {
+            let postID = currentPost.postID ?? 0
+            let groupID = currentPost.groupID ?? 0
+
             if comment.commentLikedByCurrentUser == true {
-                await postLikeFunctions.shared.unlikeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0)
-                print("STEP 3: IndividualPostViewController- unlikeComment was called from our postLikeFunctions")
-         
+                await postLikeFunctions.shared.unlikeComment(comment: comment, postID: postID, groupID: groupID)
+                print("STEP 3: IndividualPostViewController - unlikeComment called")
             } else {
-                await postLikeFunctions.shared.likeComment(comment: comment, postID: currentPost.postID ?? 0, groupID: currentPost.groupID ?? 0)
-                print("STEP 3: IndividualPostViewController- likeComment was called from our postLikeFunctions")
+                await postLikeFunctions.shared.likeComment(comment: comment, postID: postID, groupID: groupID)
+                print("STEP 3: IndividualPostViewController - likeComment called")
             }
 
+            // Refresh the post from the shared data store
             DispatchQueue.main.async {
-                cell.configureComment(with: comment)
+                self.currentPost = PostDataController.shared.getPostByID(postID: postID) ?? self.currentPost
+
+                // Get the updated comment from the refreshed post
+                if let updatedComment = self.currentPost.commentsArray?[commentIndex] {
+                    cell.configureComment(with: updatedComment)
+                } else {
+                    print("Error: Updated comment not found at index \(commentIndex)")
+                }
+
                 self.spinnerHelper.hide()
             }
         }

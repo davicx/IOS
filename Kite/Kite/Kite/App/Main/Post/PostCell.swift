@@ -49,8 +49,7 @@ class PostCell: UITableViewCell {
 
         let imageName = post.isLikedByCurrentUser == true ? "liked" : "like"
         likeButton.setImage(UIImage(named: imageName), for: .normal)
-        
-        print("POST CONFIGURE CALLED stopLoading()")
+    
         stopLoading()
 
     }

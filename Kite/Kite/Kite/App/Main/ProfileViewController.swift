@@ -39,7 +39,7 @@ class ProfileViewController: UIViewController {
         
         // Add action to Buttons
         userProfileLayout.userProfileEditView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-        userProfileLayout.userProfileSocialsView.followingButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
+        userProfileLayout.userProfileSocialsView.viewFriendsButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
 
         Task {
             do {

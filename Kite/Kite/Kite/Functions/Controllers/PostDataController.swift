@@ -29,6 +29,7 @@ class PostDataController {
             let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
             let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
             self.posts = try await addPostImageToPostsArray(postsArray: noImagePosts)
+            print("FETCHING POSTS!!!!")
 
             DispatchQueue.main.async {
                 self.onPostsUpdated?()
@@ -36,6 +37,10 @@ class PostDataController {
         } catch {
             print("PostDataController: Failed to fetch posts - \(error)")
         }
+    }
+
+    func getPostByID(postID: Int) -> Post? {
+        return posts.first(where: { $0.postID == postID })
     }
 
     // Like a post
@@ -64,5 +69,48 @@ class PostDataController {
 
         posts[index] = post
     }
+    
+    func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+        guard let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+              let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID }) else {
+            return
+        }
+
+        posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = true
+        posts[postIndex].commentsArray?[commentIndex].commentLikeCount? += 1
+        posts[postIndex].commentsArray?[commentIndex].commentLikes?.append(commentLikeModel)
+    }
+
+    func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+        guard let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+              let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID }) else {
+            return
+        }
+
+        posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = false
+        posts[postIndex].commentsArray?[commentIndex].commentLikeCount? -= 1
+        posts[postIndex].commentsArray?[commentIndex].commentLikes?.removeAll {
+            $0.commentLikeID == commentLikeModel.commentLikeID
+        }
+    }
+
+    func debugPrintCommentLikes() {
+        for post in posts {
+            print("POST ID: \(post.postID ?? -1)")
+            
+            guard let comments = post.commentsArray else {
+                print("No comments")
+                continue
+            }
+            
+            for comment in comments {
+                let commentID = comment.commentID ?? -1
+                let likedUsernames = comment.commentLikes?.map { $0.likedByUserName } ?? []
+                print("Comment ID: \(commentID) - Liked By: \(likedUsernames)")
+            }
+            print("_________________")
+        }
+    }
+
 }
 

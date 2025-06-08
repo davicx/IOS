@@ -8,6 +8,38 @@
 import UIKit
 
 
+class UserProfileSocialsView: UIView {
+    
+    let viewFriendsButton: UIButton = {
+        let button = UIButton(type: .system)
+        Buttons.styleFriendsButton(button)
+        return button
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .green
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupViews()
+    }
+    
+    private func setupViews() {
+        addSubview(viewFriendsButton)
+        
+        NSLayoutConstraint.activate([
+            viewFriendsButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            viewFriendsButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            viewFriendsButton.heightAnchor.constraint(equalToConstant: 36),
+            viewFriendsButton.widthAnchor.constraint(equalToConstant: 120)
+        ])
+    }
+}
+
+/*
  class UserProfileSocialsView: UIView {
      
      let followingButton: UIButton = {
@@ -44,3 +76,4 @@ import UIKit
          ])
      }
  }
+*/

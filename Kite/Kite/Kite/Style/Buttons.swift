@@ -34,6 +34,16 @@ class Buttons {
         button.layer.cornerRadius = 5 // Rounded corners
     }
     
+    static func styleFriendsButton(_ button: UIButton) {
+        button.setTitle("Friends", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    
     
     static func styleTwitterButton(_ button:UIButton) {
         button.backgroundColor = UIColor(hex: "#1DA1F2")

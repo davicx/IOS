@@ -46,7 +46,7 @@ class FriendProfileViewController: UIViewController {
             userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        userProfileLayout.userProfileSocialsView.followingButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
+        userProfileLayout.userProfileSocialsView.viewFriendsButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
 
         
         // Hide or disable buttons not relevant in friend profile

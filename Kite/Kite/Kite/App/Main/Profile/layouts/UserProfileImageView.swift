@@ -47,18 +47,3 @@ class UserProfileImageView: UIView {
         imageView.makeRounded()
     }
 }
-
-
-/*
-class UserProfileImageView: UIView {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .red // Placeholder color
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-}
-*/
