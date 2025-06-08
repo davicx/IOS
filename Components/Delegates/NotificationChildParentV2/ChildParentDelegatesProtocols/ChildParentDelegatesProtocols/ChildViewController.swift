@@ -19,22 +19,8 @@ class ChildViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(handlePlantUpdated), name: .plantUpdated, object: nil)
 
-        label.numberOfLines = 0
-        label.frame = CGRect(x: 40, y: 120, width: 300, height: 100)
-        view.addSubview(label)
-        updateLabel()
+        setUpStyle()
 
-        let addButton = UIButton(type: .system)
-        addButton.setTitle("Add Tree", for: .normal)
-        addButton.frame = CGRect(x: 80, y: 240, width: 200, height: 40)
-        addButton.addTarget(self, action: #selector(addTreeTapped), for: .touchUpInside)
-        view.addSubview(addButton)
-
-        let nextButton = UIButton(type: .system)
-        nextButton.setTitle("→ Go to ParentVC", for: .normal)
-        nextButton.frame = CGRect(x: 80, y: 300, width: 200, height: 40)
-        nextButton.addTarget(self, action: #selector(goToParent), for: .touchUpInside)
-        view.addSubview(nextButton)
     }
 
     @objc func addTreeTapped() {
@@ -55,4 +41,26 @@ class ChildViewController: UIViewController {
     @objc func handlePlantUpdated() {
         updateLabel()
     }
+    
+    
+    //STYLE
+    func setUpStyle() {
+        label.numberOfLines = 0
+        label.frame = CGRect(x: 40, y: 120, width: 300, height: 100)
+        view.addSubview(label)
+        updateLabel()
+
+        let addButton = UIButton(type: .system)
+        addButton.setTitle("Add Tree", for: .normal)
+        addButton.frame = CGRect(x: 80, y: 240, width: 200, height: 40)
+        addButton.addTarget(self, action: #selector(addTreeTapped), for: .touchUpInside)
+        view.addSubview(addButton)
+
+        let nextButton = UIButton(type: .system)
+        nextButton.setTitle("→ Go to ParentVC", for: .normal)
+        nextButton.frame = CGRect(x: 80, y: 300, width: 200, height: 40)
+        nextButton.addTarget(self, action: #selector(goToParent), for: .touchUpInside)
+        view.addSubview(nextButton)
+    }
+
 }

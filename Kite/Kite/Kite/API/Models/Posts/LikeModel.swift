@@ -16,8 +16,27 @@ struct LikeModel: Codable {
     let likedByFirstName: String
     let likedByLastName: String
     let timestamp: String
-    let friendshipStatus: Int
+    let friendshipStatus: Int //CONFIRM STRING OR INT 
     
 }
 
+/*
+ {
+     "data": {
+         "postLikeID": 350,
+         "postID": 722,
+         "likedByUserName": "",
+         "likedByImage": "",
+         "likedByFirstName": "",
+         "likedByLastName": "",
+         "timestamp": "",
+         "friendshipStatus": ""
+     },
+     "message": "The Post Like was removed",
+     "success": true,
+     "statusCode": 200,
+     "errors": [],
+     "currentUser": "davey"
+ }
+ */
 

@@ -18,17 +18,8 @@ class GrandparentViewController: UIViewController {
         title = "GrandparentVC"
 
         NotificationCenter.default.addObserver(self, selector: #selector(handlePlantUpdated), name: .plantUpdated, object: nil)
-
-        label.numberOfLines = 0
-        label.frame = CGRect(x: 40, y: 200, width: 300, height: 200)
-        view.addSubview(label)
-        updateLabel()
-
-        let nextButton = UIButton(type: .system)
-        nextButton.setTitle("→ Go to ParentVC", for: .normal)
-        nextButton.frame = CGRect(x: 80, y: 420, width: 240, height: 40)
-        nextButton.addTarget(self, action: #selector(goToParent), for: .touchUpInside)
-        view.addSubview(nextButton)
+        
+        setUpStyle()
     }
 
     @objc func goToParent() {
@@ -45,4 +36,21 @@ class GrandparentViewController: UIViewController {
     @objc func handlePlantUpdated() {
         updateLabel()
     }
+    
+    
+    //STYLE
+    func setUpStyle() {
+        label.numberOfLines = 0
+        label.frame = CGRect(x: 40, y: 200, width: 300, height: 200)
+        view.addSubview(label)
+        updateLabel()
+
+        let nextButton = UIButton(type: .system)
+        nextButton.setTitle("→ Go to ParentVC", for: .normal)
+        nextButton.frame = CGRect(x: 80, y: 420, width: 240, height: 40)
+        nextButton.addTarget(self, action: #selector(goToParent), for: .touchUpInside)
+        view.addSubview(nextButton)
+    }
 }
+
+

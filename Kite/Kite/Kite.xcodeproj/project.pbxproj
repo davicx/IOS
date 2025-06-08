@@ -95,6 +95,7 @@
 		D773A57E2DF3A63700074C88 /* ProfileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57D2DF3A63700074C88 /* ProfileDoc.swift */; };
 		D773A5802DF3AEF900074C88 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57F2DF3AEF900074C88 /* FriendTableViewCell.swift */; };
 		D77ED6A52D90DB9800FA4F71 /* PollingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */; };
+		D78047892DF507B500702C01 /* PlantDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78047882DF507B500702C01 /* PlantDataController.swift */; };
 		D78C165C2DD55AD900EEDD91 /* SpinnerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */; };
 		D78C165E2DD55DBA00EEDD91 /* postLikeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */; };
 		D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */; };
@@ -236,6 +237,7 @@
 		D773A57D2DF3A63700074C88 /* ProfileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDoc.swift; sourceTree = "<group>"; };
 		D773A57F2DF3AEF900074C88 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingManager.swift; sourceTree = "<group>"; };
+		D78047882DF507B500702C01 /* PlantDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDataController.swift; sourceTree = "<group>"; };
 		D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerHelper.swift; sourceTree = "<group>"; };
 		D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postLikeFunctions.swift; sourceTree = "<group>"; };
 		D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowers.swift; sourceTree = "<group>"; };
@@ -327,7 +329,7 @@
 			children = (
 				51C69B102D0E54C000C46759 /* API */,
 				51C69B162D0E550100C46759 /* Functions */,
-				51C69B4E2D0E625E00C46759 /* Logic */,
+				51CA9DC62D0FA94F008C36F0 /* App */,
 				51B109B82D2763F3006E4CCF /* Style */,
 				51C69AE02D0E549100C46759 /* AppDelegate.swift */,
 				51C69AE22D0E549100C46759 /* SceneDelegate.swift */,
@@ -390,6 +392,7 @@
 		51C69B162D0E550100C46759 /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				D78047872DF507AC00702C01 /* Controllers */,
 				51C69B172D0E550900C46759 /* Classes */,
 				51C69B182D0E550F00C46759 /* Helpers */,
 				51C69B292D0E576C00C46759 /* postFunctions.swift */,
@@ -462,15 +465,6 @@
 			path = Posts;
 			sourceTree = "<group>";
 		};
-		51C69B4E2D0E625E00C46759 /* Logic */ = {
-			isa = PBXGroup;
-			children = (
-				51CA9DC62D0FA94F008C36F0 /* App */,
-				51C69B4F2D0E626A00C46759 /* Login */,
-			);
-			path = Logic;
-			sourceTree = "<group>";
-		};
 		51C69B4F2D0E626A00C46759 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -486,14 +480,8 @@
 		51CA9DC62D0FA94F008C36F0 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				51EC39142D34952F0001B6E7 /* Profile */,
-				D7FB876C2D6FE00E0054CDF7 /* Home */,
-				D74AAB382D9F4B7600C8AEB5 /* Post */,
-				51CA9DC72D0FAA54008C36F0 /* HomeViewController.swift */,
-				51CA9DC92D0FAA5A008C36F0 /* GroupsViewController.swift */,
-				51CA9DCB2D0FAA67008C36F0 /* NewPostViewController.swift */,
-				51CA9DCD2D0FAA6F008C36F0 /* SearchViewController.swift */,
-				51CA9DCF2D0FAA75008C36F0 /* ProfileViewController.swift */,
+				D780478A2DF5099100702C01 /* Main */,
+				51C69B4F2D0E626A00C46759 /* Login */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -578,6 +566,29 @@
 				D71809482DBC3C52003BC46D /* PostCell.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		D78047872DF507AC00702C01 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D78047882DF507B500702C01 /* PlantDataController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D780478A2DF5099100702C01 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				51EC39142D34952F0001B6E7 /* Profile */,
+				D7FB876C2D6FE00E0054CDF7 /* Home */,
+				D74AAB382D9F4B7600C8AEB5 /* Post */,
+				51CA9DC72D0FAA54008C36F0 /* HomeViewController.swift */,
+				51CA9DC92D0FAA5A008C36F0 /* GroupsViewController.swift */,
+				51CA9DCB2D0FAA67008C36F0 /* NewPostViewController.swift */,
+				51CA9DCD2D0FAA6F008C36F0 /* SearchViewController.swift */,
+				51CA9DCF2D0FAA75008C36F0 /* ProfileViewController.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		D798D97B2DED166200C1960E /* Friends */ = {
@@ -839,6 +850,7 @@
 				D773A57C2DF3A62600074C88 /* FriendListViewController.swift in Sources */,
 				51ED44632D2E09A60036DB4B /* ProfileAPI.swift in Sources */,
 				51C69AE32D0E549100C46759 /* SceneDelegate.swift in Sources */,
+				D78047892DF507B500702C01 /* PlantDataController.swift in Sources */,
 				D7A3C11C2D80F51E000B4EB7 /* SimpleBottomStackView.swift in Sources */,
 				D7E703842DDD457900BF4AE5 /* FriendModel.swift in Sources */,
 				51CA9DC32D0FA707008C36F0 /* LoginViewController.swift in Sources */,
