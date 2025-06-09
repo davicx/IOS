@@ -7,31 +7,14 @@
 
 import UIKit
 
-
-protocol YourFriendsViewControllerDelegate: AnyObject {
-    func didDeclineFriend(_ friend: Friend)
-    func didAddFriend(_ friend: Friend)
-}
-
-//ACTIVE FRIEND
-//Current Friend: Remove
-//Current Invite Sent: Cancel it
-
-//FRIEND REQUESTS
-//Accept Request
-//Decline Request
-
 class YourFriendsViewController: UIViewController {
-    
+
     //API Data
     var users: [Friend] = []
     private var friends: [Friend] = []
     private var friendRequests: [Friend] = []
     private var currentData: [Friend] = []
 
-    weak var delegate: YourFriendsViewControllerDelegate?
-
-    
     //Table View
     private let tableView = UITableView()
     private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
@@ -57,11 +40,10 @@ class YourFriendsViewController: UIViewController {
         segmentedControl.selectedSegmentIndex = 0
         currentData = friends
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         print("YourFriendsViewController")
     }
-
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -171,7 +153,7 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    //FUNCTIONS: Handle Friend Requests
+    //API METHODS
     private func cancelFriendAPI(for user: Friend) async {
         do {
             let currentUser = UserDefaultManager().getLoggedInUser()
@@ -184,11 +166,9 @@ class YourFriendsViewController: UIViewController {
                 DispatchQueue.main.async {
                     print("Successfully cancelled request to \(user.friendName)")
                     self.removeUserFromLocalData(user)
+                    FriendDataController.shared.removeFriend(user)
                     self.tableView.reloadData()
-                    self.delegate?.didDeclineFriend(user)
                 }
-            } else {
-                print("Cancel friend request failed: \(response.message)")
             }
         } catch {
             print("Error cancelling friend request: \(error)")
@@ -207,11 +187,9 @@ class YourFriendsViewController: UIViewController {
                 DispatchQueue.main.async {
                     print("Successfully removed friend: \(user.friendName)")
                     self.removeUserFromLocalData(user)
+                    FriendDataController.shared.removeFriend(user)
                     self.tableView.reloadData()
-                    self.delegate?.didDeclineFriend(user)
                 }
-            } else {
-                print("Remove friend failed: \(response.message)")
             }
         } catch {
             print("Error removing friend: \(error)")
@@ -234,22 +212,18 @@ class YourFriendsViewController: UIViewController {
 
                     user.friendshipKey = FriendshipStatus.friends.rawValue
                     self.friends.append(user)
+                    FriendDataController.shared.addFriend(user)
 
                     if self.segmentedControl.selectedSegmentIndex == 1 {
                         self.tableView.reloadData()
                     }
-
-                    self.delegate?.didAddFriend(user)
                 }
-            } else {
-                print("Accept invite failed: \(response.message)")
             }
         } catch {
             print("Error accepting invite: \(error)")
         }
     }
 
-    //FUNCTIONS: Handle Friend Requests
     private func declineInviteAPI(for user: Friend) async {
         do {
             let currentUser = UserDefaultManager().getLoggedInUser()
@@ -263,22 +237,18 @@ class YourFriendsViewController: UIViewController {
                     print("Declined invite from \(user.friendName)")
                     if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
                         self.removeUserFromLocalData(user)
+                        FriendDataController.shared.removeFriend(user)
                         self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                        self.delegate?.didDeclineFriend(user)
                     }
                 }
-            } else {
-                print("Decline invite failed: \(response.message)")
             }
         } catch {
             print("Error declining invite: \(error)")
         }
     }
-
-    
 }
 
-// MARK: - UITableViewDataSource & UITableViewDelegate
+// MARK: - TableView
 extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentData.count
@@ -303,14 +273,12 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         let selectedFriend = currentData[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let vc = storyboard.instantiateViewController(
-            withIdentifier: "FriendProfileViewControllerID"
-        ) as? FriendProfileViewController {
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
             vc.friend = selectedFriend
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
+
     private func removeUserFromLocalData(_ user: Friend) {
         friends.removeAll { $0.friendID == user.friendID }
         friendRequests.removeAll { $0.friendID == user.friendID }
@@ -318,7 +286,6 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         users.removeAll { $0.friendID == user.friendID }
     }
 
-    
     private func presentConfirmationAlert(
         title: String,
         message: String,
@@ -332,11 +299,8 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         alert.addAction(UIAlertAction(title: confirmTitle, style: style) { _ in onConfirm() })
         present(alert, animated: true)
     }
-
-    
 }
 
-// MARK: - Helper
 extension UISegmentedControl {
     func removeBackgroundAndDivider() {
         setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
@@ -345,5 +309,4 @@ extension UISegmentedControl {
                         rightSegmentState: .normal, barMetrics: .default)
     }
 }
-
 
