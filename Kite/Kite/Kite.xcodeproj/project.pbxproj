@@ -114,6 +114,7 @@
 		D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */; };
 		D7B4D1BD2DEA73F400D1630D /* RemoveFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B4D1BC2DEA73F400D1630D /* RemoveFriendResponseModel.swift */; };
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
+		D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */; };
 		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
 		D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */; };
 		D7D3DD322D518D8F00B9DAA7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */; };
@@ -258,6 +259,7 @@
 		D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentResponseModel.swift; sourceTree = "<group>"; };
 		D7B4D1BC2DEA73F400D1630D /* RemoveFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveFriendResponseModel.swift; sourceTree = "<group>"; };
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
+		D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDataController.swift; sourceTree = "<group>"; };
 		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
 		D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
 		D7D3DD312D518D8F00B9DAA7 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 			children = (
 				D78047882DF507B500702C01 /* PlantDataController.swift */,
 				D74304012DF6496000D7775A /* PostDataController.swift */,
+				D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -887,6 +890,7 @@
 				D7400EA12D8CC45800646E94 /* LoginLayoutManager.swift in Sources */,
 				D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */,
 				D721D2A42DE52E8C0002FE4C /* Friend.swift in Sources */,
+				D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */,
 				51C69B3E2D0E584B00C46759 /* PostModel.swift in Sources */,
 				51CA9DCC2D0FAA67008C36F0 /* NewPostViewController.swift in Sources */,
 			);

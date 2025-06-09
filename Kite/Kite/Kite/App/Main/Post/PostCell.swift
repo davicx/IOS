@@ -52,8 +52,7 @@ class PostCell: UITableViewCell {
     
         stopLoading()
 
-    }
-    
+    }    
     
     //FUNCTIONS
     func startLoading() {

@@ -74,21 +74,15 @@ class ProfileViewController: UIViewController {
                     }
                 }
 
-                // Fetch friends and store in property
-                let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
-                let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
-
-                // Preload images
-                await loadFriendImages(for: friends, using: imageFunctions)
-
-                // Store and log
-                self.friendListArray = friends
-                //print("Friend count: \(self.friendListArray.count)")
+                //Fetch friends using new shared controller
+                try await FriendDataController.shared.fetchFriends()
+                self.friendListArray = FriendDataController.shared.friends
 
             } catch {
                 print("Error in viewDidLoad: \(error)")
             }
         }
+
     }
 
     
@@ -98,18 +92,15 @@ class ProfileViewController: UIViewController {
 
         Task {
             do {
-                let currentUser = userDefaultManager.getLoggedInUser()
-                let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
-                let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
-                await loadFriendImages(for: friends, using: imageFunctions)
-                self.friendListArray = friends
+                try await FriendDataController.shared.fetchFriends()
+                self.friendListArray = FriendDataController.shared.friends
                 
                 /*
-                print("Updated friend list in viewDidAppear:")
-                for f in friends {
-                    print("Friend: \(f.friendName)")
-                }
-                */
+                 print("Updated friend list in viewDidAppear:")
+                 for f in friendListArray {
+                 print("Friend: \(f.friendName)")
+                 }
+                 */
             } catch {
                 print("Error updating friend list: \(error)")
             }
