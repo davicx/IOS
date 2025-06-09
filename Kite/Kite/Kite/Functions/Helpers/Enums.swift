@@ -29,6 +29,14 @@ enum FriendshipStatus: String {
     }
 }
 
+enum FriendAction {
+    case add
+    case decline
+    case remove
+    case accept
+}
+
+
 
 
 

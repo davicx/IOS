@@ -8,6 +8,7 @@
 import Foundation
 
 
+
 struct PostModel: Codable {
     let postID: Int
     let postType: String

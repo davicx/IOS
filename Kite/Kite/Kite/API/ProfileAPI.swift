@@ -12,11 +12,8 @@ FUNCTIONS A: All Functions Related to User Profile
     1) Function A1: Get User Profile Information
     2) Function A2: Update User Profile Information without Image
     3) Function A3: Update User Profile Information
-    4) Function A4: Get All Your Friends
-*/
 
-//Friends
-//Friend Requests
+*/
 
 
 class ProfileAPI {
