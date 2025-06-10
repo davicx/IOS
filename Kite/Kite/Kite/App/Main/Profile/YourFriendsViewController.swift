@@ -120,6 +120,7 @@ class YourFriendsViewController: UIViewController {
             underlineView = underline
         }
     }
+    
 
     private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
         cell.cancelFriendInviteTapped = { [weak self] in
@@ -153,7 +154,8 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    //API METHODS
+    //API METHODS NEED ADD FRIEND 
+    //MOVE TO FRIEND CONTROLLER
     private func cancelFriendAPI(for user: Friend) async {
         do {
             let currentUser = UserDefaultManager().getLoggedInUser()
@@ -174,7 +176,7 @@ class YourFriendsViewController: UIViewController {
             print("Error cancelling friend request: \(error)")
         }
     }
-
+    
     private func removeFriendAPI(for user: Friend) async {
         do {
             let currentUser = UserDefaultManager().getLoggedInUser()
@@ -246,6 +248,7 @@ class YourFriendsViewController: UIViewController {
             print("Error declining invite: \(error)")
         }
     }
+     
 }
 
 // MARK: - TableView
@@ -279,6 +282,7 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         }
     }
 
+    //MOVE TO FRIEND CONTROLLER
     private func removeUserFromLocalData(_ user: Friend) {
         friends.removeAll { $0.friendID == user.friendID }
         friendRequests.removeAll { $0.friendID == user.friendID }

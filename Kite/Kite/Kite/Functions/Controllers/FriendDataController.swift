@@ -12,6 +12,7 @@ extension Notification.Name {
     static let friendsUpdated = Notification.Name("friendsUpdated")
 }
 
+//NEW ONE SO WE HAVE YourFriendsDataController FriendDataController
 class FriendDataController {
     static let shared = FriendDataController()
 
@@ -19,7 +20,10 @@ class FriendDataController {
     private let imageFunctions = ImageFunctions()
     private let userDefaultManager = UserDefaultManager()
 
+    //DO I NEED TYPES OF FRIENDS HERE NOT SURE PROBABLY NOT
+    //call yourFriends
     private(set) var friends: [Friend] = []
+    
 
     func fetchFriends() async throws {
         let currentUser = userDefaultManager.getLoggedInUser()
@@ -48,5 +52,84 @@ class FriendDataController {
 
     func removeFriend(_ friend: Friend) {
         friends.removeAll { $0.friendID == friend.friendID }
+    }
+    
+    
+}
+
+extension FriendDataController {
+    
+    func cancelFriendRequest(for user: Friend) async -> Bool {
+        do {
+            let currentUser = userDefaultManager.getLoggedInUser()
+            let response = try await friendAPI.cancelFriendRequest(
+                masterSite: "kite",
+                currentUser: currentUser,
+                friendName: user.friendName
+            )
+            if response.success {
+                removeFriend(user)
+                return true
+            }
+        } catch {
+            print("Error cancelling friend request: \(error)")
+        }
+        return false
+    }
+
+    func removeFriendFromServer(_ user: Friend) async -> Bool {
+        do {
+            let currentUser = userDefaultManager.getLoggedInUser()
+            let response = try await friendAPI.removeFriend(
+                masterSite: "kite",
+                currentUser: currentUser,
+                removeFriendName: user.friendName
+            )
+            if response.success {
+                removeFriend(user)
+                return true
+            }
+        } catch {
+            print("Error removing friend: \(error)")
+        }
+        return false
+    }
+
+    func acceptFriendInvite(_ user: Friend) async -> Bool {
+        do {
+            let currentUser = userDefaultManager.getLoggedInUser()
+            let response = try await friendAPI.acceptFriendInvite(
+                masterSite: "kite",
+                currentUser: currentUser,
+                friendName: user.friendName
+            )
+            if response.success {
+                var updatedUser = user
+                updatedUser.friendshipKey = FriendshipStatus.friends.rawValue
+                addFriend(updatedUser)
+                return true
+            }
+        } catch {
+            print("Error accepting invite: \(error)")
+        }
+        return false
+    }
+
+    func declineFriendInvite(_ user: Friend) async -> Bool {
+        do {
+            let currentUser = userDefaultManager.getLoggedInUser()
+            let response = try await friendAPI.declineFriendInvite(
+                masterSite: "kite",
+                currentUser: currentUser,
+                friendName: user.friendName
+            )
+            if response.success {
+                removeFriend(user)
+                return true
+            }
+        } catch {
+            print("Error declining invite: \(error)")
+        }
+        return false
     }
 }
