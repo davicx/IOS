@@ -99,7 +99,7 @@ class ProfileViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
         //friendVC.delegate = self
-        friendVC.users = FriendDataController.shared.friends
+        //friendVC.users = FriendDataController.shared.friends
         self.navigationController?.pushViewController(friendVC, animated: true)
     }
 
@@ -153,8 +153,6 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
         }
     }
 }
-
-
 
 
 

@@ -20,8 +20,6 @@ class FriendDataController {
     private let imageFunctions = ImageFunctions()
     private let userDefaultManager = UserDefaultManager()
 
-    //DO I NEED TYPES OF FRIENDS HERE NOT SURE PROBABLY NOT
-    //call yourFriends
     private(set) var friends: [Friend] = []
     
 
@@ -44,6 +42,19 @@ class FriendDataController {
         self.friends = fetchedFriends
     }
 
+    func splitFriendsByStatus() -> (friends: [Friend], requests: [Friend]) {
+        let friends = self.friends.filter {
+            FriendshipStatus(key: $0.friendshipKey) == .friends
+        }
+
+        let requests = self.friends.filter {
+            FriendshipStatus(key: $0.friendshipKey) == .invitePendingSentByYou
+        }
+
+        return (friends, requests)
+    }
+
+    
     func addFriend(_ friend: Friend) {
         if !friends.contains(where: { $0.friendID == friend.friendID }) {
             friends.append(friend)
@@ -57,7 +68,31 @@ class FriendDataController {
     
 }
 
+
 extension FriendDataController {
+    func sendFriendRequest(to user: Friend) async -> Bool {
+        do {
+            let currentUser = userDefaultManager.getLoggedInUser()
+            let response = try await friendAPI.addFriend(
+                masterSite: "kite",
+                currentUser: currentUser,
+                addFriendName: user.friendName
+            )
+
+            if response.success {
+                var updatedUser = user
+                updatedUser.friendshipKey = FriendshipStatus.invitePendingSentByYou.rawValue // define this in your enum
+                addFriend(updatedUser)
+
+                // Notify other views
+                NotificationCenter.default.post(name: .friendsUpdated, object: nil)
+                return true
+            }
+        } catch {
+            print("Error sending friend request: \(error)")
+        }
+        return false
+    }
     
     func cancelFriendRequest(for user: Friend) async -> Bool {
         do {
@@ -76,6 +111,8 @@ extension FriendDataController {
         }
         return false
     }
+    
+    
 
     func removeFriendFromServer(_ user: Friend) async -> Bool {
         do {
@@ -133,3 +170,6 @@ extension FriendDataController {
         return false
     }
 }
+
+
+
