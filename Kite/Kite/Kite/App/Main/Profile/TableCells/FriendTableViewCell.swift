@@ -72,6 +72,56 @@ class FriendTableViewCell: UITableViewCell {
         fullNameLabel.text = "\(user.firstName) \(user.lastName)"
         profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
 
+        friendActionButton.isUserInteractionEnabled = true
+        friendActionButton.isEnabled = true
+        friendActionButton.setTitleColor(.white, for: .normal)
+        friendActionButton.backgroundColor = .systemBlue
+        friendActionButton.layer.borderWidth = 0
+
+        switch user.friendshipKey {
+        case FriendshipStatus.friends.rawValue:
+            friendActionButton.setTitle("Friends", for: .normal)
+            friendActionButton.backgroundColor = .white
+            friendActionButton.setTitleColor(.black, for: .normal)
+            friendActionButton.layer.borderWidth = 1
+            friendActionButton.layer.borderColor = UIColor.lightGray.cgColor
+            friendActionButton.isEnabled = false
+
+        case FriendshipStatus.invitePendingSentByYou.rawValue:
+            friendActionButton.setTitle("Pending (You Sent)", for: .normal)
+            friendActionButton.backgroundColor = .gray
+            friendActionButton.setTitleColor(.white, for: .normal)
+            friendActionButton.isEnabled = false
+            friendActionButton.isUserInteractionEnabled = false
+
+        case FriendshipStatus.requestPendingSentByThem.rawValue:
+            friendActionButton.setTitle("Respond (They Sent)", for: .normal)
+            friendActionButton.backgroundColor = .systemOrange
+            friendActionButton.setTitleColor(.white, for: .normal)
+            friendActionButton.isEnabled = false  // or true if you want to support response here
+
+        case FriendshipStatus.you.rawValue:
+            friendActionButton.setTitle("You", for: .normal)
+            friendActionButton.isEnabled = false
+            friendActionButton.backgroundColor = .lightGray
+
+        case FriendshipStatus.notFriends.rawValue:
+            fallthrough
+        default:
+            friendActionButton.setTitle("Add Friend", for: .normal)
+            friendActionButton.backgroundColor = .systemBlue
+            friendActionButton.setTitleColor(.white, for: .normal)
+            friendActionButton.isEnabled = true
+        }
+    }
+
+    
+    /*
+    func configure(with user: Friend) {
+        usernameLabel.text = "@\(user.friendName)"
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+        profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
+
         if user.friendshipKey == "friends" {
             friendActionButton.setTitle("Friends", for: .normal)
             friendActionButton.backgroundColor = .white
@@ -85,6 +135,8 @@ class FriendTableViewCell: UITableViewCell {
             friendActionButton.layer.borderWidth = 0
         }
     }
+    
+    */
 
     @objc private func handleFriendActionTapped() {
         friendActionTapped?()

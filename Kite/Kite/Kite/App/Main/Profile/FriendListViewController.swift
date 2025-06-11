@@ -47,6 +47,7 @@ class FriendListViewController: UIViewController {
     }
 }
 
+
 // MARK: - Table View Delegate & Data Source
 extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
 
@@ -58,8 +59,29 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
         let friend = friendListArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as! FriendTableViewCell
         cell.configure(with: friend)
+
+        // Action for "Add Friend" button
+        cell.friendActionTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            print("Adding friend: \(friend.friendName)")
+
+            Task {
+                let success = await FriendDataController.shared.sendFriendRequest(to: friend)
+                if success {
+                    // Update the friendshipKey locally to show "Pending" UI or disable button
+                    self.friendListArray[indexPath.row].friendshipKey = FriendshipStatus.invitePendingSentByYou.rawValue
+
+                    DispatchQueue.main.async {
+                        self.tableView.reloadRows(at: [indexPath], with: .none)
+                    }
+                }
+            }
+        }
+
         return cell
     }
+
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedFriend = friendListArray[indexPath.row]

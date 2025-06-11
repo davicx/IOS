@@ -112,6 +112,7 @@ class YourFriendsTableViewCell: UITableViewCell {
             declineButton.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
+    
 
     func configure(with user: Friend) {
         usernameLabel.text = "@\(user.friendName)"

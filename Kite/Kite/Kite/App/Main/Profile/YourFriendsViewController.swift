@@ -8,31 +8,14 @@
 import UIKit
 
 
-protocol YourFriendsViewControllerDelegate: AnyObject {
-    func didDeclineFriend(_ friend: Friend)
-    func didAddFriend(_ friend: Friend)
-}
-
-//ACTIVE FRIEND
-//Current Friend: Remove
-//Current Invite Sent: Cancel it
-
-//FRIEND REQUESTS
-//Accept Request
-//Decline Request
-
 class YourFriendsViewController: UIViewController {
-    
-    //API Data
-    var users: [Friend] = []
+
+    // Filtered data
     private var friends: [Friend] = []
     private var friendRequests: [Friend] = []
     private var currentData: [Friend] = []
 
-    weak var delegate: YourFriendsViewControllerDelegate?
-
-    
-    //Table View
+    // Table View
     private let tableView = UITableView()
     private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
     private var underlineView: UIView?
@@ -42,26 +25,19 @@ class YourFriendsViewController: UIViewController {
         title = "Friends"
         view.backgroundColor = .white
 
-        friends = users.filter {
-            let status = FriendshipStatus(key: $0.friendshipKey)
-            return status == .friends || status == .requestPending
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFriendsUpdated), name: .friendsUpdated, object: nil)
 
-        friendRequests = users.filter {
-            FriendshipStatus(key: $0.friendshipKey) == .invitePending
-        }
-
+        splitUsersByStatus()
         setupSegmentedControl()
         setupTableView()
 
         segmentedControl.selectedSegmentIndex = 0
         currentData = friends
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print("YourFriendsViewController")
-    }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -133,9 +109,36 @@ class YourFriendsViewController: UIViewController {
         } else {
             let underline = UIView(frame: CGRect(x: underlineX, y: underlineY, width: underlineWidth, height: underlineHeight))
             underline.backgroundColor = .label
-            underline.tag = 999
             segmentedControl.addSubview(underline)
             underlineView = underline
+        }
+    }
+
+    private func splitUsersByStatus() {
+        let allFriends = FriendDataController.shared.friends
+
+        self.friends = allFriends.filter {
+            let status = FriendshipStatus(key: $0.friendshipKey)
+            return status == .friends || status == .requestPendingSentByThem
+        }
+
+        self.friendRequests = allFriends.filter {
+            FriendshipStatus(key: $0.friendshipKey) == .invitePendingSentByYou
+        }
+    }
+
+    @objc private func handleFriendsUpdated() {
+        Task {
+            do {
+                try await FriendDataController.shared.fetchFriends()
+                self.splitUsersByStatus()
+
+                DispatchQueue.main.async {
+                    self.segmentChanged()
+                }
+            } catch {
+                print("Failed to refresh friend list: \(error)")
+            }
         }
     }
 
@@ -171,7 +174,6 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    //FUNCTIONS: Handle Friend Requests
     private func cancelFriendAPI(for user: Friend) async {
         do {
             let currentUser = UserDefaultManager().getLoggedInUser()
@@ -184,11 +186,9 @@ class YourFriendsViewController: UIViewController {
                 DispatchQueue.main.async {
                     print("Successfully cancelled request to \(user.friendName)")
                     self.removeUserFromLocalData(user)
+                    FriendDataController.shared.removeFriend(user)
                     self.tableView.reloadData()
-                    self.delegate?.didDeclineFriend(user)
                 }
-            } else {
-                print("Cancel friend request failed: \(response.message)")
             }
         } catch {
             print("Error cancelling friend request: \(error)")
@@ -207,11 +207,9 @@ class YourFriendsViewController: UIViewController {
                 DispatchQueue.main.async {
                     print("Successfully removed friend: \(user.friendName)")
                     self.removeUserFromLocalData(user)
+                    FriendDataController.shared.removeFriend(user)
                     self.tableView.reloadData()
-                    self.delegate?.didDeclineFriend(user)
                 }
-            } else {
-                print("Remove friend failed: \(response.message)")
             }
         } catch {
             print("Error removing friend: \(error)")
@@ -229,27 +227,23 @@ class YourFriendsViewController: UIViewController {
             if response.success {
                 DispatchQueue.main.async {
                     print("Accepted invite from \(user.friendName)")
-                    self.friendRequests.removeAll { $0.friendID == user.friendID }
-                    self.currentData.removeAll { $0.friendID == user.friendID }
+                    self.removeUserFromLocalData(user)
 
-                    user.friendshipKey = FriendshipStatus.friends.rawValue
-                    self.friends.append(user)
+                    var updatedUser = user
+                    updatedUser.friendshipKey = FriendshipStatus.friends.rawValue
+                    self.friends.append(updatedUser)
+                    FriendDataController.shared.addFriend(updatedUser)
 
                     if self.segmentedControl.selectedSegmentIndex == 1 {
                         self.tableView.reloadData()
                     }
-
-                    self.delegate?.didAddFriend(user)
                 }
-            } else {
-                print("Accept invite failed: \(response.message)")
             }
         } catch {
             print("Error accepting invite: \(error)")
         }
     }
 
-    //FUNCTIONS: Handle Friend Requests
     private func declineInviteAPI(for user: Friend) async {
         do {
             let currentUser = UserDefaultManager().getLoggedInUser()
@@ -261,24 +255,38 @@ class YourFriendsViewController: UIViewController {
             if response.success {
                 DispatchQueue.main.async {
                     print("Declined invite from \(user.friendName)")
-                    if let index = self.currentData.firstIndex(where: { $0.friendID == user.friendID }) {
-                        self.removeUserFromLocalData(user)
-                        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                        self.delegate?.didDeclineFriend(user)
-                    }
+                    self.removeUserFromLocalData(user)
+                    FriendDataController.shared.removeFriend(user)
+                    self.tableView.reloadData()
                 }
-            } else {
-                print("Decline invite failed: \(response.message)")
             }
         } catch {
             print("Error declining invite: \(error)")
         }
     }
 
-    
+    private func removeUserFromLocalData(_ user: Friend) {
+        friends.removeAll { $0.friendID == user.friendID }
+        friendRequests.removeAll { $0.friendID == user.friendID }
+        currentData.removeAll { $0.friendID == user.friendID }
+    }
+
+    private func presentConfirmationAlert(
+        title: String,
+        message: String,
+        confirmTitle: String,
+        destructive: Bool = false,
+        onConfirm: @escaping () -> Void
+    ) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        let style: UIAlertAction.Style = destructive ? .destructive : .default
+        alert.addAction(UIAlertAction(title: confirmTitle, style: style) { _ in onConfirm() })
+        present(alert, animated: true)
+    }
 }
 
-// MARK: - UITableViewDataSource & UITableViewDelegate
+// MARK: - TableView
 extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentData.count
@@ -303,40 +311,13 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         let selectedFriend = currentData[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let vc = storyboard.instantiateViewController(
-            withIdentifier: "FriendProfileViewControllerID"
-        ) as? FriendProfileViewController {
+        if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
             vc.friend = selectedFriend
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
-    private func removeUserFromLocalData(_ user: Friend) {
-        friends.removeAll { $0.friendID == user.friendID }
-        friendRequests.removeAll { $0.friendID == user.friendID }
-        currentData.removeAll { $0.friendID == user.friendID }
-        users.removeAll { $0.friendID == user.friendID }
-    }
-
-    
-    private func presentConfirmationAlert(
-        title: String,
-        message: String,
-        confirmTitle: String,
-        destructive: Bool = false,
-        onConfirm: @escaping () -> Void
-    ) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        let style: UIAlertAction.Style = destructive ? .destructive : .default
-        alert.addAction(UIAlertAction(title: confirmTitle, style: style) { _ in onConfirm() })
-        present(alert, animated: true)
-    }
-
-    
 }
 
-// MARK: - Helper
 extension UISegmentedControl {
     func removeBackgroundAndDivider() {
         setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
@@ -345,5 +326,3 @@ extension UISegmentedControl {
                         rightSegmentState: .normal, barMetrics: .default)
     }
 }
-
-

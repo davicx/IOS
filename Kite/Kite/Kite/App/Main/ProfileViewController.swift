@@ -8,7 +8,6 @@
 import UIKit
 
 
-//CURRENT: June 9
 class ProfileViewController: UIViewController {
     let postsAPI = PostsAPI()
     let profileAPI = ProfileAPI()
@@ -20,7 +19,6 @@ class ProfileViewController: UIViewController {
     private let userProfileLayout = UserProfileLayout()
     
     var userResponseModel: UserProfileResponseModel?
-    var friendListArray: [Friend] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,18 +73,15 @@ class ProfileViewController: UIViewController {
                     }
                 }
 
-                //Fetch friends using new shared controller
+                // Fetch friends
                 try await FriendDataController.shared.fetchFriends()
-                self.friendListArray = FriendDataController.shared.friends
 
             } catch {
                 print("Error in viewDidLoad: \(error)")
             }
         }
-
     }
 
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("ProfileViewController")
@@ -94,14 +89,6 @@ class ProfileViewController: UIViewController {
         Task {
             do {
                 try await FriendDataController.shared.fetchFriends()
-                self.friendListArray = FriendDataController.shared.friends
-                
-                /*
-                 print("Updated friend list in viewDidAppear:")
-                 for f in friendListArray {
-                 print("Friend: \(f.friendName)")
-                 }
-                 */
             } catch {
                 print("Error updating friend list: \(error)")
             }
@@ -111,34 +98,29 @@ class ProfileViewController: UIViewController {
     @objc private func friendsButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
-        friendVC.delegate = self
-        
-        friendVC.users = self.friendListArray
+        //friendVC.delegate = self
+        //friendVC.users = FriendDataController.shared.friends
         self.navigationController?.pushViewController(friendVC, animated: true)
     }
-    
 
-     func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
-         await withTaskGroup(of: Void.self) { group in
-             for friend in friends {
-                 group.addTask {
-                     if let image = await imageHelper.fetchImage(from: friend.friendImage) {
-                         friend.profileImage = image
-                     }
-                 }
-             }
-         }
-     }
-     
+    func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
+        await withTaskGroup(of: Void.self) { group in
+            for friend in friends {
+                group.addTask {
+                    if let image = await imageHelper.fetchImage(from: friend.friendImage) {
+                        friend.profileImage = image
+                    }
+                }
+            }
+        }
+    }
 
-    // EDIT: User Profile
     @objc private func editButtonTapped() {
         guard let userResponse = userResponseModel else { return }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let editProfileVC = storyboard.instantiateViewController(withIdentifier: "EditProfileViewController") as! EditProfileViewController
 
-        // Send the existing data
         editProfileVC.inputFirstName = userResponse.data.firstName
         editProfileVC.inputLastName = userResponse.data.lastName
         editProfileVC.inputBiography = userResponse.data.biography
@@ -148,48 +130,21 @@ class ProfileViewController: UIViewController {
         }
 
         editProfileVC.delegate = self
-
         navigationController?.pushViewController(editProfileVC, animated: true)
     }
-
-
 }
 
-extension ProfileViewController: YourFriendsViewControllerDelegate {
-    func didDeclineFriend(_ friend: Friend) {
-        // Update local array
-        friendListArray.removeAll { $0.friendID == friend.friendID }
-        print("ProfileVC updated friendListArray after declining \(friend.friendName)")
-    }
-    
-    func didAddFriend(_ friend: Friend) {
-        print("ProfileVC received new friend: \(friend.friendName)")
-        
-        // Only add if not already there
-        if !friendListArray.contains(where: { $0.friendID == friend.friendID }) {
-            friendListArray.append(friend)
-        }
 
-        // Optional: print current friend list
-        for friend in friendListArray {
-            print("Friend in list: \(friend.friendName)")
-        }
-    }
-
-}
+// MARK: - EditProfileViewControllerDelegate
 
 extension ProfileViewController: EditProfileViewControllerDelegate {
     func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {
-        // Update UI with the new data
         DispatchQueue.main.async {
             self.userProfileLayout.userProfileBiography.configure(
                 firstName: firstName,
                 lastName: lastName
             )
-            
-            //self.userProfileLayout.userProfileEditView.biographyLabel.text = biography
-            
-            // Update profile image if changed
+
             if let newImage = updatedImage {
                 self.userProfileLayout.profileImageView.imageView.image = newImage
             }
@@ -198,4 +153,6 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
         }
     }
 }
+
+
 

@@ -35,6 +35,7 @@ class FriendAPI {
         session = URLSession(configuration: config)
     }
     
+    
     //FUNCTIONS A: All Functions Related to Friend Actions
     //Function A1: Add Friend
     func addFriend(masterSite: String, currentUser: String, addFriendName: String) async throws -> AddFriendResponseModel {
@@ -90,6 +91,8 @@ class FriendAPI {
             throw networkError.serverError(statusCode: httpResponse.statusCode)
         }
     }
+    
+    
 
     //Function A2: Remove Friend
     func removeFriend(masterSite: String, currentUser: String, removeFriendName: String) async throws -> RemoveFriendResponseModel {
