@@ -8,12 +8,13 @@
 import UIKit
 
 
+
 class YourFriendsViewController: UIViewController {
 
     // Filtered data
     private var friends: [Friend] = []
     private var friendRequests: [Friend] = []
-    private var currentData: [Friend] = []
+    private var currentlyDisplayedFriends: [Friend] = []
 
     // Table View
     private let tableView = UITableView()
@@ -32,7 +33,7 @@ class YourFriendsViewController: UIViewController {
         setupTableView()
 
         segmentedControl.selectedSegmentIndex = 0
-        currentData = friends
+        currentlyDisplayedFriends = friends
     }
 
     deinit {
@@ -91,7 +92,7 @@ class YourFriendsViewController: UIViewController {
     }
 
     @objc private func segmentChanged() {
-        currentData = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
+        currentlyDisplayedFriends = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
         addUnderlineForSelectedSegment()
         tableView.reloadData()
     }
@@ -118,14 +119,15 @@ class YourFriendsViewController: UIViewController {
         let allFriends = FriendDataController.shared.friends
 
         self.friends = allFriends.filter {
-            let status = FriendshipStatus(key: $0.friendshipKey)
-            return status == .friends || status == .requestPendingSentByThem
+            FriendshipStatus(key: $0.friendshipKey) == .friends
         }
 
         self.friendRequests = allFriends.filter {
-            FriendshipStatus(key: $0.friendshipKey) == .invitePendingSentByYou
+            let status = FriendshipStatus(key: $0.friendshipKey)
+            return status == .invitePendingSentByYou || status == .requestPendingSentByThem
         }
     }
+
 
     @objc private func handleFriendsUpdated() {
         Task {
@@ -176,40 +178,25 @@ class YourFriendsViewController: UIViewController {
 
     private func cancelFriendAPI(for user: Friend) async {
         do {
-            let currentUser = UserDefaultManager().getLoggedInUser()
-            let response = try await FriendAPI().cancelFriendRequest(
-                masterSite: "kite",
-                currentUser: currentUser,
-                friendName: user.friendName
-            )
-            if response.success {
-                DispatchQueue.main.async {
-                    print("Successfully cancelled request to \(user.friendName)")
-                    self.removeUserFromLocalData(user)
-                    FriendDataController.shared.removeFriend(user)
-                    self.tableView.reloadData()
-                }
+            try await FriendDataController.shared.cancelRequest(to: user)
+            DispatchQueue.main.async {
+                print("Successfully cancelled request to \(user.friendName)")
+                self.removeUserFromLocalData(user)
+                self.tableView.reloadData()
             }
         } catch {
             print("Error cancelling friend request: \(error)")
         }
     }
 
+
     private func removeFriendAPI(for user: Friend) async {
         do {
-            let currentUser = UserDefaultManager().getLoggedInUser()
-            let response = try await FriendAPI().removeFriend(
-                masterSite: "kite",
-                currentUser: currentUser,
-                removeFriendName: user.friendName
-            )
-            if response.success {
-                DispatchQueue.main.async {
-                    print("Successfully removed friend: \(user.friendName)")
-                    self.removeUserFromLocalData(user)
-                    FriendDataController.shared.removeFriend(user)
-                    self.tableView.reloadData()
-                }
+            try await FriendDataController.shared.remove(friend: user)
+            DispatchQueue.main.async {
+                print("Successfully removed friend: \(user.friendName)")
+                self.removeUserFromLocalData(user)
+                self.tableView.reloadData()
             }
         } catch {
             print("Error removing friend: \(error)")
@@ -218,25 +205,14 @@ class YourFriendsViewController: UIViewController {
 
     private func acceptInviteAPI(for user: Friend) async {
         do {
-            let currentUser = UserDefaultManager().getLoggedInUser()
-            let response = try await FriendAPI().acceptFriendInvite(
-                masterSite: "kite",
-                currentUser: currentUser,
-                friendName: user.friendName
-            )
-            if response.success {
-                DispatchQueue.main.async {
-                    print("Accepted invite from \(user.friendName)")
-                    self.removeUserFromLocalData(user)
+            let updatedUser = try await FriendDataController.shared.accept(inviteFrom: user)
+            DispatchQueue.main.async {
+                print("Accepted invite from \(user.friendName)")
+                self.removeUserFromLocalData(user)
+                self.friends.append(updatedUser)
 
-                    var updatedUser = user
-                    updatedUser.friendshipKey = FriendshipStatus.friends.rawValue
-                    self.friends.append(updatedUser)
-                    FriendDataController.shared.addFriend(updatedUser)
-
-                    if self.segmentedControl.selectedSegmentIndex == 1 {
-                        self.tableView.reloadData()
-                    }
+                if self.segmentedControl.selectedSegmentIndex == 1 {
+                    self.tableView.reloadData()
                 }
             }
         } catch {
@@ -246,19 +222,11 @@ class YourFriendsViewController: UIViewController {
 
     private func declineInviteAPI(for user: Friend) async {
         do {
-            let currentUser = UserDefaultManager().getLoggedInUser()
-            let response = try await FriendAPI().declineFriendInvite(
-                masterSite: "kite",
-                currentUser: currentUser,
-                friendName: user.friendName
-            )
-            if response.success {
-                DispatchQueue.main.async {
-                    print("Declined invite from \(user.friendName)")
-                    self.removeUserFromLocalData(user)
-                    FriendDataController.shared.removeFriend(user)
-                    self.tableView.reloadData()
-                }
+            try await FriendDataController.shared.decline(inviteFrom: user)
+            DispatchQueue.main.async {
+                print("Declined invite from \(user.friendName)")
+                self.removeUserFromLocalData(user)
+                self.tableView.reloadData()
             }
         } catch {
             print("Error declining invite: \(error)")
@@ -268,7 +236,7 @@ class YourFriendsViewController: UIViewController {
     private func removeUserFromLocalData(_ user: Friend) {
         friends.removeAll { $0.friendID == user.friendID }
         friendRequests.removeAll { $0.friendID == user.friendID }
-        currentData.removeAll { $0.friendID == user.friendID }
+        currentlyDisplayedFriends.removeAll { $0.friendID == user.friendID }
     }
 
     private func presentConfirmationAlert(
@@ -289,11 +257,11 @@ class YourFriendsViewController: UIViewController {
 // MARK: - TableView
 extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentData.count
+        return currentlyDisplayedFriends.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let user = currentData[indexPath.row]
+        let user = currentlyDisplayedFriends[indexPath.row]
         let cell = tableView.dequeueReusableCell(
             withIdentifier: Constants.TableViewCellIdentifier.friendCell,
             for: indexPath
@@ -308,7 +276,7 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let selectedFriend = currentData[indexPath.row]
+        let selectedFriend = currentlyDisplayedFriends[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
