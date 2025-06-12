@@ -91,6 +91,7 @@
 		D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7C02D824D5B00A08602 /* UserProfileBiographyView.swift */; };
 		D74C9F052D5981AB00947ECE /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F042D5981AB00947ECE /* KeyChainManager.swift */; };
 		D74C9F092D59820400947ECE /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F082D59820400947ECE /* KeychainHelper.swift */; };
+		D75470122DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */; };
 		D75D6C3F2DEE6DCA0080751C /* AcceptFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */; };
 		D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */; };
 		D773A57C2DF3A62600074C88 /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57B2DF3A62600074C88 /* FriendListViewController.swift */; };
@@ -236,6 +237,7 @@
 		D747F7C02D824D5B00A08602 /* UserProfileBiographyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileBiographyView.swift; sourceTree = "<group>"; };
 		D74C9F042D5981AB00947ECE /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		D74C9F082D59820400947ECE /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFriendsViewControllerLayout.swift; sourceTree = "<group>"; };
 		D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptFriendResponseModel.swift; sourceTree = "<group>"; };
 		D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineFriendResponseModel.swift; sourceTree = "<group>"; };
 		D773A57B2DF3A62600074C88 /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
@@ -550,6 +552,7 @@
 				D747F7BC2D824D3200A08602 /* UserProfileSocialsView.swift */,
 				D747F7BE2D824D4400A08602 /* UserProfileEditView.swift */,
 				D747F7C02D824D5B00A08602 /* UserProfileBiographyView.swift */,
+				D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */,
 			);
 			path = layouts;
 			sourceTree = "<group>";
@@ -845,6 +848,7 @@
 				51CA9DCE2D0FAA6F008C36F0 /* SearchViewController.swift in Sources */,
 				51C69B452D0E594600C46759 /* LoginModel.swift in Sources */,
 				D747F7BB2D824D0800A08602 /* UserNameView.swift in Sources */,
+				D75470122DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift in Sources */,
 				D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */,
 				D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */,
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,

@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 class YourFriendsViewController: UIViewController {
 
     // Filtered data
@@ -17,9 +16,9 @@ class YourFriendsViewController: UIViewController {
     private var currentlyDisplayedFriends: [Friend] = []
 
     // Table View
-    private let tableView = UITableView()
-    private let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
-    private var underlineView: UIView?
+    internal let tableView = UITableView()
+    internal let segmentedControl = UISegmentedControl(items: ["Friends", "Friend Requests"])
+    internal var underlineView: UIView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +30,7 @@ class YourFriendsViewController: UIViewController {
         splitUsersByStatus()
         setupSegmentedControl()
         setupTableView()
+        
 
         segmentedControl.selectedSegmentIndex = 0
         currentlyDisplayedFriends = friends
@@ -45,75 +45,16 @@ class YourFriendsViewController: UIViewController {
         addUnderlineForSelectedSegment()
     }
 
-    private func setupSegmentedControl() {
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.removeBackgroundAndDivider()
-
-        segmentedControl.backgroundColor = .clear
-        segmentedControl.selectedSegmentTintColor = .clear
-
-        let normalAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.systemGray,
-            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
-        ]
-        let selectedAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.label,
-            .font: UIFont.systemFont(ofSize: 15, weight: .semibold)
-        ]
-
-        segmentedControl.setTitleTextAttributes(normalAttributes, for: .normal)
-        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
-
-        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
-
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
-        segmentedControl.frame = CGRect(x: 16, y: 4, width: view.frame.width - 32, height: 36)
-        headerView.addSubview(segmentedControl)
-        tableView.tableHeaderView = headerView
-    }
-
-    private func setupTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
-
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 72
-
-        tableView.register(YourFriendsTableViewCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.friendCell)
-    }
-
-    @objc private func segmentChanged() {
+    
+    
+    @objc func segmentChanged() {
         currentlyDisplayedFriends = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
         addUnderlineForSelectedSegment()
         tableView.reloadData()
     }
 
-    private func addUnderlineForSelectedSegment() {
-        let underlineWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
-        let underlineHeight: CGFloat = 2.0
-        let underlineY = segmentedControl.frame.height - underlineHeight
-        let underlineX = CGFloat(segmentedControl.selectedSegmentIndex) * underlineWidth
-
-        if let underline = underlineView {
-            UIView.animate(withDuration: 0.25) {
-                underline.frame.origin.x = underlineX
-            }
-        } else {
-            let underline = UIView(frame: CGRect(x: underlineX, y: underlineY, width: underlineWidth, height: underlineHeight))
-            underline.backgroundColor = .label
-            segmentedControl.addSubview(underline)
-            underlineView = underline
-        }
-    }
+    
+    //FUNCTIONS
 
     private func splitUsersByStatus() {
         let allFriends = FriendDataController.shared.friends
@@ -143,8 +84,15 @@ class YourFriendsViewController: UIViewController {
             }
         }
     }
-
+    
     private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
+        configureCancelInvite(for: user, in: cell)
+        configureRemoveFriend(for: user, in: cell)
+        configureAcceptInvite(for: user, in: cell)
+        configureDeclineInvite(for: user, in: cell)
+    }
+
+    private func configureCancelInvite(for user: Friend, in cell: YourFriendsTableViewCell) {
         cell.cancelFriendInviteTapped = { [weak self] in
             self?.presentConfirmationAlert(
                 title: "Cancel Friend Request",
@@ -155,7 +103,9 @@ class YourFriendsViewController: UIViewController {
                 Task { await self?.cancelFriendAPI(for: user) }
             }
         }
+    }
 
+    private func configureRemoveFriend(for user: Friend, in cell: YourFriendsTableViewCell) {
         cell.removeFriendTapped = { [weak self] in
             self?.presentConfirmationAlert(
                 title: "Remove Friend",
@@ -166,11 +116,15 @@ class YourFriendsViewController: UIViewController {
                 Task { await self?.removeFriendAPI(for: user) }
             }
         }
+    }
 
+    private func configureAcceptInvite(for user: Friend, in cell: YourFriendsTableViewCell) {
         cell.acceptFriendInviteTapped = { [weak self] in
             Task { await self?.acceptInviteAPI(for: user) }
         }
+    }
 
+    private func configureDeclineInvite(for user: Friend, in cell: YourFriendsTableViewCell) {
         cell.declineFriendInviteTapped = { [weak self] in
             Task { await self?.declineInviteAPI(for: user) }
         }
@@ -188,7 +142,6 @@ class YourFriendsViewController: UIViewController {
             print("Error cancelling friend request: \(error)")
         }
     }
-
 
     private func removeFriendAPI(for user: Friend) async {
         do {
@@ -294,3 +247,96 @@ extension UISegmentedControl {
                         rightSegmentState: .normal, barMetrics: .default)
     }
 }
+
+
+
+/*
+private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
+    cell.cancelFriendInviteTapped = { [weak self] in
+        self?.presentConfirmationAlert(
+            title: "Cancel Friend Request",
+            message: "Are you sure you want to cancel the friend invite to @\(user.friendName)?",
+            confirmTitle: "Remove Request",
+            destructive: true
+        ) {
+            Task { await self?.cancelFriendAPI(for: user) }
+        }
+    }
+
+    cell.removeFriendTapped = { [weak self] in
+        self?.presentConfirmationAlert(
+            title: "Remove Friend",
+            message: "Are you sure you want to remove @\(user.friendName) from your friends?",
+            confirmTitle: "Remove",
+            destructive: true
+        ) {
+            Task { await self?.removeFriendAPI(for: user) }
+        }
+    }
+
+    cell.acceptFriendInviteTapped = { [weak self] in
+        Task { await self?.acceptInviteAPI(for: user) }
+    }
+
+    cell.declineFriendInviteTapped = { [weak self] in
+        Task { await self?.declineInviteAPI(for: user) }
+    }
+}
+
+private func cancelFriendAPI(for user: Friend) async {
+    do {
+        try await FriendDataController.shared.cancelRequest(to: user)
+        DispatchQueue.main.async {
+            print("Successfully cancelled request to \(user.friendName)")
+            self.removeUserFromLocalData(user)
+            self.tableView.reloadData()
+        }
+    } catch {
+        print("Error cancelling friend request: \(error)")
+    }
+}
+
+
+private func removeFriendAPI(for user: Friend) async {
+    do {
+        try await FriendDataController.shared.remove(friend: user)
+        DispatchQueue.main.async {
+            print("Successfully removed friend: \(user.friendName)")
+            self.removeUserFromLocalData(user)
+            self.tableView.reloadData()
+        }
+    } catch {
+        print("Error removing friend: \(error)")
+    }
+}
+
+private func acceptInviteAPI(for user: Friend) async {
+    do {
+        let updatedUser = try await FriendDataController.shared.accept(inviteFrom: user)
+        DispatchQueue.main.async {
+            print("Accepted invite from \(user.friendName)")
+            self.removeUserFromLocalData(user)
+            self.friends.append(updatedUser)
+
+            if self.segmentedControl.selectedSegmentIndex == 1 {
+                self.tableView.reloadData()
+            }
+        }
+    } catch {
+        print("Error accepting invite: \(error)")
+    }
+}
+
+private func declineInviteAPI(for user: Friend) async {
+    do {
+        try await FriendDataController.shared.decline(inviteFrom: user)
+        DispatchQueue.main.async {
+            print("Declined invite from \(user.friendName)")
+            self.removeUserFromLocalData(user)
+            self.tableView.reloadData()
+        }
+    } catch {
+        print("Error declining invite: \(error)")
+    }
+}
+ */
