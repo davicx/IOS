@@ -103,6 +103,7 @@
 		D78C165E2DD55DBA00EEDD91 /* postLikeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */; };
 		D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */; };
 		D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */; };
+		D79743F72DFB980A00DC97D5 /* LoginDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79743F62DFB980A00DC97D5 /* LoginDoc.swift */; };
 		D798D97D2DED16B800C1960E /* CancelFriendRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798D97C2DED16B800C1960E /* CancelFriendRequestModel.swift */; };
 		D798D97F2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798D97E2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift */; };
 		D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */; };
@@ -249,6 +250,7 @@
 		D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postLikeFunctions.swift; sourceTree = "<group>"; };
 		D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowers.swift; sourceTree = "<group>"; };
 		D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPIBackup.swift; sourceTree = "<group>"; };
+		D79743F62DFB980A00DC97D5 /* LoginDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDoc.swift; sourceTree = "<group>"; };
 		D798D97C2DED16B800C1960E /* CancelFriendRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelFriendRequestModel.swift; sourceTree = "<group>"; };
 		D798D97E2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelFriendRequestReponseModel.swift; sourceTree = "<group>"; };
 		D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -482,6 +484,7 @@
 				51CA9DC42D0FA711008C36F0 /* RegistrationViewController.swift */,
 				D74471182D88EAE6009677B9 /* DividerWithLabel.swift */,
 				D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */,
+				D79743F62DFB980A00DC97D5 /* LoginDoc.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -514,7 +517,6 @@
 				D7096A782DDE92E200A51D32 /* TableCells */,
 				D747F7B72D824CCF00A08602 /* original */,
 				51EC39172D3495850001B6E7 /* EditProfileViewController.swift */,
-				D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */,
 				D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */,
 				D721D29F2DE527070002FE4C /* YourFriendsViewController.swift */,
 				D773A57B2DF3A62600074C88 /* FriendListViewController.swift */,
@@ -591,6 +593,8 @@
 		D780478A2DF5099100702C01 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				D79743F92DFB9DDF00DC97D5 /* Followers */,
+				D79743F82DFB99D900DC97D5 /* Groups */,
 				51EC39142D34952F0001B6E7 /* Profile */,
 				D7FB876C2D6FE00E0054CDF7 /* Home */,
 				D74AAB382D9F4B7600C8AEB5 /* Post */,
@@ -601,6 +605,21 @@
 				51CA9DCF2D0FAA75008C36F0 /* ProfileViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		D79743F82DFB99D900DC97D5 /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Groups;
+			sourceTree = "<group>";
+		};
+		D79743F92DFB9DDF00DC97D5 /* Followers */ = {
+			isa = PBXGroup;
+			children = (
+				D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */,
+			);
+			path = Followers;
 			sourceTree = "<group>";
 		};
 		D798D97B2DED166200C1960E /* Friends */ = {
@@ -806,6 +825,7 @@
 				51CA9DCA2D0FAA5A008C36F0 /* GroupsViewController.swift in Sources */,
 				51CA9DD02D0FAA75008C36F0 /* ProfileViewController.swift in Sources */,
 				51C69B3C2D0E584500C46759 /* NewPostResponseModel.swift in Sources */,
+				D79743F72DFB980A00DC97D5 /* LoginDoc.swift in Sources */,
 				51C69B222D0E572B00C46759 /* LoginAPI.swift in Sources */,
 				D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */,
 				D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */,

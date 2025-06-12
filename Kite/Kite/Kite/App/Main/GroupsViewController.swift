@@ -9,12 +9,66 @@ import UIKit
 
 
 class GroupsViewController: UIViewController {
+    let groupsAPI = GroupsAPI()
+    let userDefaultManager = UserDefaultManager()
+
     
     private let userProfileLayout = UserProfileLayoutExample()
     
     override func viewDidLoad() {
+        let currentUser = userDefaultManager.getLoggedInUser()
+        let deviceId = getDeviceId()
+        
         super.viewDidLoad()
         userProfileLayout.setup(in: view)
+        
+
+        getGroup(currentUser: currentUser)
+
+        
+
+    
+            
+    }
+    
+    func getGroup(currentUser: String) {
+        Task{
+            do{
+                let groupsResponseModel = try await groupsAPI.getGroupsAPI(for: currentUser)
+                
+                if(groupsResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
+                print(groupsResponseModel)
+                
+           
+            } catch{
+                print("CATCH groupsAPI.getGroupsAPI(for: currentUser) yo man error!")
+                print(error)
+                //AuthManager.shared.logoutCurrentUser()
+            }
+        }
+    }
+
+    func createGroup(){
+        Task{
+            do{
+                let newGroupResponseModel = try await groupsAPI.newGroup(currentUser: "davey", groupName: "music", groupType: "kite", groupPrivate: 1, groupUsers: ["davey", "sam",  "merry", "Frodo", "frodo", " pippin"], notificationMessage: "Invited you to a new Group", notificationType: "group_invite", notificationLink: "http://localhost:3003/group/77")
+                
+                if(newGroupResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
+                print(newGroupResponseModel)
+                
+                
+            } catch{
+                print("CATCH groupsAPI.getGroupsAPI(for: currentUser) yo man error!")
+                print(error)
+                //AuthManager.shared.logoutCurrentUser()
+            }
+        }
     }
 }
 
@@ -78,26 +132,6 @@ class GroupsViewController: UIViewController {
 */
 
 
-/*
- // Set constraints for custom view
- NSLayoutConstraint.activate([
-     customView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-     customView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-     customView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
- ])
- 
- // Add the label to the custom view
- customView.addSubview(label)
- label.translatesAutoresizingMaskIntoConstraints = false
- 
- // Set constraints for the label
- NSLayoutConstraint.activate([
-     label.leadingAnchor.constraint(equalTo: customView.leadingAnchor, constant: 20), // Padding from the left
-     label.trailingAnchor.constraint(equalTo: customView.trailingAnchor, constant: -20), // Padding from the right
-     label.topAnchor.constraint(equalTo: customView.topAnchor, constant: 20), // Padding from the top
-     label.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -20) // Padding from the bottom
- ])
- */
 
 
 //TASK: Get a Group
