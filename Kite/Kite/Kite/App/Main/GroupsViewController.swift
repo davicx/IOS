@@ -8,16 +8,175 @@
 import UIKit
 
 
+
 class GroupsViewController: UIViewController {
-    
-    private let userProfileLayout = UserProfileLayoutExample()
-    
+
+    let groupsAPI = GroupsAPI()
+    let userDefaultManager = UserDefaultManager()
+
+    private var groups: [GroupModel] = []
+    private let tableView = UITableView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        userProfileLayout.setup(in: view)
+        setupTableView()
+        fetchGroups()
+    }
+
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        tableView.rowHeight = 220
+        tableView.tableFooterView = UIView()
+
+        // Custom Header View
+        let headerView = UIView()
+        headerView.backgroundColor = .lightGray
+
+        let headerLabel = UILabel()
+        headerLabel.text = "Groups"
+        headerLabel.font = .boldSystemFont(ofSize: 24)
+        headerLabel.textAlignment = .center
+
+        headerView.addSubview(headerLabel)
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            headerLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+        ])
+
+        // Set the header's frame explicitly to be recognized by tableView
+        headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 60)
+        tableView.tableHeaderView = headerView
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+    private func fetchGroups() {
+        let currentUser = userDefaultManager.getLoggedInUser()
+
+        Task {
+            do {
+                let groupsResponseModel = try await groupsAPI.getGroupsAPI(for: currentUser)
+                if groupsResponseModel.statusCode == 401 {
+                    AuthManager.shared.logoutCurrentUser()
+                    return
+                }
+                self.groups = groupsResponseModel.data
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print("Failed to fetch groups:", error)
+            }
+        }
     }
 }
 
+extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return groups.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let group = groups[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupTableViewCell
+        cell.configure(with: group)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let group = groups[indexPath.row]
+        let storyboard = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
+        vc.group = group
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+
+
+/*
+class GroupsViewController: UIViewController {
+    let groupsAPI = GroupsAPI()
+    let userDefaultManager = UserDefaultManager()
+
+ 
+    override func viewDidLoad() {
+        let currentUser = userDefaultManager.getLoggedInUser()
+        let deviceId = getDeviceId()
+   
+        super.viewDidLoad()
+       
+        getGroup(currentUser: currentUser)
+
+         
+
+      
+
+    
+            
+    }
+
+    func getGroup(currentUser: String) {
+        Task{
+            do{
+                let groupsResponseModel = try await groupsAPI.getGroupsAPI(for: currentUser)
+                
+                if(groupsResponseModel.statusCode == 401) {
+                    AuthManager.shared.logoutCurrentUser()
+                }
+                
+                print(groupsResponseModel)
+                
+           
+            } catch{
+                print("CATCH groupsAPI.getGroupsAPI(for: currentUser) yo man error!")
+                print(error)
+                //AuthManager.shared.logoutCurrentUser()
+            }
+        }
+    }
+}
+
+*/
+
+/*
+getGroup(currentUser: currentUser)
+
+ 
+ 
+
+
+ func createGroup(){
+     Task{
+         do{
+             let newGroupResponseModel = try await groupsAPI.newGroup(currentUser: "davey", groupName: "music", groupType: "kite", groupPrivate: 1, groupUsers: ["davey", "sam",  "merry", "Frodo", "frodo", " pippin"], notificationMessage: "Invited you to a new Group", notificationType: "group_invite", notificationLink: "http://localhost:3003/group/77")
+             
+             if(newGroupResponseModel.statusCode == 401) {
+                 AuthManager.shared.logoutCurrentUser()
+             }
+             
+             print(newGroupResponseModel)
+             
+             
+         } catch{
+             print("CATCH groupsAPI.getGroupsAPI(for: currentUser) yo man error!")
+             print(error)
+             //AuthManager.shared.logoutCurrentUser()
+         }
+     }
+ }
+ */
 
 //WORKS
 /*
@@ -78,26 +237,6 @@ class GroupsViewController: UIViewController {
 */
 
 
-/*
- // Set constraints for custom view
- NSLayoutConstraint.activate([
-     customView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-     customView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-     customView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
- ])
- 
- // Add the label to the custom view
- customView.addSubview(label)
- label.translatesAutoresizingMaskIntoConstraints = false
- 
- // Set constraints for the label
- NSLayoutConstraint.activate([
-     label.leadingAnchor.constraint(equalTo: customView.leadingAnchor, constant: 20), // Padding from the left
-     label.trailingAnchor.constraint(equalTo: customView.trailingAnchor, constant: -20), // Padding from the right
-     label.topAnchor.constraint(equalTo: customView.topAnchor, constant: 20), // Padding from the top
-     label.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -20) // Padding from the bottom
- ])
- */
 
 
 //TASK: Get a Group

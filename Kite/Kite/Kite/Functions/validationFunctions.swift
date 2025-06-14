@@ -9,7 +9,7 @@ import Foundation
 
 
 func validateUserName(userName: String) -> Bool {
-    guard userName.count >= 5, userName.count <= 20 else {
+    guard userName.count >= 3, userName.count <= 20 else {
         return false
     }
     return true

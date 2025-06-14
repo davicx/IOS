@@ -26,7 +26,6 @@ enum FriendshipStatus: String {
     case you = "you"
     case unknown
 
-
     init(key: String) {
         self = FriendshipStatus(rawValue: key) ?? .unknown
     }

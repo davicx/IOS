@@ -12,7 +12,7 @@ extension Notification.Name {
     static let friendsUpdated = Notification.Name("friendsUpdated")
 }
 
-//NEW ONE SO WE HAVE YourFriendsDataController FriendDataController
+
 class FriendDataController {
     static let shared = FriendDataController()
 
@@ -172,4 +172,65 @@ extension FriendDataController {
 }
 
 
+// FriendDataController.swift
+extension FriendDataController {
 
+    func cancelRequest(to friend: Friend) async throws {
+        let currentUser = UserDefaultManager().getLoggedInUser()
+        let response = try await FriendAPI().cancelFriendRequest(
+            masterSite: "kite",
+            currentUser: currentUser,
+            friendName: friend.friendName
+        )
+        if response.success {
+            removeFriend(friend)
+        } else {
+            throw NSError(domain: "CancelFriendRequest", code: 1, userInfo: [NSLocalizedDescriptionKey: response.message])
+        }
+    }
+
+    func remove(friend: Friend) async throws {
+        let currentUser = UserDefaultManager().getLoggedInUser()
+        let response = try await FriendAPI().removeFriend(
+            masterSite: "kite",
+            currentUser: currentUser,
+            removeFriendName: friend.friendName
+        )
+        if response.success {
+            removeFriend(friend)
+        } else {
+            throw NSError(domain: "RemoveFriend", code: 1, userInfo: [NSLocalizedDescriptionKey: response.message])
+        }
+    }
+
+    func accept(inviteFrom friend: Friend) async throws -> Friend {
+        let currentUser = UserDefaultManager().getLoggedInUser()
+        let response = try await FriendAPI().acceptFriendInvite(
+            masterSite: "kite",
+            currentUser: currentUser,
+            friendName: friend.friendName
+        )
+        if response.success {
+            var updatedFriend = friend
+            updatedFriend.friendshipKey = FriendshipStatus.friends.rawValue
+            addFriend(updatedFriend)
+            return updatedFriend
+        } else {
+            throw NSError(domain: "AcceptFriendInvite", code: 1, userInfo: [NSLocalizedDescriptionKey: response.message])
+        }
+    }
+
+    func decline(inviteFrom friend: Friend) async throws {
+        let currentUser = UserDefaultManager().getLoggedInUser()
+        let response = try await FriendAPI().declineFriendInvite(
+            masterSite: "kite",
+            currentUser: currentUser,
+            friendName: friend.friendName
+        )
+        if response.success {
+            removeFriend(friend)
+        } else {
+            throw NSError(domain: "DeclineFriendInvite", code: 1, userInfo: [NSLocalizedDescriptionKey: response.message])
+        }
+    }
+}
