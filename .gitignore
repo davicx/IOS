@@ -31,3 +31,6 @@ hiya.jpg
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*.xcuserstate
+xcuserdata/
