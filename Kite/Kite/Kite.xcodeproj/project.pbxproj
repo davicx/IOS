@@ -126,6 +126,8 @@
 		D7D609F12D52E99E00ED615B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D609F02D52E99E00ED615B /* NetworkManager.swift */; };
 		D7D88BA02D62B8DF002B3084 /* GroupsResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */; };
 		D7D88BA42D62B92B002B3084 /* GroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D88BA32D62B92B002B3084 /* GroupModel.swift */; };
+		D7D9923A2DFCE41200D6B48A /* IndividualGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */; };
+		D7D9923C2DFCE66200D6B48A /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D9923B2DFCE66200D6B48A /* GroupTableViewCell.swift */; };
 		D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */; };
 		D7E703802DDD44EE00BF4AE5 /* FriendListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E7037F2DDD44EE00BF4AE5 /* FriendListResponseModel.swift */; };
 		D7E703842DDD457900BF4AE5 /* FriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E703832DDD457900BF4AE5 /* FriendModel.swift */; };
@@ -273,6 +275,8 @@
 		D7D609F02D52E99E00ED615B /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsResponseModel.swift; sourceTree = "<group>"; };
 		D7D88BA32D62B92B002B3084 /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
+		D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualGroupViewController.swift; sourceTree = "<group>"; };
+		D7D9923B2DFCE66200D6B48A /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewController.swift; sourceTree = "<group>"; };
 		D7E7037F2DDD44EE00BF4AE5 /* FriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListResponseModel.swift; sourceTree = "<group>"; };
 		D7E703832DDD457900BF4AE5 /* FriendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendModel.swift; sourceTree = "<group>"; };
@@ -513,14 +517,10 @@
 		51EC39142D34952F0001B6E7 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				D71828782D839ED00084F071 /* layouts */,
-				D7096A782DDE92E200A51D32 /* TableCells */,
+				D79743FB2DFB9EAF00DC97D5 /* Friends */,
+				D79743FA2DFB9E7D00DC97D5 /* UserProfile */,
+				D79743F92DFB9DDF00DC97D5 /* Followers */,
 				D747F7B72D824CCF00A08602 /* original */,
-				51EC39172D3495850001B6E7 /* EditProfileViewController.swift */,
-				D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */,
-				D721D29F2DE527070002FE4C /* YourFriendsViewController.swift */,
-				D773A57B2DF3A62600074C88 /* FriendListViewController.swift */,
-				D773A57D2DF3A63700074C88 /* ProfileDoc.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -554,7 +554,6 @@
 				D747F7BC2D824D3200A08602 /* UserProfileSocialsView.swift */,
 				D747F7BE2D824D4400A08602 /* UserProfileEditView.swift */,
 				D747F7C02D824D5B00A08602 /* UserProfileBiographyView.swift */,
-				D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */,
 			);
 			path = layouts;
 			sourceTree = "<group>";
@@ -593,7 +592,6 @@
 		D780478A2DF5099100702C01 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				D79743F92DFB9DDF00DC97D5 /* Followers */,
 				D79743F82DFB99D900DC97D5 /* Groups */,
 				51EC39142D34952F0001B6E7 /* Profile */,
 				D7FB876C2D6FE00E0054CDF7 /* Home */,
@@ -610,6 +608,8 @@
 		D79743F82DFB99D900DC97D5 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				D7D992352DFCE28000D6B48A /* TableCells */,
+				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -620,6 +620,36 @@
 				D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */,
 			);
 			path = Followers;
+			sourceTree = "<group>";
+		};
+		D79743FA2DFB9E7D00DC97D5 /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				D773A57D2DF3A63700074C88 /* ProfileDoc.swift */,
+				51EC39172D3495850001B6E7 /* EditProfileViewController.swift */,
+				D71828782D839ED00084F071 /* layouts */,
+			);
+			path = UserProfile;
+			sourceTree = "<group>";
+		};
+		D79743FB2DFB9EAF00DC97D5 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				D79743FC2DFB9EE700DC97D5 /* Layout */,
+				D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */,
+				D721D29F2DE527070002FE4C /* YourFriendsViewController.swift */,
+				D773A57B2DF3A62600074C88 /* FriendListViewController.swift */,
+				D7096A782DDE92E200A51D32 /* TableCells */,
+			);
+			path = Friends;
+			sourceTree = "<group>";
+		};
+		D79743FC2DFB9EE700DC97D5 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */,
+			);
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		D798D97B2DED166200C1960E /* Friends */ = {
@@ -658,6 +688,14 @@
 				D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */,
 			);
 			path = Comments;
+			sourceTree = "<group>";
+		};
+		D7D992352DFCE28000D6B48A /* TableCells */ = {
+			isa = PBXGroup;
+			children = (
+				D7D9923B2DFCE66200D6B48A /* GroupTableViewCell.swift */,
+			);
+			path = TableCells;
 			sourceTree = "<group>";
 		};
 		D7FB876C2D6FE00E0054CDF7 /* Home */ = {
@@ -827,6 +865,7 @@
 				51C69B3C2D0E584500C46759 /* NewPostResponseModel.swift in Sources */,
 				D79743F72DFB980A00DC97D5 /* LoginDoc.swift in Sources */,
 				51C69B222D0E572B00C46759 /* LoginAPI.swift in Sources */,
+				D7D9923A2DFCE41200D6B48A /* IndividualGroupViewController.swift in Sources */,
 				D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */,
 				D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */,
 				D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */,
@@ -834,6 +873,7 @@
 				51CA9DC52D0FA711008C36F0 /* RegistrationViewController.swift in Sources */,
 				51C69B262D0E575200C46759 /* Group.swift in Sources */,
 				51ED44662D2E0B3B0036DB4B /* UserProfileResponseModel.swift in Sources */,
+				D7D9923C2DFCE66200D6B48A /* GroupTableViewCell.swift in Sources */,
 				519B24D92D18CFAF00159385 /* PresenterManager.swift in Sources */,
 				51C69B492D0E595700C46759 /* RegistrationModel.swift in Sources */,
 				D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */,
