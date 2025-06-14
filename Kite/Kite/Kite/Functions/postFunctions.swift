@@ -8,8 +8,7 @@
 import UIKit
  
 
-let networker = PostsAPI()
-var tempURL = Constants.VariableConstants.tempURL
+let imageFunctions = ImageFunctions()
 
 
 //Function A1: Create Posts from API this converts the Post Reponse into an array of Posts
@@ -43,8 +42,12 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.timeMessage = post.timeMessage
         
         currentPost.created = post.created
+        currentPost.isLikedByCurrentUser = post.isLikedByCurrentUser
         
-        currentPost.commentsArray = post.commentsArray
+        //Convert Comments
+        currentPost.commentsArray = post.commentsArray.map { convertToCommentClass(from: $0) }
+        
+        //currentPost.commentsArray = post.commentsArray
         currentPost.postLikesArray = post.postLikesArray
         currentPost.simpleLikesArray = post.simpleLikesArray
 
@@ -55,6 +58,31 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
     
     return postsArray
 }
+
+func convertToCommentClass(from model: CommentModel) -> Comment {
+    return Comment(
+        commentID: model.commentID,
+        postID: model.postID,
+        groupID: model.groupID,
+        listID: model.listID,
+        commentCaption: model.commentCaption,
+        commentFrom: model.commentFrom,
+        commentType: model.commentType,
+        userName: model.userName,
+        imageName: model.imageName,
+        firstName: model.firstName,
+        lastName: model.lastName,
+        commentDate: model.commentDate,
+        commentTime: model.commentTime,
+        timeMessage: model.timeMessage,
+        commentLikes: model.commentLikes,
+        created: model.created,
+        friendshipStatus: model.friendshipStatus,
+        commentLikeCount: model.commentLikeCount,
+        commentLikedByCurrentUser: model.commentLikedByCurrentUser
+    )
+}
+
     
 
 //Function A2: Add Image to Post
@@ -66,7 +94,7 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
            let imageUrl = URL(string: fileUrlString),
            fileUrlString.lowercased() != "empty" {
             do {
-                let data = try await networker.downloadImageData(from: imageUrl)
+                let data = try await imageFunctions.downloadData(from: imageUrl)
                 updatedPosts[index].postImageData = UIImage(data: data)
             } catch {
                 print("Error downloading image for postID \(post.postID): \(error)")
@@ -101,3 +129,4 @@ func printPostLikes(post: Post) {
         print("Liked By, \(user)!")
     }
 }
+

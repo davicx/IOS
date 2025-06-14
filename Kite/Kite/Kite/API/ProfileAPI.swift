@@ -10,8 +10,11 @@ import UIKit
 /*
 FUNCTIONS A: All Functions Related to User Profile
     1) Function A1: Get User Profile Information
-    2) Function A2: Update User Profile Information
+    2) Function A2: Update User Profile Information without Image
+    3) Function A3: Update User Profile Information
+
 */
+
 
 class ProfileAPI {
     
@@ -31,7 +34,7 @@ class ProfileAPI {
     func getUserProfileAPI(currentUser: String) async throws -> UserProfileResponseModel {
         let endpoint = "http://localhost:3003/profile/" + currentUser
         
-        printHeader(headerMessage: "PROFILE API- getUserProfileAPI")
+        //printHeader(headerMessage: "PROFILE API- getUserProfileAPI")
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -45,11 +48,13 @@ class ProfileAPI {
             throw networkError.invalidResponse
         }
         
+        
         switch httpResponse.statusCode {
         case 200:
-            print("PROFILE API - 200 Success")
+            //print("PROFILE API - 200 Success")
             let decoder = JSONDecoder ()
             let userProfileResponseModel = try decoder.decode(UserProfileResponseModel.self, from: data)
+            
             
             return userProfileResponseModel
             
@@ -81,7 +86,7 @@ class ProfileAPI {
             throw networkError.serverError(statusCode: httpResponse.statusCode)
         }
         
-        printFooter()
+        
         
     }
     
@@ -201,131 +206,7 @@ class ProfileAPI {
         }
         
     }
+    
+
 }
 
-
-
-
-
-
-//WORKS
-/*
-if httpResponse.statusCode == 200 {
-    print("PROFILE API- 200")
-
-} else if httpResponse.statusCode == 498 {
-    print("PROFILE API: 498 If Retry")
-    let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
-    print(newAccessTokenModel.message)
-    
-} else if httpResponse.statusCode == 401 {
-    print("PROFILE API: 401 logoutCurrentUser")
-    //AuthManager.shared.logoutCurrentUser()
-} else {
-    print("PROFILE API: ELSE networkError.invalidResponse")
-    throw networkError.invalidResponse
-}
- */
-/*
-if httpResponse.statusCode == 200 {
-    print("PROFILE API- 200")
-    // Continue processing as normal
-} else if httpResponse.statusCode == 498 {
-    print("PROFILE API: 498")
-    let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
-    print(newAccessTokenModel)
-    
-    if newAccessTokenModel.success == true {
-        print("PROFILE API: 498 If Retry")
-        //RETRY getUserProfileAPI Request Here
-        return try await getUserProfileAPI(currentUser: currentUser)
-    } else {
-        print("PROFILE API: 498 Else logoutCurrentUser")
-        AuthManager.shared.logoutCurrentUser()
-    }
-    
-} else if httpResponse.statusCode == 401 {
-    print("PROFILE API: 401 logoutCurrentUser")
-    AuthManager.shared.logoutCurrentUser()
-} else {
-    print("PROFILE API: 401 invalidResponse")
-    throw networkError.invalidResponse
-}
-
-
-do {
-    let decoder = JSONDecoder ()
-    let userProfileResponseModel = try decoder.decode(UserProfileResponseModel.self, from: data)
-
-    return userProfileResponseModel
-    
-} catch {
-    let userProfileResponseModel = UserProfileResponseModel()
-    //print("CATCH: Going to use empty response data")
-    return userProfileResponseModel
-    
-}
- */
-
-
-
-
-//NEW
-//let accessTokenResponse = try await loginAPI.getNewAccessToken(username: currentUser)
-//print(accessTokenResponse)
-//NEW
-//Logout User AuthManager.shared.logoutCurrentUser()
-
-/*
- func getUserProfileAPITEMP(currentUser: String) async throws -> UserProfileResponseModel {
-     let endpoint = "http://localhost:3003/profile/" + currentUser
-     print("______________________________")
-     print("PROFILE API - getUserProfileAPI")
-     
-     guard let url = URL(string: endpoint) else {
-         throw networkError.invalidURL
-     }
-
-     let apiURL = URLRequest(url: url)
-     
-     let (data, response) = try await URLSession.shared.data(for: apiURL)
-     
-     guard let httpResponse = response as? HTTPURLResponse else {
-         throw networkError.invalidResponse
-     }
-
-     switch httpResponse.statusCode {
-     case 200:
-         print("PROFILE API - 200 Success")
-         do {
-             return try JSONDecoder().decode(UserProfileResponseModel.self, from: data)
-         } catch {
-             print("PROFILE API - Decoding Error:", error)
-             throw networkError.decodingError
-         }
-
-     case 498:
-         print("PROFILE API - 498 Refreshing Token")
-         let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
-
-         if newAccessTokenModel.success {
-             print("PROFILE API - 498 Retry Request")
-             return try await getUserProfileAPI(currentUser: currentUser)
-         } else {
-             print("PROFILE API - 498 Refresh Failed, Logging Out")
-             AuthManager.shared.logoutCurrentUser()
-             throw networkError.tokenRefreshFailed
-         }
-
-     case 401:
-         print("PROFILE API - 401 Unauthorized, Logging Out")
-         AuthManager.shared.logoutCurrentUser()
-         throw networkError.unauthorized
-
-     default:
-         print("PROFILE API - Unexpected Status Code: \(httpResponse.statusCode)")
-         throw networkError.serverError(statusCode: httpResponse.statusCode)
-     }
- }
-
- */

@@ -30,7 +30,6 @@ class IndividualPostViewController: UIViewController {
 
         setUpView(selectedPost: selectedPost)
         
-        
     }
     
 
@@ -144,7 +143,6 @@ class IndividualPostViewController: UIViewController {
         }
         
     }
-    
    
 }
 

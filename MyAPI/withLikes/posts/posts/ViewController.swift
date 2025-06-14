@@ -99,8 +99,7 @@ class ViewController: UIViewController, InputDelegate {
     }
 
     
-    
-    
+
     //NEW POST
     @IBAction func newPostButton(_ sender: UIButton) {
         let postCaption : String = newPostCaptionLabel?.text ?? ""

@@ -16,6 +16,7 @@
 		51EF8A6B2D0A6B570083740C /* PlaygroundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8A6A2D0A6B570083740C /* PlaygroundTests.swift */; };
 		51EF8A752D0A6B570083740C /* PlaygroundUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8A742D0A6B570083740C /* PlaygroundUITests.swift */; };
 		51EF8A772D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8A762D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift */; };
+		D736FEE52D95F3D100AA108D /* BackgroundImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		51EF8A702D0A6B570083740C /* PlaygroundUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaygroundUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51EF8A742D0A6B570083740C /* PlaygroundUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundUITests.swift; sourceTree = "<group>"; };
 		51EF8A762D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				51EF8A532D0A6B560083740C /* AppDelegate.swift */,
 				51EF8A552D0A6B560083740C /* SceneDelegate.swift */,
 				51EF8A572D0A6B560083740C /* ViewController.swift */,
+				D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */,
 				51EF8A592D0A6B560083740C /* Main.storyboard */,
 				51EF8A5C2D0A6B570083740C /* Assets.xcassets */,
 				51EF8A5E2D0A6B570083740C /* LaunchScreen.storyboard */,
@@ -258,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D736FEE52D95F3D100AA108D /* BackgroundImageViewController.swift in Sources */,
 				51EF8A582D0A6B560083740C /* ViewController.swift in Sources */,
 				51EF8A542D0A6B560083740C /* AppDelegate.swift in Sources */,
 				51EF8A562D0A6B560083740C /* SceneDelegate.swift in Sources */,

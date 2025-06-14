@@ -32,5 +32,23 @@ struct Constants {
         static let main = "Main"
         static let mainTabBarController = "MainTabBarController"
         static let onboardingViewController = "MainOnboardingViewController"
+        static let friendProfileViewControllerID = "FriendProfileViewControllerID"
+        static let groupViewControllerID = "groupViewControllerID"
+        static let individualGroupViewControllerID = "individualGroupViewControllerID"
+    }
+
+    //Image Constants
+    struct Image {
+        static let liked = "liked"
+        static let unliked = "like"
+        static let fallbackPostImage = "background_10"
+    }
+    
+    struct TableViewCellIdentifier {
+        static let post = "PostCell"
+        static let comment = "CommentCell"
+        static let friendCell = "friendCell"
+
     }
 }
+
