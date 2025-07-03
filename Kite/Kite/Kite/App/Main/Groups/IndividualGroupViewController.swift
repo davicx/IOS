@@ -18,6 +18,9 @@ class IndividualGroupViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupLabel()
+        let groupID = group?.groupID ?? 0
+        let groupName = group?.groupName ?? "No Group Name"
+        print("IndividualGroupViewController \(groupName)")
     }
 
     private func setupLabel() {
