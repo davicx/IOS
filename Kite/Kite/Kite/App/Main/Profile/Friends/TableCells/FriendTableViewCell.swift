@@ -116,28 +116,6 @@ class FriendTableViewCell: UITableViewCell {
     }
 
     
-    /*
-    func configure(with user: Friend) {
-        usernameLabel.text = "@\(user.friendName)"
-        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
-        profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
-
-        if user.friendshipKey == "friends" {
-            friendActionButton.setTitle("Friends", for: .normal)
-            friendActionButton.backgroundColor = .white
-            friendActionButton.setTitleColor(.black, for: .normal)
-            friendActionButton.layer.borderWidth = 1
-            friendActionButton.layer.borderColor = UIColor.lightGray.cgColor
-        } else {
-            friendActionButton.setTitle("Add Friend", for: .normal)
-            friendActionButton.backgroundColor = UIColor.systemBlue
-            friendActionButton.setTitleColor(.white, for: .normal)
-            friendActionButton.layer.borderWidth = 0
-        }
-    }
-    
-    */
-
     @objc private func handleFriendActionTapped() {
         friendActionTapped?()
     }

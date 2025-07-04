@@ -44,8 +44,6 @@ class YourFriendsViewController: UIViewController {
         super.viewDidLayoutSubviews()
         addUnderlineForSelectedSegment()
     }
-
-    
     
     @objc func segmentChanged() {
         currentlyDisplayedFriends = segmentedControl.selectedSegmentIndex == 0 ? friends : friendRequests
@@ -55,7 +53,6 @@ class YourFriendsViewController: UIViewController {
 
     
     //FUNCTIONS
-
     private func splitUsersByStatus() {
         let allFriends = FriendDataController.shared.friends
 

@@ -40,14 +40,7 @@ class GroupsAPI {
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
         }
-        
-        /*
-         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-             let groupResponseModel = NewGroupResponseModel()
-             print("Error setting JSON")
-             return groupResponseModel
-         }
-         */
+
         
         // STEP 2: Create the Request
         var request = URLRequest(url: url)
@@ -98,84 +91,78 @@ class GroupsAPI {
             return newGroupResponseModel
         }
         
-        /*
-         
-         do {
-             let decoder = JSONDecoder()
-             let newGroupResponseModel = try decoder.decode(NewGroupResponseModel.self, from: data)
-             
-             print("API Response")
-             print(newGroupResponseModel)
-             print("API Response")
-             return newGroupResponseModel
-             
-         } catch {
-             let newGroupResponseModel = NewGroupResponseModel()
-             print("Error decoding data")
-             print(newGroupResponseModel)
-             return newGroupResponseModel
-         }
-         */
     }
 
-    /*
-    func newPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int) async throws -> NewPostResponseModel {
-        let postType = "text"
+    // Function A2: Create a New Group using multipart/form-data
+    func newGroupFormData(currentUser: String, groupName: String, groupType: String, groupPrivate: Int, groupUsers: [String], notificationMessage: String, notificationType: String, notificationLink: String) async throws -> NewGroupResponseModel {
         let masterSite = "kite"
-        let notificationMessage = "Posted Text"
-        let notificationType = "new_post_text"
-        let notificationLink = "http://localhost:3003/post/text"
         
-            
-        //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/text"
+        // STEP 1: Create the URL
+        let endpoint = "http://localhost:3003/group/create"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
         }
-        
-        //STEP 2: Create the Request
+
+        // STEP 2: Create the Request
         var request = URLRequest(url: url)
-        
-        let parameters = ["masterSite": masterSite, "postType": postType, "postFrom": postFrom, "postTo": postTo, "groupID": groupID, "listID": listID, "postCaption": postCaption, "videoURL": "", "notificationMessage": notificationMessage, "notificationType": notificationType, "notificationLink": notificationLink] as [String : Any]
-
         request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-            let postResponseModel = NewPostResponseModel()
-            print("Error setting JSON")
-            return postResponseModel
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var body = Data()
+        
+        // Helper to append key/value pairs to multipart body
+        func appendFormField(name: String, value: String) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(name)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
         }
-        
-        request.httpBody = httpBody
 
-        //STEP 3: Handle the Response
+        // STEP 2.1: Append all fields
+        appendFormField(name: "masterSite", value: masterSite)
+        appendFormField(name: "currentUser", value: currentUser)
+        appendFormField(name: "groupName", value: groupName)
+        appendFormField(name: "groupType", value: groupType)
+        appendFormField(name: "groupPrivate", value: String(groupPrivate))
+        appendFormField(name: "notificationMessage", value: notificationMessage)
+        appendFormField(name: "notificationType", value: notificationType)
+        appendFormField(name: "notificationLink", value: notificationLink)
+        
+        // STEP 2.2: Append array of users (repeat key for each user)
+        if let jsonData = try? JSONSerialization.data(withJSONObject: groupUsers, options: []),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            appendFormField(name: "groupUsers", value: jsonString)
+        }
+
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+
+        // STEP 3: Handle the Response
         let (data, response) = try await URLSession.shared.data(for: request)
-               
+        
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw networkError.invalidResponse
         }
         
         do {
-            let decoder = JSONDecoder ()
-            let newPostResponseModel = try decoder.decode(NewPostResponseModel.self, from: data)
-
-            print("API")
-            print(newPostResponseModel)
-            print("API")
-            return newPostResponseModel
+            let decoder = JSONDecoder()
+            let newGroupResponseModel = try decoder.decode(NewGroupResponseModel.self, from: data)
+            
+            print("API Response")
+            print(newGroupResponseModel)
+            print("API Response")
+            return newGroupResponseModel
             
         } catch {
-            let newPostResponseModel = NewPostResponseModel()
+            let newGroupResponseModel = NewGroupResponseModel()
             print("Error decoding data")
-            print(newPostResponseModel)
-            return newPostResponseModel
-            
+            print(newGroupResponseModel)
+            return newGroupResponseModel
         }
     }
-    */
-     
+
     
     //Function A2: Get Groups for a User
     func getGroupsAPI(for userName: String) async throws -> GroupsResponseModel {
@@ -249,5 +236,3 @@ class GroupsAPI {
 
 }
 
-
-//
