@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		5139A6312D28B5980029024E /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5139A6302D28B5980029024E /* Buttons.swift */; };
 		51848FB42D139D7500E629CD /* NewGroupResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51848FB32D139D7500E629CD /* NewGroupResponseModel.swift */; };
-		51848FB62D139D7E00E629CD /* NewGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51848FB52D139D7E00E629CD /* NewGroupModel.swift */; };
 		519B24D72D18CD9900159385 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B24D62D18CD9900159385 /* UserDefaultManager.swift */; };
 		519B24D92D18CFAF00159385 /* PresenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B24D82D18CFAF00159385 /* PresenterManager.swift */; };
 		51B109BA2D276403006E4CCF /* Temp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B109B92D276403006E4CCF /* Temp.swift */; };
@@ -95,6 +94,7 @@
 		D75D6C3F2DEE6DCA0080751C /* AcceptFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */; };
 		D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */; };
 		D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */; };
+		D76FD6E02E19FA8200D29FD4 /* GroupDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76FD6DF2E19FA8200D29FD4 /* GroupDataController.swift */; };
 		D773A57C2DF3A62600074C88 /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57B2DF3A62600074C88 /* FriendListViewController.swift */; };
 		D773A57E2DF3A63700074C88 /* ProfileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57D2DF3A63700074C88 /* ProfileDoc.swift */; };
 		D773A5802DF3AEF900074C88 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57F2DF3AEF900074C88 /* FriendTableViewCell.swift */; };
@@ -157,7 +157,6 @@
 /* Begin PBXFileReference section */
 		5139A6302D28B5980029024E /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		51848FB32D139D7500E629CD /* NewGroupResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupResponseModel.swift; sourceTree = "<group>"; };
-		51848FB52D139D7E00E629CD /* NewGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupModel.swift; sourceTree = "<group>"; };
 		519B24D62D18CD9900159385 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		519B24D82D18CFAF00159385 /* PresenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterManager.swift; sourceTree = "<group>"; };
 		51B109B92D276403006E4CCF /* Temp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temp.swift; sourceTree = "<group>"; };
@@ -247,6 +246,7 @@
 		D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptFriendResponseModel.swift; sourceTree = "<group>"; };
 		D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineFriendResponseModel.swift; sourceTree = "<group>"; };
 		D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsDoc.swift; sourceTree = "<group>"; };
+		D76FD6DF2E19FA8200D29FD4 /* GroupDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDataController.swift; sourceTree = "<group>"; };
 		D773A57B2DF3A62600074C88 /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
 		D773A57D2DF3A63700074C88 /* ProfileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDoc.swift; sourceTree = "<group>"; };
 		D773A57F2DF3AEF900074C88 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
@@ -513,7 +513,6 @@
 			children = (
 				51EB084B2D10FD6900AA9CF1 /* UserGroupsResponseModel.swift */,
 				51848FB32D139D7500E629CD /* NewGroupResponseModel.swift */,
-				51848FB52D139D7E00E629CD /* NewGroupModel.swift */,
 				D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */,
 				D7D88BA32D62B92B002B3084 /* GroupModel.swift */,
 			);
@@ -591,6 +590,7 @@
 				D78047882DF507B500702C01 /* PlantDataController.swift */,
 				D74304012DF6496000D7775A /* PostDataController.swift */,
 				D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */,
+				D76FD6DF2E19FA8200D29FD4 /* GroupDataController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -891,6 +891,7 @@
 				D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */,
 				51EB084C2D10FD6900AA9CF1 /* UserGroupsResponseModel.swift in Sources */,
 				D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */,
+				D76FD6E02E19FA8200D29FD4 /* GroupDataController.swift in Sources */,
 				D7FB876B2D6FE0090054CDF7 /* IndividualPostCell.swift in Sources */,
 				51C69B4B2D0E595D00C46759 /* RegistrationResponseModel.swift in Sources */,
 				51B109BA2D276403006E4CCF /* Temp.swift in Sources */,
@@ -951,7 +952,6 @@
 				51848FB42D139D7500E629CD /* NewGroupResponseModel.swift in Sources */,
 				D78C165C2DD55AD900EEDD91 /* SpinnerHelper.swift in Sources */,
 				D74C9F092D59820400947ECE /* KeychainHelper.swift in Sources */,
-				51848FB62D139D7E00E629CD /* NewGroupModel.swift in Sources */,
 				51C69B2C2D0E57AD00C46759 /* validationFunctions.swift in Sources */,
 				51C69B202D0E556600C46759 /* Post.swift in Sources */,
 				D720DB382DE136C000F137AD /* CommentLike.swift in Sources */,

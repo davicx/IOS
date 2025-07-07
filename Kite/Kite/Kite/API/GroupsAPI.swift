@@ -94,7 +94,7 @@ class GroupsAPI {
     }
 
     // Function A2: Create a New Group using multipart/form-data
-    func newGroupFormData(currentUser: String, groupName: String, groupType: String, groupPrivate: Int, groupUsers: [String], notificationMessage: String, notificationType: String, notificationLink: String) async throws -> NewGroupResponseModel {
+    func newGroupFormData(currentUser: String, groupName: String, groupImage: UIImage?, groupType: String, groupPrivate: Int, groupUsers: [String], notificationMessage: String, notificationType: String, notificationLink: String) async throws -> NewGroupResponseModel {
         let masterSite = "kite"
         
         // STEP 1: Create the URL

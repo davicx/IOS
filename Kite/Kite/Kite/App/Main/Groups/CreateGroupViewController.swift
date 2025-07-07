@@ -9,7 +9,7 @@
 import UIKit
 
 
-class CreateGroupViewController: UIViewController, UITextFieldDelegate {
+class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private var friends: [Friend] = []
     private var selectedUsernames: Set<String> = []
 
@@ -22,6 +22,7 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
         setupCloseButton()
         setupLayout()
         nameField.delegate = self
+        selectImageButton.addTarget(self, action: #selector(selectGroupImageTapped), for: .touchUpInside)
         
         setupTableView()
     }
@@ -56,13 +57,19 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
             return
         }
 
+        if let selectedImage = selectedGroupImage {
+            print("Selected group image set by user")
+        } else {
+            print("Using default group image")
+        }
+        
         Task {
             do {
                 // Sample data, just like in your Postman call
                 let currentUser = "davey"
                 let groupType = "kite"
                 let groupPrivate = 1
-                let groupUsers = Array(selectedUsernames)
+                let groupUsers = Array(selectedUsernames) + [currentUser]
                 let notificationMessage = "Invited you to a new Group"
                 let notificationType = "group_invite"
                 let notificationLink = "http://localhost:3003/group/77"
@@ -72,6 +79,7 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
                 let response = try await GroupsAPI().newGroupFormData(
                     currentUser: currentUser,
                     groupName: groupName,
+                    groupImage: selectedGroupImage,
                     groupType: groupType,
                     groupPrivate: groupPrivate,
                     groupUsers: groupUsers,
@@ -79,18 +87,21 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
                     notificationType: notificationType,
                     notificationLink: notificationLink
                 )
-                /*
-                let response = try await GroupsAPI().newGroup(
-                    currentUser: currentUser,
-                    groupName: groupName,
-                    groupType: groupType,
-                    groupPrivate: groupPrivate,
-                    groupUsers: groupUsers,
-                    notificationMessage: notificationMessage,
-                    notificationType: notificationType,
-                    notificationLink: notificationLink
-                )
-                */
+                
+                //Success
+                if(response.success == true) {
+                    print("Load the new group in GroupsViewController")
+                    
+                    // Add the new group to the GroupDataController
+                    GroupDataController.shared.addGroup(response.data)
+                    
+                    // Refresh the groups list to ensure data is in sync
+                    GroupDataController.shared.refreshGroups {
+                        print("Groups refreshed after creation")
+                    }
+                } else {
+                    print("Handle error")
+                }
 
                 print("Created group response: \(response)")
                 dismiss(animated: true)
@@ -100,7 +111,6 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-
     
     @objc private func closeTapped() {
         let alert = UIAlertController(title: "Warning", message: "Do you want to stop creating the group?", preferredStyle: .alert)
@@ -110,6 +120,28 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
         alert.addAction(UIAlertAction(title: "No", style: .cancel))
         present(alert, animated: true)
     }
+    
+    @objc private func selectGroupImageTapped() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        picker.allowsEditing = true
+        present(picker, animated: true)
+    }
+
+    //Delegate move to extension
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedImage = info[.editedImage] as? UIImage {
+            groupImageView.image = selectedImage
+            selectedGroupImage = selectedImage
+        }
+        picker.dismiss(animated: true)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+
     
     //Functions
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -128,12 +160,13 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: nameField.bottomAnchor, constant: 20),
+            tableView.topAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -10)
         ])
     }
+
 
     
     //LAYOUT
@@ -145,6 +178,8 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(nameLabel)
         view.addSubview(nameField)
         view.addSubview(createButton)
+        view.addSubview(groupImageView)
+        view.addSubview(selectImageButton)
         
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
@@ -159,6 +194,17 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
             createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             createButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
+        NSLayoutConstraint.activate([
+            groupImageView.topAnchor.constraint(equalTo: nameField.bottomAnchor, constant: 20),
+            groupImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            groupImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            groupImageView.heightAnchor.constraint(equalToConstant: 150),
+
+            selectImageButton.topAnchor.constraint(equalTo: groupImageView.bottomAnchor, constant: 8),
+            selectImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+
         
         createButton.addTarget(self, action: #selector(createGroup), for: .touchUpInside)
     }
@@ -201,6 +247,26 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
             closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
     }
+    
+    private let groupImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "background_10"))
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
+    private let selectImageButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Select Group Image", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private var selectedGroupImage: UIImage? // To store picked image
+
     
 }
 

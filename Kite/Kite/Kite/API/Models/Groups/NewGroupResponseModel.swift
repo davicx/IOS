@@ -9,7 +9,7 @@ import Foundation
 
 
 struct NewGroupResponseModel: Codable {
-    let data: NewGroupModel
+    let data: GroupModel
     let message: String
     let success: Bool
     let statusCode: Int
@@ -18,7 +18,7 @@ struct NewGroupResponseModel: Codable {
     
     
     init() {
-        self.data = NewGroupModel(groupName: "groupName", groupID: 0, groupMembers: ["groupMembers"], pendingGroupMembers: ["pendingGroupMembers"])
+        self.data = GroupModel(groupID: 0, groupName: "groupName", groupImage: nil, activeGroupMembers: ["activeMembers"], pendingGroupMembers: ["pendingMembers"])
         self.message = ""
         self.success = false
         self.statusCode = 500
@@ -27,3 +27,20 @@ struct NewGroupResponseModel: Codable {
     }
     
 }
+
+/*
+ {
+   data: {
+     groupName: 'Hi',
+     groupImage: 'http://localhost:3003/kite-groups-us-west-two/group_image.png',
+     groupID: 684,
+     groupMembers: [ 'davey' ],
+     pendingGroupMembers: [ 'sam' ]
+   },
+   message: 'Succesfully created the new group, yay!',
+   success: true,
+   statusCode: 200,
+   errors: [],
+   currentUser: 'davey'
+ }
+ */
