@@ -168,7 +168,6 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImageP
     }
 
 
-    
     //LAYOUT
     private func setupLayout() {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false

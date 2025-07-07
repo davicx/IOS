@@ -102,6 +102,7 @@
 		D78047892DF507B500702C01 /* PlantDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78047882DF507B500702C01 /* PlantDataController.swift */; };
 		D78C165C2DD55AD900EEDD91 /* SpinnerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */; };
 		D78C165E2DD55DBA00EEDD91 /* postLikeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */; };
+		D78EBE5B2E1C93F90087FB56 /* IndividualPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */; };
 		D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */; };
 		D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */; };
 		D79743F72DFB980A00DC97D5 /* LoginDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79743F62DFB980A00DC97D5 /* LoginDoc.swift */; };
@@ -254,6 +255,7 @@
 		D78047882DF507B500702C01 /* PlantDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDataController.swift; sourceTree = "<group>"; };
 		D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerHelper.swift; sourceTree = "<group>"; };
 		D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postLikeFunctions.swift; sourceTree = "<group>"; };
+		D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostTableViewCell.swift; sourceTree = "<group>"; };
 		D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowers.swift; sourceTree = "<group>"; };
 		D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPIBackup.swift; sourceTree = "<group>"; };
 		D79743F62DFB980A00DC97D5 /* LoginDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDoc.swift; sourceTree = "<group>"; };
@@ -611,13 +613,38 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		D79743F82DFB99D900DC97D5 /* Groups */ = {
+		D78EBE572E1C8BDE0087FB56 /* MainGroup */ = {
 			isa = PBXGroup;
 			children = (
 				D7D992352DFCE28000D6B48A /* TableCells */,
-				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
-				D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */,
 				D7D803202E174D6F009BA090 /* CreateGroupViewController.swift */,
+			);
+			path = MainGroup;
+			sourceTree = "<group>";
+		};
+		D78EBE582E1C8BEA0087FB56 /* IndividualGroup */ = {
+			isa = PBXGroup;
+			children = (
+				D78EBE592E1C93E30087FB56 /* TableCells */,
+				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
+			);
+			path = IndividualGroup;
+			sourceTree = "<group>";
+		};
+		D78EBE592E1C93E30087FB56 /* TableCells */ = {
+			isa = PBXGroup;
+			children = (
+				D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */,
+			);
+			path = TableCells;
+			sourceTree = "<group>";
+		};
+		D79743F82DFB99D900DC97D5 /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				D78EBE582E1C8BEA0087FB56 /* IndividualGroup */,
+				D78EBE572E1C8BDE0087FB56 /* MainGroup */,
+				D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -955,6 +982,7 @@
 				51C69B2C2D0E57AD00C46759 /* validationFunctions.swift in Sources */,
 				51C69B202D0E556600C46759 /* Post.swift in Sources */,
 				D720DB382DE136C000F137AD /* CommentLike.swift in Sources */,
+				D78EBE5B2E1C93F90087FB56 /* IndividualPostTableViewCell.swift in Sources */,
 				51C69B1C2D0E553C00C46759 /* Extensions.swift in Sources */,
 				51CA9DC82D0FAA54008C36F0 /* HomeViewController.swift in Sources */,
 				51C69B382D0E583500C46759 /* LikeModel.swift in Sources */,

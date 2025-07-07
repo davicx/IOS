@@ -18,6 +18,8 @@ class GroupsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("GroupsViewController")
+        
         setupTableView()
         fetchGroups()
         
@@ -28,7 +30,7 @@ class GroupsViewController: UIViewController {
             }
         }
         
-        print("GroupsViewController")
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -135,7 +137,4 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-
 }
-
-
