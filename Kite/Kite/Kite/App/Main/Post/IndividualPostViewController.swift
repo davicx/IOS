@@ -85,7 +85,7 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
         }
     }
 
-    //COMMENT CELL
+    //COMMENT CELL 
     func didTapLikeCommentButton(in cell: CommentCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row > 0 else { return }
 
@@ -145,6 +145,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
             postCell.configurePost(with: currentPost)
             postCell.delegate = self
             return postCell
+            
         } else {
             
             //COMMENTS: Comments inside table view

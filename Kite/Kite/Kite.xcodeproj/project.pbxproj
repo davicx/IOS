@@ -579,6 +579,7 @@
 		D74AAB382D9F4B7600C8AEB5 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				D7FB876A2D6FE0090054CDF7 /* IndividualPostCell.swift */,
 				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
 				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 				D71809482DBC3C52003BC46D /* PostCell.swift */,
@@ -738,7 +739,6 @@
 			isa = PBXGroup;
 			children = (
 				D7D5F3052D921DAB00EE0A09 /* Doc.swift */,
-				D7FB876A2D6FE0090054CDF7 /* IndividualPostCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";

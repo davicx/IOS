@@ -65,14 +65,6 @@ class HomeViewController: UIViewController {
 
         pollingManager.startPolling() // Restart polling if view reappears
         
-        
-        //Temp: Debug
-        Task {
-            // Wait a tiny bit to let posts load before printing (if fetchPosts is still running)
-            try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-            PostDataController.shared.debugPrintCommentLikes()
-        }
-        
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -103,7 +95,6 @@ class HomeViewController: UIViewController {
             await postDataController.fetchPosts(groupID: 72)
         }
     }
-
 
 }
 
@@ -149,3 +140,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
+
+/*
+ //Temp: Debug
+ Task {
+     // Wait a tiny bit to let posts load before printing (if fetchPosts is still running)
+     try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+     PostDataController.shared.debugPrintCommentLikes()
+ }
+ */

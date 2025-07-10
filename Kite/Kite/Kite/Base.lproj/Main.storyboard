@@ -59,10 +59,13 @@
                         <viewLayoutGuide key="safeArea" id="M0A-k0-BTE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <segue destination="UIT-vI-uFH" kind="show" identifier="showIndividualPost" id="9PZ-mS-q4W"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oZ6-jn-2SJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1294" y="1017"/>
+            <point key="canvasLocation" x="-2941" y="1017"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="vi3-Qa-5Ku">
@@ -207,7 +210,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HIF-hR-70L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3857" y="1017"/>
+            <point key="canvasLocation" x="-3735" y="1751"/>
         </scene>
         <!--Post-->
         <scene sceneID="aQt-Mq-jLB">
@@ -571,6 +574,9 @@
             <point key="canvasLocation" x="-2182.4427480916029" y="260.56338028169017"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="IjC-YF-DI7"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

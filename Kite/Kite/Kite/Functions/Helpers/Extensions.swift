@@ -108,3 +108,20 @@ extension UIImageView {
         self.clipsToBounds = true
     }
 }
+
+//SEGUE
+extension UIViewController {
+    func canPerformSegue(withIdentifier identifier: String) -> Bool {
+        guard let templates = self.value(forKey: "storyboardSegueTemplates") as? [NSObject] else {
+            return false
+        }
+
+        for template in templates {
+            if let id = template.value(forKey: "identifier") as? String, id == identifier {
+                return true
+            }
+        }
+
+        return false
+    }
+}
