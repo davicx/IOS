@@ -11,6 +11,7 @@ protocol PostCellDelegate: AnyObject {
     func didTapLikePostButton(in cell: PostCell)
 }
 
+//Single Post: This is a post you click on and are viewing a Single Post
 class PostCell: UITableViewCell {
     weak var delegate: PostCellDelegate?
 

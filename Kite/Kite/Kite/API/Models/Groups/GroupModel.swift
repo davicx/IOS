@@ -11,8 +11,8 @@ import Foundation
 struct GroupModel: Codable {
     let groupID: Int
     let groupName: String
-    let groupImage: String
-    let activeMembers: [String]
-    let pendingMembers: [String]
+    let groupImage: String?
+    let activeGroupMembers: [String]
+    let pendingGroupMembers: [String]
 }
 

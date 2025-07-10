@@ -10,7 +10,7 @@ import UIKit
 
 class Buttons {
 
-        //LOGIN BUTTON
+    //LOGIN BUTTON
     static func styleLoginFilledButton(_ button:UIButton) {
         button.backgroundColor = UIColor(hex: "#EA4359")
         button.layer.cornerRadius = 16.0
@@ -43,8 +43,6 @@ class Buttons {
         button.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    
-    
     static func styleTwitterButton(_ button:UIButton) {
         button.backgroundColor = UIColor(hex: "#1DA1F2")
         button.layer.cornerRadius = 12.0
@@ -63,8 +61,6 @@ class Buttons {
         button.setTitleColor(UIColor(hex: "#000000"), for: .normal) // Set text color
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
     }
-
-
 
     
 }

@@ -7,6 +7,93 @@
 
 import Foundation
 
+//GROUPS
+/*
+ 
+ /*
+  guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+      let groupResponseModel = NewGroupResponseModel()
+      print("Error setting JSON")
+      return groupResponseModel
+  }
+  */
+ 
+ do {
+     let decoder = JSONDecoder()
+     let newGroupResponseModel = try decoder.decode(NewGroupResponseModel.self, from: data)
+     
+     print("API Response")
+     print(newGroupResponseModel)
+     print("API Response")
+     return newGroupResponseModel
+     
+ } catch {
+     let newGroupResponseModel = NewGroupResponseModel()
+     print("Error decoding data")
+     print(newGroupResponseModel)
+     return newGroupResponseModel
+ }
+ */
+
+/*
+func newPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int) async throws -> NewPostResponseModel {
+    let postType = "text"
+    let masterSite = "kite"
+    let notificationMessage = "Posted Text"
+    let notificationType = "new_post_text"
+    let notificationLink = "http://localhost:3003/post/text"
+    
+        
+    //STEP 1: Create the URL
+    let endpoint = "http://localhost:3003/post/text"
+    
+    guard let url = URL(string: endpoint) else {
+        throw networkError.invalidURL
+    }
+    
+    //STEP 2: Create the Request
+    var request = URLRequest(url: url)
+    
+    let parameters = ["masterSite": masterSite, "postType": postType, "postFrom": postFrom, "postTo": postTo, "groupID": groupID, "listID": listID, "postCaption": postCaption, "videoURL": "", "notificationMessage": notificationMessage, "notificationType": notificationType, "notificationLink": notificationLink] as [String : Any]
+
+    request.httpMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+        let postResponseModel = NewPostResponseModel()
+        print("Error setting JSON")
+        return postResponseModel
+    }
+    
+    request.httpBody = httpBody
+
+    //STEP 3: Handle the Response
+    let (data, response) = try await URLSession.shared.data(for: request)
+           
+    guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        throw networkError.invalidResponse
+    }
+    
+    do {
+        let decoder = JSONDecoder ()
+        let newPostResponseModel = try decoder.decode(NewPostResponseModel.self, from: data)
+
+        print("API")
+        print(newPostResponseModel)
+        print("API")
+        return newPostResponseModel
+        
+    } catch {
+        let newPostResponseModel = NewPostResponseModel()
+        print("Error decoding data")
+        print(newPostResponseModel)
+        return newPostResponseModel
+        
+    }
+}
+*/
+ 
+
 //PROFILE
 
 
