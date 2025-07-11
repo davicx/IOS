@@ -1,5 +1,5 @@
 //
-//  IndividualPostCell.swift
+//  HomePostCell.swift
 //  Kite
 //
 //  Created by David Vasquez on 2/26/25.
@@ -8,7 +8,81 @@
 import UIKit
 
 
-class IndividualPostCell: UITableViewCell {
+class HomePostCell: UITableViewCell {
+
+    // Temporary simplified layout
+    let headerView = CreateViewStyles.createHeaderView()
+    let bodyView = CreateViewStyles.createBodyView()
+    let footerView = CreateViewStyles.createFooterView()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupTemporaryViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //CELL SETUP
+    func updatePost(with post: Post) {
+        let postCaption = post.postCaption ?? "no caption"
+        print(postCaption)
+        /*
+        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let postCaption = post.postCaption ?? "no caption"
+        
+        let imageHeight = getImageHeight(image: currentImage)
+        postImageHeightConstraint?.constant = imageHeight
+        postImage.image = currentImage
+        
+        let captionHeight = round(calculateLabelHeight(text: postCaption))
+        postCaptionHeightConstraint?.constant = captionHeight
+        postCaptionLabel.text = postCaption
+        
+        postSocialsLabel.text = "Post Like Count: \(post.simpleLikesArray?.count ?? 0)"
+        
+        layoutIfNeeded()
+         */
+    }
+
+    private func setupTemporaryViews() {
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        bodyView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(headerView)
+        contentView.addSubview(bodyView)
+        contentView.addSubview(footerView)
+
+        NSLayoutConstraint.activate([
+            // Header - 200
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 200),
+
+            // Body - 400
+            bodyView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            bodyView.heightAnchor.constraint(equalToConstant: 400),
+
+            // Footer - 200
+            footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
+            footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: 200),
+
+            footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+}
+
+
+
+/*
+class HomePostCell: UITableViewCell {
     
     //Post User
     let postUserView = createPostUserView()
@@ -162,6 +236,8 @@ class IndividualPostCell: UITableViewCell {
 }
 
 
+
+
 //POST: Post User
 func createPostUserView() -> UIView {
     let view = UIView()
@@ -250,7 +326,13 @@ func createPostDividerView() -> UIView {
 }
 
 
-//SORT
+func createHeaderView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .white
+    
+    return view
+}
+
 func createBodyView() -> UIView {
     let view = UIView()
     view.backgroundColor = .white
@@ -264,6 +346,8 @@ func createFooterView() -> UIView {
     
     return view
 }
+ 
+ */
 
 
 

@@ -80,7 +80,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+        tableView.register(HomePostCell.self, forCellReuseIdentifier: "IndividualPostCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
         tableView.tableHeaderView = createTableHeader()
@@ -133,7 +133,7 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = postDataController.posts[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! HomePostCell
         cell.updatePost(with: post)
         return cell
     }

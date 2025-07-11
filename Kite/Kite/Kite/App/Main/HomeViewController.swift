@@ -9,8 +9,6 @@
 import UIKit
 
 
-
-//July 10
 class HomeViewController: UIViewController {
 
     //HOME: API and data
@@ -79,7 +77,7 @@ class HomeViewController: UIViewController {
     func setupTableView() {
         postsTableView.delegate = self
         postsTableView.dataSource = self
-        postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+        postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -109,7 +107,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      }
 
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
+         //Constants.TableViewCellIdentifier.homePostCell could have a crashy error
+         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
          let post = postDataController.posts[indexPath.row]
          cell.updatePost(with: post)
          return cell
@@ -120,6 +119,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
      }
 
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentPost = postDataController.posts[indexPath.row]
@@ -135,13 +135,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let postCaption = currentPost.postCaption ?? "no caption"
         let postCaptionHeight = round(calculateLabelHeight(text: postCaption))
         
-        //return 40 + postImageHeight + 40 + postCaptionHeight + 5
-        return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
-        
+        //WORKS
+        //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
+        //WORKS
+        return 800
     }
+     
     
 }
-
 
 /*
  //Temp: Debug

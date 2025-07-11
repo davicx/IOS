@@ -36,7 +36,7 @@ class IndividualPostViewController: UIViewController {
         self.postTableView.delegate = self
         postTableView.translatesAutoresizingMaskIntoConstraints = false
         postTableView.isScrollEnabled = true
-        postTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+        postTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "PostCell")
         postTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
         postTableView.separatorStyle = .none
         postTableView.rowHeight = UITableView.automaticDimension
@@ -59,7 +59,7 @@ class IndividualPostViewController: UIViewController {
 extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
     
     //POST CELL
-    func didTapLikePostButton(in cell: PostCell) {
+    func didTapLikePostButton(in cell: IndividualPostCell) {
         guard let indexPath = postTableView.indexPath(for: cell), indexPath.row == 0 else { return }
 
         cell.startLoading()
@@ -141,7 +141,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         
         //INDIVIDUAL POST:
         if indexPath.row == 0 {
-            let postCell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.post, for: indexPath) as! PostCell
+            let postCell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.post, for: indexPath) as! IndividualPostCell
             postCell.configurePost(with: currentPost)
             postCell.delegate = self
             return postCell

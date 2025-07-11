@@ -10,6 +10,8 @@ import UIKit
 
 class Style {
     
+    
+    
     //LABELS
     static func styleLoginLabel(_ label: UILabel) {
         label.backgroundColor = UIColor(hex: "#FAFAFA") // Background color

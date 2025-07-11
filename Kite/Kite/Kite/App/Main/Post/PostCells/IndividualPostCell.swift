@@ -8,11 +8,11 @@
 import UIKit
 
 protocol PostCellDelegate: AnyObject {
-    func didTapLikePostButton(in cell: PostCell)
+    func didTapLikePostButton(in cell: IndividualPostCell)
 }
 
 //Single Post: This is a post you click on and are viewing a Single Post
-class PostCell: UITableViewCell {
+class IndividualPostCell: UITableViewCell {
     weak var delegate: PostCellDelegate?
 
     let postImage = UIImageView()
