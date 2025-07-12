@@ -118,6 +118,7 @@
 		D7A3C1222D810097000B4EB7 /* UserProfileLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A3C1212D810097000B4EB7 /* UserProfileLayout.swift */; };
 		D7AEA9762DC8286700272944 /* CommentsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AEA9752DC8286700272944 /* CommentsAPI.swift */; };
 		D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */; };
+		D7AF47AE2E21D94200617D69 /* sizeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AF47AD2E21D94200617D69 /* sizeFunctions.swift */; };
 		D7B4D1BD2DEA73F400D1630D /* RemoveFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B4D1BC2DEA73F400D1630D /* RemoveFriendResponseModel.swift */; };
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
 		D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */; };
@@ -136,7 +137,7 @@
 		D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */; };
 		D7E703802DDD44EE00BF4AE5 /* FriendListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E7037F2DDD44EE00BF4AE5 /* FriendListResponseModel.swift */; };
 		D7E703842DDD457900BF4AE5 /* FriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E703832DDD457900BF4AE5 /* FriendModel.swift */; };
-		D7FB876B2D6FE0090054CDF7 /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */; };
+		D7FB876B2D6FE0090054CDF7 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FB876A2D6FE0090054CDF7 /* PostCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -272,6 +273,7 @@
 		D7A3C1212D810097000B4EB7 /* UserProfileLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileLayout.swift; sourceTree = "<group>"; };
 		D7AEA9752DC8286700272944 /* CommentsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsAPI.swift; sourceTree = "<group>"; };
 		D7AEA9772DC82A8800272944 /* CommentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentResponseModel.swift; sourceTree = "<group>"; };
+		D7AF47AD2E21D94200617D69 /* sizeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sizeFunctions.swift; sourceTree = "<group>"; };
 		D7B4D1BC2DEA73F400D1630D /* RemoveFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveFriendResponseModel.swift; sourceTree = "<group>"; };
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
 		D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDataController.swift; sourceTree = "<group>"; };
@@ -290,7 +292,7 @@
 		D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewController.swift; sourceTree = "<group>"; };
 		D7E7037F2DDD44EE00BF4AE5 /* FriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListResponseModel.swift; sourceTree = "<group>"; };
 		D7E703832DDD457900BF4AE5 /* FriendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendModel.swift; sourceTree = "<group>"; };
-		D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostCell.swift; sourceTree = "<group>"; };
+		D7FB876A2D6FE0090054CDF7 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +428,7 @@
 				51C69B2B2D0E57AD00C46759 /* validationFunctions.swift */,
 				D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */,
 				D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */,
+				D7AF47AD2E21D94200617D69 /* sizeFunctions.swift */,
 				51C69B2D2D0E57BF00C46759 /* Functions.swift */,
 				51C58F292D1B642000942386 /* Appendix.swift */,
 			);
@@ -692,7 +695,7 @@
 		D79860582E2087660094B46E /* PostCells */ = {
 			isa = PBXGroup;
 			children = (
-				D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */,
+				D7FB876A2D6FE0090054CDF7 /* PostCell.swift */,
 				D71809482DBC3C52003BC46D /* IndividualPostCell.swift */,
 				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 			);
@@ -931,7 +934,7 @@
 				51EB084C2D10FD6900AA9CF1 /* UserGroupsResponseModel.swift in Sources */,
 				D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */,
 				D76FD6E02E19FA8200D29FD4 /* GroupDataController.swift in Sources */,
-				D7FB876B2D6FE0090054CDF7 /* HomePostCell.swift in Sources */,
+				D7FB876B2D6FE0090054CDF7 /* PostCell.swift in Sources */,
 				51C69B4B2D0E595D00C46759 /* RegistrationResponseModel.swift in Sources */,
 				51B109BA2D276403006E4CCF /* Temp.swift in Sources */,
 				D773A57E2DF3A63700074C88 /* ProfileDoc.swift in Sources */,
@@ -968,6 +971,7 @@
 				D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */,
 				D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */,
 				51EC39182D3495850001B6E7 /* EditProfileViewController.swift in Sources */,
+				D7AF47AE2E21D94200617D69 /* sizeFunctions.swift in Sources */,
 				51C69B1A2D0E552500C46759 /* Enums.swift in Sources */,
 				51C58F2A2D1B642000942386 /* Appendix.swift in Sources */,
 				D7D88BA42D62B92B002B3084 /* GroupModel.swift in Sources */,

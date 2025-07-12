@@ -8,9 +8,8 @@
 import UIKit
 
 
-class HomePostCell: UITableViewCell {
-
-    // Temporary simplified layout
+//Home Feed Post Cell
+class PostCell: UITableViewCell {
     let headerView = CreateViewStyles.createHeaderView()
     let bodyView = CreateViewStyles.createBodyView()
     let footerView = CreateViewStyles.createFooterView()
@@ -18,6 +17,7 @@ class HomePostCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupTemporaryViews()
+
     }
 
     required init?(coder: NSCoder) {
@@ -76,7 +76,49 @@ class HomePostCell: UITableViewCell {
 
             footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+        
+        
+        //MENU
+        headerView.addSubview(menuButton)
+
+        NSLayoutConstraint.activate([
+            menuButton.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
+            menuButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
+            menuButton.widthAnchor.constraint(equalToConstant: 24),
+            menuButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        setupMenu()
+         
+
     }
+    
+    //MENU
+    private func setupMenu() {
+        let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+            print("Edit tapped")
+        }
+
+        let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            print("Delete tapped")
+        }
+
+        let menu = UIMenu(title: "", children: [editAction, deleteAction])
+        menuButton.menu = menu
+        menuButton.showsMenuAsPrimaryAction = true // Show menu on tap (not long-press)
+    }
+
+    
+    //UI ELEMENTS
+    private let menuButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = UIImage(named: "menu-horizontal")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black // Optional: Adjust based on your UI
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
 }
 
 
