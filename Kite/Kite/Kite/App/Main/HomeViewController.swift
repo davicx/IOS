@@ -150,7 +150,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //WORKS
         //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
         //WORKS
-        return 800
+        return 276
     }
      
     

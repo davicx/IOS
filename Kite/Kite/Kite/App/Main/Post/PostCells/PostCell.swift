@@ -10,6 +10,70 @@ import UIKit
 
 //Home Feed Post Cell
 class PostCell: UITableViewCell {
+    let postHeaderView = PostHeaderLayout()
+    
+    let bodyView = CreateViewStyles.createBodyView()
+    let footerView = CreateViewStyles.createFooterView()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupTemporaryViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    /*
+    func updatePost(with post: Post) {
+        let temporaryGroupName = "Group Name for now"
+        let postCaption = post.postCaption ?? "no caption"
+        print(postCaption)
+    }
+    */
+    
+    func updatePost(with post: Post) {
+        postHeaderView.configure(with: post)
+
+        let temporaryGroupName = "Group Name for now"
+        let postCaption = post.postCaption ?? "no caption"
+        print(postCaption)
+    }
+
+    private func setupTemporaryViews() {
+        postHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        bodyView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(postHeaderView)
+        contentView.addSubview(bodyView)
+        contentView.addSubview(footerView)
+
+        NSLayoutConstraint.activate([
+            postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postHeaderView.heightAnchor.constraint(equalToConstant: 56),
+
+            bodyView.topAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
+            bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            bodyView.heightAnchor.constraint(equalToConstant: 200),
+
+            footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
+            footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: 20),
+
+            footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+}
+
+
+/*
+//Home Feed Post Cell
+class PostCell: UITableViewCell {
     let headerView = CreateViewStyles.createHeaderView()
     let bodyView = CreateViewStyles.createBodyView()
     let footerView = CreateViewStyles.createFooterView()
@@ -60,19 +124,19 @@ class PostCell: UITableViewCell {
             headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 200),
+            headerView.heightAnchor.constraint(equalToConstant: 80),
 
             // Body - 400
             bodyView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             bodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            bodyView.heightAnchor.constraint(equalToConstant: 400),
+            bodyView.heightAnchor.constraint(equalToConstant: 200),
 
             // Footer - 200
             footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
             footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 200),
+            footerView.heightAnchor.constraint(equalToConstant: 20),
 
             footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
@@ -121,7 +185,7 @@ class PostCell: UITableViewCell {
 
 }
 
-
+*/
 
 /*
 class HomePostCell: UITableViewCell {

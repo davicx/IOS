@@ -100,6 +100,8 @@
 		D773A5802DF3AEF900074C88 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57F2DF3AEF900074C88 /* FriendTableViewCell.swift */; };
 		D77ED6A52D90DB9800FA4F71 /* PollingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */; };
 		D78047892DF507B500702C01 /* PlantDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78047882DF507B500702C01 /* PlantDataController.swift */; };
+		D78BE98D2E271CEE0082ABC4 /* PostCellBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */; };
+		D78BE98F2E271DAE0082ABC4 /* PostHeaderLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */; };
 		D78C165C2DD55AD900EEDD91 /* SpinnerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */; };
 		D78C165E2DD55DBA00EEDD91 /* postLikeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */; };
 		D78EBE5B2E1C93F90087FB56 /* IndividualPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */; };
@@ -255,6 +257,8 @@
 		D773A57F2DF3AEF900074C88 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		D77ED6A42D90DB9800FA4F71 /* PollingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingManager.swift; sourceTree = "<group>"; };
 		D78047882DF507B500702C01 /* PlantDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDataController.swift; sourceTree = "<group>"; };
+		D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellBackup.swift; sourceTree = "<group>"; };
+		D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHeaderLayout.swift; sourceTree = "<group>"; };
 		D78C165B2DD55AD900EEDD91 /* SpinnerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerHelper.swift; sourceTree = "<group>"; };
 		D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postLikeFunctions.swift; sourceTree = "<group>"; };
 		D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostTableViewCell.swift; sourceTree = "<group>"; };
@@ -586,7 +590,7 @@
 			isa = PBXGroup;
 			children = (
 				D79860582E2087660094B46E /* PostCells */,
-				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
+				D78BE98B2E271B210082ABC4 /* Layout */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -609,6 +613,7 @@
 				51EC39142D34952F0001B6E7 /* Profile */,
 				D7FB876C2D6FE00E0054CDF7 /* Home */,
 				D74AAB382D9F4B7600C8AEB5 /* Post */,
+				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
 				51CA9DC72D0FAA54008C36F0 /* HomeViewController.swift */,
 				51CA9DC92D0FAA5A008C36F0 /* GroupsViewController.swift */,
 				51CA9DCB2D0FAA67008C36F0 /* NewPostViewController.swift */,
@@ -616,6 +621,14 @@
 				51CA9DCF2D0FAA75008C36F0 /* ProfileViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		D78BE98B2E271B210082ABC4 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */,
+			);
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		D78EBE572E1C8BDE0087FB56 /* MainGroup */ = {
@@ -698,6 +711,7 @@
 				D7FB876A2D6FE0090054CDF7 /* PostCell.swift */,
 				D71809482DBC3C52003BC46D /* IndividualPostCell.swift */,
 				D71809462DBC37F5003BC46D /* CommentCell.swift */,
+				D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */,
 			);
 			path = PostCells;
 			sourceTree = "<group>";
@@ -919,6 +933,7 @@
 				D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */,
 				D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */,
 				D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */,
+				D78BE98D2E271CEE0082ABC4 /* PostCellBackup.swift in Sources */,
 				51C69B422D0E585900C46759 /* UnlikePostResponseModel.swift in Sources */,
 				51CA9DC52D0FA711008C36F0 /* RegistrationViewController.swift in Sources */,
 				51C69B262D0E575200C46759 /* Group.swift in Sources */,
@@ -931,6 +946,7 @@
 				D798605A2E208A050094B46E /* CreateStyleViews.swift in Sources */,
 				D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */,
 				D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */,
+				D78BE98F2E271DAE0082ABC4 /* PostHeaderLayout.swift in Sources */,
 				51EB084C2D10FD6900AA9CF1 /* UserGroupsResponseModel.swift in Sources */,
 				D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */,
 				D76FD6E02E19FA8200D29FD4 /* GroupDataController.swift in Sources */,
