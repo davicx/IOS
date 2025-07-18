@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 protocol PostCellDelegate: AnyObject {
     func didTapLikePostButton(in cell: IndividualPostCell)
 }
@@ -101,12 +102,12 @@ class IndividualPostCell: UITableViewCell {
             postImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postImage.heightAnchor.constraint(equalToConstant: 400),
+            //postImage.heightAnchor.constraint(equalToConstant: 400),
 
             postCaptionLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor),
             postCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             postCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            postCaptionLabel.heightAnchor.constraint(equalToConstant: 200),
+            //postCaptionLabel.heightAnchor.constraint(equalToConstant: 200),
 
             likeStackView.topAnchor.constraint(equalTo: postCaptionLabel.bottomAnchor, constant: 16),
             likeStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),

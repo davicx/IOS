@@ -18,7 +18,9 @@ class GroupsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("________________________")
         print("GroupsViewController")
+        print("________________________")
         
         setupTableView()
         fetchGroups()

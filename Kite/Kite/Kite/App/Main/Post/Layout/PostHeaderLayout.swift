@@ -86,20 +86,20 @@ class PostHeaderLayout: UIView {
         postHeaderGroupNameView.addSubview(groupSubtitleLabel)
         
         NSLayoutConstraint.activate([
-            // Title Label (Top - Bold)
-            groupTitleLabel.topAnchor.constraint(equalTo: postHeaderGroupNameView.topAnchor),
+            // Move title DOWN by 4
+            groupTitleLabel.topAnchor.constraint(equalTo: postHeaderGroupNameView.topAnchor, constant: -4),
             groupTitleLabel.leadingAnchor.constraint(equalTo: postHeaderGroupNameView.leadingAnchor, constant: 8),
             groupTitleLabel.trailingAnchor.constraint(equalTo: postHeaderGroupNameView.trailingAnchor, constant: -8),
-            
-            // Subtitle Label (Bottom - Regular)
-            groupSubtitleLabel.topAnchor.constraint(equalTo: groupTitleLabel.bottomAnchor),
+
+            // Move subtitle UP by using negative spacing between the labels
+            groupSubtitleLabel.topAnchor.constraint(equalTo: groupTitleLabel.bottomAnchor, constant: -22),
             groupSubtitleLabel.leadingAnchor.constraint(equalTo: postHeaderGroupNameView.leadingAnchor, constant: 8),
             groupSubtitleLabel.trailingAnchor.constraint(equalTo: postHeaderGroupNameView.trailingAnchor, constant: -8),
             groupSubtitleLabel.bottomAnchor.constraint(equalTo: postHeaderGroupNameView.bottomAnchor),
-            
-            // Equal height
+
             groupTitleLabel.heightAnchor.constraint(equalTo: groupSubtitleLabel.heightAnchor)
         ])
+
     }
 
     

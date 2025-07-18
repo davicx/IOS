@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
     func setupTableView() {
         postsTableView.delegate = self
         postsTableView.dataSource = self
-        postsTableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
+        postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -108,7 +108,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          //Constants.TableViewCellIdentifier.homePostCell could have a crashy error
-         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! PostCell
+         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
          let post = postDataController.posts[indexPath.row]
          cell.updatePost(with: post)
          return cell

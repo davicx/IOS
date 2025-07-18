@@ -9,7 +9,7 @@ import UIKit
 
 
 //Home Feed Post Cell
-class PostCell: UITableViewCell {
+class HomePostCell: UITableViewCell {
     let postHeaderView = PostHeaderLayout()
     
     let bodyView = CreateViewStyles.createBodyView()
@@ -23,14 +23,6 @@ class PostCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    /*
-    func updatePost(with post: Post) {
-        let temporaryGroupName = "Group Name for now"
-        let postCaption = post.postCaption ?? "no caption"
-        print(postCaption)
-    }
-    */
     
     func updatePost(with post: Post) {
         postHeaderView.configure(with: post)

@@ -24,7 +24,10 @@ class IndividualGroupViewController: UIViewController {
 
         let groupID = group?.groupID ?? 0
         let groupName = group?.groupName ?? "No Group Name"
+        print("________________________")
         print("IndividualGroupViewController \(groupName)")
+        print("________________________")
+        
 
         // Observe post updates
         postDataController.onPostsUpdated = { [weak self] in
@@ -80,7 +83,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(PostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+        tableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
         tableView.tableHeaderView = createTableHeader()
@@ -133,8 +136,8 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = postDataController.posts[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! PostCell
-        cell.updatePost(with: post)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
+        cell.configurePost(with: post)
         return cell
     }
 
