@@ -26,10 +26,6 @@ class HomePostCell: UITableViewCell {
     
     func updatePost(with post: Post) {
         postHeaderView.configure(with: post)
-
-        let temporaryGroupName = "Group Name for now"
-        let postCaption = post.postCaption ?? "no caption"
-        print(postCaption)
     }
 
     private func setupTemporaryViews() {

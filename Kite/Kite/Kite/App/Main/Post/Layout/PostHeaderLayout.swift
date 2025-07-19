@@ -102,8 +102,6 @@ class PostHeaderLayout: UIView {
 
     }
 
-    
-    
     //Setup Group Menu
     private func setupGroupMenu() {
         postHeaderGroupMenuView.addSubview(menuButton)
@@ -199,12 +197,16 @@ class PostHeaderLayout: UIView {
     //SETUP
     func configure(with post: Post) {
         //Set group image
-        if let image = post.postImageData {
+        if let image = post.groupImageData {
             groupImageView.image = image
         }
 
-        //Set title (temporary placeholder for group name)
-        groupTitleLabel.text = "Group Name"
+        //Set title (group name from post data)
+        if let groupName = post.groupName {
+            groupTitleLabel.text = groupName
+        } else {
+            groupTitleLabel.text = "Group Name"
+        }
 
         //Set subtitle (time message)
         if let time = post.timeMessage {

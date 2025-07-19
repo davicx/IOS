@@ -1,13 +1,15 @@
 //
-//  postFunctions.swift
-//  Instagram
+//  groupFunctions.swift
+//  Kite
 //
-//  Created by David Vasquez on 10/20/24.
+//  Created by David Vasquez on 7/18/25.
 //
 
 import UIKit
- 
 
+
+
+/*
 let imageFunctions = ImageFunctions()
 
 
@@ -23,8 +25,6 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         let currentPost = Post(postID: post.postID)
         currentPost.postType = post.postType
         currentPost.groupID = post.groupID
-        currentPost.groupName = post.groupName
-        currentPost.groupImage = post.groupImage
         currentPost.listID = post.listID
         currentPost.postFrom = post.postFrom
         currentPost.postTo = post.postTo
@@ -111,47 +111,4 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     return updatedPosts
 }
 
-//Function A3: Add Group Image to Post
-func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
-    var updatedPosts = postsArray
-    
-    for (index, post) in updatedPosts.enumerated() {
-        if let groupImageUrlString = post.groupImage,
-           let imageUrl = URL(string: groupImageUrlString),
-           groupImageUrlString.lowercased() != "empty" {
-            do {
-                let data = try await imageFunctions.downloadData(from: imageUrl)
-                updatedPosts[index].groupImageData = UIImage(data: data)
-            } catch {
-                print("Error downloading group image for postID \(post.postID): \(error)")
-                updatedPosts[index].groupImageData = UIImage(named: "background_1") // Default image
-            }
-        } else {
-            print("Invalid or missing groupImage for postID \(post.postID), using default image")
-            updatedPosts[index].groupImageData = UIImage(named: "background_1") // Default image
-        }
-    }
-    
-    return updatedPosts
-}
-
-//FORCE an Error
-/*
-func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post]{
-    for post in postsArray {
-        let imageUrl = URL(string: post.fileUrl!)!
-        let data = try await networker.downloadImageData(from: imageUrl)
-        post.postImageData = UIImage(data: data)
-    }
-    
-   return postsArray
-}
 */
-
-func printPostLikes(post: Post) {
-    let simpleLikesArray : Array = post.simpleLikesArray ?? []
-    for user in simpleLikesArray {
-        print("Liked By, \(user)!")
-    }
-}
-

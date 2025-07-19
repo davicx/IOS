@@ -13,6 +13,8 @@ class Post {
     var postID: Int
     var postType: String?
     var groupID: Int?
+    var groupName: String?
+    var groupImage: String?
     var listID: Int?
     var postFrom: String?
     var postTo: String?
@@ -35,6 +37,7 @@ class Post {
     var simpleLikesArray: [String]?
     
     var postImageData: UIImage?
+    var groupImageData: UIImage?
     
     init(postID: Int) {
         self.postID = postID
