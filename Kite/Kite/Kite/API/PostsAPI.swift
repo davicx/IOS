@@ -243,9 +243,7 @@ class PostsAPI {
         do {
             let decoder = JSONDecoder ()
             let postResponseModel = try decoder.decode(PostResponseModel.self, from: data)
-            
-            print(postResponseModel.data[0])
-
+      
             return postResponseModel
             
         } catch {
