@@ -14,6 +14,127 @@ class IndividualPostViewController: UIViewController {
     let currentUser = userDefaultManager.getLoggedInUser()
     var currentPost: Post!
 
+    let individualPostTableView = UITableView()
+    var commentsArray: [Comment] = []
+    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupIndividualPostTableView()
+    }
+    
+    func setupIndividualPostTableView() {
+        individualPostTableView.dataSource = self
+        individualPostTableView.delegate = self
+        individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
+        individualPostTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+        individualPostTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        view.addSubview(individualPostTableView)
+
+        NSLayoutConstraint.activate([
+            individualPostTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            individualPostTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            individualPostTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            individualPostTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
+
+extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1 // 1 Post + 2 Comments
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+            postCell.configure(with: currentPost?.postImageData)
+            return postCell
+        } else {
+            let commentCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            commentCell.textLabel?.text = "Comment"
+            commentCell.textLabel?.textAlignment = .center
+            return commentCell
+        }
+    }
+}
+
+//SIMPLE 1
+/*
+class IndividualPostViewController: UIViewController {
+    let postAPI = PostsAPI()
+    let currentUser = userDefaultManager.getLoggedInUser()
+    var currentPost: Post!
+    
+
+    let postTableView = UITableView()
+    var commentsArray: [Comment] = []
+    
+    
+    let individualPostTableView = UITableView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupIndividualPostTableView()
+    }
+    
+    func setupIndividualPostTableView() {
+        individualPostTableView.dataSource = self
+        individualPostTableView.delegate = self
+        individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
+        individualPostTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        view.addSubview(individualPostTableView)
+
+        NSLayoutConstraint.activate([
+            individualPostTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            individualPostTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            individualPostTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            individualPostTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
+
+
+
+extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3 // 1 Post + 2 Comments
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let label = UILabel()
+        label.text = indexPath.row == 0 ? "Post" : "Comment"
+        label.textAlignment = .center
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.contentView.subviews.forEach { $0.removeFromSuperview() } // clean reused content
+        cell.contentView.addSubview(label)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            label.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
+            label.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor)
+        ])
+
+        return cell
+    }
+}
+
+*/
+
+
+
+//WORKING
+/*
+class IndividualPostViewController: UIViewController {
+    let postAPI = PostsAPI()
+    let currentUser = userDefaultManager.getLoggedInUser()
+    var currentPost: Post!
+
     let postTableView = UITableView()
     var commentsArray: [Comment] = []
     
@@ -182,3 +303,4 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
 
 
+*/
