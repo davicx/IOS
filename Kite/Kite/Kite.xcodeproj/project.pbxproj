@@ -567,6 +567,32 @@
 			path = TableCells;
 			sourceTree = "<group>";
 		};
+		D70984DE2E2DBD7700157F27 /* IndividualPost */ = {
+			isa = PBXGroup;
+			children = (
+				D78CEF792E2F03BA002E3712 /* Cells */,
+				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
+			);
+			path = IndividualPost;
+			sourceTree = "<group>";
+		};
+		D70984DF2E2DBDB700157F27 /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				D79860582E2087660094B46E /* PostCells */,
+			);
+			path = Sort;
+			sourceTree = "<group>";
+		};
+		D70984E12E2DBDDE00157F27 /* HomePost */ = {
+			isa = PBXGroup;
+			children = (
+				D78CEF782E2F03B1002E3712 /* Cells */,
+				D78BE98B2E271B210082ABC4 /* Layout */,
+			);
+			path = HomePost;
+			sourceTree = "<group>";
+		};
 		D71828782D839ED00084F071 /* layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -594,8 +620,8 @@
 		D74AAB382D9F4B7600C8AEB5 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				D79860582E2087660094B46E /* PostCells */,
-				D78BE98B2E271B210082ABC4 /* Layout */,
+				D70984DE2E2DBD7700157F27 /* IndividualPost */,
+				D70984E12E2DBDDE00157F27 /* HomePost */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -618,7 +644,7 @@
 				51EC39142D34952F0001B6E7 /* Profile */,
 				D7FB876C2D6FE00E0054CDF7 /* Home */,
 				D74AAB382D9F4B7600C8AEB5 /* Post */,
-				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
+				D78CEF772E2F02D0002E3712 /* MaybeOld */,
 				51CA9DC72D0FAA54008C36F0 /* HomeViewController.swift */,
 				51CA9DC92D0FAA5A008C36F0 /* GroupsViewController.swift */,
 				51CA9DCB2D0FAA67008C36F0 /* NewPostViewController.swift */,
@@ -637,6 +663,32 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
+		D78CEF772E2F02D0002E3712 /* MaybeOld */ = {
+			isa = PBXGroup;
+			children = (
+				D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */,
+				D70984DF2E2DBDB700157F27 /* Sort */,
+			);
+			path = MaybeOld;
+			sourceTree = "<group>";
+		};
+		D78CEF782E2F03B1002E3712 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		D78CEF792E2F03BA002E3712 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D71809462DBC37F5003BC46D /* CommentCell.swift */,
+				D71809482DBC3C52003BC46D /* IndividualPostCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		D78EBE572E1C8BDE0087FB56 /* MainGroup */ = {
 			isa = PBXGroup;
 			children = (
@@ -649,18 +701,9 @@
 		D78EBE582E1C8BEA0087FB56 /* IndividualGroup */ = {
 			isa = PBXGroup;
 			children = (
-				D78EBE592E1C93E30087FB56 /* TableCells */,
 				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
 			);
 			path = IndividualGroup;
-			sourceTree = "<group>";
-		};
-		D78EBE592E1C93E30087FB56 /* TableCells */ = {
-			isa = PBXGroup;
-			children = (
-				D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */,
-			);
-			path = TableCells;
 			sourceTree = "<group>";
 		};
 		D79743F82DFB99D900DC97D5 /* Groups */ = {
@@ -714,9 +757,6 @@
 		D79860582E2087660094B46E /* PostCells */ = {
 			isa = PBXGroup;
 			children = (
-				D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */,
-				D71809482DBC3C52003BC46D /* IndividualPostCell.swift */,
-				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 				D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */,
 			);
 			path = PostCells;

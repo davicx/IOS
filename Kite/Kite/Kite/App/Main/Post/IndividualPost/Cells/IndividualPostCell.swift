@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 protocol PostCellDelegate: AnyObject {
     func didTapLikePostButton(in cell: IndividualPostCell)
 }
@@ -124,3 +123,4 @@ class IndividualPostCell: UITableViewCell {
     
 
 }
+

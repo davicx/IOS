@@ -8,6 +8,13 @@
 import UIKit
 
 
+/*
+This displays Posts
+They are located as
+ IndividualPostCell
+
+*/
+
 class IndividualGroupViewController: UIViewController {
 
     var group: GroupModel?
