@@ -23,6 +23,8 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         let currentPost = Post(postID: post.postID)
         currentPost.postType = post.postType
         currentPost.groupID = post.groupID
+        currentPost.groupName = post.groupName
+        currentPost.groupImage = post.groupImage
         currentPost.listID = post.listID
         currentPost.postFrom = post.postFrom
         currentPost.postTo = post.postTo
@@ -109,6 +111,133 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     return updatedPosts
 }
 
+/*
+//Function A2: Add Image to Post (Enhanced Error Handling)
+func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+    
+    for (index, post) in updatedPosts.enumerated() {
+        if let fileUrlString = post.fileUrl,
+           fileUrlString.lowercased() != "empty",
+           fileUrlString.lowercased() != "fileurl",
+           !fileUrlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            
+            // Validate URL format before attempting to download
+            guard let imageUrl = URL(string: fileUrlString),
+                  imageUrl.scheme != nil,
+                  (imageUrl.scheme == "http" || imageUrl.scheme == "https") else {
+                print("Invalid post image URL format for postID \(post.postID): '\(fileUrlString)'. Using default image.")
+                updatedPosts[index].postImageData = UIImage(named: "background_1")
+                continue
+            }
+            
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                updatedPosts[index].postImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading post image for postID \(post.postID): \(error.localizedDescription). Using default image.")
+                updatedPosts[index].postImageData = UIImage(named: "background_1")
+            }
+        } else {
+            print("Missing or invalid fileURL for postID \(post.postID): '\(post.fileUrl ?? "nil")'. Using default image.")
+            updatedPosts[index].postImageData = UIImage(named: "background_1")
+        }
+    }
+    
+    return updatedPosts
+}
+*/
+
+//Function A3: Add Group Image to Post
+func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+
+    for (index, post) in updatedPosts.enumerated() {
+        if let groupImageUrlString = post.groupImage,
+           !groupImageUrlString.isEmpty,
+           groupImageUrlString.lowercased() != "empty",
+           let imageUrl = URL(string: groupImageUrlString),
+           imageUrl.scheme == "http" || imageUrl.scheme == "https" {
+            
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                updatedPosts[index].groupImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading group image for groupID \(post.groupID ?? -1)")
+                updatedPosts[index].groupImageData = UIImage(named: "background_1")
+            }
+
+        } else {
+            print("Invalid or missing groupImage for groupID \(post.groupID ?? -1), using default image")
+            updatedPosts[index].groupImageData = UIImage(named: "background_1")
+        }
+    }
+
+    return updatedPosts
+}
+
+
+/*
+func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+    
+    for (index, post) in updatedPosts.enumerated() {
+        if let groupImageUrlString = post.groupImage,
+           let imageUrl = URL(string: groupImageUrlString),
+           groupImageUrlString.lowercased() != "empty" {
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                updatedPosts[index].groupImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading group image for postID \(post.postID): \(error)")
+                updatedPosts[index].groupImageData = UIImage(named: "background_1") // Default image
+            }
+        } else {
+            print("Invalid or missing groupImage for postID \(post.postID), using default image")
+            updatedPosts[index].groupImageData = UIImage(named: "background_1") // Default image
+        }
+    }
+    
+    return updatedPosts
+}
+
+*/
+/*
+//Function A3: Add Group Image to Post (Enhanced Error Handling)
+func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+    
+    for (index, post) in updatedPosts.enumerated() {
+        if let groupImageUrlString = post.groupImage,
+           groupImageUrlString.lowercased() != "empty",
+           groupImageUrlString.lowercased() != "fileurl",
+           !groupImageUrlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            
+            // Validate URL format before attempting to download
+            guard let imageUrl = URL(string: groupImageUrlString),
+                  imageUrl.scheme != nil,
+                  (imageUrl.scheme == "http" || imageUrl.scheme == "https") else {
+                print("Invalid group image URL format for postID \(post.postID): '\(groupImageUrlString)'. Using default image.")
+                updatedPosts[index].groupImageData = UIImage(named: "background_1")
+                continue
+            }
+            
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                updatedPosts[index].groupImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading group image for postID \(post.postID): \(error.localizedDescription). Using default image.")
+                updatedPosts[index].groupImageData = UIImage(named: "background_1")
+            }
+        } else {
+            print("Missing or invalid groupImage for postID \(post.postID): '\(post.groupImage ?? "nil")'. Using default image.")
+            updatedPosts[index].groupImageData = UIImage(named: "background_1")
+        }
+    }
+    
+    return updatedPosts
+}
+*/
 
 //FORCE an Error
 /*

@@ -7,17 +7,61 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "08278743-F17E-48BB-A9B4-18CF832204B8"
+            uuid = "7F96E808-3BA1-4B6C-B5AE-90365243C19E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Kite/App/Main/Post/IndividualPostViewController.swift"
+            filePath = "Kite/App/Main/Groups/IndividualGroup/IndividualGroupViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "IndividualGroupViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "7F96E808-3BA1-4B6C-B5AE-90365243C19E - d6e887eaeccd282b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Kite.IndividualGroupViewController.viewDidLoad() -&gt; ()"
+                  moduleName = "Kite.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/davidvasquez/Desktop/David/www/IOS/Kite/Kite/Kite/App/Main/Groups/IndividualGroup/IndividualGroupViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
+               </Location>
+               <Location
+                  uuid = "7F96E808-3BA1-4B6C-B5AE-90365243C19E - 7767774672c7fa25"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Kite.IndividualGroupViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; Kite.IndividualGroupViewController"
+                  moduleName = "Kite.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/davidvasquez/Desktop/David/www/IOS/Kite/Kite/Kite/App/Main/Groups/IndividualGroup/IndividualGroupViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
+               </Location>
+               <Location
+                  uuid = "7F96E808-3BA1-4B6C-B5AE-90365243C19E - ca4dd49b0dd72990"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Kite.IndividualGroupViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Kite.IndividualGroupViewController&gt;"
+                  moduleName = "Kite.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/davidvasquez/Desktop/David/www/IOS/Kite/Kite/Kite/App/Main/Groups/IndividualGroup/IndividualGroupViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

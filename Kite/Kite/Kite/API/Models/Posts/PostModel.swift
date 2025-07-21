@@ -13,6 +13,8 @@ struct PostModel: Codable {
     let postID: Int
     let postType: String
     let groupID: Int
+    let groupName: String
+    let groupImage: String
     let listID: Int
     let postFrom: String
     let postTo: String

@@ -18,7 +18,9 @@ class GroupsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("________________________")
         print("GroupsViewController")
+        print("________________________")
         
         setupTableView()
         fetchGroups()
@@ -33,6 +35,14 @@ class GroupsViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("________________________")
+        print("GroupsViewController")
+        print("________________________")
+    }
+
+ 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Refresh groups when view appears to ensure data is up to date

@@ -8,6 +8,13 @@
 import UIKit
 
 
+/*
+This displays Posts
+They are located as
+ IndividualPostCell
+
+*/
+
 class IndividualGroupViewController: UIViewController {
 
     var group: GroupModel?
@@ -24,7 +31,10 @@ class IndividualGroupViewController: UIViewController {
 
         let groupID = group?.groupID ?? 0
         let groupName = group?.groupName ?? "No Group Name"
+        print("________________________")
         print("IndividualGroupViewController \(groupName)")
+        print("________________________")
+        
 
         // Observe post updates
         postDataController.onPostsUpdated = { [weak self] in
@@ -67,7 +77,7 @@ class IndividualGroupViewController: UIViewController {
             return
         }
 
-        print("Fetching posts for group ID: \(groupID)")
+        //print("Fetching posts for group ID: \(groupID)")
 
         Task {
             await postDataController.fetchPosts(groupID: groupID)
@@ -134,7 +144,7 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = postDataController.posts[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
-        cell.updatePost(with: post)
+        cell.configurePost(with: post)
         return cell
     }
 

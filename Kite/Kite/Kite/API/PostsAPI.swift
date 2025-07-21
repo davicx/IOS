@@ -224,6 +224,7 @@ class PostsAPI {
         //print("GET POSTS!!!")
         
         //let endpoint = "http://localhost:3003/posts/group/72"
+  
         let endpoint = "http://localhost:3003/posts/group/\(groupID)"
         //print("URL \(endpoint)")
         
@@ -242,11 +243,14 @@ class PostsAPI {
         do {
             let decoder = JSONDecoder ()
             let postResponseModel = try decoder.decode(PostResponseModel.self, from: data)
-
+      
             return postResponseModel
             
         } catch {
             let postResponseModel = PostResponseModel()
+            print("Error decoding data: \(error)")
+
+
             print("Error decoding data")
             return postResponseModel
             

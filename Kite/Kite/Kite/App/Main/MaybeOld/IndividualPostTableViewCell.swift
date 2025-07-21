@@ -7,6 +7,7 @@
 
 import UIKit
 
+/*
 class IndividualPostTableViewCell: UITableViewCell {
     
     private let postLabel: UILabel = {
@@ -49,3 +50,4 @@ class IndividualPostTableViewCell: UITableViewCell {
         postLabel.text = nil
     }
 }
+*/

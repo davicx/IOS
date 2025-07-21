@@ -1,5 +1,5 @@
 //
-//  IndividualPostCell.swift
+//  HomePostCell.swift
 //  Kite
 //
 //  Created by David Vasquez on 2/26/25.
@@ -8,7 +8,175 @@
 import UIKit
 
 
-class IndividualPostCell: UITableViewCell {
+//Home Feed Post Cell
+class HomePostCell: UITableViewCell {
+    let postHeaderView = PostHeaderLayout()
+    
+    let bodyView = CreateViewStyles.createBodyView()
+    let footerView = CreateViewStyles.createFooterView()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupTemporaryViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func updatePost(with post: Post) {
+        postHeaderView.configure(with: post)
+    }
+
+    private func setupTemporaryViews() {
+        postHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        bodyView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(postHeaderView)
+        contentView.addSubview(bodyView)
+        contentView.addSubview(footerView)
+
+        NSLayoutConstraint.activate([
+            postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postHeaderView.heightAnchor.constraint(equalToConstant: 56),
+
+            bodyView.topAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
+            bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            bodyView.heightAnchor.constraint(equalToConstant: 200),
+
+            footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
+            footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: 20),
+
+            footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+}
+
+
+/*
+//Home Feed Post Cell
+class PostCell: UITableViewCell {
+    let headerView = CreateViewStyles.createHeaderView()
+    let bodyView = CreateViewStyles.createBodyView()
+    let footerView = CreateViewStyles.createFooterView()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupTemporaryViews()
+
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //CELL SETUP
+    func updatePost(with post: Post) {
+        let postCaption = post.postCaption ?? "no caption"
+        print(postCaption)
+        /*
+        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let postCaption = post.postCaption ?? "no caption"
+        
+        let imageHeight = getImageHeight(image: currentImage)
+        postImageHeightConstraint?.constant = imageHeight
+        postImage.image = currentImage
+        
+        let captionHeight = round(calculateLabelHeight(text: postCaption))
+        postCaptionHeightConstraint?.constant = captionHeight
+        postCaptionLabel.text = postCaption
+        
+        postSocialsLabel.text = "Post Like Count: \(post.simpleLikesArray?.count ?? 0)"
+        
+        layoutIfNeeded()
+         */
+    }
+
+    private func setupTemporaryViews() {
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        bodyView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(headerView)
+        contentView.addSubview(bodyView)
+        contentView.addSubview(footerView)
+
+        NSLayoutConstraint.activate([
+            // Header - 200
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 80),
+
+            // Body - 400
+            bodyView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            bodyView.heightAnchor.constraint(equalToConstant: 200),
+
+            // Footer - 200
+            footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
+            footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: 20),
+
+            footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+        
+        
+        //MENU
+        headerView.addSubview(menuButton)
+
+        NSLayoutConstraint.activate([
+            menuButton.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
+            menuButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
+            menuButton.widthAnchor.constraint(equalToConstant: 24),
+            menuButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        setupMenu()
+         
+
+    }
+    
+    //MENU
+    private func setupMenu() {
+        let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+            print("Edit tapped")
+        }
+
+        let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            print("Delete tapped")
+        }
+
+        let menu = UIMenu(title: "", children: [editAction, deleteAction])
+        menuButton.menu = menu
+        menuButton.showsMenuAsPrimaryAction = true // Show menu on tap (not long-press)
+    }
+
+    
+    //UI ELEMENTS
+    private let menuButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = UIImage(named: "menu-horizontal")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black // Optional: Adjust based on your UI
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+}
+
+*/
+
+/*
+class HomePostCell: UITableViewCell {
     
     //Post User
     let postUserView = createPostUserView()
@@ -162,6 +330,8 @@ class IndividualPostCell: UITableViewCell {
 }
 
 
+
+
 //POST: Post User
 func createPostUserView() -> UIView {
     let view = UIView()
@@ -250,7 +420,13 @@ func createPostDividerView() -> UIView {
 }
 
 
-//SORT
+func createHeaderView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .white
+    
+    return view
+}
+
 func createBodyView() -> UIView {
     let view = UIView()
     view.backgroundColor = .white
@@ -264,6 +440,8 @@ func createFooterView() -> UIView {
     
     return view
 }
+ 
+ */
 
 
 

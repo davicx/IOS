@@ -28,9 +28,9 @@ class PostDataController {
         do {
             let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
             let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
-            self.posts = try await addPostImageToPostsArray(postsArray: noImagePosts)
-            print("FETCHING POSTS!!!!")
-
+            let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
+            self.posts = try await addGroupImageToPostsArray(postsArray: postsWithImages)
+         
             DispatchQueue.main.async {
                 self.onPostsUpdated?()
             }
