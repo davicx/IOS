@@ -10,6 +10,38 @@ import UIKit
 
 
 
+class CommentCell: UITableViewCell {
+    private let commentLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Comment"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCommentLabel()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupCommentLabel()
+    }
+
+    private func setupCommentLabel() {
+        contentView.addSubview(commentLabel)
+
+        NSLayoutConstraint.activate([
+            commentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            commentLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+        ])
+    }
+}
+
+//WORKING
+/*
 //Need a Did Like Comment Delegate
 protocol CommentCellDelegate: AnyObject {
      func didTapLikeCommentButton(in cell: CommentCell)
@@ -409,3 +441,4 @@ class CommentCell: UITableViewCell {
 
 }
 
+*/
