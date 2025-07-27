@@ -11,20 +11,32 @@ import UIKit
 class PostCell: UITableViewCell {
     
     //POST HEADER: Post Information
-    let postHeaderView = createHeaderView()
-    
+    let postHeaderView = createHeaderView()    
     let userImageHolderView = createUserImageHolderView()
-    let userNameHolderView = createUserNameHolderView()
+    let userEventHolderView = createUserNameHolderView()
     let userMenuHolderView = createUserMenuHolderView()
     
     //User Image
     let userImageView = createUserImageView()
     
-    
+    let userEventNameHolderView = createUserEventNameHolderView()
+    let userEventTimeHolderView = createUserEventTimeHolderView()
 
+    let userEventNameText = createUserEventNameLabel()
+    let userEventTimeText = createUserEventTimeLabel()
     
-    
-    
+    //Menu
+    let menuButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = UIImage(named: "menu-horizontal")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        return button
+    }()
+
+
     //POST BODY: Post Image, Socials and Caption
     //Post Image
     let postImageView = createPostImageView()
@@ -49,6 +61,7 @@ class PostCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupHeaderViews()
+        setupMenu()
         setupBodyViews()
         setupFooterViews()
     }
@@ -59,6 +72,7 @@ class PostCell: UITableViewCell {
 
     private func setupHeaderViews() {
         postHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        postHeaderView.isUserInteractionEnabled = true
         addSubview(postHeaderView)
 
         NSLayoutConstraint.activate([
@@ -68,13 +82,16 @@ class PostCell: UITableViewCell {
             postHeaderView.heightAnchor.constraint(equalToConstant: 48),
         ])
         
-        // Add subviews
+        //Main Subviews
         userImageHolderView.translatesAutoresizingMaskIntoConstraints = false
-        userNameHolderView.translatesAutoresizingMaskIntoConstraints = false
+        userImageHolderView.isUserInteractionEnabled = true
+        userEventHolderView.translatesAutoresizingMaskIntoConstraints = false
+        userEventHolderView.isUserInteractionEnabled = true
         userMenuHolderView.translatesAutoresizingMaskIntoConstraints = false
+        userMenuHolderView.isUserInteractionEnabled = true
         
         postHeaderView.addSubview(userImageHolderView)
-        postHeaderView.addSubview(userNameHolderView)
+        postHeaderView.addSubview(userEventHolderView)
         postHeaderView.addSubview(userMenuHolderView)
         
         NSLayoutConstraint.activate([
@@ -85,10 +102,10 @@ class PostCell: UITableViewCell {
             userImageHolderView.widthAnchor.constraint(equalToConstant: 52),
 
             // Middle: userNameHolderView
-            userNameHolderView.leadingAnchor.constraint(equalTo: userImageHolderView.trailingAnchor),
-            userNameHolderView.trailingAnchor.constraint(equalTo: userMenuHolderView.leadingAnchor),
-            userNameHolderView.topAnchor.constraint(equalTo: postHeaderView.topAnchor),
-            userNameHolderView.bottomAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
+            userEventHolderView.leadingAnchor.constraint(equalTo: userImageHolderView.trailingAnchor),
+            userEventHolderView.trailingAnchor.constraint(equalTo: userMenuHolderView.leadingAnchor),
+            userEventHolderView.topAnchor.constraint(equalTo: postHeaderView.topAnchor),
+            userEventHolderView.bottomAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
             
             // Right: userMenuHolderView
             userMenuHolderView.trailingAnchor.constraint(equalTo: postHeaderView.trailingAnchor),
@@ -96,9 +113,9 @@ class PostCell: UITableViewCell {
             userMenuHolderView.bottomAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
             userMenuHolderView.widthAnchor.constraint(equalToConstant: 52)
 
-            
         ])
         
+        //LEFT: User Image View
         userImageView.translatesAutoresizingMaskIntoConstraints = false
         userImageHolderView.addSubview(userImageView)
 
@@ -108,10 +125,68 @@ class PostCell: UITableViewCell {
             userImageView.widthAnchor.constraint(equalToConstant: 42),
             userImageView.heightAnchor.constraint(equalToConstant: 42)
         ])
+        
+        //MIDDLE: Group Information
+        // Add name and time holder views to userNameHolderView
+        userEventNameHolderView.translatesAutoresizingMaskIntoConstraints = false
+        userEventTimeHolderView.translatesAutoresizingMaskIntoConstraints = false
+
+        userEventHolderView.addSubview(userEventNameHolderView)
+        userEventHolderView.addSubview(userEventTimeHolderView)
+
+        NSLayoutConstraint.activate([
+            userEventNameHolderView.topAnchor.constraint(equalTo: userEventHolderView.topAnchor),
+            userEventNameHolderView.leadingAnchor.constraint(equalTo: userEventHolderView.leadingAnchor),
+            userEventNameHolderView.trailingAnchor.constraint(equalTo: userEventHolderView.trailingAnchor),
+            userEventNameHolderView.heightAnchor.constraint(equalToConstant: 24),
+
+            userEventTimeHolderView.topAnchor.constraint(equalTo: userEventNameHolderView.bottomAnchor),
+            userEventTimeHolderView.leadingAnchor.constraint(equalTo: userEventHolderView.leadingAnchor),
+            userEventTimeHolderView.trailingAnchor.constraint(equalTo: userEventHolderView.trailingAnchor),
+            userEventTimeHolderView.heightAnchor.constraint(equalToConstant: 24),
+        ])
+
+        userEventNameText.translatesAutoresizingMaskIntoConstraints = false
+        userEventTimeText.translatesAutoresizingMaskIntoConstraints = false
+
+        userEventNameHolderView.addSubview(userEventNameText)
+        userEventTimeHolderView.addSubview(userEventTimeText)
+
+        NSLayoutConstraint.activate([
+            userEventNameText.topAnchor.constraint(equalTo: userEventNameHolderView.topAnchor, constant: 6),
+            userEventNameText.bottomAnchor.constraint(equalTo: userEventNameHolderView.bottomAnchor),
+            userEventNameText.leadingAnchor.constraint(equalTo: userEventNameHolderView.leadingAnchor, constant: 4),
+            userEventNameText.trailingAnchor.constraint(equalTo: userEventNameHolderView.trailingAnchor, constant: -8),
+
+            userEventTimeText.topAnchor.constraint(equalTo: userEventTimeHolderView.topAnchor),
+            userEventTimeText.bottomAnchor.constraint(equalTo: userEventTimeHolderView.bottomAnchor, constant: -6),
+            userEventTimeText.leadingAnchor.constraint(equalTo: userEventTimeHolderView.leadingAnchor, constant: 4),
+            userEventTimeText.trailingAnchor.constraint(equalTo: userEventTimeHolderView.trailingAnchor, constant: -8),
+        ])
+
+        //RIGHT: Setup Menu
+        userMenuHolderView.addSubview(menuButton)
+
+        NSLayoutConstraint.activate([
+            menuButton.topAnchor.constraint(equalTo: userMenuHolderView.topAnchor, constant: 8),
+            menuButton.trailingAnchor.constraint(equalTo: userMenuHolderView.trailingAnchor, constant: -8),
+            menuButton.widthAnchor.constraint(equalToConstant: 24),
+            menuButton.heightAnchor.constraint(equalToConstant: 24),
+        ])
+        
+        // Add menu button directly to content view for proper user interaction
+        contentView.addSubview(menuButton)
+        
+        // Update constraints to position relative to content view
+        NSLayoutConstraint.activate([
+            menuButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            menuButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            menuButton.widthAnchor.constraint(equalToConstant: 24),
+            menuButton.heightAnchor.constraint(equalToConstant: 24),
+        ])
 
     }
 
-    
     //BODY: The full post
     private func setupBodyViews() {
         
@@ -206,6 +281,9 @@ class PostCell: UITableViewCell {
         let groupImage = post.groupImageData ?? UIImage(named: "background_1") ?? UIImage()
         userImageView.image = groupImage
 
+        userEventNameText.text = post.groupName ?? "No Group"
+        userEventTimeText.text = post.timeMessage ?? "No Time"
+        
         //POST BODY: Setup
         let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
         let postCaption = post.postCaption ?? "no caption"
@@ -223,6 +301,32 @@ class PostCell: UITableViewCell {
         layoutIfNeeded()
     }
     
+    //ACTIONS
+    //Function 1: Setup the menu
+    private func setupMenu() {
+        print("PostCell: Setting up menu")
+        
+        let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+            print("PostCell: Edit tapped")
+        }
+
+        let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            print("PostCell: Delete tapped")
+        }
+
+        let menu = UIMenu(title: "", children: [editAction, deleteAction])
+        menuButton.menu = menu
+        menuButton.showsMenuAsPrimaryAction = true
+        
+        print("PostCell: Menu setup complete")
+    }
+    
+    @objc private func menuButtonTapped() {
+        print("PostCell: Menu button was tapped!")
+    }
+
+
+    
 }
 
 
@@ -230,7 +334,7 @@ class PostCell: UITableViewCell {
 func createHeaderView() -> UIView {
     let view = UIView()
     view.backgroundColor = .systemPink
-    
+    view.isUserInteractionEnabled = true
     return view
 }
 
@@ -238,22 +342,25 @@ func createHeaderView() -> UIView {
 func createUserImageHolderView() -> UIView {
     let view = UIView()
     view.backgroundColor = .orange
+    view.isUserInteractionEnabled = true
     return view
 }
 
 func createUserNameHolderView() -> UIView {
     let view = UIView()
     view.backgroundColor = .cyan
+    view.isUserInteractionEnabled = true
     return view
 }
 
 func createUserMenuHolderView() -> UIView {
     let view = UIView()
     view.backgroundColor = .purple
+    view.isUserInteractionEnabled = true
     return view
 }
 
-//User Image
+//LEFT: User Image
 func createUserImageView() -> UIImageView {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFill
@@ -262,6 +369,37 @@ func createUserImageView() -> UIImageView {
     imageView.backgroundColor = .white
     return imageView
 }
+
+//MIDDLE:
+func createUserEventNameHolderView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .magenta
+    return view
+}
+
+func createUserEventTimeHolderView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .yellow
+    return view
+}
+
+func createUserEventNameLabel() -> UILabel {
+    let label = UILabel()
+    label.text = "Group Name"
+    label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+    label.textColor = .black
+    return label
+}
+
+func createUserEventTimeLabel() -> UILabel {
+    let label = UILabel()
+    label.text = "Time Message"
+    label.font = UIFont.systemFont(ofSize: 12)
+    label.textColor = .darkGray
+    return label
+}
+
+
 
 //BODY VIEWS
 func createPostImageView() -> UIView {
