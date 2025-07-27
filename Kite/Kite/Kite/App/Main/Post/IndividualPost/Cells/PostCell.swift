@@ -11,16 +11,16 @@ import UIKit
 class PostCell: UITableViewCell {
     
     //POST HEADER: Post Information
-    let postHeaderView = createHeaderView()    
-    let userImageHolderView = createUserImageHolderView()
-    let userEventHolderView = createUserNameHolderView()
-    let userMenuHolderView = createUserMenuHolderView()
+    let postHeaderView = createBaseView()
+    let userImageHolderView = createBaseView()
+    let userEventHolderView = createBaseView()
+    let userMenuHolderView = createBaseView()
     
     //User Image
     let userImageView = createUserImageView()
     
-    let userEventNameHolderView = createUserEventNameHolderView()
-    let userEventTimeHolderView = createUserEventTimeHolderView()
+    let userEventNameHolderView = createBaseView()
+    let userEventTimeHolderView = createBaseView()
 
     let userEventNameText = createUserEventNameLabel()
     let userEventTimeText = createUserEventTimeLabel()
@@ -43,7 +43,7 @@ class PostCell: UITableViewCell {
     let postImage = createPostImage()
     
     //Post Socials
-    let postSocialsView = createPostSocialsView()
+    let postSocialsView = createBaseView()
     let postSocialsLabel = createPostSocialsText()
     
     //Post Caption
@@ -231,7 +231,7 @@ class PostCell: UITableViewCell {
             postImage.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -0),
             
             //Post Caption View
-            postCaptionView.topAnchor.constraint(equalTo: postSocialsLabel.bottomAnchor, constant: 0),
+            postCaptionView.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 0),
             postCaptionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             postCaptionView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
@@ -241,7 +241,7 @@ class PostCell: UITableViewCell {
             postCaptionLabel.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: -0),
            
             //Post Socials View
-            postSocialsView.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 0),
+            postSocialsView.topAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: 0),
             postSocialsView.leadingAnchor.constraint(equalTo: leadingAnchor),
             postSocialsView.trailingAnchor.constraint(equalTo: trailingAnchor),
             postSocialsView.heightAnchor.constraint(equalToConstant: 40),
@@ -252,7 +252,7 @@ class PostCell: UITableViewCell {
             postSocialsLabel.bottomAnchor.constraint(equalTo: postSocialsView.bottomAnchor, constant: -0),
   
         ])
-        
+
     }
     
 
@@ -329,36 +329,17 @@ class PostCell: UITableViewCell {
     
 }
 
+//BASE VIEWS
+func createBaseView(userInteractionEnabled: Bool = true) -> UIView {
+    let view = UIView()
+    view.backgroundColor = .clear
+    view.isUserInteractionEnabled = userInteractionEnabled
+    return view
+}
+
+
 
 //HEADER VIEWS
-func createHeaderView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .systemPink
-    view.isUserInteractionEnabled = true
-    return view
-}
-
-//Main header layout
-func createUserImageHolderView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .orange
-    view.isUserInteractionEnabled = true
-    return view
-}
-
-func createUserNameHolderView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .cyan
-    view.isUserInteractionEnabled = true
-    return view
-}
-
-func createUserMenuHolderView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .purple
-    view.isUserInteractionEnabled = true
-    return view
-}
 
 //LEFT: User Image
 func createUserImageView() -> UIImageView {
@@ -368,19 +349,6 @@ func createUserImageView() -> UIImageView {
     imageView.layer.cornerRadius = 21 // Half of 42 for circle
     imageView.backgroundColor = .white
     return imageView
-}
-
-//MIDDLE:
-func createUserEventNameHolderView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .magenta
-    return view
-}
-
-func createUserEventTimeHolderView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .yellow
-    return view
 }
 
 func createUserEventNameLabel() -> UILabel {
@@ -400,7 +368,6 @@ func createUserEventTimeLabel() -> UILabel {
 }
 
 
-
 //BODY VIEWS
 func createPostImageView() -> UIView {
     let view = UIView()
@@ -418,13 +385,6 @@ func createPostCaptionView() -> UIView {
 
 }
 
-func createPostSocialsView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .green
-    
-    return view
-
-}
 
 //FOOTER VIEWS
 func createFooterView() -> UIView {
