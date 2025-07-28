@@ -69,6 +69,8 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
             
         } else {
             let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+            let comment = comments[indexPath.row - 1]
+            commentCell.updateComment(with: comment)
             return commentCell
         }
     }
@@ -79,12 +81,18 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
             //STEP 1: Get Image and Caption Heights
             let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
             let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
+            let postCaptionUserNameHeight: CGFloat = 20
         
+            //return 85 + postImageHeight + postCaptionHeight + postCaptionUserNameHeight
             return 85 + postImageHeight + postCaptionHeight
         } else {
-            return 40
+            
+            //Comment From: 20
+            //Comment Caption:
+            //Comment Social: 20
+            //Divider: 1
+            return 20 + 20 + 1
         }
-
     }
 }
 

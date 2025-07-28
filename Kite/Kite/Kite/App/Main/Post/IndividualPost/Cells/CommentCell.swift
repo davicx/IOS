@@ -11,34 +11,92 @@ import UIKit
 
 
 class CommentCell: UITableViewCell {
-    private let commentLabel: UILabel = {
+
+    let commentUserView = createBaseView(backgroundColor: .systemPink) // Just to visually debug
+    let commentBodyView = createBaseView(backgroundColor: .lightGray)
+
+    // Optional: Add a placeholder label
+    let commentBodyLabel: UILabel = {
         let label = UILabel()
-        label.text = "Comment"
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "Comment goes here..."
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCommentLabel()
+        setupUserViews()
+        setupBodyViews()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupCommentLabel()
+        setupUserViews()
+        setupBodyViews()
     }
 
-    private func setupCommentLabel() {
-        contentView.addSubview(commentLabel)
+    //COMMENT: User View
+    private func setupUserViews() {
+        commentUserView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(commentUserView)
 
         NSLayoutConstraint.activate([
-            commentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            commentLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            // commentUserView: 52 wide, full height, aligned left
+            commentUserView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            commentUserView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            commentUserView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            commentUserView.widthAnchor.constraint(equalToConstant: 52),
+
+        ])
+
+    }
+
+    //COMMENT: User View
+    private func setupBodyViews() {
+        commentBodyView.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(commentBodyView)
+
+        NSLayoutConstraint.activate([
+            commentBodyView.leadingAnchor.constraint(equalTo: commentUserView.trailingAnchor),
+            commentBodyView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            commentBodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            commentBodyView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+
+        commentBodyView.addSubview(commentBodyLabel)
+        NSLayoutConstraint.activate([
+            commentBodyLabel.topAnchor.constraint(equalTo: commentBodyView.topAnchor, constant: 8),
+            commentBodyLabel.bottomAnchor.constraint(equalTo: commentBodyView.bottomAnchor, constant: -8),
+            commentBodyLabel.leadingAnchor.constraint(equalTo: commentBodyView.leadingAnchor, constant: 8),
+            commentBodyLabel.trailingAnchor.constraint(equalTo: commentBodyView.trailingAnchor, constant: -8),
         ])
     }
+    
+    //ACTIONS
+    func updateComment(with comment: Comment) {
+        commentBodyLabel.text = comment.commentCaption
+    }
 }
+
+
+func createBaseView(userInteractionEnabled: Bool = true, backgroundColor: UIColor? = nil) -> UIView {
+    let view = UIView()
+    view.backgroundColor = backgroundColor ?? .clear
+    view.isUserInteractionEnabled = userInteractionEnabled
+    return view
+}
+
+func createCommentDividerView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .black
+    
+    return view
+}
+
+
 
 //WORKING
 /*

@@ -62,7 +62,9 @@ class PostCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupHeaderViews()
         setupMenu()
-        setupBodyViews()
+        setupBodyImageViews()
+        setupBodyCaptionViews()
+        setupBodySocialsViews()
         setupFooterViews()
     }
 
@@ -70,6 +72,7 @@ class PostCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //HEADER
     private func setupHeaderViews() {
         postHeaderView.translatesAutoresizingMaskIntoConstraints = false
         postHeaderView.isUserInteractionEnabled = true
@@ -186,9 +189,10 @@ class PostCell: UITableViewCell {
         ])
 
     }
+    
 
     //BODY: The full post
-    private func setupBodyViews() {
+    private func setupBodyImageViews() {
         
         //Post Image
         postImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -199,24 +203,6 @@ class PostCell: UITableViewCell {
         
         postImageHeightConstraint = postImageView.heightAnchor.constraint(equalToConstant: 100)  // Initial height
         postImageHeightConstraint?.isActive = true
-        
-        //Post Caption
-        postCaptionView.translatesAutoresizingMaskIntoConstraints = false
-        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(postCaptionView)
-        postCaptionView.addSubview(postCaptionLabel)
-        
-        postCaptionHeightConstraint = postCaptionView.heightAnchor.constraint(equalToConstant: 100)  // Initial height
-        postCaptionHeightConstraint?.isActive = true
-        
-        //Post Socials
-        postSocialsView.translatesAutoresizingMaskIntoConstraints = false
-        postSocialsLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(postSocialsView)
-        postSocialsView.addSubview(postSocialsLabel)
-        
         
         NSLayoutConstraint.activate([
             
@@ -230,6 +216,25 @@ class PostCell: UITableViewCell {
             postImage.rightAnchor.constraint(equalTo: postImageView.rightAnchor, constant: -0),
             postImage.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -0),
             
+        ])
+
+    }
+    
+    private func setupBodyCaptionViews() {
+    
+        //Post Caption
+        postCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(postCaptionView)
+        postCaptionView.addSubview(postCaptionLabel)
+        
+        postCaptionHeightConstraint = postCaptionView.heightAnchor.constraint(equalToConstant: 100)  // Initial height
+        postCaptionHeightConstraint?.isActive = true
+        
+        
+        NSLayoutConstraint.activate([
+     
             //Post Caption View
             postCaptionView.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 0),
             postCaptionView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -239,7 +244,23 @@ class PostCell: UITableViewCell {
             postCaptionLabel.leftAnchor.constraint(equalTo: postCaptionView.leftAnchor, constant: 0),
             postCaptionLabel.rightAnchor.constraint(equalTo: postCaptionView.rightAnchor, constant: -0),
             postCaptionLabel.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: -0),
-           
+
+        ])
+
+    }
+   
+    private func setupBodySocialsViews() {
+        
+        //Post Socials
+        postSocialsView.translatesAutoresizingMaskIntoConstraints = false
+        postSocialsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(postSocialsView)
+        postSocialsView.addSubview(postSocialsLabel)
+        
+        
+        NSLayoutConstraint.activate([
+
             //Post Socials View
             postSocialsView.topAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: 0),
             postSocialsView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -293,6 +314,9 @@ class PostCell: UITableViewCell {
         postImage.image = currentImage
         
         let captionHeight = round(calculateLabelHeight(text: postCaption))
+        //let captionUserNameHeight = 20.0
+        //let totalCaptionHeight = captionHeight + captionUserNameHeight
+        
         postCaptionHeightConstraint?.constant = captionHeight
         postCaptionLabel.text = postCaption
         
@@ -418,7 +442,7 @@ func createPostCaptionText() -> UILabel {
 
 func createPostDividerView() -> UIView {
     let view = UIView()
-    view.backgroundColor = .systemRed
+    view.backgroundColor = .black
     
     return view
 }
