@@ -17,6 +17,7 @@ struct PostModel: Codable {
     let groupImage: String
     let listID: Int
     let postFrom: String
+    let postFromImage: String
     let postTo: String
     let postCaption: String
     let fileName: String
@@ -25,6 +26,7 @@ struct PostModel: Codable {
     
     let cloudBucket: String
     let cloudKey: String
+    let storageType: String
     
     let videoURL: String
     let videoCode: String

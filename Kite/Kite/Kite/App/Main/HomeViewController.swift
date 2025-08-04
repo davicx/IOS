@@ -85,7 +85,7 @@ class HomeViewController: UIViewController {
            let postViewController = segue.destination as? IndividualPostViewController,
            let selectedPost = sender as? Post {
             postViewController.currentPost = selectedPost
-            postViewController.commentsArray = selectedPost.commentsArray ?? []
+            //postViewController.commentsArray = selectedPost.commentsArray ?? []
         }
     }
     
@@ -120,10 +120,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      }
 
     
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentPost = postDataController.posts[indexPath.row]
         let currentPostImage = currentPost.postImageData
+    
+        //STEP 1: Get Image and Caption Heights
+        let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
+        let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
+        
         
         //STEP 1: Get Image Height
         //let defaultImage = UIImage(named: "background_1") ?? UIImage() // fallback to blank image
@@ -135,22 +139,20 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //let postCaption = currentPost.postCaption ?? "no caption"
         //let postCaptionHeightINSIDE = round(calculateLabelHeight(text: postCaption))
         
-        //STEP 1: Get Image and Caption Heights
-        let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
-        let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
-        
-        //print("For Post")
-        //print(currentPost.postCaption)
-        //print("\(postImageHeightINSIDE) \(postImageHeight)")
-        //print("\(postCaptionHeightINSIDE) \(postCaptionHeight)")
 
-        //print(" ")
-        
+        /*
+        print("For Post")
+        print(currentPost.postCaption)
+        print("\(postImageHeight) \(postImageHeight)")
+        print("\(postCaptionHeight) \(postCaptionHeight)")
+
+        print(" ")
+        */
         
         //WORKS
         //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
         //WORKS
-        return 276
+        return 202
     }
      
     

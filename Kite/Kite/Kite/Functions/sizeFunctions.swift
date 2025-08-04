@@ -18,4 +18,9 @@ class sizeFunctions {
         let captionText = caption ?? "no caption"
         return round(calculateLabelHeight(text: captionText))
     }
+    
+    static func calculateCommentCaptionHeight(from caption: String?) -> CGFloat {
+        let captionText = caption ?? "no comment"
+        return round(calculateLabelHeight(text: captionText, font: UIFont.systemFont(ofSize: 14)))
+    }
 }

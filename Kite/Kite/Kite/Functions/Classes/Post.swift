@@ -17,6 +17,7 @@ class Post {
     var groupImage: String?
     var listID: Int?
     var postFrom: String?
+    var postFromImage: String?
     var postTo: String?
     var postCaption: String?
     var fileName: String?
@@ -24,6 +25,8 @@ class Post {
     var fileUrl: String?
     var cloudBucket: String?
     var cloudKey: String?
+    var storageType: String?
+    
     var videoURL: String?
     var videoCode: String?
     var postDate: String?

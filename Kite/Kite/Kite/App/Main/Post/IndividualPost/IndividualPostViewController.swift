@@ -13,6 +13,158 @@ class IndividualPostViewController: UIViewController {
     let postAPI = PostsAPI()
     let currentUser = userDefaultManager.getLoggedInUser()
     var currentPost: Post!
+    var comments: [Comment] = []
+
+
+    let individualPostTableView = UITableView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        print(currentPost.postID)
+        
+        comments = currentPost.commentsArray ?? []
+        
+        for (index, comment) in comments.enumerated() {
+            print("Comment \(index): \(comment.commentCaption)")
+        }
+        
+        print("Total comments: \(comments.count)")
+        setupIndividualPostTableView()
+    }
+
+    func setupIndividualPostTableView() {
+        individualPostTableView.dataSource = self
+        individualPostTableView.delegate = self
+        individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
+        individualPostTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+        individualPostTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
+        
+        //TEMP
+        individualPostTableView.separatorStyle = .none
+        //TEMP
+        
+        //Enable automatic dimension for dynamic cell heights
+        individualPostTableView.rowHeight = UITableView.automaticDimension
+        
+        view.addSubview(individualPostTableView)
+
+        NSLayoutConstraint.activate([
+            individualPostTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            individualPostTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            individualPostTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            individualPostTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
+
+extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1 + comments.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+        
+            postCell.updatePost(with: currentPost)
+            return postCell
+            
+        } else {
+            let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+            let comment = comments[indexPath.row - 1]
+            commentCell.updateComment(with: comment)
+            return commentCell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            //STEP 1: Get Image and Caption Heights
+            let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
+            let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
+            let postCaptionUserNameHeight: CGFloat = 20
+        
+            //return 85 + postImageHeight + postCaptionHeight + postCaptionUserNameHeight
+            return 85 + postImageHeight + postCaptionHeight
+        } else {
+            //Use automatic dimension for comment rows
+            return UITableView.automaticDimension
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 200 // Estimated height for post
+        } else {
+            return 60 // Estimated height for comments
+        }
+    }
+}
+
+
+
+
+/*
+ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCellQA
+     let post = postDataController.posts[indexPath.row]
+     cell.updatePost(with: post)
+     return cell
+ }
+ */
+/*
+ //TABLE VIEW: For Individual Posts in Home Feed
+ extension HomeViewControllerQA: UITableViewDataSource, UITableViewDelegate {
+
+      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+          return postDataController.posts.count
+      }
+
+      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+          let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCellQA
+          let post = postDataController.posts[indexPath.row]
+          cell.updatePost(with: post)
+          return cell
+      }
+
+      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+          let post = postDataController.posts[indexPath.row]
+          performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
+      }
+
+     
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+         let currentPost = postDataController.posts[indexPath.row]
+         let currentPostImage = currentPost.postImageData
+         
+         //STEP 1: Get Image Height
+         let defaultImage = UIImage(named: "background_1") ?? UIImage() // fallback to blank image
+         let currentImage = currentPostImage ?? defaultImage
+         
+         let postImageHeight = round(getImageHeight(image: currentImage))
+         
+         //STEP 2: Get Caption Height
+         let postCaption = currentPost.postCaption ?? "no caption"
+         let postCaptionHeight = round(calculateLabelHeight(text: postCaption))
+         
+         //return 40 + postImageHeight + 40 + postCaptionHeight + 5
+         return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
+         
+     }
+     
+ }
+
+ */
+
+
+
+//WORKING
+/*
+class IndividualPostViewController: UIViewController {
+    let postAPI = PostsAPI()
+    let currentUser = userDefaultManager.getLoggedInUser()
+    var currentPost: Post!
 
     let postTableView = UITableView()
     var commentsArray: [Comment] = []
@@ -182,3 +334,4 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
 
 
+*/

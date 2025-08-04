@@ -8,12 +8,6 @@
 import UIKit
 
 
-/*
-This displays Posts
-They are located as
- IndividualPostCell
-
-*/
 
 class IndividualGroupViewController: UIViewController {
 
@@ -66,7 +60,7 @@ class IndividualGroupViewController: UIViewController {
            let postViewController = segue.destination as? IndividualPostViewController,
            let selectedPost = sender as? Post {
             postViewController.currentPost = selectedPost
-            postViewController.commentsArray = selectedPost.commentsArray ?? []
+            //postViewController.commentsArray = selectedPost.commentsArray ?? []
         }
     }
 

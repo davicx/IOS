@@ -27,6 +27,7 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.groupID = post.groupID
         currentPost.listID = post.listID
         currentPost.postFrom = post.postFrom
+        currentPost.postFromImage = post.postFromImage
         currentPost.postTo = post.postTo
         currentPost.postCaption = post.postCaption
     

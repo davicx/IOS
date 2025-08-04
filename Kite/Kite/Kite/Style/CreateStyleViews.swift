@@ -8,15 +8,25 @@
 import UIKit
 
 
-
-
 struct CreateViewStyles {
+    
+    
+    
+    static func createUIView(backgroundColor: UIColor = .clear) -> UIView {
+        let view = UIView()
+        view.backgroundColor = backgroundColor
+        return view
+    }
+    
+    
+    
+    
     
     // MARK: - Header, Body, Footer Views
     
     static func createHeaderView() -> UIView {
         let view = UIView()
-        //view.backgroundColor = .blue
+        view.backgroundColor = .blue
         return view
     }
 
