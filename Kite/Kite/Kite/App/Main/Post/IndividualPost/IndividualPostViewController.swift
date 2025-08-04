@@ -44,6 +44,9 @@ class IndividualPostViewController: UIViewController {
         individualPostTableView.separatorStyle = .none
         //TEMP
         
+        //Enable automatic dimension for dynamic cell heights
+        individualPostTableView.rowHeight = UITableView.automaticDimension
+        
         view.addSubview(individualPostTableView)
 
         NSLayoutConstraint.activate([
@@ -77,7 +80,6 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            
             //STEP 1: Get Image and Caption Heights
             let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
             let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
@@ -86,15 +88,22 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
             //return 85 + postImageHeight + postCaptionHeight + postCaptionUserNameHeight
             return 85 + postImageHeight + postCaptionHeight
         } else {
-            
-            //Comment From: 20
-            //Comment Caption:
-            //Comment Social: 20
-            //Divider: 1
-            return 20 + 20 + 1
+            //Use automatic dimension for comment rows
+            return UITableView.automaticDimension
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 200 // Estimated height for post
+        } else {
+            return 60 // Estimated height for comments
         }
     }
 }
+
+
+
 
 /*
  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

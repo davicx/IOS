@@ -208,7 +208,7 @@ class PostsAPI {
             
         } catch {
             let newPostResponseModel = NewPostResponseModel()
-            print("Error decoding data")
+            print("Error decoding data YOOO")
             print(newPostResponseModel)
             return newPostResponseModel
             

@@ -13,9 +13,13 @@ import UIKit
 class CommentCell: UITableViewCell {
 
     let commentUserView = createBaseView(backgroundColor: .systemPink) // Just to visually debug
-    let commentBodyView = createBaseView(backgroundColor: .lightGray)
-
-    // Optional: Add a placeholder label
+    
+    //COMMENT BODY: Three views stacked vertically
+    let commentBodyUserView = createBaseView(backgroundColor: .yellow)
+    let commentBodyCaptionView = createBaseView(backgroundColor: .lightGray)
+    let commentBodySocialsView = createBaseView(backgroundColor: .green)
+    
+    //COMMENT BODY LABELS
     let commentBodyLabel: UILabel = {
         let label = UILabel()
         label.text = "Comment goes here..."
@@ -24,6 +28,8 @@ class CommentCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,31 +59,55 @@ class CommentCell: UITableViewCell {
 
     }
 
-    //COMMENT: User View
+    //COMMENT: Body Views - Three views stacked vertically
     private func setupBodyViews() {
-        commentBodyView.translatesAutoresizingMaskIntoConstraints = false
+        //Setup the three body views
+        commentBodyUserView.translatesAutoresizingMaskIntoConstraints = false
+        commentBodyCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        commentBodySocialsView.translatesAutoresizingMaskIntoConstraints = false
 
-        contentView.addSubview(commentBodyView)
+        contentView.addSubview(commentBodyUserView)
+        contentView.addSubview(commentBodyCaptionView)
+        contentView.addSubview(commentBodySocialsView)
 
+        //commentBodyUserView: 20 tall
         NSLayoutConstraint.activate([
-            commentBodyView.leadingAnchor.constraint(equalTo: commentUserView.trailingAnchor),
-            commentBodyView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            commentBodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            commentBodyView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            commentBodyUserView.leadingAnchor.constraint(equalTo: commentUserView.trailingAnchor),
+            commentBodyUserView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            commentBodyUserView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            commentBodyUserView.heightAnchor.constraint(equalToConstant: 20),
         ])
 
-        commentBodyView.addSubview(commentBodyLabel)
+        //commentBodyCaptionView: Let the label determine the height
         NSLayoutConstraint.activate([
-            commentBodyLabel.topAnchor.constraint(equalTo: commentBodyView.topAnchor, constant: 8),
-            commentBodyLabel.bottomAnchor.constraint(equalTo: commentBodyView.bottomAnchor, constant: -8),
-            commentBodyLabel.leadingAnchor.constraint(equalTo: commentBodyView.leadingAnchor, constant: 8),
-            commentBodyLabel.trailingAnchor.constraint(equalTo: commentBodyView.trailingAnchor, constant: -8),
+            commentBodyCaptionView.leadingAnchor.constraint(equalTo: commentUserView.trailingAnchor),
+            commentBodyCaptionView.topAnchor.constraint(equalTo: commentBodyUserView.bottomAnchor, constant: 0),
+            commentBodyCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
+
+        //commentBodySocialsView: 20 tall
+        NSLayoutConstraint.activate([
+            commentBodySocialsView.leadingAnchor.constraint(equalTo: commentUserView.trailingAnchor),
+            commentBodySocialsView.topAnchor.constraint(equalTo: commentBodyCaptionView.bottomAnchor, constant: 0),
+            commentBodySocialsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            commentBodySocialsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            commentBodySocialsView.heightAnchor.constraint(equalToConstant: 20),
+        ])
+
+        //Add the comment body label to the caption view
+        commentBodyCaptionView.addSubview(commentBodyLabel)
+        NSLayoutConstraint.activate([
+            commentBodyLabel.topAnchor.constraint(equalTo: commentBodyCaptionView.topAnchor, constant: 8),
+            commentBodyLabel.bottomAnchor.constraint(equalTo: commentBodyCaptionView.bottomAnchor, constant: -8),
+            commentBodyLabel.leadingAnchor.constraint(equalTo: commentBodyCaptionView.leadingAnchor, constant: 8),
+            commentBodyLabel.trailingAnchor.constraint(equalTo: commentBodyCaptionView.trailingAnchor, constant: -8),
         ])
     }
     
     //ACTIONS
     func updateComment(with comment: Comment) {
-        commentBodyLabel.text = comment.commentCaption
+        let commentCaption = comment.commentCaption ?? "no comment"
+        commentBodyLabel.text = commentCaption
     }
 }
 

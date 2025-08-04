@@ -8,10 +8,105 @@
 import UIKit
 
 
+class HomePostCell: UITableViewCell {
+
+    let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
+    let postImageView = CreateViewStyles.createUIView(backgroundColor: .white)
+    let postCaptionView = CreateViewStyles.createUIView(backgroundColor: .blue)
+    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .white)
+    let postDividerView = CreateViewStyles.createUIView(backgroundColor: .lightGray)
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupHeaderViews()
+        setupImageViews()
+        setupCaptionViews()
+        setupSocialsViews()
+        setupDividerViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupHeaderViews() {
+        postHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(postHeaderView)
+
+        NSLayoutConstraint.activate([
+            postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postHeaderView.heightAnchor.constraint(equalToConstant: 52)
+        ])
+    }
+
+    private func setupImageViews() {
+        postImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(postImageView)
+
+        NSLayoutConstraint.activate([
+            postImageView.topAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
+            postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postImageView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+
+    private func setupCaptionViews() {
+        postCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(postCaptionView)
+
+        NSLayoutConstraint.activate([
+            postCaptionView.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
+            postCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postCaptionView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    private func setupSocialsViews() {
+        postSocialsView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(postSocialsView)
+
+        NSLayoutConstraint.activate([
+            postSocialsView.topAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
+            postSocialsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postSocialsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postSocialsView.heightAnchor.constraint(equalToConstant: 48)
+        ])
+    }
+
+    private func setupDividerViews() {
+        postDividerView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(postDividerView)
+
+        NSLayoutConstraint.activate([
+            postDividerView.topAnchor.constraint(equalTo: postSocialsView.bottomAnchor),
+            postDividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postDividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postDividerView.heightAnchor.constraint(equalToConstant: 2),
+            postDividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+
+    func updatePost(with post: Post) {
+        print(post.postCaption)
+    }
+}
+
+
+
+/*
 //Home Feed Post Cell
 class HomePostCell: UITableViewCell {
-    let postHeaderView = PostHeaderLayout()
     
+    //POST HEADER: Post Information
+    //POST BODY: Post Image and Caption
+    //POST FOOTER: Post Socials
+    
+    
+    let postHeaderView = PostHeaderLayout()
     let bodyView = CreateViewStyles.createBodyView()
     let footerView = CreateViewStyles.createFooterView()
 
@@ -41,7 +136,7 @@ class HomePostCell: UITableViewCell {
             postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
             postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postHeaderView.heightAnchor.constraint(equalToConstant: 56),
+            postHeaderView.heightAnchor.constraint(equalToConstant: 52),
 
             bodyView.topAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
             bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -57,6 +152,10 @@ class HomePostCell: UITableViewCell {
         ])
     }
 }
+
+*/
+
+
 
 
 /*

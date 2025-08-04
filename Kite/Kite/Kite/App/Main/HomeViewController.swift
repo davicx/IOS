@@ -140,18 +140,19 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //let postCaptionHeightINSIDE = round(calculateLabelHeight(text: postCaption))
         
 
-        //print("For Post")
-        //print(currentPost.postCaption)
-        //print("\(postImageHeightINSIDE) \(postImageHeight)")
-        //print("\(postCaptionHeightINSIDE) \(postCaptionHeight)")
+        /*
+        print("For Post")
+        print(currentPost.postCaption)
+        print("\(postImageHeight) \(postImageHeight)")
+        print("\(postCaptionHeight) \(postCaptionHeight)")
 
-        //print(" ")
-        
+        print(" ")
+        */
         
         //WORKS
         //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
         //WORKS
-        return 276
+        return 202
     }
      
     
