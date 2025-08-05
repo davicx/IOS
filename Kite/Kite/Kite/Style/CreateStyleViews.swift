@@ -18,6 +18,13 @@ struct CreateViewStyles {
         return view
     }
     
+    static func createPostImageView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        
+        return view
+
+    }
     
     
     
@@ -61,12 +68,6 @@ struct CreateViewStyles {
     }
 
     // MARK: - Post Image
-    
-    static func createPostImageView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        return view
-    }
 
     static func createPostImage() -> UIImageView {
         let imageView = UIImageView()

@@ -122,37 +122,26 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentPost = postDataController.posts[indexPath.row]
-        let currentPostImage = currentPost.postImageData
-    
-        //STEP 1: Get Image and Caption Heights
-        let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
-        let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
-        
         
         //STEP 1: Get Image Height
-        //let defaultImage = UIImage(named: "background_1") ?? UIImage() // fallback to blank image
-        //let currentImage = currentPostImage ?? defaultImage
-        
-        //let postImageHeightINSIDE = round(getImageHeight(image: currentImage))
-        
-        //STEP 2: Get Caption Height
-        //let postCaption = currentPost.postCaption ?? "no caption"
-        //let postCaptionHeightINSIDE = round(calculateLabelHeight(text: postCaption))
-        
+        let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
 
-        /*
-        print("For Post")
-        print(currentPost.postCaption)
-        print("\(postImageHeight) \(postImageHeight)")
-        print("\(postCaptionHeight) \(postCaptionHeight)")
-
-        print(" ")
-        */
+        //STEP 1: Get Caption Height
+        let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
         
-        //WORKS
-        //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
-        //WORKS
-        return 202
+    
+        //STEP 3: Calculate total height (matching actual cell layout)
+        // Fixed heights: header (52) + image (dynamic) + caption (dynamic) + socials (48) + divider (2) = 142 + image
+        let fixedHeights: CGFloat = 52 + 48 + 2
+        
+        // Total height = fixed heights + dynamic image height
+        let totalHeight = fixedHeights + postImageHeight + postCaptionHeight
+        
+        return totalHeight
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200 // Estimated height like IndividualPostViewController
     }
      
     

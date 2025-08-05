@@ -9,13 +9,22 @@ import UIKit
 
 
 class HomePostCell: UITableViewCell {
+    
 
+    //MAIN VIEWS
     let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
     let postImageView = CreateViewStyles.createUIView(backgroundColor: .white)
     let postCaptionView = CreateViewStyles.createUIView(backgroundColor: .blue)
     let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .white)
     let postDividerView = CreateViewStyles.createUIView(backgroundColor: .lightGray)
+    
+    // Add height constraint for dynamic sizing
+    var postImageHeightConstraint: NSLayoutConstraint?
+    var postCaptionHeightConstraint: NSLayoutConstraint?
 
+    //CHILD VIEWS
+    let postImageUIView = createPostImage()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupHeaderViews()
@@ -43,25 +52,41 @@ class HomePostCell: UITableViewCell {
 
     private func setupImageViews() {
         postImageView.translatesAutoresizingMaskIntoConstraints = false
+        postImageUIView.translatesAutoresizingMaskIntoConstraints = false
+        
         contentView.addSubview(postImageView)
+        postImageView.addSubview(postImageUIView)
+
+        // Create dynamic height constraint
+        postImageHeightConstraint = postImageView.heightAnchor.constraint(equalToConstant: 100)
+        postImageHeightConstraint?.isActive = true
 
         NSLayoutConstraint.activate([
             postImageView.topAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
             postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postImageView.heightAnchor.constraint(equalToConstant: 60)
+            
+            // Make the image view fill the entire postImageView container
+            postImageUIView.topAnchor.constraint(equalTo: postImageView.topAnchor),
+            postImageUIView.leadingAnchor.constraint(equalTo: postImageView.leadingAnchor),
+            postImageUIView.trailingAnchor.constraint(equalTo: postImageView.trailingAnchor),
+            postImageUIView.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor)
         ])
     }
 
     private func setupCaptionViews() {
         postCaptionView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(postCaptionView)
+        
+        // Create dynamic height constraint
+        postCaptionHeightConstraint = postCaptionView.heightAnchor.constraint(equalToConstant: 100)
+        postCaptionHeightConstraint?.isActive = true
+
 
         NSLayoutConstraint.activate([
             postCaptionView.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             postCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postCaptionView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
@@ -91,7 +116,28 @@ class HomePostCell: UITableViewCell {
     }
 
     func updatePost(with post: Post) {
-        print(post.postCaption)
+        
+        //STEP 1: Get Post Information
+        let postID = post.postID
+        let groupID = post.groupID ?? 0
+        
+        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let postCaption = post.postCaption ?? "no caption"
+        
+        print("Post ID \(postID) Group ID \(groupID)")
+        
+        //STEP 2: Calculate and set the image and caption heights
+        let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentImage)
+        let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: postCaption)
+                
+        postImageHeightConstraint?.constant = postImageHeight
+        postCaptionHeightConstraint?.constant = postCaptionHeight
+        
+        //STEP 3: Set the image to the postImageUIView
+        postImageUIView.image = currentImage
+       
+        // Force layout update
+        layoutIfNeeded()
     }
 }
 
