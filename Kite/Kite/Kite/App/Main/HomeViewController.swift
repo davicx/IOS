@@ -126,16 +126,18 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //STEP 1: Get Image Height
         let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
 
-        //STEP 1: Get Caption Height
-        let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
+        //STEP 2: Get Caption Height (now includes 40pt fixed user info + dynamic text height)
+        let postCaptionTextHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
+        let postCaptionUserInfoHeight: CGFloat = 40 // Fixed height for user info section
+        let totalCaptionHeight = postCaptionUserInfoHeight + postCaptionTextHeight
         
     
         //STEP 3: Calculate total height (matching actual cell layout)
-        // Fixed heights: header (52) + image (dynamic) + caption (dynamic) + socials (48) + divider (2) = 142 + image
-        let fixedHeights: CGFloat = 52 + 48 + 2
+        // Fixed heights: header (52) + image (dynamic) + caption user info (40) + caption text (dynamic) + socials (48) + divider (2)
+        let fixedHeights: CGFloat = 52 + 40 + 48 + 2
         
-        // Total height = fixed heights + dynamic image height
-        let totalHeight = fixedHeights + postImageHeight + postCaptionHeight
+        // Total height = fixed heights + dynamic image height + dynamic caption text height
+        let totalHeight = fixedHeights + postImageHeight + postCaptionTextHeight
         
         return totalHeight
     }

@@ -26,6 +26,26 @@ struct CreateViewStyles {
 
     }
     
+    static func createPostCaptionText() -> UILabel {
+        let label = UILabel()
+        label.text = "CAPTION: My Caption"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.backgroundColor = .clear
+        return label
+    }
+    
+    static func createPostStyleCaptionText() -> UILabel {
+        let label = UILabel()
+        label.text = ""
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0) // Instagram-like gray
+        label.backgroundColor = .clear
+        
+        return label
+    }
     
     
     
@@ -102,14 +122,7 @@ struct CreateViewStyles {
         return view
     }
 
-    static func createPostCaptionText() -> UILabel {
-        let label = UILabel()
-        label.text = "CAPTION: My Caption"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.backgroundColor = .green
-        return label
-    }
+
 
     // MARK: - Divider
     

@@ -14,16 +14,23 @@ class HomePostCell: UITableViewCell {
     //MAIN VIEWS
     let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
     let postImageView = CreateViewStyles.createUIView(backgroundColor: .white)
-    let postCaptionView = CreateViewStyles.createUIView(backgroundColor: .blue)
-    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .white)
+    let postCaptionView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
     let postDividerView = CreateViewStyles.createUIView(backgroundColor: .lightGray)
     
     // Add height constraint for dynamic sizing
     var postImageHeightConstraint: NSLayoutConstraint?
     var postCaptionHeightConstraint: NSLayoutConstraint?
 
+    
     //CHILD VIEWS
+    //Post Image
     let postImageUIView = createPostImage()
+    
+    //Post Caption
+    let postCaptionUserInfoView = CreateViewStyles.createUIView(backgroundColor: .blue)
+    let postCaptionTextView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postCaptionLabel = CreateViewStyles.createPostStyleCaptionText()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -76,17 +83,42 @@ class HomePostCell: UITableViewCell {
 
     private func setupCaptionViews() {
         postCaptionView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(postCaptionView)
+        postCaptionUserInfoView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // Create dynamic height constraint
-        postCaptionHeightConstraint = postCaptionView.heightAnchor.constraint(equalToConstant: 100)
+        contentView.addSubview(postCaptionView)
+        postCaptionView.addSubview(postCaptionUserInfoView)
+        postCaptionView.addSubview(postCaptionTextView)
+        postCaptionTextView.addSubview(postCaptionLabel)
+        
+        // Create dynamic height constraint for the text view
+        postCaptionHeightConstraint = postCaptionTextView.heightAnchor.constraint(equalToConstant: 100)
         postCaptionHeightConstraint?.isActive = true
 
-
         NSLayoutConstraint.activate([
+            // Parent caption view
             postCaptionView.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             postCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            // Top: User info view (40 fixed height)
+            postCaptionUserInfoView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
+            postCaptionUserInfoView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
+            postCaptionUserInfoView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
+            postCaptionUserInfoView.heightAnchor.constraint(equalToConstant: 40),
+            
+            // Bottom: Text view (dynamic height)
+            postCaptionTextView.topAnchor.constraint(equalTo: postCaptionUserInfoView.bottomAnchor),
+            postCaptionTextView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
+            postCaptionTextView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
+            postCaptionTextView.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
+            
+            // Caption label fills the text view
+            postCaptionLabel.topAnchor.constraint(equalTo: postCaptionTextView.topAnchor, constant: 6),
+            postCaptionLabel.leadingAnchor.constraint(equalTo: postCaptionTextView.leadingAnchor, constant: 10),
+            postCaptionLabel.trailingAnchor.constraint(equalTo: postCaptionTextView.trailingAnchor, constant: -10),
+            postCaptionLabel.bottomAnchor.constraint(equalTo: postCaptionTextView.bottomAnchor, constant: -6)
         ])
     }
 
@@ -135,6 +167,9 @@ class HomePostCell: UITableViewCell {
         
         //STEP 3: Set the image to the postImageUIView
         postImageUIView.image = currentImage
+        
+        //STEP 4: Set the caption text
+        postCaptionLabel.text = postCaption
        
         // Force layout update
         layoutIfNeeded()
@@ -499,6 +534,18 @@ func createPostUserName() -> UILabel {
 
 
 //POST: Post Image
+func createInstagramStyleCaptionText() -> UILabel {
+    let label = UILabel()
+    label.text = ""
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
+    label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+    label.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0) // Instagram-like gray
+    label.backgroundColor = .clear
+    
+    return label
+}
+
 func createPostImageView() -> UIView {
     let view = UIView()
     view.backgroundColor = .lightGray
