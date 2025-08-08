@@ -28,6 +28,8 @@ class HomePostCell: UITableViewCell {
     let postImageUIView = createPostImage()
     
     //Post Caption
+    let postCaptionUserProfileView = CreateViewStyles.createUIView(backgroundColor: .systemYellow)
+    let postCaptionUserImageView = UIImageView()
     let postCaptionUserInfoView = CreateViewStyles.createUIView(backgroundColor: .blue)
     let postCaptionTextView = CreateViewStyles.createUIView(backgroundColor: .clear)
     let postCaptionLabel = CreateViewStyles.createPostStyleCaptionText()
@@ -83,11 +85,16 @@ class HomePostCell: UITableViewCell {
 
     private func setupCaptionViews() {
         postCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionUserProfileView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionUserImageView.translatesAutoresizingMaskIntoConstraints = false
         postCaptionUserInfoView.translatesAutoresizingMaskIntoConstraints = false
+        
         postCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
         postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(postCaptionView)
+        postCaptionView.addSubview(postCaptionUserProfileView)
+        postCaptionUserProfileView.addSubview(postCaptionUserImageView)
         postCaptionView.addSubview(postCaptionUserInfoView)
         postCaptionView.addSubview(postCaptionTextView)
         postCaptionTextView.addSubview(postCaptionLabel)
@@ -97,25 +104,38 @@ class HomePostCell: UITableViewCell {
         postCaptionHeightConstraint?.isActive = true
 
         NSLayoutConstraint.activate([
-            // Parent caption view
+            
+            // PARENT: caption view
             postCaptionView.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             postCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            // Top: User info view (40 fixed height)
-            postCaptionUserInfoView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
-            postCaptionUserInfoView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
-            postCaptionUserInfoView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
-            postCaptionUserInfoView.heightAnchor.constraint(equalToConstant: 40),
+            // Left: User profile view (50 width, full height)
+            postCaptionUserProfileView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
+            postCaptionUserProfileView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
+            postCaptionUserProfileView.widthAnchor.constraint(equalToConstant: 50),
+            postCaptionUserProfileView.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
             
-            // Bottom: Text view (dynamic height)
+            // User image view inside profile view (42x42, 4pt margins)
+            postCaptionUserImageView.topAnchor.constraint(equalTo: postCaptionUserProfileView.topAnchor, constant: 4),
+            postCaptionUserImageView.leadingAnchor.constraint(equalTo: postCaptionUserProfileView.leadingAnchor, constant: 4),
+            postCaptionUserImageView.trailingAnchor.constraint(equalTo: postCaptionUserProfileView.trailingAnchor, constant: -4),
+            postCaptionUserImageView.heightAnchor.constraint(equalTo: postCaptionUserImageView.widthAnchor),
+            
+            // Top: User info view (40 fixed height, fills remaining horizontal space)
+            postCaptionUserInfoView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
+            postCaptionUserInfoView.leadingAnchor.constraint(equalTo: postCaptionUserProfileView.trailingAnchor),
+            postCaptionUserInfoView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
+            postCaptionUserInfoView.heightAnchor.constraint(equalToConstant: 28),
+            
+            // Bottom: Text view (dynamic height, fills remaining horizontal space)
             postCaptionTextView.topAnchor.constraint(equalTo: postCaptionUserInfoView.bottomAnchor),
-            postCaptionTextView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
+            postCaptionTextView.leadingAnchor.constraint(equalTo: postCaptionUserProfileView.trailingAnchor),
             postCaptionTextView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
             postCaptionTextView.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
             
             // Caption label fills the text view
-            postCaptionLabel.topAnchor.constraint(equalTo: postCaptionTextView.topAnchor, constant: 6),
+            postCaptionLabel.topAnchor.constraint(equalTo: postCaptionTextView.topAnchor, constant: 0),
             postCaptionLabel.leadingAnchor.constraint(equalTo: postCaptionTextView.leadingAnchor, constant: 10),
             postCaptionLabel.trailingAnchor.constraint(equalTo: postCaptionTextView.trailingAnchor, constant: -10),
             postCaptionLabel.bottomAnchor.constraint(equalTo: postCaptionTextView.bottomAnchor, constant: -6)
@@ -170,6 +190,13 @@ class HomePostCell: UITableViewCell {
         
         //STEP 4: Set the caption text
         postCaptionLabel.text = postCaption
+        
+        //STEP 5: Set Post User Image
+        let userImage = post.postFromImageData ?? UIImage(named: "background_1") ?? UIImage()
+        postCaptionUserImageView.image = userImage
+        postCaptionUserImageView.contentMode = .scaleAspectFill
+        postCaptionUserImageView.clipsToBounds = true
+        postCaptionUserImageView.layer.cornerRadius = 21 // Half of 42 for circular image
        
         // Force layout update
         layoutIfNeeded()

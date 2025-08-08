@@ -40,6 +40,7 @@ class Post {
     var simpleLikesArray: [String]?
     
     var postImageData: UIImage?
+    var postFromImageData: UIImage?
     var groupImageData: UIImage?
     
     init(postID: Int) {
