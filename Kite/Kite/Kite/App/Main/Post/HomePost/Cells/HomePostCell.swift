@@ -31,6 +31,7 @@ class HomePostCell: UITableViewCell {
     let postCaptionUserProfileView = CreateViewStyles.createUIView(backgroundColor: .systemYellow)
     let postCaptionUserImageView = UIImageView()
     let postCaptionUserInfoView = CreateViewStyles.createUIView(backgroundColor: .blue)
+    let postCaptionUsernameLabel = UILabel()
     let postCaptionTextView = CreateViewStyles.createUIView(backgroundColor: .clear)
     let postCaptionLabel = CreateViewStyles.createPostStyleCaptionText()
     
@@ -82,7 +83,7 @@ class HomePostCell: UITableViewCell {
             postImageUIView.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor)
         ])
     }
-
+    
     private func setupCaptionViews() {
         postCaptionView.translatesAutoresizingMaskIntoConstraints = false
         postCaptionUserProfileView.translatesAutoresizingMaskIntoConstraints = false
@@ -92,10 +93,17 @@ class HomePostCell: UITableViewCell {
         postCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
         postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        // Setup username label styling
+        postCaptionUsernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionUsernameLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        postCaptionUsernameLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0) // Light gray like Instagram
+        postCaptionUsernameLabel.backgroundColor = .clear
+        
         contentView.addSubview(postCaptionView)
         postCaptionView.addSubview(postCaptionUserProfileView)
         postCaptionUserProfileView.addSubview(postCaptionUserImageView)
         postCaptionView.addSubview(postCaptionUserInfoView)
+        postCaptionUserInfoView.addSubview(postCaptionUsernameLabel)
         postCaptionView.addSubview(postCaptionTextView)
         postCaptionTextView.addSubview(postCaptionLabel)
         
@@ -110,7 +118,7 @@ class HomePostCell: UITableViewCell {
             postCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            // Left: User profile view (50 width, full height)
+            // Left: User Image profile view (50 width, full height)
             postCaptionUserProfileView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
             postCaptionUserProfileView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
             postCaptionUserProfileView.widthAnchor.constraint(equalToConstant: 50),
@@ -127,6 +135,13 @@ class HomePostCell: UITableViewCell {
             postCaptionUserInfoView.leadingAnchor.constraint(equalTo: postCaptionUserProfileView.trailingAnchor),
             postCaptionUserInfoView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
             postCaptionUserInfoView.heightAnchor.constraint(equalToConstant: 28),
+            
+            // Username label inside info view
+            postCaptionUsernameLabel.topAnchor.constraint(equalTo: postCaptionUserInfoView.topAnchor, constant: 0),
+            postCaptionUsernameLabel.leadingAnchor.constraint(equalTo: postCaptionUserInfoView.leadingAnchor, constant: 10),
+            postCaptionUsernameLabel.trailingAnchor.constraint(equalTo: postCaptionUserInfoView.trailingAnchor, constant: -10),
+            postCaptionUsernameLabel.bottomAnchor.constraint(equalTo: postCaptionUserInfoView.bottomAnchor, constant: -4),
+           
             
             // Bottom: Text view (dynamic height, fills remaining horizontal space)
             postCaptionTextView.topAnchor.constraint(equalTo: postCaptionUserInfoView.bottomAnchor),
@@ -191,7 +206,11 @@ class HomePostCell: UITableViewCell {
         //STEP 4: Set the caption text
         postCaptionLabel.text = postCaption
         
-        //STEP 5: Set Post User Image
+        //STEP 5: Set username
+        let username = post.postFrom ?? "unknown_user"
+        postCaptionUsernameLabel.text = "@\(username)"
+        
+        //STEP 6: Set Post User Image
         let userImage = post.postFromImageData ?? UIImage(named: "background_1") ?? UIImage()
         postCaptionUserImageView.image = userImage
         postCaptionUserImageView.contentMode = .scaleAspectFill
