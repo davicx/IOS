@@ -15,7 +15,13 @@ class HomePostCell: UITableViewCell {
     let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
     let postImageView = CreateViewStyles.createUIView(backgroundColor: .white)
     let postCaptionView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
+    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .systemPurple)
+    let postSocialLikesView = CreateViewStyles.createUIView(backgroundColor: .systemRed)
+    let postSocialLikesIcon = UIImageView()
+    let postSocialLikesCount = UILabel()
+    let postSocialCommentsView = CreateViewStyles.createUIView(backgroundColor: .systemBlue)
+    let postSocialFillView = CreateViewStyles.createUIView(backgroundColor: .systemGreen)
+    let postSocialBookMarkView = CreateViewStyles.createUIView(backgroundColor: .systemOrange)
     let postDividerView = CreateViewStyles.createUIView(backgroundColor: .lightGray)
     
     // Add height constraint for dynamic sizing
@@ -28,10 +34,12 @@ class HomePostCell: UITableViewCell {
     let postImageUIView = createPostImage()
     
     //Post Caption
-    let postCaptionUserProfileView = CreateViewStyles.createUIView(backgroundColor: .systemYellow)
-    let postCaptionUserImageView = UIImageView()
-    let postCaptionUserInfoView = CreateViewStyles.createUIView(backgroundColor: .blue)
+    let postCaptionUserImageView = CreateViewStyles.createUIView(backgroundColor: .systemYellow)
+    let postCaptionUserImage = UIImageView()
+    
+    let postCaptionUserNameView = CreateViewStyles.createUIView(backgroundColor: .blue)
     let postCaptionUsernameLabel = UILabel()
+    
     let postCaptionTextView = CreateViewStyles.createUIView(backgroundColor: .clear)
     let postCaptionLabel = CreateViewStyles.createPostStyleCaptionText()
     
@@ -85,25 +93,31 @@ class HomePostCell: UITableViewCell {
     }
     
     private func setupCaptionViews() {
+        
+        //MAIN CONTAINER
         postCaptionView.translatesAutoresizingMaskIntoConstraints = false
-        postCaptionUserProfileView.translatesAutoresizingMaskIntoConstraints = false
+     
+        //Image
         postCaptionUserImageView.translatesAutoresizingMaskIntoConstraints = false
-        postCaptionUserInfoView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionUserImage.translatesAutoresizingMaskIntoConstraints = false
         
-        postCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Setup username label styling
+        //Username
+        postCaptionUserNameView.translatesAutoresizingMaskIntoConstraints = false
         postCaptionUsernameLabel.translatesAutoresizingMaskIntoConstraints = false
         postCaptionUsernameLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         postCaptionUsernameLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0) // Light gray like Instagram
         postCaptionUsernameLabel.backgroundColor = .clear
         
+        //Post Caption
+        postCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        //Add Views
         contentView.addSubview(postCaptionView)
-        postCaptionView.addSubview(postCaptionUserProfileView)
-        postCaptionUserProfileView.addSubview(postCaptionUserImageView)
-        postCaptionView.addSubview(postCaptionUserInfoView)
-        postCaptionUserInfoView.addSubview(postCaptionUsernameLabel)
+        postCaptionView.addSubview(postCaptionUserImageView)
+        postCaptionUserImageView.addSubview(postCaptionUserImage)
+        postCaptionView.addSubview(postCaptionUserNameView)
+        postCaptionUserNameView.addSubview(postCaptionUsernameLabel)
         postCaptionView.addSubview(postCaptionTextView)
         postCaptionTextView.addSubview(postCaptionLabel)
         
@@ -119,39 +133,38 @@ class HomePostCell: UITableViewCell {
             postCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             // Left: User Image profile view (50 width, full height)
-            postCaptionUserProfileView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
-            postCaptionUserProfileView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
-            postCaptionUserProfileView.widthAnchor.constraint(equalToConstant: 50),
-            postCaptionUserProfileView.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
+            postCaptionUserImageView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
+            postCaptionUserImageView.leadingAnchor.constraint(equalTo: postCaptionView.leadingAnchor),
+            postCaptionUserImageView.widthAnchor.constraint(equalToConstant: 50),
+            postCaptionUserImageView.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
             
             // User image view inside profile view (42x42, 4pt margins)
-            postCaptionUserImageView.topAnchor.constraint(equalTo: postCaptionUserProfileView.topAnchor, constant: 4),
-            postCaptionUserImageView.leadingAnchor.constraint(equalTo: postCaptionUserProfileView.leadingAnchor, constant: 4),
-            postCaptionUserImageView.trailingAnchor.constraint(equalTo: postCaptionUserProfileView.trailingAnchor, constant: -4),
-            postCaptionUserImageView.heightAnchor.constraint(equalTo: postCaptionUserImageView.widthAnchor),
+            postCaptionUserImage.topAnchor.constraint(equalTo: postCaptionUserImageView.topAnchor, constant: 4),
+            postCaptionUserImage.leadingAnchor.constraint(equalTo: postCaptionUserImageView.leadingAnchor, constant: 4),
+            postCaptionUserImage.trailingAnchor.constraint(equalTo: postCaptionUserImageView.trailingAnchor, constant: -4),
+            postCaptionUserImage.heightAnchor.constraint(equalTo: postCaptionUserImage.widthAnchor),
             
-            // Top: User info view (40 fixed height, fills remaining horizontal space)
-            postCaptionUserInfoView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
-            postCaptionUserInfoView.leadingAnchor.constraint(equalTo: postCaptionUserProfileView.trailingAnchor),
-            postCaptionUserInfoView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
-            postCaptionUserInfoView.heightAnchor.constraint(equalToConstant: 28),
+            // Top: User info view (28 fixed height, fills remaining horizontal space)
+            postCaptionUserNameView.topAnchor.constraint(equalTo: postCaptionView.topAnchor),
+            postCaptionUserNameView.leadingAnchor.constraint(equalTo: postCaptionUserImageView.trailingAnchor),
+            postCaptionUserNameView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
+            postCaptionUserNameView.heightAnchor.constraint(equalToConstant: 22),
             
             // Username label inside info view
-            postCaptionUsernameLabel.topAnchor.constraint(equalTo: postCaptionUserInfoView.topAnchor, constant: 0),
-            postCaptionUsernameLabel.leadingAnchor.constraint(equalTo: postCaptionUserInfoView.leadingAnchor, constant: 10),
-            postCaptionUsernameLabel.trailingAnchor.constraint(equalTo: postCaptionUserInfoView.trailingAnchor, constant: -10),
-            postCaptionUsernameLabel.bottomAnchor.constraint(equalTo: postCaptionUserInfoView.bottomAnchor, constant: -4),
+            postCaptionUsernameLabel.topAnchor.constraint(equalTo: postCaptionUserNameView.topAnchor, constant: 0),
+            postCaptionUsernameLabel.leadingAnchor.constraint(equalTo: postCaptionUserNameView.leadingAnchor, constant: 4),
+            postCaptionUsernameLabel.trailingAnchor.constraint(equalTo: postCaptionUserNameView.trailingAnchor, constant: -10),
+            postCaptionUsernameLabel.bottomAnchor.constraint(equalTo: postCaptionUserNameView.bottomAnchor, constant: -4),
            
-            
             // Bottom: Text view (dynamic height, fills remaining horizontal space)
-            postCaptionTextView.topAnchor.constraint(equalTo: postCaptionUserInfoView.bottomAnchor),
-            postCaptionTextView.leadingAnchor.constraint(equalTo: postCaptionUserProfileView.trailingAnchor),
+            postCaptionTextView.topAnchor.constraint(equalTo: postCaptionUserNameView.bottomAnchor),
+            postCaptionTextView.leadingAnchor.constraint(equalTo: postCaptionUserImageView.trailingAnchor),
             postCaptionTextView.trailingAnchor.constraint(equalTo: postCaptionView.trailingAnchor),
             postCaptionTextView.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
             
             // Caption label fills the text view
             postCaptionLabel.topAnchor.constraint(equalTo: postCaptionTextView.topAnchor, constant: 0),
-            postCaptionLabel.leadingAnchor.constraint(equalTo: postCaptionTextView.leadingAnchor, constant: 10),
+            postCaptionLabel.leadingAnchor.constraint(equalTo: postCaptionTextView.leadingAnchor, constant: 4),
             postCaptionLabel.trailingAnchor.constraint(equalTo: postCaptionTextView.trailingAnchor, constant: -10),
             postCaptionLabel.bottomAnchor.constraint(equalTo: postCaptionTextView.bottomAnchor, constant: -6)
         ])
@@ -159,15 +172,74 @@ class HomePostCell: UITableViewCell {
 
     private func setupSocialsViews() {
         postSocialsView.translatesAutoresizingMaskIntoConstraints = false
+        postSocialLikesView.translatesAutoresizingMaskIntoConstraints = false
+        postSocialCommentsView.translatesAutoresizingMaskIntoConstraints = false
+        postSocialFillView.translatesAutoresizingMaskIntoConstraints = false
+        postSocialBookMarkView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Setup likes icon and count
+        postSocialLikesIcon.translatesAutoresizingMaskIntoConstraints = false
+        postSocialLikesIcon.image = UIImage(named: "like")
+        postSocialLikesIcon.contentMode = .scaleAspectFit
+        
+        postSocialLikesCount.translatesAutoresizingMaskIntoConstraints = false
+        postSocialLikesCount.text = formatLikeCount(20000)
+        postSocialLikesCount.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        postSocialLikesCount.textColor = .black
+        postSocialLikesCount.backgroundColor = .clear
+        postSocialLikesCount.textAlignment = .left
+        
         contentView.addSubview(postSocialsView)
+        postSocialsView.addSubview(postSocialLikesView)
+        postSocialLikesView.addSubview(postSocialLikesIcon)
+        postSocialLikesView.addSubview(postSocialLikesCount)
+        postSocialsView.addSubview(postSocialCommentsView)
+        postSocialsView.addSubview(postSocialFillView)
+        postSocialsView.addSubview(postSocialBookMarkView)
 
         NSLayoutConstraint.activate([
             postSocialsView.topAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
             postSocialsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postSocialsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postSocialsView.heightAnchor.constraint(equalToConstant: 48)
+            postSocialsView.heightAnchor.constraint(equalToConstant: 32),
+            
+            // Left: Likes view (60 wide, centered left)
+            postSocialLikesView.leadingAnchor.constraint(equalTo: postSocialsView.leadingAnchor, constant: 10),
+            postSocialLikesView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
+            postSocialLikesView.widthAnchor.constraint(equalToConstant: 60),
+            postSocialLikesView.heightAnchor.constraint(equalToConstant: 30),
+            
+            // Likes icon (20x20, left side)
+            postSocialLikesIcon.leadingAnchor.constraint(equalTo: postSocialLikesView.leadingAnchor, constant: 4),
+            postSocialLikesIcon.centerYAnchor.constraint(equalTo: postSocialLikesView.centerYAnchor),
+            postSocialLikesIcon.widthAnchor.constraint(equalToConstant: 20),
+            postSocialLikesIcon.heightAnchor.constraint(equalToConstant: 20),
+            
+            // Likes count (right of icon, fixed width)
+            postSocialLikesCount.leadingAnchor.constraint(equalTo: postSocialLikesIcon.trailingAnchor, constant: 4),
+            postSocialLikesCount.centerYAnchor.constraint(equalTo: postSocialLikesView.centerYAnchor),
+            postSocialLikesCount.widthAnchor.constraint(equalToConstant: 32),
+            
+            // Left: Comments view (60 wide, next to likes)
+            postSocialCommentsView.leadingAnchor.constraint(equalTo: postSocialLikesView.trailingAnchor, constant: 8),
+            postSocialCommentsView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
+            postSocialCommentsView.widthAnchor.constraint(equalToConstant: 60),
+            postSocialCommentsView.heightAnchor.constraint(equalToConstant: 30),
+            
+            // Right: Bookmark view (60 wide, centered right)
+            postSocialBookMarkView.trailingAnchor.constraint(equalTo: postSocialsView.trailingAnchor, constant: -10),
+            postSocialBookMarkView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
+            postSocialBookMarkView.widthAnchor.constraint(equalToConstant: 60),
+            postSocialBookMarkView.heightAnchor.constraint(equalToConstant: 30),
+            
+            // Middle: Fill view (fills space between comments and bookmark)
+            postSocialFillView.leadingAnchor.constraint(equalTo: postSocialCommentsView.trailingAnchor, constant: 8),
+            postSocialFillView.trailingAnchor.constraint(equalTo: postSocialBookMarkView.leadingAnchor, constant: -8),
+            postSocialFillView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
+            postSocialFillView.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
+    
 
     private func setupDividerViews() {
         postDividerView.translatesAutoresizingMaskIntoConstraints = false
@@ -212,13 +284,24 @@ class HomePostCell: UITableViewCell {
         
         //STEP 6: Set Post User Image
         let userImage = post.postFromImageData ?? UIImage(named: "background_1") ?? UIImage()
-        postCaptionUserImageView.image = userImage
-        postCaptionUserImageView.contentMode = .scaleAspectFill
-        postCaptionUserImageView.clipsToBounds = true
-        postCaptionUserImageView.layer.cornerRadius = 21 // Half of 42 for circular image
+        postCaptionUserImage.image = userImage
+        postCaptionUserImage.contentMode = .scaleAspectFill
+        postCaptionUserImage.clipsToBounds = true
+        postCaptionUserImage.layer.cornerRadius = 21 // Half of 42 for circular image
        
         // Force layout update
         layoutIfNeeded()
+    }
+    
+    // Helper function to format like counts
+    private func formatLikeCount(_ count: Int) -> String {
+        if count >= 1000000 {
+            return String(format: "%.1fM", Double(count) / 1000000.0)
+        } else if count >= 1000 {
+            return String(format: "%.1fK", Double(count) / 1000.0)
+        } else {
+            return "\(count)"
+        }
     }
 }
 
