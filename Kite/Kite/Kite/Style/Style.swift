@@ -10,6 +10,26 @@ import UIKit
 
 class Style {
     
+    //FONT
+    static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let groupInfoFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+    
+    static let textBlack: UIColor = .black
+    static let textGray: UIColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
+    static let textClear: UIColor = .clear
+    
+
+    static func styleUserNameLabel(_ label: UILabel) {
+        label.font = userNameFont
+        label.textColor = textBlack
+        label.backgroundColor = textClear
+    }
+    
+    static func styleGroupInfoLabel(_ label: UILabel) {
+        label.font = groupInfoFont
+        label.textColor = textGray
+        label.backgroundColor = textClear
+    }
     
     
     //LABELS
@@ -43,6 +63,8 @@ class Style {
         textField.leftView = paddingView
         textField.leftViewMode = .always
     }
+    
+
 }
 
 

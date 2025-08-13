@@ -12,62 +12,223 @@ class HomePostCell: UITableViewCell {
     
 
     //MAIN VIEWS
-    let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
-    let postImageView = CreateViewStyles.createUIView(backgroundColor: .white)
+    let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
     let postCaptionView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .systemPurple)
-    let postSocialLikesView = CreateViewStyles.createUIView(backgroundColor: .systemRed)
-    let postSocialLikesIcon = UIImageView()
-    let postSocialLikesCount = UILabel()
-    let postSocialCommentsView = CreateViewStyles.createUIView(backgroundColor: .systemBlue)
-    let postSocialFillView = CreateViewStyles.createUIView(backgroundColor: .systemGreen)
-    let postSocialBookMarkView = CreateViewStyles.createUIView(backgroundColor: .systemOrange)
-    let postDividerView = CreateViewStyles.createUIView(backgroundColor: .lightGray)
+    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postDividerView = CreateViewStyles.createUIView(backgroundColor: .clear)
     
     // Add height constraint for dynamic sizing
     var postImageHeightConstraint: NSLayoutConstraint?
     var postCaptionHeightConstraint: NSLayoutConstraint?
 
     
-    //CHILD VIEWS
-    //Post Image
-    let postImageUIView = createPostImage()
     
-    //Post Caption
-    let postCaptionUserImageView = CreateViewStyles.createUIView(backgroundColor: .systemYellow)
-    let postCaptionUserImage = UIImageView()
+    //HEADER
+    let headerGroupImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupImage = UIImageView()
     
-    let postCaptionUserNameView = CreateViewStyles.createUIView(backgroundColor: .blue)
-    let postCaptionUsernameLabel = UILabel()
+    let headerGroupNameView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupNameLabel = UILabel()
     
-    let postCaptionTextView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postCaptionLabel = CreateViewStyles.createPostStyleCaptionText()
+    let headerGroupInfoView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupInfoLabel = UILabel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupHeaderViews()
-        setupImageViews()
-        setupCaptionViews()
-        setupSocialsViews()
-        setupDividerViews()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
+    let headerGroupMenuView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupMenuIcon = UIImageView()
+    
+    //GOOD USES STYLE
+    /*
     private func setupHeaderViews() {
         postHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupImageView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupImage.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupNameView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupInfoView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupMenuView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupMenuIcon.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Setup group image
+        headerGroupImage.contentMode = .scaleAspectFill
+        headerGroupImage.clipsToBounds = true
+        headerGroupImage.layer.cornerRadius = 4
+        
+        // Use Style class for group name label styling
+        Style.styleUserNameLabel(headerGroupNameLabel)
+        
+        // Use Style class for group info label styling
+        Style.styleGroupInfoLabel(headerGroupInfoLabel)
+        
+        // Setup menu icon
+        headerGroupMenuIcon.image = UIImage(named: "menu-horizontal")
+        headerGroupMenuIcon.contentMode = .scaleAspectFit
+        
+        // Add views and set constraints as before
         contentView.addSubview(postHeaderView)
+        postHeaderView.addSubview(headerGroupImageView)
+        headerGroupImageView.addSubview(headerGroupImage)
+        postHeaderView.addSubview(headerGroupNameView)
+        headerGroupNameView.addSubview(headerGroupNameLabel)
+        postHeaderView.addSubview(headerGroupInfoView)
+        headerGroupInfoView.addSubview(headerGroupInfoLabel)
+        postHeaderView.addSubview(headerGroupMenuView)
+        headerGroupMenuView.addSubview(headerGroupMenuIcon)
 
         NSLayoutConstraint.activate([
             postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
             postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postHeaderView.heightAnchor.constraint(equalToConstant: 52)
+            postHeaderView.heightAnchor.constraint(equalToConstant: 52),
+            
+            headerGroupImageView.leadingAnchor.constraint(equalTo: postHeaderView.leadingAnchor, constant: 10),
+            headerGroupImageView.centerYAnchor.constraint(equalTo: postHeaderView.centerYAnchor),
+            headerGroupImageView.widthAnchor.constraint(equalToConstant: 40),
+            headerGroupImageView.heightAnchor.constraint(equalToConstant: 40),
+            
+            headerGroupImage.topAnchor.constraint(equalTo: headerGroupImageView.topAnchor),
+            headerGroupImage.leadingAnchor.constraint(equalTo: headerGroupImageView.leadingAnchor),
+            headerGroupImage.trailingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor),
+            headerGroupImage.bottomAnchor.constraint(equalTo: headerGroupImageView.bottomAnchor),
+            
+            headerGroupNameView.topAnchor.constraint(equalTo: postHeaderView.topAnchor, constant: 4),
+            headerGroupNameView.leadingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor, constant: 10),
+            headerGroupNameView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -10),
+            headerGroupNameView.heightAnchor.constraint(equalToConstant: 26),
+            
+            headerGroupNameLabel.topAnchor.constraint(equalTo: headerGroupNameView.topAnchor),
+            headerGroupNameLabel.leadingAnchor.constraint(equalTo: headerGroupNameView.leadingAnchor),
+            headerGroupNameLabel.trailingAnchor.constraint(equalTo: headerGroupNameView.trailingAnchor),
+            headerGroupNameLabel.bottomAnchor.constraint(equalTo: headerGroupNameView.bottomAnchor),
+            
+            headerGroupInfoView.topAnchor.constraint(equalTo: headerGroupNameView.bottomAnchor),
+            headerGroupInfoView.leadingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor, constant: 10),
+            headerGroupInfoView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -10),
+            headerGroupInfoView.heightAnchor.constraint(equalToConstant: 26),
+            
+            headerGroupInfoLabel.topAnchor.constraint(equalTo: headerGroupInfoView.topAnchor),
+            headerGroupInfoLabel.leadingAnchor.constraint(equalTo: headerGroupInfoView.leadingAnchor),
+            headerGroupInfoLabel.trailingAnchor.constraint(equalTo: headerGroupInfoView.trailingAnchor),
+            headerGroupInfoLabel.bottomAnchor.constraint(equalTo: headerGroupInfoView.bottomAnchor),
+            
+            headerGroupMenuView.trailingAnchor.constraint(equalTo: postHeaderView.trailingAnchor, constant: -10),
+            headerGroupMenuView.centerYAnchor.constraint(equalTo: postHeaderView.centerYAnchor),
+            headerGroupMenuView.widthAnchor.constraint(equalToConstant: 50),
+            headerGroupMenuView.heightAnchor.constraint(equalToConstant: 50),
+            
+            headerGroupMenuIcon.centerXAnchor.constraint(equalTo: headerGroupMenuView.centerXAnchor),
+            headerGroupMenuIcon.centerYAnchor.constraint(equalTo: headerGroupMenuView.centerYAnchor),
+            headerGroupMenuIcon.widthAnchor.constraint(equalToConstant: 24),
+            headerGroupMenuIcon.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
+*/
+    
+    
+    private func setupHeaderViews() {
+        postHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupImageView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupImage.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupNameView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupInfoView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupMenuView.translatesAutoresizingMaskIntoConstraints = false
+        headerGroupMenuIcon.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Setup group image
+        headerGroupImage.contentMode = .scaleAspectFill
+        headerGroupImage.clipsToBounds = true
+        headerGroupImage.layer.cornerRadius = 4 // Small rounded corners for square image
+        
+        // Setup group name label
+        headerGroupNameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        headerGroupNameLabel.textColor = .black
+        headerGroupNameLabel.backgroundColor = .clear
+        
+        // Setup group info label
+        headerGroupInfoLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        headerGroupInfoLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0) // Light gray
+        headerGroupInfoLabel.backgroundColor = .clear
+        
+        // Setup menu icon
+        headerGroupMenuIcon.image = UIImage(named: "menu-horizontal")
+        headerGroupMenuIcon.contentMode = .scaleAspectFit
+        
+        contentView.addSubview(postHeaderView)
+        postHeaderView.addSubview(headerGroupImageView)
+        headerGroupImageView.addSubview(headerGroupImage)
+        postHeaderView.addSubview(headerGroupNameView)
+        headerGroupNameView.addSubview(headerGroupNameLabel)
+        postHeaderView.addSubview(headerGroupInfoView)
+        headerGroupInfoView.addSubview(headerGroupInfoLabel)
+        postHeaderView.addSubview(headerGroupMenuView)
+        headerGroupMenuView.addSubview(headerGroupMenuIcon)
 
+        NSLayoutConstraint.activate([
+            // Main header container
+            postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postHeaderView.heightAnchor.constraint(equalToConstant: 52),
+            
+            //LEFT: Group Image View (46 wide, left centered, full height)
+            headerGroupImageView.leadingAnchor.constraint(equalTo: postHeaderView.leadingAnchor, constant: 10),
+            headerGroupImageView.centerYAnchor.constraint(equalTo: postHeaderView.centerYAnchor),
+            headerGroupImageView.widthAnchor.constraint(equalToConstant: 40),
+            headerGroupImageView.heightAnchor.constraint(equalToConstant: 40),
+            
+            // Group image fills the container
+            headerGroupImage.topAnchor.constraint(equalTo: headerGroupImageView.topAnchor),
+            headerGroupImage.leadingAnchor.constraint(equalTo: headerGroupImageView.leadingAnchor),
+            headerGroupImage.trailingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor),
+            headerGroupImage.bottomAnchor.constraint(equalTo: headerGroupImageView.bottomAnchor),
+            
+            //MIDDLE: Group Name View (26 tall, fills center space)
+            headerGroupNameView.topAnchor.constraint(equalTo: postHeaderView.topAnchor, constant: 4),
+            headerGroupNameView.leadingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor, constant: 10),
+            headerGroupNameView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -10),
+            headerGroupNameView.heightAnchor.constraint(equalToConstant: 26),
+            
+            // Group name label fills the container
+            headerGroupNameLabel.topAnchor.constraint(equalTo: headerGroupNameView.topAnchor),
+            headerGroupNameLabel.leadingAnchor.constraint(equalTo: headerGroupNameView.leadingAnchor),
+            headerGroupNameLabel.trailingAnchor.constraint(equalTo: headerGroupNameView.trailingAnchor),
+            headerGroupNameLabel.bottomAnchor.constraint(equalTo: headerGroupNameView.bottomAnchor),
+            
+            //MIDDLE: Group Info View (26 tall, fills center space below name)
+            headerGroupInfoView.topAnchor.constraint(equalTo: headerGroupNameView.bottomAnchor, constant: 0),
+            headerGroupInfoView.leadingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor, constant: 10),
+            headerGroupInfoView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -10),
+            headerGroupInfoView.heightAnchor.constraint(equalToConstant: 26),
+            
+            // Group info label fills the container
+            headerGroupInfoLabel.topAnchor.constraint(equalTo: headerGroupInfoView.topAnchor),
+            headerGroupInfoLabel.leadingAnchor.constraint(equalTo: headerGroupInfoView.leadingAnchor),
+            headerGroupInfoLabel.trailingAnchor.constraint(equalTo: headerGroupInfoView.trailingAnchor),
+            headerGroupInfoLabel.bottomAnchor.constraint(equalTo: headerGroupInfoView.bottomAnchor),
+            
+            //RIGHT: Group Menu View (50 wide, right centered, full height)
+            headerGroupMenuView.trailingAnchor.constraint(equalTo: postHeaderView.trailingAnchor, constant: -10),
+            headerGroupMenuView.centerYAnchor.constraint(equalTo: postHeaderView.centerYAnchor),
+            headerGroupMenuView.widthAnchor.constraint(equalToConstant: 50),
+            headerGroupMenuView.heightAnchor.constraint(equalToConstant: 50),
+            
+            // Menu icon centered in the container
+            headerGroupMenuIcon.centerXAnchor.constraint(equalTo: headerGroupMenuView.centerXAnchor),
+            headerGroupMenuIcon.centerYAnchor.constraint(equalTo: headerGroupMenuView.centerYAnchor),
+            headerGroupMenuIcon.widthAnchor.constraint(equalToConstant: 24),
+            headerGroupMenuIcon.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+     
+
+
+    
+    //POST IMAGE
+    let postImageUIView = createPostImage()
+    
     private func setupImageViews() {
         postImageView.translatesAutoresizingMaskIntoConstraints = false
         postImageUIView.translatesAutoresizingMaskIntoConstraints = false
@@ -91,6 +252,16 @@ class HomePostCell: UITableViewCell {
             postImageUIView.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor)
         ])
     }
+    
+    //POST CAPTION
+    let postCaptionUserImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postCaptionUserImage = UIImageView()
+    
+    let postCaptionUserNameView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postCaptionUsernameLabel = UILabel()
+    
+    let postCaptionTextView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postCaptionLabel = CreateViewStyles.createPostStyleCaptionText()
     
     private func setupCaptionViews() {
         
@@ -151,8 +322,8 @@ class HomePostCell: UITableViewCell {
             postCaptionUserNameView.heightAnchor.constraint(equalToConstant: 22),
             
             // Username label inside info view
-            postCaptionUsernameLabel.topAnchor.constraint(equalTo: postCaptionUserNameView.topAnchor, constant: 0),
-            postCaptionUsernameLabel.leadingAnchor.constraint(equalTo: postCaptionUserNameView.leadingAnchor, constant: 4),
+            postCaptionUsernameLabel.topAnchor.constraint(equalTo: postCaptionUserNameView.topAnchor, constant: 8),
+            postCaptionUsernameLabel.leadingAnchor.constraint(equalTo: postCaptionUserNameView.leadingAnchor, constant: 0),
             postCaptionUsernameLabel.trailingAnchor.constraint(equalTo: postCaptionUserNameView.trailingAnchor, constant: -10),
             postCaptionUsernameLabel.bottomAnchor.constraint(equalTo: postCaptionUserNameView.bottomAnchor, constant: -4),
            
@@ -170,6 +341,18 @@ class HomePostCell: UITableViewCell {
         ])
     }
 
+
+    
+    //POST SOCIALS
+    let postSocialLikesView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postSocialLikesIcon = UIImageView()
+    let postSocialLikesCount = UILabel()
+    let postSocialCommentsView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postSocialCommentsIcon = UIImageView()
+    let postSocialCommentsCount = UILabel()
+    let postSocialFillView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postSocialBookMarkView = CreateViewStyles.createUIView(backgroundColor: .clear)
+   
     private func setupSocialsViews() {
         postSocialsView.translatesAutoresizingMaskIntoConstraints = false
         postSocialLikesView.translatesAutoresizingMaskIntoConstraints = false
@@ -177,25 +360,51 @@ class HomePostCell: UITableViewCell {
         postSocialFillView.translatesAutoresizingMaskIntoConstraints = false
         postSocialBookMarkView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Setup likes icon and count
+        // Add tap gesture to likes view
+        let likesTapGesture = UITapGestureRecognizer(target: self, action: #selector(likesViewTapped))
+        postSocialLikesView.addGestureRecognizer(likesTapGesture)
+        postSocialLikesView.isUserInteractionEnabled = true
+        
+        //LIKES: Setup likes icon and count
         postSocialLikesIcon.translatesAutoresizingMaskIntoConstraints = false
         postSocialLikesIcon.image = UIImage(named: "like")
         postSocialLikesIcon.contentMode = .scaleAspectFit
         
         postSocialLikesCount.translatesAutoresizingMaskIntoConstraints = false
-        postSocialLikesCount.text = formatLikeCount(20000)
+        postSocialLikesCount.text = formatCount(0)
         postSocialLikesCount.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         postSocialLikesCount.textColor = .black
         postSocialLikesCount.backgroundColor = .clear
         postSocialLikesCount.textAlignment = .left
+        
+        //COMMENTS: Setup comments icon and count
+        postSocialCommentsIcon.translatesAutoresizingMaskIntoConstraints = false
+        postSocialCommentsIcon.image = UIImage(named: "comment")
+        postSocialCommentsIcon.contentMode = .scaleAspectFit
+        
+        postSocialCommentsCount.translatesAutoresizingMaskIntoConstraints = false
+        postSocialCommentsCount.text = formatCount(0)
+        postSocialCommentsCount.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        postSocialCommentsCount.textColor = .black
+        postSocialCommentsCount.backgroundColor = .clear
+        postSocialCommentsCount.textAlignment = .left
+        
+        //BOOKMARK: Setup bookmark icon
+        let postSocialBookMarkIcon = UIImageView()
+        postSocialBookMarkIcon.translatesAutoresizingMaskIntoConstraints = false
+        postSocialBookMarkIcon.image = UIImage(named: "bookmark")
+        postSocialBookMarkIcon.contentMode = .scaleAspectFit
         
         contentView.addSubview(postSocialsView)
         postSocialsView.addSubview(postSocialLikesView)
         postSocialLikesView.addSubview(postSocialLikesIcon)
         postSocialLikesView.addSubview(postSocialLikesCount)
         postSocialsView.addSubview(postSocialCommentsView)
+        postSocialCommentsView.addSubview(postSocialCommentsIcon)
+        postSocialCommentsView.addSubview(postSocialCommentsCount)
         postSocialsView.addSubview(postSocialFillView)
         postSocialsView.addSubview(postSocialBookMarkView)
+        postSocialBookMarkView.addSubview(postSocialBookMarkIcon)
 
         NSLayoutConstraint.activate([
             postSocialsView.topAnchor.constraint(equalTo: postCaptionView.bottomAnchor),
@@ -203,44 +412,67 @@ class HomePostCell: UITableViewCell {
             postSocialsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             postSocialsView.heightAnchor.constraint(equalToConstant: 32),
             
+            //LIKES
             // Left: Likes view (60 wide, centered left)
-            postSocialLikesView.leadingAnchor.constraint(equalTo: postSocialsView.leadingAnchor, constant: 10),
+            postSocialLikesView.leadingAnchor.constraint(equalTo: postSocialsView.leadingAnchor, constant: 50),
             postSocialLikesView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
             postSocialLikesView.widthAnchor.constraint(equalToConstant: 60),
             postSocialLikesView.heightAnchor.constraint(equalToConstant: 30),
             
             // Likes icon (20x20, left side)
-            postSocialLikesIcon.leadingAnchor.constraint(equalTo: postSocialLikesView.leadingAnchor, constant: 4),
+            postSocialLikesIcon.leadingAnchor.constraint(equalTo: postSocialLikesView.leadingAnchor, constant: 0),
             postSocialLikesIcon.centerYAnchor.constraint(equalTo: postSocialLikesView.centerYAnchor),
-            postSocialLikesIcon.widthAnchor.constraint(equalToConstant: 20),
-            postSocialLikesIcon.heightAnchor.constraint(equalToConstant: 20),
+            postSocialLikesIcon.widthAnchor.constraint(equalToConstant: 26),
+            postSocialLikesIcon.heightAnchor.constraint(equalToConstant: 26),
             
             // Likes count (right of icon, fixed width)
             postSocialLikesCount.leadingAnchor.constraint(equalTo: postSocialLikesIcon.trailingAnchor, constant: 4),
             postSocialLikesCount.centerYAnchor.constraint(equalTo: postSocialLikesView.centerYAnchor),
             postSocialLikesCount.widthAnchor.constraint(equalToConstant: 32),
             
+            //COMMENTS
             // Left: Comments view (60 wide, next to likes)
-            postSocialCommentsView.leadingAnchor.constraint(equalTo: postSocialLikesView.trailingAnchor, constant: 8),
+            postSocialCommentsView.leadingAnchor.constraint(equalTo: postSocialLikesView.trailingAnchor, constant: 0),
             postSocialCommentsView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
             postSocialCommentsView.widthAnchor.constraint(equalToConstant: 60),
             postSocialCommentsView.heightAnchor.constraint(equalToConstant: 30),
             
+            // Comments icon (20x20, left side)
+            postSocialCommentsIcon.leadingAnchor.constraint(equalTo: postSocialCommentsView.leadingAnchor, constant: 0),
+            postSocialCommentsIcon.centerYAnchor.constraint(equalTo: postSocialCommentsView.centerYAnchor),
+            postSocialCommentsIcon.widthAnchor.constraint(equalToConstant: 26),
+            postSocialCommentsIcon.heightAnchor.constraint(equalToConstant: 26),
+            
+            // Comments count (right of icon, fixed width)
+            postSocialCommentsCount.leadingAnchor.constraint(equalTo: postSocialCommentsIcon.trailingAnchor, constant: 4),
+            postSocialCommentsCount.centerYAnchor.constraint(equalTo: postSocialCommentsView.centerYAnchor),
+            postSocialCommentsCount.widthAnchor.constraint(equalToConstant: 32),
+        
+            //FILL SPACE
+            // Middle: Fill view (fills space between comments and bookmark)
+            postSocialFillView.leadingAnchor.constraint(equalTo: postSocialCommentsView.trailingAnchor, constant: 8),
+            postSocialFillView.trailingAnchor.constraint(equalTo: postSocialBookMarkView.leadingAnchor, constant: -8),
+            postSocialFillView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
+            postSocialFillView.heightAnchor.constraint(equalToConstant: 30),
+            
+            //BOOKMARK
             // Right: Bookmark view (60 wide, centered right)
             postSocialBookMarkView.trailingAnchor.constraint(equalTo: postSocialsView.trailingAnchor, constant: -10),
             postSocialBookMarkView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
             postSocialBookMarkView.widthAnchor.constraint(equalToConstant: 60),
             postSocialBookMarkView.heightAnchor.constraint(equalToConstant: 30),
             
-            // Middle: Fill view (fills space between comments and bookmark)
-            postSocialFillView.leadingAnchor.constraint(equalTo: postSocialCommentsView.trailingAnchor, constant: 8),
-            postSocialFillView.trailingAnchor.constraint(equalTo: postSocialBookMarkView.leadingAnchor, constant: -8),
-            postSocialFillView.centerYAnchor.constraint(equalTo: postSocialsView.centerYAnchor),
-            postSocialFillView.heightAnchor.constraint(equalToConstant: 30)
+            // Bookmark icon (26x26, centered in bookmark view)
+            postSocialBookMarkIcon.centerXAnchor.constraint(equalTo: postSocialBookMarkView.centerXAnchor),
+            postSocialBookMarkIcon.centerYAnchor.constraint(equalTo: postSocialBookMarkView.centerYAnchor),
+            postSocialBookMarkIcon.widthAnchor.constraint(equalToConstant: 24),
+            postSocialBookMarkIcon.heightAnchor.constraint(equalToConstant: 24),
+            
         ])
     }
     
-
+    
+    //DIVIDER
     private func setupDividerViews() {
         postDividerView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(postDividerView)
@@ -253,7 +485,32 @@ class HomePostCell: UITableViewCell {
             postDividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
+    
 
+    
+    //SETUP
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupHeaderViews()
+        setupImageViews()
+        setupCaptionViews()
+        setupSocialsViews()
+        setupDividerViews()
+    }
+
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+
+    //ACTIONS
+    @objc private func likesViewTapped() {
+        print("like")
+    }
+    
+    //Action: Setup Post
     func updatePost(with post: Post) {
         
         //STEP 1: Get Post Information
@@ -288,488 +545,36 @@ class HomePostCell: UITableViewCell {
         postCaptionUserImage.contentMode = .scaleAspectFill
         postCaptionUserImage.clipsToBounds = true
         postCaptionUserImage.layer.cornerRadius = 21 // Half of 42 for circular image
+        
+        //STEP 7: Set Header Group Image
+        let groupImage = post.groupImageData ?? UIImage(named: "background_1") ?? UIImage()
+        headerGroupImage.image = groupImage
+        
+        //STEP 8: Set Header Group Name
+        let groupName = post.groupName ?? "Unknown Group"
+        headerGroupNameLabel.text = groupName
+        
+        //STEP 9: Set Header Group Info (Time Message)
+        let timeMessage = post.timeMessage ?? "Just now"
+        headerGroupInfoLabel.text = timeMessage
+        
+        //STEP 10: Set Like Count and Status
+        let likeCount = post.simpleLikesArray?.count ?? 0
+        postSocialLikesCount.text = formatCount(likeCount)
+        
+        // Set like image based on user's like status
+        let isLiked = post.isLikedByCurrentUser ?? false
+        let likeImageName = isLiked ? "liked" : "like"
+        postSocialLikesIcon.image = UIImage(named: likeImageName)
+        
+        //STEP 11: Set Comment Count
+        let commentCount = post.commentsArray?.count ?? 0
+        postSocialCommentsCount.text = formatCount(commentCount)
        
         // Force layout update
         layoutIfNeeded()
     }
     
-    // Helper function to format like counts
-    private func formatLikeCount(_ count: Int) -> String {
-        if count >= 1000000 {
-            return String(format: "%.1fM", Double(count) / 1000000.0)
-        } else if count >= 1000 {
-            return String(format: "%.1fK", Double(count) / 1000.0)
-        } else {
-            return "\(count)"
-        }
-    }
-}
-
-
-
-/*
-//Home Feed Post Cell
-class HomePostCell: UITableViewCell {
-    
-    //POST HEADER: Post Information
-    //POST BODY: Post Image and Caption
-    //POST FOOTER: Post Socials
-    
-    
-    let postHeaderView = PostHeaderLayout()
-    let bodyView = CreateViewStyles.createBodyView()
-    let footerView = CreateViewStyles.createFooterView()
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupTemporaryViews()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func updatePost(with post: Post) {
-        postHeaderView.configure(with: post)
-    }
-
-    private func setupTemporaryViews() {
-        postHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        bodyView.translatesAutoresizingMaskIntoConstraints = false
-        footerView.translatesAutoresizingMaskIntoConstraints = false
-
-        contentView.addSubview(postHeaderView)
-        contentView.addSubview(bodyView)
-        contentView.addSubview(footerView)
-
-        NSLayoutConstraint.activate([
-            postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postHeaderView.heightAnchor.constraint(equalToConstant: 52),
-
-            bodyView.topAnchor.constraint(equalTo: postHeaderView.bottomAnchor),
-            bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            bodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            bodyView.heightAnchor.constraint(equalToConstant: 200),
-
-            footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
-            footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 20),
-
-            footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-    }
-}
-
-*/
-
-
-
-
-/*
-//Home Feed Post Cell
-class PostCell: UITableViewCell {
-    let headerView = CreateViewStyles.createHeaderView()
-    let bodyView = CreateViewStyles.createBodyView()
-    let footerView = CreateViewStyles.createFooterView()
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupTemporaryViews()
-
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //CELL SETUP
-    func updatePost(with post: Post) {
-        let postCaption = post.postCaption ?? "no caption"
-        print(postCaption)
-        /*
-        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
-        let postCaption = post.postCaption ?? "no caption"
-        
-        let imageHeight = getImageHeight(image: currentImage)
-        postImageHeightConstraint?.constant = imageHeight
-        postImage.image = currentImage
-        
-        let captionHeight = round(calculateLabelHeight(text: postCaption))
-        postCaptionHeightConstraint?.constant = captionHeight
-        postCaptionLabel.text = postCaption
-        
-        postSocialsLabel.text = "Post Like Count: \(post.simpleLikesArray?.count ?? 0)"
-        
-        layoutIfNeeded()
-         */
-    }
-
-    private func setupTemporaryViews() {
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        bodyView.translatesAutoresizingMaskIntoConstraints = false
-        footerView.translatesAutoresizingMaskIntoConstraints = false
-
-        contentView.addSubview(headerView)
-        contentView.addSubview(bodyView)
-        contentView.addSubview(footerView)
-
-        NSLayoutConstraint.activate([
-            // Header - 200
-            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 80),
-
-            // Body - 400
-            bodyView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            bodyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            bodyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            bodyView.heightAnchor.constraint(equalToConstant: 200),
-
-            // Footer - 200
-            footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
-            footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 20),
-
-            footerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-        
-        
-        //MENU
-        headerView.addSubview(menuButton)
-
-        NSLayoutConstraint.activate([
-            menuButton.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
-            menuButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
-            menuButton.widthAnchor.constraint(equalToConstant: 24),
-            menuButton.heightAnchor.constraint(equalToConstant: 24)
-        ])
-        
-        setupMenu()
-         
-
-    }
-    
-    //MENU
-    private func setupMenu() {
-        let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-            print("Edit tapped")
-        }
-
-        let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-            print("Delete tapped")
-        }
-
-        let menu = UIMenu(title: "", children: [editAction, deleteAction])
-        menuButton.menu = menu
-        menuButton.showsMenuAsPrimaryAction = true // Show menu on tap (not long-press)
-    }
-
-    
-    //UI ELEMENTS
-    private let menuButton: UIButton = {
-        let button = UIButton(type: .system)
-        let image = UIImage(named: "menu-horizontal")
-        button.setImage(image, for: .normal)
-        button.tintColor = .black // Optional: Adjust based on your UI
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
 
 }
-
-*/
-
-/*
-class HomePostCell: UITableViewCell {
-    
-    //Post User
-    let postUserView = createPostUserView()
-    let postFromLabel = createPostUserName()
-    
-    //Post Image
-    let postImageView = createPostImageView()
-    let postImage = createPostImage()
-    
-    //Post Socials
-    let postSocialsView = createPostSocialsView()
-    let postSocialsLabel = createPostSocialsText()
-    
-    //Post Caption
-    let postCaptionView = createPostCaptionView()
-    let postCaptionLabel = createPostCaptionText()
-    
-    //Post Divider
-    let postDividerView = createPostDividerView()
-    
-    //Heights for Dynamic Content
-    var postImageHeightConstraint: NSLayoutConstraint?
-    var postCaptionHeightConstraint: NSLayoutConstraint?
- 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupViews() {
-        
-        //POST: User View
-        postUserView.translatesAutoresizingMaskIntoConstraints = false
-        postFromLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(postUserView)
-        postUserView.addSubview(postFromLabel)
-        
-        //POST: Post Image
-        postImageView.translatesAutoresizingMaskIntoConstraints = false
-        postImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(postImageView)
-        postImageView.addSubview(postImage)
-        
-        postImageHeightConstraint = postImageView.heightAnchor.constraint(equalToConstant: 100)  // Initial height
-        postImageHeightConstraint?.isActive = true
-        
-        //POST: Post Socials
-        postSocialsView.translatesAutoresizingMaskIntoConstraints = false
-        postSocialsLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(postSocialsView)
-        postSocialsView.addSubview(postSocialsLabel)
-        
-        //POST: Post Caption
-        postCaptionView.translatesAutoresizingMaskIntoConstraints = false
-        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(postCaptionView)
-        postCaptionView.addSubview(postCaptionLabel)
-        
-        postCaptionHeightConstraint = postCaptionView.heightAnchor.constraint(equalToConstant: 100)  // Initial height
-        postCaptionHeightConstraint?.isActive = true
-        
-        //POST: Divider
-        postDividerView.translatesAutoresizingMaskIntoConstraints = false
-   
-        addSubview(postDividerView)
-        
-        NSLayoutConstraint.activate([
-            
-            //Post User View
-            postUserView.topAnchor.constraint(equalTo: topAnchor),
-            postUserView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            postUserView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            postUserView.heightAnchor.constraint(equalToConstant: 40),
-   
-            postFromLabel.topAnchor.constraint(equalTo: postUserView.topAnchor, constant: 0),
-            postFromLabel.leftAnchor.constraint(equalTo: postUserView.leftAnchor, constant: 0),
-            postFromLabel.rightAnchor.constraint(equalTo: postUserView.rightAnchor, constant: -0),
-            postFromLabel.bottomAnchor.constraint(equalTo: postUserView.bottomAnchor, constant: -0),
-            
-            //Post Image View
-            postImageView.topAnchor.constraint(equalTo: postUserView.bottomAnchor, constant: 0),
-            postImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            postImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-            postImage.topAnchor.constraint(equalTo: postImageView.topAnchor, constant: 0),
-            postImage.leftAnchor.constraint(equalTo: postImageView.leftAnchor, constant: 0),
-            postImage.rightAnchor.constraint(equalTo: postImageView.rightAnchor, constant: -0),
-            postImage.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -0),
-            
-            //Post Socials View
-            postSocialsView.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 0),
-            postSocialsView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            postSocialsView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            postSocialsView.heightAnchor.constraint(equalToConstant: 40),
-           
-            postSocialsLabel.topAnchor.constraint(equalTo: postSocialsView.topAnchor, constant: 0),
-            postSocialsLabel.leftAnchor.constraint(equalTo: postSocialsView.leftAnchor, constant: 0),
-            postSocialsLabel.rightAnchor.constraint(equalTo: postSocialsView.rightAnchor, constant: -0),
-            postSocialsLabel.bottomAnchor.constraint(equalTo: postSocialsView.bottomAnchor, constant: -0),
-            
-            //Post Caption View
-            postCaptionView.topAnchor.constraint(equalTo: postSocialsLabel.bottomAnchor, constant: 0),
-            postCaptionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            postCaptionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-            postCaptionLabel.topAnchor.constraint(equalTo: postCaptionView.topAnchor, constant: 0),
-            postCaptionLabel.leftAnchor.constraint(equalTo: postCaptionView.leftAnchor, constant: 0),
-            postCaptionLabel.rightAnchor.constraint(equalTo: postCaptionView.rightAnchor, constant: -0),
-            postCaptionLabel.bottomAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: -0),
-            
-            //Post Divider View
-            postDividerView.topAnchor.constraint(equalTo: postCaptionView.bottomAnchor, constant: 0),
-            postDividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            postDividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            postDividerView.heightAnchor.constraint(equalToConstant: 5),
-            
-            //Chat Maybe
-            //postDividerView.bottomAnchor.constraint(equalTo: bottomAnchor)
-
-        ])
-        
-    }
-    
-    //CELL SETUP
-    func updatePost(with post: Post) {
-        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
-        let postCaption = post.postCaption ?? "no caption"
-        
-        let imageHeight = getImageHeight(image: currentImage)
-        postImageHeightConstraint?.constant = imageHeight
-        postImage.image = currentImage
-        
-        let captionHeight = round(calculateLabelHeight(text: postCaption))
-        postCaptionHeightConstraint?.constant = captionHeight
-        postCaptionLabel.text = postCaption
-        
-        postSocialsLabel.text = "Post Like Count: \(post.simpleLikesArray?.count ?? 0)"
-        
-        layoutIfNeeded()
-    }
-
-
-}
-
-
-
-
-//POST: Post User
-func createPostUserView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .systemRed
-    
-    return view
-
-}
-
-func createPostUserName() -> UILabel {
-    let label = UILabel()
-    label.text = "Garden Party"
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.numberOfLines = 0 // Allow for multiple lines
-    label.textAlignment = .center
-    label.backgroundColor = .white
-    
-    return label
-}
-
-
-//POST: Post Image
-func createInstagramStyleCaptionText() -> UILabel {
-    let label = UILabel()
-    label.text = ""
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.numberOfLines = 0
-    label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-    label.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0) // Instagram-like gray
-    label.backgroundColor = .clear
-    
-    return label
-}
-
-func createPostImageView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .lightGray
-    
-    return view
-
-}
-
-func createPostImage() -> UIImageView {
-    let imageView = UIImageView()
-    imageView.contentMode = .scaleAspectFit
-    imageView.backgroundColor = .white
-    
-    return imageView
-
-}
-
-//POST: Post Socials
-func createPostSocialsView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .green
-    
-    return view
-
-}
-
-func createPostSocialsText() -> UILabel {
-    let label = UILabel()
-    label.text = "SOCIALS: Post User"
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.numberOfLines = 0 // Allow for multiple lines
-    label.textAlignment = .center
-    label.backgroundColor = .blue
-    
-    return label
-}
-
-//POST: Post Caption
-func createPostCaptionView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .green
-    
-    return view
-
-}
-
-func createPostCaptionText() -> UILabel {
-    let label = UILabel()
-    label.text = "CAPTION: My Caption"
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.numberOfLines = 0
-    //label.textAlignment = .center
-    label.backgroundColor = .green
-    
-    return label
-}
-
-//POST: Post Divider
-func createPostDividerView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .systemRed
-    
-    return view
-}
-
-
-func createHeaderView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .white
-    
-    return view
-}
-
-func createBodyView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .white
-    
-    return view
-}
-
-func createFooterView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .blue
-    
-    return view
-}
- 
- */
-
-
-
-
-
-
-
-
-
 

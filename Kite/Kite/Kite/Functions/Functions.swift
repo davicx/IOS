@@ -7,12 +7,37 @@
 
 import UIKit
 
+//STRING FUNCTIONS
+
+//NUMBER FORMATTING FUNCTIONS
+func formatCount(_ count: Int) -> String {
+    if count >= 1_000_000 {
+        let millions = Double(count) / 1_000_000.0
+        if millions.truncatingRemainder(dividingBy: 1) == 0 {
+            return "\(Int(millions))M"
+        } else {
+            return String(format: "%.1fM", millions)
+        }
+    } else if count >= 1_000 {
+        let thousands = Double(count) / 1_000.0
+        if thousands.truncatingRemainder(dividingBy: 1) == 0 {
+            return "\(Int(thousands))K"
+        } else {
+            return String(format: "%.1fK", thousands)
+        }
+    } else {
+        return "\(count)"
+    }
+}
+
+//TIME FUNCTIONS
 //let postCaption : String = postsArray[0].postCaption ?? ""
 func delay(durationInSeconds seconds: Double, completion: @escaping () -> Void) {
     DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: completion)
     
 }
 
+//PRINT FUNCTIONS
 func printHeader(headerMessage: String) {
     print("______________________________")
     print(headerMessage)
@@ -24,7 +49,7 @@ func printFooter() {
     print(" ")
 }
 
-//Image Functions
+//IMAGE FUNCTIONS
 func getImageHeight(image: UIImage) -> CGFloat {
     let aspectRatio = image.size.height / image.size.width
     //let originalImageHeight = image.size.height
@@ -49,6 +74,8 @@ func calculateLabelHeight(text: String, font: UIFont = UIFont.systemFont(ofSize:
     return ceil(boundingRect.height)
 }
 
+
+//APPENDIX
 /*
 func getImageHeight(currentImage: UIImage) -> Float {
     
