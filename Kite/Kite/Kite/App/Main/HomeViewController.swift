@@ -9,6 +9,7 @@
 import UIKit
 
 
+
 class HomeViewController: UIViewController {
 
     //HOME: API and data
@@ -150,60 +151,3 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 
-/*
- func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-     let currentPost = postDataController.posts[indexPath.row]
-     let currentPostImage = currentPost.postImageData
-     
-     //STEP 1: Get Image Height
-     //let defaultImage = UIImage(named: "background_1") ?? UIImage() // fallback to blank image
-     //let currentImage = currentPostImage ?? defaultImage
-     
-     //let postImageHeightINSIDE = round(getImageHeight(image: currentImage))
-     
-     //STEP 2: Get Caption Height
-     //let postCaption = currentPost.postCaption ?? "no caption"
-     //let postCaptionHeightINSIDE = round(calculateLabelHeight(text: postCaption))
-     
-     //STEP 1: Get Image and Caption Heights
-     let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
-     let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
-     
-     //print("For Post")
-     //print(currentPost.postCaption)
-     //print("\(postImageHeightINSIDE) \(postImageHeight)")
-     //print("\(postCaptionHeightINSIDE) \(postCaptionHeight)")
-
-     //print(" ")
-     
-     
-     //WORKS
-     //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
-     //WORKS
-     return 800
- }
- */
-
-/*
- func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-     let currentPost = postDataController.posts[indexPath.row]
-
-     let postImageHeight = PostHeightHelper.calculatePostImageHeight(from: currentPost.postImageData)
-     let postCaptionHeight = PostHeightHelper.calculatePostCaptionHeight(from: currentPost.postCaption)
-
-     return StyleConstants.postHeader +
-            postImageHeight +
-            StyleConstants.postSocials +
-            postCaptionHeight +
-            StyleConstants.postDivider
- }
- */
-
-/*
- //Temp: Debug
- Task {
-     // Wait a tiny bit to let posts load before printing (if fetchPosts is still running)
-     try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-     PostDataController.shared.debugPrintCommentLikes()
- }
- */

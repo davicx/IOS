@@ -94,6 +94,7 @@
 		D75470122DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */; };
 		D75D6C3F2DEE6DCA0080751C /* AcceptFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */; };
 		D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */; };
+		D76DA68B2E4D55A1002D65D5 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */; };
 		D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */; };
 		D76FD6E02E19FA8200D29FD4 /* GroupDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76FD6DF2E19FA8200D29FD4 /* GroupDataController.swift */; };
 		D773A57C2DF3A62600074C88 /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A57B2DF3A62600074C88 /* FriendListViewController.swift */; };
@@ -258,6 +259,7 @@
 		D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFriendsViewControllerLayout.swift; sourceTree = "<group>"; };
 		D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptFriendResponseModel.swift; sourceTree = "<group>"; };
 		D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineFriendResponseModel.swift; sourceTree = "<group>"; };
+		D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsDoc.swift; sourceTree = "<group>"; };
 		D76FD6DF2E19FA8200D29FD4 /* GroupDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDataController.swift; sourceTree = "<group>"; };
 		D773A57B2DF3A62600074C88 /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 			isa = PBXGroup;
 			children = (
 				D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */,
+				D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1000,6 +1003,7 @@
 				51C69B222D0E572B00C46759 /* LoginAPI.swift in Sources */,
 				D7D9923A2DFCE41200D6B48A /* IndividualGroupViewController.swift in Sources */,
 				D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */,
+				D76DA68B2E4D55A1002D65D5 /* ItemCell.swift in Sources */,
 				D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */,
 				D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */,
 				D78BE98D2E271CEE0082ABC4 /* PostCellBackup.swift in Sources */,

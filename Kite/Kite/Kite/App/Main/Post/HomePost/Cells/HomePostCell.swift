@@ -38,7 +38,6 @@ class HomePostCell: UITableViewCell {
     let headerGroupMenuIcon = UIImageView()
     
     //GOOD USES STYLE
-    /*
     private func setupHeaderViews() {
         postHeaderView.translatesAutoresizingMaskIntoConstraints = false
         headerGroupImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,9 +50,7 @@ class HomePostCell: UITableViewCell {
         headerGroupMenuIcon.translatesAutoresizingMaskIntoConstraints = false
         
         // Setup group image
-        headerGroupImage.contentMode = .scaleAspectFill
-        headerGroupImage.clipsToBounds = true
-        headerGroupImage.layer.cornerRadius = 4
+        Style.styleGroupImage(headerGroupImage)
         
         // Use Style class for group name label styling
         Style.styleUserNameLabel(headerGroupNameLabel)
@@ -123,106 +120,6 @@ class HomePostCell: UITableViewCell {
             headerGroupMenuIcon.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
-*/
-    
-    
-    private func setupHeaderViews() {
-        postHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupImageView.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupImage.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupNameView.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupInfoView.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupInfoLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupMenuView.translatesAutoresizingMaskIntoConstraints = false
-        headerGroupMenuIcon.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Setup group image
-        headerGroupImage.contentMode = .scaleAspectFill
-        headerGroupImage.clipsToBounds = true
-        headerGroupImage.layer.cornerRadius = 4 // Small rounded corners for square image
-        
-        // Setup group name label
-        headerGroupNameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        headerGroupNameLabel.textColor = .black
-        headerGroupNameLabel.backgroundColor = .clear
-        
-        // Setup group info label
-        headerGroupInfoLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        headerGroupInfoLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0) // Light gray
-        headerGroupInfoLabel.backgroundColor = .clear
-        
-        // Setup menu icon
-        headerGroupMenuIcon.image = UIImage(named: "menu-horizontal")
-        headerGroupMenuIcon.contentMode = .scaleAspectFit
-        
-        contentView.addSubview(postHeaderView)
-        postHeaderView.addSubview(headerGroupImageView)
-        headerGroupImageView.addSubview(headerGroupImage)
-        postHeaderView.addSubview(headerGroupNameView)
-        headerGroupNameView.addSubview(headerGroupNameLabel)
-        postHeaderView.addSubview(headerGroupInfoView)
-        headerGroupInfoView.addSubview(headerGroupInfoLabel)
-        postHeaderView.addSubview(headerGroupMenuView)
-        headerGroupMenuView.addSubview(headerGroupMenuIcon)
-
-        NSLayoutConstraint.activate([
-            // Main header container
-            postHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            postHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postHeaderView.heightAnchor.constraint(equalToConstant: 52),
-            
-            //LEFT: Group Image View (46 wide, left centered, full height)
-            headerGroupImageView.leadingAnchor.constraint(equalTo: postHeaderView.leadingAnchor, constant: 10),
-            headerGroupImageView.centerYAnchor.constraint(equalTo: postHeaderView.centerYAnchor),
-            headerGroupImageView.widthAnchor.constraint(equalToConstant: 40),
-            headerGroupImageView.heightAnchor.constraint(equalToConstant: 40),
-            
-            // Group image fills the container
-            headerGroupImage.topAnchor.constraint(equalTo: headerGroupImageView.topAnchor),
-            headerGroupImage.leadingAnchor.constraint(equalTo: headerGroupImageView.leadingAnchor),
-            headerGroupImage.trailingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor),
-            headerGroupImage.bottomAnchor.constraint(equalTo: headerGroupImageView.bottomAnchor),
-            
-            //MIDDLE: Group Name View (26 tall, fills center space)
-            headerGroupNameView.topAnchor.constraint(equalTo: postHeaderView.topAnchor, constant: 4),
-            headerGroupNameView.leadingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor, constant: 10),
-            headerGroupNameView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -10),
-            headerGroupNameView.heightAnchor.constraint(equalToConstant: 26),
-            
-            // Group name label fills the container
-            headerGroupNameLabel.topAnchor.constraint(equalTo: headerGroupNameView.topAnchor),
-            headerGroupNameLabel.leadingAnchor.constraint(equalTo: headerGroupNameView.leadingAnchor),
-            headerGroupNameLabel.trailingAnchor.constraint(equalTo: headerGroupNameView.trailingAnchor),
-            headerGroupNameLabel.bottomAnchor.constraint(equalTo: headerGroupNameView.bottomAnchor),
-            
-            //MIDDLE: Group Info View (26 tall, fills center space below name)
-            headerGroupInfoView.topAnchor.constraint(equalTo: headerGroupNameView.bottomAnchor, constant: 0),
-            headerGroupInfoView.leadingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor, constant: 10),
-            headerGroupInfoView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -10),
-            headerGroupInfoView.heightAnchor.constraint(equalToConstant: 26),
-            
-            // Group info label fills the container
-            headerGroupInfoLabel.topAnchor.constraint(equalTo: headerGroupInfoView.topAnchor),
-            headerGroupInfoLabel.leadingAnchor.constraint(equalTo: headerGroupInfoView.leadingAnchor),
-            headerGroupInfoLabel.trailingAnchor.constraint(equalTo: headerGroupInfoView.trailingAnchor),
-            headerGroupInfoLabel.bottomAnchor.constraint(equalTo: headerGroupInfoView.bottomAnchor),
-            
-            //RIGHT: Group Menu View (50 wide, right centered, full height)
-            headerGroupMenuView.trailingAnchor.constraint(equalTo: postHeaderView.trailingAnchor, constant: -10),
-            headerGroupMenuView.centerYAnchor.constraint(equalTo: postHeaderView.centerYAnchor),
-            headerGroupMenuView.widthAnchor.constraint(equalToConstant: 50),
-            headerGroupMenuView.heightAnchor.constraint(equalToConstant: 50),
-            
-            // Menu icon centered in the container
-            headerGroupMenuIcon.centerXAnchor.constraint(equalTo: headerGroupMenuView.centerXAnchor),
-            headerGroupMenuIcon.centerYAnchor.constraint(equalTo: headerGroupMenuView.centerYAnchor),
-            headerGroupMenuIcon.widthAnchor.constraint(equalToConstant: 24),
-            headerGroupMenuIcon.heightAnchor.constraint(equalToConstant: 24)
-        ])
-    }
-     
 
 
     
@@ -275,9 +172,7 @@ class HomePostCell: UITableViewCell {
         //Username
         postCaptionUserNameView.translatesAutoresizingMaskIntoConstraints = false
         postCaptionUsernameLabel.translatesAutoresizingMaskIntoConstraints = false
-        postCaptionUsernameLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        postCaptionUsernameLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0) // Light gray like Instagram
-        postCaptionUsernameLabel.backgroundColor = .clear
+        Style.styleUserNameText(postCaptionUsernameLabel)
         
         //Post Caption
         postCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -372,10 +267,7 @@ class HomePostCell: UITableViewCell {
         
         postSocialLikesCount.translatesAutoresizingMaskIntoConstraints = false
         postSocialLikesCount.text = formatCount(0)
-        postSocialLikesCount.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        postSocialLikesCount.textColor = .black
-        postSocialLikesCount.backgroundColor = .clear
-        postSocialLikesCount.textAlignment = .left
+        Style.styleSocialCountText(postSocialLikesCount)
         
         //COMMENTS: Setup comments icon and count
         postSocialCommentsIcon.translatesAutoresizingMaskIntoConstraints = false
@@ -384,10 +276,7 @@ class HomePostCell: UITableViewCell {
         
         postSocialCommentsCount.translatesAutoresizingMaskIntoConstraints = false
         postSocialCommentsCount.text = formatCount(0)
-        postSocialCommentsCount.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        postSocialCommentsCount.textColor = .black
-        postSocialCommentsCount.backgroundColor = .clear
-        postSocialCommentsCount.textAlignment = .left
+        Style.styleSocialCountText(postSocialCommentsCount)
         
         //BOOKMARK: Setup bookmark icon
         let postSocialBookMarkIcon = UIImageView()
@@ -479,16 +368,14 @@ class HomePostCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             postDividerView.topAnchor.constraint(equalTo: postSocialsView.bottomAnchor),
-            postDividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postDividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postDividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -16), // Extend beyond contentView to full screen width
+            postDividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 16), // Extend beyond contentView to full screen width
             postDividerView.heightAnchor.constraint(equalToConstant: 2),
             postDividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     
-    
 
-    
     //SETUP
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -577,4 +464,3 @@ class HomePostCell: UITableViewCell {
     
 
 }
-

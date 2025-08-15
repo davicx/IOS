@@ -31,6 +31,26 @@ class Style {
         label.backgroundColor = textClear
     }
     
+    static func styleUserNameText(_ label: UILabel) {
+        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        label.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0) // Light gray like Instagram
+        label.backgroundColor = .clear
+    }
+    
+    static func styleSocialCountText(_ label: UILabel) {
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.textColor = .black
+        label.backgroundColor = .clear
+        label.textAlignment = .left
+    }
+    
+    //IMAGES
+    static func styleGroupImage(_ imageView: UIImageView) {
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 4
+    }
+    
     
     //LABELS
     static func styleLoginLabel(_ label: UILabel) {
