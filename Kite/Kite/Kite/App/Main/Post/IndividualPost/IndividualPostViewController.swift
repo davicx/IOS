@@ -21,7 +21,7 @@ class IndividualPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        print(currentPost.postID)
+        print("IndividualPostViewController \(currentPost.postID)")
         
         comments = currentPost.commentsArray ?? []
         
@@ -102,60 +102,6 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     }
 }
 
-
-
-
-/*
- func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCellQA
-     let post = postDataController.posts[indexPath.row]
-     cell.updatePost(with: post)
-     return cell
- }
- */
-/*
- //TABLE VIEW: For Individual Posts in Home Feed
- extension HomeViewControllerQA: UITableViewDataSource, UITableViewDelegate {
-
-      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-          return postDataController.posts.count
-      }
-
-      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-          let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCellQA
-          let post = postDataController.posts[indexPath.row]
-          cell.updatePost(with: post)
-          return cell
-      }
-
-      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-          let post = postDataController.posts[indexPath.row]
-          performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
-      }
-
-     
-     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         let currentPost = postDataController.posts[indexPath.row]
-         let currentPostImage = currentPost.postImageData
-         
-         //STEP 1: Get Image Height
-         let defaultImage = UIImage(named: "background_1") ?? UIImage() // fallback to blank image
-         let currentImage = currentPostImage ?? defaultImage
-         
-         let postImageHeight = round(getImageHeight(image: currentImage))
-         
-         //STEP 2: Get Caption Height
-         let postCaption = currentPost.postCaption ?? "no caption"
-         let postCaptionHeight = round(calculateLabelHeight(text: postCaption))
-         
-         //return 40 + postImageHeight + 40 + postCaptionHeight + 5
-         return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
-         
-     }
-     
- }
-
- */
 
 
 
@@ -335,3 +281,60 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
 
 */
+
+
+
+
+
+/*
+ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCellQA
+     let post = postDataController.posts[indexPath.row]
+     cell.updatePost(with: post)
+     return cell
+ }
+ */
+/*
+ //TABLE VIEW: For Individual Posts in Home Feed
+ extension HomeViewControllerQA: UITableViewDataSource, UITableViewDelegate {
+
+      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+          return postDataController.posts.count
+      }
+
+      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+          let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCellQA
+          let post = postDataController.posts[indexPath.row]
+          cell.updatePost(with: post)
+          return cell
+      }
+
+      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+          let post = postDataController.posts[indexPath.row]
+          performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
+      }
+
+     
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+         let currentPost = postDataController.posts[indexPath.row]
+         let currentPostImage = currentPost.postImageData
+         
+         //STEP 1: Get Image Height
+         let defaultImage = UIImage(named: "background_1") ?? UIImage() // fallback to blank image
+         let currentImage = currentPostImage ?? defaultImage
+         
+         let postImageHeight = round(getImageHeight(image: currentImage))
+         
+         //STEP 2: Get Caption Height
+         let postCaption = currentPost.postCaption ?? "no caption"
+         let postCaptionHeight = round(calculateLabelHeight(text: postCaption))
+         
+         //return 40 + postImageHeight + 40 + postCaptionHeight + 5
+         return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
+         
+     }
+     
+ }
+
+ */
+

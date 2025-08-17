@@ -29,11 +29,14 @@ class LoginLayoutManager {
 
     func setupViews(in view: UIView) {
         // Background Colors for visualization
-        logoView.backgroundColor = .systemBlue
+        logoView.backgroundColor = .clear
         loginView.backgroundColor = .white
         dividerView.backgroundColor = .clear
         registerView.backgroundColor = .clear
         footerView.backgroundColor = .lightGray
+        
+        // Setup logo image
+        setupLogoImage()
         
         // Add all views to the parent view
         [logoView, loginView, dividerView, registerView, footerView].forEach {
@@ -107,6 +110,24 @@ class LoginLayoutManager {
         ])
     }
 
+    func setupLogoImage() {
+        let logoImageView = UIImageView()
+        logoImageView.image = UIImage(named: "background_14")
+        logoImageView.contentMode = .scaleAspectFill
+        logoImageView.clipsToBounds = true
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.layer.contentsRect = CGRect(x: 0.25, y: 0, width: 0.5, height: 1)
+        
+        logoView.addSubview(logoImageView)
+        
+        NSLayoutConstraint.activate([
+            logoImageView.topAnchor.constraint(equalTo: logoView.topAnchor),
+            logoImageView.leadingAnchor.constraint(equalTo: logoView.leadingAnchor),
+            logoImageView.trailingAnchor.constraint(equalTo: logoView.trailingAnchor),
+            logoImageView.bottomAnchor.constraint(equalTo: logoView.bottomAnchor)
+        ])
+    }
+    
     func setupButtons(in view: UIView) {
         // Create Forgot Password Button
         let forgotPasswordButton = UIButton(type: .system)

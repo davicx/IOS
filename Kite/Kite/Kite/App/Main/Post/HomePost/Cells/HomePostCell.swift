@@ -22,8 +22,7 @@ class HomePostCell: UITableViewCell {
     var postImageHeightConstraint: NSLayoutConstraint?
     var postCaptionHeightConstraint: NSLayoutConstraint?
 
-    
-    
+
     //HEADER
     let headerGroupImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
     let headerGroupImage = UIImageView()
@@ -384,6 +383,7 @@ class HomePostCell: UITableViewCell {
         setupCaptionViews()
         setupSocialsViews()
         setupDividerViews()
+        print("HomePostCell")
     }
 
 
@@ -397,7 +397,9 @@ class HomePostCell: UITableViewCell {
         print("like")
     }
     
-    //Action: Setup Post
+    
+    
+    //SETUP: Setup Post on Load
     func updatePost(with post: Post) {
         
         //STEP 1: Get Post Information
@@ -407,7 +409,7 @@ class HomePostCell: UITableViewCell {
         let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
         let postCaption = post.postCaption ?? "no caption"
         
-        print("Post ID \(postID) Group ID \(groupID)")
+        //print("Post ID \(postID) Group ID \(groupID)")
         
         //STEP 2: Calculate and set the image and caption heights
         let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentImage)
