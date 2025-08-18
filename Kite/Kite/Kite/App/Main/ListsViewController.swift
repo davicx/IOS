@@ -1,14 +1,14 @@
 //
-//  GroupsViewController.swift
+//  ListsViewController.swift
 //  Kite
 //
-//  Created by David Vasquez on 12/15/24.
+//  Created by David Vasquez on 8/18/25.
 //
 
 import UIKit
 
 
-class GroupsViewController: UIViewController {
+class ListsViewController: UIViewController {
 
     let groupsAPI = GroupsAPI()
     let userDefaultManager = UserDefaultManager()
@@ -19,7 +19,7 @@ class GroupsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("________________________")
-        print("GroupsViewController")
+        print("ListsViewController")
         print("________________________")
         
         setupTableView()
@@ -38,7 +38,7 @@ class GroupsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("________________________")
-        print("GroupsViewController")
+        print("ListsViewController")
         print("________________________")
     }
 
@@ -64,7 +64,7 @@ class GroupsViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
         tableView.rowHeight = 220
         tableView.tableFooterView = UIView()
 
@@ -74,7 +74,7 @@ class GroupsViewController: UIViewController {
 
         // Header Label
         let headerLabel = UILabel()
-        headerLabel.text = "Groups"
+        headerLabel.text = "My Lists"
         headerLabel.font = .boldSystemFont(ofSize: 24)
         headerLabel.textAlignment = .center
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -127,19 +127,20 @@ class GroupsViewController: UIViewController {
 }
 
 
-extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
+extension ListsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return GroupDataController.shared.groups.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let group = GroupDataController.shared.groups[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
         cell.configure(with: group)
         return cell
     }
 
     //KITE
+    /*
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = GroupDataController.shared.groups[indexPath.row]
         let storyboard = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil)
@@ -147,9 +148,8 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         vc.group = group
         navigationController?.pushViewController(vc, animated: true)
     }
+    */
     
-    
-    /*
     //WISHLIST
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = GroupDataController.shared.groups[indexPath.row]
@@ -158,8 +158,6 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         vc.group = group
         navigationController?.pushViewController(vc, animated: true)
     }
-     */
-
     
     
 }

@@ -33,8 +33,12 @@ struct Constants {
         static let mainTabBarController = "MainTabBarController"
         static let onboardingViewController = "MainOnboardingViewController"
         static let friendProfileViewControllerID = "FriendProfileViewControllerID"
-        static let groupViewControllerID = "groupViewControllerID"
+        //static let groupViewControllerID = "groupViewControllerID"
+        //static let listsViewControllerID = "listsViewControllerID"
         static let individualGroupViewControllerID = "individualGroupViewControllerID"
+        static let individualListViewControllerID = "individualListViewControllerID"
+        
+
     }
 
     //Image Constants

@@ -10,6 +10,9 @@ import UIKit
 
 class HomePostCell: UITableViewCell {
     
+    // Add properties for like functionality
+    private var currentPost: Post?
+    private let spinnerHelper = SpinnerHelper()
 
     //MAIN VIEWS
     let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .clear)
@@ -394,13 +397,44 @@ class HomePostCell: UITableViewCell {
 
     //ACTIONS
     @objc private func likesViewTapped() {
-        print("like")
+        guard let post = currentPost else { return }
+        
+        spinnerHelper.show(in: self.contentView)
+        
+        Task {
+            let groupID = post.groupID ?? 0
+            
+            if post.isLikedByCurrentUser == true {
+                if let likeModel = await postLikeFunctions.shared.unlikePost(post: post, groupID: groupID) {
+                    PostDataController.shared.unlikePost(postID: post.postID ?? 0, likeModel: likeModel)
+                }
+            } else {
+                if let likeModel = await postLikeFunctions.shared.likePost(post: post, groupID: groupID) {
+                    PostDataController.shared.likePost(postID: post.postID ?? 0, likeModel: likeModel)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                // Update the current post from the shared data store
+                self.currentPost = PostDataController.shared.getPostByID(postID: post.postID ?? 0) ?? self.currentPost
+                
+                // Update the UI with the new post data
+                if let updatedPost = self.currentPost {
+                    self.updatePost(with: updatedPost)
+                }
+                
+                self.spinnerHelper.hide()
+            }
+        }
     }
     
     
     
     //SETUP: Setup Post on Load
     func updatePost(with post: Post) {
+        
+        // Store the current post for like functionality
+        self.currentPost = post
         
         //STEP 1: Get Post Information
         let postID = post.postID
