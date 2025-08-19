@@ -140,6 +140,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     //KITE
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = GroupDataController.shared.groups[indexPath.row]
         let storyboard = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil)
@@ -148,9 +149,11 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+     
     
-    /*
+    
     //WISHLIST
+    /*
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = GroupDataController.shared.groups[indexPath.row]
         let storyboard = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil)
@@ -158,8 +161,8 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         vc.group = group
         navigationController?.pushViewController(vc, animated: true)
     }
+     
      */
-
     
     
 }

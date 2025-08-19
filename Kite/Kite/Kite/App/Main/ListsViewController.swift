@@ -32,7 +32,6 @@ class ListsViewController: UIViewController {
             }
         }
         
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,7 +63,7 @@ class ListsViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
+        tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
         tableView.rowHeight = 220
         tableView.tableFooterView = UIView()
 

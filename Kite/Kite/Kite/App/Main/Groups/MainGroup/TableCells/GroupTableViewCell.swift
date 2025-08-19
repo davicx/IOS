@@ -16,6 +16,7 @@ class GroupTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLabels()
+        print("GroupTableViewCell")
     }
 
     required init?(coder: NSCoder) {
