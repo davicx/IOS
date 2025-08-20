@@ -66,6 +66,8 @@ class PostCell: UITableViewCell {
         setupBodyCaptionViews()
         setupBodySocialsViews()
         setupFooterViews()
+        
+        print("PostCell")
     }
 
     required init?(coder: NSCoder) {
@@ -328,7 +330,7 @@ class PostCell: UITableViewCell {
     //ACTIONS
     //Function 1: Setup the menu
     private func setupMenu() {
-        print("PostCell: Setting up menu")
+        //print("PostCell: Setting up menu")
         
         let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
             print("PostCell: Edit tapped")
@@ -342,7 +344,7 @@ class PostCell: UITableViewCell {
         menuButton.menu = menu
         menuButton.showsMenuAsPrimaryAction = true
         
-        print("PostCell: Menu setup complete")
+        //print("PostCell: Menu setup complete")
     }
     
     @objc private func menuButtonTapped() {

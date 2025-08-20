@@ -32,6 +32,7 @@ class Post {
     var postDate: String?
     var postTime: String?
     var timeMessage: String?
+    
     var created: String?
     var isLikedByCurrentUser: Bool?
     //var commentsArray: [CommentModel]?
@@ -40,6 +41,7 @@ class Post {
     var simpleLikesArray: [String]?
     
     var postImageData: UIImage?
+    var postFromImageData: UIImage?
     var groupImageData: UIImage?
     
     init(postID: Int) {

@@ -10,6 +10,46 @@ import UIKit
 
 class Style {
     
+    //FONT
+    static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let groupInfoFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+    
+    static let textBlack: UIColor = .black
+    static let textGray: UIColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
+    static let textClear: UIColor = .clear
+    
+
+    static func styleUserNameLabel(_ label: UILabel) {
+        label.font = userNameFont
+        label.textColor = textBlack
+        label.backgroundColor = textClear
+    }
+    
+    static func styleGroupInfoLabel(_ label: UILabel) {
+        label.font = groupInfoFont
+        label.textColor = textGray
+        label.backgroundColor = textClear
+    }
+    
+    static func styleUserNameText(_ label: UILabel) {
+        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        label.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0) // Light gray like Instagram
+        label.backgroundColor = .clear
+    }
+    
+    static func styleSocialCountText(_ label: UILabel) {
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.textColor = .black
+        label.backgroundColor = .clear
+        label.textAlignment = .left
+    }
+    
+    //IMAGES
+    static func styleGroupImage(_ imageView: UIImageView) {
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 4
+    }
     
     
     //LABELS
@@ -43,6 +83,8 @@ class Style {
         textField.leftView = paddingView
         textField.leftViewMode = .always
     }
+    
+
 }
 
 
