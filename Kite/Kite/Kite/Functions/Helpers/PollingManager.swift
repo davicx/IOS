@@ -26,7 +26,7 @@ class PollingManager {
     
     func startPolling() {
         guard timer == nil else { return }
-        print("Polling started with an interval of \(pollingInterval) seconds")
+        //print("Polling started with an interval of \(pollingInterval) seconds")
         
         timer = Timer.scheduledTimer(withTimeInterval: pollingInterval, repeats: true) { [weak self] _ in
             self?.fetchPosts()
@@ -36,7 +36,7 @@ class PollingManager {
     func stopPolling() {
         timer?.invalidate()
         timer = nil
-        print("Polling stopped.")
+        //print("Polling stopped.")
     }
     
     private func fetchPosts() {

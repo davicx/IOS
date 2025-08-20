@@ -386,7 +386,7 @@ class HomePostCell: UITableViewCell {
         setupCaptionViews()
         setupSocialsViews()
         setupDividerViews()
-        print("HomePostCell")
+        //print("HomePostCell")
     }
 
 
