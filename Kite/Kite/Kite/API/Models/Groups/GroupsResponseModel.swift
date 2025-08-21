@@ -16,8 +16,9 @@ struct GroupsResponseModel: Codable {
     let errors: [String]
     let currentUser: String
     
+
     init() {
-        self.data = [GroupModel(groupID: 0, groupName: "groupName", groupImage: "groupImage", activeGroupMembers: ["activeGroupMembers"], pendingGroupMembers: ["pendingGroupMembers"])]
+        self.data = [GroupModel(groupID: 0, groupName: "groupName", groupImage: "groupImage", createdBy: "createdBy", activeGroupMembers: ["activeGroupMembers"], pendingGroupMembers: ["pendingGroupMembers"])]
         self.message = ""
         self.success = false
         self.statusCode = 500

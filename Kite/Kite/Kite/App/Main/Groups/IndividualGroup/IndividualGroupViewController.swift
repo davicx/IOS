@@ -73,8 +73,6 @@ class IndividualGroupViewController: UIViewController {
             return
         }
 
-        //print("IndividualGroupViewController: Fetching posts for group ID \(groupID)")
-
         Task {
             await postDataController.fetchPosts(groupID: groupID)
         }

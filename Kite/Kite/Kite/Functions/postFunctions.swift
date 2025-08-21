@@ -64,6 +64,73 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
     return postsArray
 }
 
+//Function A2: Create Posts with Items from API this converts the Post Reponse into an array of Posts
+func createItemsArray(itemsResponseModel: ItemResponseModel) async throws -> [Item]{
+    let itemsTemp = itemsResponseModel.data
+    var itemsArray = [Item]()
+    
+    //STEP 1: Loop over items and Create Item Objects
+    for item in itemsTemp {
+
+        //STEP 2: Create Item
+        let currentItem = Item(postID: item.postID)
+        currentItem.postType = item.postType
+        currentItem.groupID = item.groupID
+        currentItem.groupName = item.groupName
+        currentItem.groupImage = item.groupImage
+        currentItem.listID = item.listID
+        currentItem.postFrom = item.postFrom
+        currentItem.postFromImage = item.postFromImage
+        currentItem.postTo = item.postTo
+        currentItem.postCaption = item.postCaption
+    
+        currentItem.fileName = item.fileURL
+        currentItem.fileNameServer = item.fileURL
+        currentItem.fileUrl = item.fileURL
+        
+        currentItem.cloudBucket = item.cloudBucket
+        currentItem.cloudKey = item.cloudKey
+        currentItem.storageType = item.storageType
+        
+        currentItem.videoURL = item.videoURL
+        currentItem.videoCode = item.videoCode
+        
+        currentItem.postDate = item.postDate
+        currentItem.postTime = item.postTime
+        currentItem.timeMessage = item.timeMessage
+        
+        currentItem.created = item.created
+        currentItem.isLikedByCurrentUser = item.isLikedByCurrentUser
+        
+        //Convert Comments
+        currentItem.commentsArray = item.commentsArray.map { convertToCommentClass(from: $0) }
+        
+        currentItem.postLikesArray = item.postLikesArray
+        currentItem.simpleLikesArray = item.simpleLikesArray
+
+        //STEP 3: Add Item-specific data
+        currentItem.itemID = item.item.item_id
+        currentItem.itemName = item.item.item_name
+        currentItem.itemPrice = item.item.item_price
+        currentItem.itemDescription = item.item.item_description
+        currentItem.itemCategory = item.item.item_category
+        currentItem.itemLink = item.item.item_link
+        currentItem.purchased = item.item.purchased
+        currentItem.purchasedBy = item.item.purchased_by
+        currentItem.store = item.item.store
+        currentItem.multipleStores = item.item.multiple_stores
+
+        //STEP 4: Append to Array
+        itemsArray.append(currentItem)
+
+    }
+    
+    return itemsArray
+}
+
+
+
+//Function A3: Convert Comments
 func convertToCommentClass(from model: CommentModel) -> Comment {
     return Comment(
         commentID: model.commentID,
@@ -90,7 +157,7 @@ func convertToCommentClass(from model: CommentModel) -> Comment {
 
     
 
-//Function A2: Add Image to Post
+//Function A4: Add Image to Post
 func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
     
@@ -115,7 +182,7 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
 }
 
 
-//Function A3: Add Group Image to Post
+//Function A5: Add Group Image to Post
 func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 
@@ -144,7 +211,7 @@ func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
 }
 
 
-//Function A4: Add Post From Image to Posts
+//Function A6: Add Post From Image to Posts
 func addPostFromImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 

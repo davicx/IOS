@@ -23,6 +23,7 @@ class PostDataController {
     // Callback to notify when posts are updated
     var onPostsUpdated: (() -> Void)?
 
+    
     // Fetch posts from API
     func fetchPosts(groupID: Int) async {
         do {
@@ -40,6 +41,8 @@ class PostDataController {
         }
     }
 
+    
+    
     func getPostByID(postID: Int) -> Post? {
         return posts.first(where: { $0.postID == postID })
     }
