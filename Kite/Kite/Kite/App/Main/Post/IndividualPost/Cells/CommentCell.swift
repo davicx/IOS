@@ -8,8 +8,368 @@
 
 import UIKit
 
+class CommentCell: UITableViewCell {
+    
+    //VIEWS
+    let commentView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let commentLeftView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
+    let commentRightView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    
+    let commentHeader = CreateViewStyles.createUIView(backgroundColor: .systemYellow)
+    let commentBody = CreateViewStyles.createUIView(backgroundColor: .systemBlue)
+    let commentFooter = CreateViewStyles.createUIView(backgroundColor: .systemGreen)
+    
+    let dividerView = CreateViewStyles.createCommentDividerView()
+
+ 
+    //IMAGE AND LABELS
+    let commentLabel = CreateViewStyles.createCommentLabel()
+    let profileImageView = UIImageView()
+    
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupDividerViews()
+        setupMainViews()
+        setupHeaderViews()
+        setupBodyViews()
+        setupFooterViews()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupDividerViews()
+        setupMainViews()
+        setupHeaderViews()
+        setupBodyViews()
+        setupFooterViews()
+    }
+    
+ 
+    //VIEWS: Main Views
+    private func setupMainViews() {
+        // Set translatesAutoresizingMaskIntoConstraints for all views
+        commentView.translatesAutoresizingMaskIntoConstraints = false
+        commentLeftView.translatesAutoresizingMaskIntoConstraints = false
+        commentRightView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add views to content view
+        contentView.addSubview(commentView)
+        commentView.addSubview(commentLeftView)
+        commentView.addSubview(commentRightView)
+        
+        // Setup profile image
+        profileImageView.image = UIImage(named: "background_1")
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = 20 // Half of 48 for circular image
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        commentLeftView.addSubview(profileImageView)
+        
+        // Setup constraints
+        NSLayoutConstraint.activate([
+            // commentView: full width, expandable height
+            commentView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            commentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            commentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            commentView.bottomAnchor.constraint(equalTo: dividerView.topAnchor),
+            
+            // commentLeftView: 52 wide, full height
+            commentLeftView.leadingAnchor.constraint(equalTo: commentView.leadingAnchor),
+            commentLeftView.topAnchor.constraint(equalTo: commentView.topAnchor),
+            commentLeftView.bottomAnchor.constraint(equalTo: commentView.bottomAnchor),
+            commentLeftView.widthAnchor.constraint(equalToConstant: 52),
+            
+            // commentRightView: fills remaining space
+            commentRightView.leadingAnchor.constraint(equalTo: commentLeftView.trailingAnchor),
+            commentRightView.topAnchor.constraint(equalTo: commentView.topAnchor),
+            commentRightView.trailingAnchor.constraint(equalTo: commentView.trailingAnchor),
+            commentRightView.bottomAnchor.constraint(equalTo: commentView.bottomAnchor),
+            
+            // profileImageView: 48x48, 8px from top, centered horizontally
+            profileImageView.topAnchor.constraint(equalTo: commentLeftView.topAnchor, constant: 6),
+            profileImageView.centerXAnchor.constraint(equalTo: commentLeftView.centerXAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 40),
+            profileImageView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    //HEADER: Username and Menu Label
+    let commentMenuView = CreateViewStyles.createUIView(backgroundColor: .systemRed)
+    let commentUserNameView = CreateViewStyles.createUIView(backgroundColor: .systemOrange)
+    
+    // User name views inside commentUserNameView
+    let userNameView = CreateViewStyles.createUIView(backgroundColor: .systemPurple)
+    let userHandleView = CreateViewStyles.createUIView(backgroundColor: .systemTeal)
+    
+    // Labels for user info
+    let userNameLabel = UILabel()
+    let userHandleLabel = UILabel()
+    
+    // Footer holder views
+    let likeHolderView = CreateViewStyles.createUIView(backgroundColor: .systemRed)
+    let likeHolderCount = CreateViewStyles.createUIView(backgroundColor: .systemBlue)
+    let commentHolderView = CreateViewStyles.createUIView(backgroundColor: .systemGreen)
+    let commentHolderCount = CreateViewStyles.createUIView(backgroundColor: .systemOrange)
+    
+    // Footer images and labels
+    let likeImageView = UIImageView()
+    let likeCountLabel = UILabel()
+    let commentImageView = UIImageView()
+    let commentCountLabel = UILabel()
+    
+    // Menu image
+    let menuImageView = UIImageView()
+    
+  
+    private func setupHeaderViews() {
+        // Set translatesAutoresizingMaskIntoConstraints for header views
+        commentHeader.translatesAutoresizingMaskIntoConstraints = false
+        commentMenuView.translatesAutoresizingMaskIntoConstraints = false
+        commentUserNameView.translatesAutoresizingMaskIntoConstraints = false
+        userNameView.translatesAutoresizingMaskIntoConstraints = false
+        userHandleView.translatesAutoresizingMaskIntoConstraints = false
+        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        userHandleLabel.translatesAutoresizingMaskIntoConstraints = false
+        menuImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add commentHeader to commentRightView
+        commentRightView.addSubview(commentHeader)
+        
+        // Add header views to commentHeader
+        commentHeader.addSubview(commentUserNameView)
+        commentHeader.addSubview(commentMenuView)
+        
+        // Add menu image to commentMenuView
+        commentMenuView.addSubview(menuImageView)
+        
+        // Add user name views to commentUserNameView
+        commentUserNameView.addSubview(userNameView)
+        commentUserNameView.addSubview(userHandleView)
+        
+        // Add labels to their respective views
+        userNameView.addSubview(userNameLabel)
+        userHandleView.addSubview(userHandleLabel)
+        
+        // Setup menu image
+        menuImageView.image = UIImage(named: "menu-dots-gray")
+        menuImageView.contentMode = .scaleAspectFit
+        
+        // Setup labels
+        userNameLabel.text = "Frodo Baggins"
+        userNameLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        userNameLabel.textColor = .black
+        
+        userHandleLabel.text = "@frodo"
+        userHandleLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        userHandleLabel.textColor = .gray
+        
+        // Setup constraints for header views
+        NSLayoutConstraint.activate([
+            commentHeader.topAnchor.constraint(equalTo: commentRightView.topAnchor),
+            commentHeader.leadingAnchor.constraint(equalTo: commentRightView.leadingAnchor),
+            commentHeader.trailingAnchor.constraint(equalTo: commentRightView.trailingAnchor),
+            commentHeader.heightAnchor.constraint(equalToConstant: 32),
+        
+            // commentUserNameView: fills remaining space, left aligned
+            commentUserNameView.leadingAnchor.constraint(equalTo: commentHeader.leadingAnchor),
+            commentUserNameView.topAnchor.constraint(equalTo: commentHeader.topAnchor),
+            commentUserNameView.bottomAnchor.constraint(equalTo: commentHeader.bottomAnchor),
+            commentUserNameView.trailingAnchor.constraint(equalTo: commentMenuView.leadingAnchor),
+            
+            // commentMenuView: 32 wide, right aligned
+            commentMenuView.trailingAnchor.constraint(equalTo: commentHeader.trailingAnchor),
+            commentMenuView.topAnchor.constraint(equalTo: commentHeader.topAnchor),
+            commentMenuView.bottomAnchor.constraint(equalTo: commentHeader.bottomAnchor),
+            commentMenuView.widthAnchor.constraint(equalToConstant: 32),
+            
+            // userNameView: top half of commentUserNameView (16px tall)
+            userNameView.topAnchor.constraint(equalTo: commentUserNameView.topAnchor),
+            userNameView.leadingAnchor.constraint(equalTo: commentUserNameView.leadingAnchor),
+            userNameView.trailingAnchor.constraint(equalTo: commentUserNameView.trailingAnchor),
+            userNameView.heightAnchor.constraint(equalToConstant: 16),
+            
+            // userHandleView: bottom half of commentUserNameView (16px tall)
+            userHandleView.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
+            userHandleView.leadingAnchor.constraint(equalTo: commentUserNameView.leadingAnchor),
+            userHandleView.trailingAnchor.constraint(equalTo: commentUserNameView.trailingAnchor),
+            userHandleView.heightAnchor.constraint(equalToConstant: 16),
+            
+            // userNameLabel: inside userNameView with no left padding
+            userNameLabel.leadingAnchor.constraint(equalTo: userNameView.leadingAnchor),
+            userNameLabel.centerYAnchor.constraint(equalTo: userNameView.centerYAnchor),
+            userNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: userNameView.trailingAnchor, constant: -4),
+            
+            // userHandleLabel: inside userHandleView with no left padding
+            userHandleLabel.leadingAnchor.constraint(equalTo: userHandleView.leadingAnchor),
+            userHandleLabel.centerYAnchor.constraint(equalTo: userHandleView.centerYAnchor),
+            userHandleLabel.trailingAnchor.constraint(lessThanOrEqualTo: userHandleView.trailingAnchor, constant: -4),
+            
+            // menuImageView: centered in commentMenuView
+            menuImageView.centerXAnchor.constraint(equalTo: commentMenuView.centerXAnchor),
+            menuImageView.centerYAnchor.constraint(equalTo: commentMenuView.centerYAnchor),
+            menuImageView.widthAnchor.constraint(equalToConstant: 16),
+            menuImageView.heightAnchor.constraint(equalToConstant: 16)
+        ])
+    }
+    
+    //BODY: Caption
+    private func setupBodyViews() {
+        commentBody.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add body views to commentRightView
+        commentRightView.addSubview(commentBody)
+        
+        // Add commentLabel to commentBody
+        commentBody.addSubview(commentLabel)
+        
+        // Setup constraints for body views
+        NSLayoutConstraint.activate([
+            // commentBody: dynamic height, between header and footer
+            commentBody.topAnchor.constraint(equalTo: commentHeader.bottomAnchor),
+            commentBody.leadingAnchor.constraint(equalTo: commentRightView.leadingAnchor),
+            commentBody.trailingAnchor.constraint(equalTo: commentRightView.trailingAnchor),
+            
+            // commentLabel: inside commentBody with no padding
+            commentLabel.topAnchor.constraint(equalTo: commentBody.topAnchor),
+            commentLabel.leadingAnchor.constraint(equalTo: commentBody.leadingAnchor),
+            commentLabel.trailingAnchor.constraint(equalTo: commentBody.trailingAnchor),
+            commentLabel.bottomAnchor.constraint(equalTo: commentBody.bottomAnchor)
+        ])
+    }
+    
+    //FOOTER: Socials
+    private func setupFooterViews() {
+        commentFooter.translatesAutoresizingMaskIntoConstraints = false
+        likeHolderView.translatesAutoresizingMaskIntoConstraints = false
+        likeHolderCount.translatesAutoresizingMaskIntoConstraints = false
+        commentHolderView.translatesAutoresizingMaskIntoConstraints = false
+        commentHolderCount.translatesAutoresizingMaskIntoConstraints = false
+        likeImageView.translatesAutoresizingMaskIntoConstraints = false
+        likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        commentImageView.translatesAutoresizingMaskIntoConstraints = false
+        commentCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add commentFooter to commentRightView
+        commentRightView.addSubview(commentFooter)
+        
+        // Add footer holder views to commentFooter
+        commentFooter.addSubview(likeHolderView)
+        commentFooter.addSubview(likeHolderCount)
+        commentFooter.addSubview(commentHolderView)
+        commentFooter.addSubview(commentHolderCount)
+        
+        // Add images and labels to their respective views
+        likeHolderView.addSubview(likeImageView)
+        likeHolderCount.addSubview(likeCountLabel)
+        commentHolderView.addSubview(commentImageView)
+        commentHolderCount.addSubview(commentCountLabel)
+        
+        // Setup images
+        likeImageView.image = UIImage(named: "like")
+        likeImageView.contentMode = .scaleAspectFit
+        likeImageView.tintColor = .black
+        
+        commentImageView.image = UIImage(named: "comment")
+        commentImageView.contentMode = .scaleAspectFit
+        commentImageView.tintColor = .black
+        
+        // Setup labels
+        likeCountLabel.text = "25"
+        likeCountLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        likeCountLabel.textColor = .black
+        likeCountLabel.textAlignment = .center
+        
+        commentCountLabel.text = "8"
+        commentCountLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        commentCountLabel.textColor = .black
+        commentCountLabel.textAlignment = .center
+        
+        // Setup constraints for footer views
+        NSLayoutConstraint.activate([
+            // commentFooter: 24 tall at bottom
+            commentFooter.topAnchor.constraint(equalTo: commentBody.bottomAnchor),
+            commentFooter.leadingAnchor.constraint(equalTo: commentRightView.leadingAnchor),
+            commentFooter.trailingAnchor.constraint(equalTo: commentRightView.trailingAnchor),
+            commentFooter.bottomAnchor.constraint(equalTo: commentRightView.bottomAnchor),
+            commentFooter.heightAnchor.constraint(equalToConstant: 24),
+            
+            // likeHolderView: 24 wide, leftmost
+            likeHolderView.leadingAnchor.constraint(equalTo: commentFooter.leadingAnchor),
+            likeHolderView.topAnchor.constraint(equalTo: commentFooter.topAnchor),
+            likeHolderView.bottomAnchor.constraint(equalTo: commentFooter.bottomAnchor),
+            likeHolderView.widthAnchor.constraint(equalToConstant: 24),
+            
+            // likeHolderCount: 24 wide, next to likeHolderView
+            likeHolderCount.leadingAnchor.constraint(equalTo: likeHolderView.trailingAnchor),
+            likeHolderCount.topAnchor.constraint(equalTo: commentFooter.topAnchor),
+            likeHolderCount.bottomAnchor.constraint(equalTo: commentFooter.bottomAnchor),
+            likeHolderCount.widthAnchor.constraint(equalToConstant: 24),
+            
+            // commentHolderView: 24 wide, next to likeHolderCount
+            commentHolderView.leadingAnchor.constraint(equalTo: likeHolderCount.trailingAnchor),
+            commentHolderView.topAnchor.constraint(equalTo: commentFooter.topAnchor),
+            commentHolderView.bottomAnchor.constraint(equalTo: commentFooter.bottomAnchor),
+            commentHolderView.widthAnchor.constraint(equalToConstant: 24),
+            
+            // commentHolderCount: 24 wide, next to commentHolderView
+            commentHolderCount.leadingAnchor.constraint(equalTo: commentHolderView.trailingAnchor),
+            commentHolderCount.topAnchor.constraint(equalTo: commentFooter.topAnchor),
+            commentHolderCount.bottomAnchor.constraint(equalTo: commentFooter.bottomAnchor),
+            commentHolderCount.widthAnchor.constraint(equalToConstant: 24),
+            
+            // likeImageView: centered in likeHolderView
+            likeImageView.centerXAnchor.constraint(equalTo: likeHolderView.centerXAnchor),
+            likeImageView.centerYAnchor.constraint(equalTo: likeHolderView.centerYAnchor),
+            likeImageView.widthAnchor.constraint(equalToConstant: 20),
+            likeImageView.heightAnchor.constraint(equalToConstant: 20),
+            
+            // likeCountLabel: centered in likeHolderCount
+            likeCountLabel.centerXAnchor.constraint(equalTo: likeHolderCount.centerXAnchor),
+            likeCountLabel.centerYAnchor.constraint(equalTo: likeHolderCount.centerYAnchor),
+            likeCountLabel.leadingAnchor.constraint(greaterThanOrEqualTo: likeHolderCount.leadingAnchor, constant: 2),
+            likeCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: likeHolderCount.trailingAnchor, constant: -2),
+            
+            // commentImageView: centered in commentHolderView
+            commentImageView.centerXAnchor.constraint(equalTo: commentHolderView.centerXAnchor),
+            commentImageView.centerYAnchor.constraint(equalTo: commentHolderView.centerYAnchor),
+            commentImageView.widthAnchor.constraint(equalToConstant: 20),
+            commentImageView.heightAnchor.constraint(equalToConstant: 20),
+            
+            // commentCountLabel: centered in commentHolderCount
+            commentCountLabel.centerXAnchor.constraint(equalTo: commentHolderCount.centerXAnchor),
+            commentCountLabel.centerYAnchor.constraint(equalTo: commentHolderCount.centerYAnchor),
+            commentCountLabel.leadingAnchor.constraint(greaterThanOrEqualTo: commentHolderCount.leadingAnchor, constant: 2),
+            commentCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: commentHolderCount.trailingAnchor, constant: -2)
+        ])
+    }
+
+    
+    //DIVIDER: Divider Views
+    private func setupDividerViews() {
+        contentView.addSubview(dividerView)
+        
+        NSLayoutConstraint.activate([
+            // dividerView: 2px black line at bottom
+            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: 1)
+        ])
+    }
+
+    
+    //ACTIONS
+    func updateComment(with comment: Comment) {
+        let commentCaption = comment.commentCaption ?? "no comment"
+        commentLabel.text = commentCaption
+    }
+}
 
 
+
+/*
+//WORKS BUT HALF DONE
 class CommentCell: UITableViewCell {
 
     let commentUserView = createBaseView(backgroundColor: .systemPink) // Just to visually debug
@@ -29,8 +389,6 @@ class CommentCell: UITableViewCell {
         return label
     }()
     
-
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUserViews()
@@ -125,6 +483,8 @@ func createCommentDividerView() -> UIView {
     
     return view
 }
+
+*/
 
 
 
@@ -410,6 +770,7 @@ class CommentCell: UITableViewCell {
         
 
         NSLayoutConstraint.activate([
+            userInfoView.topAnchor.constraint(equalTo: commentView.topAnchor),
             userInfoView.topAnchor.constraint(equalTo: commentView.topAnchor),
             userInfoView.leadingAnchor.constraint(equalTo: commentView.leadingAnchor),
             userInfoView.trailingAnchor.constraint(equalTo: commentView.trailingAnchor),

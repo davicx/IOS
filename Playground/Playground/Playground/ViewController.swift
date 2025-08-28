@@ -8,6 +8,62 @@
 import UIKit
 
 
+import UIKit
+
+class ViewController: UIViewController {
+    
+    // Menu image (replace with your asset name if you want)
+    let menuImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "line.3.horizontal") // SF Symbol "hamburger" menu
+        imageView.tintColor = .systemBlue
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isUserInteractionEnabled = true // required for taps
+        return imageView
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .white
+        view.addSubview(menuImageView)
+        
+        // Center the menu icon
+        NSLayoutConstraint.activate([
+            menuImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            menuImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            menuImageView.widthAnchor.constraint(equalToConstant: 60),
+            menuImageView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+        
+        // Add tap gesture
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
+        menuImageView.addGestureRecognizer(tap)
+    }
+    
+    @objc func didTapMenu() {
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        // Animate "bounce" effect
+        UIView.animate(withDuration: 0.15,
+                       animations: {
+            self.menuImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.15) {
+                self.menuImageView.transform = .identity
+            }
+        }
+        
+        print("Menu tapped!")
+    }
+}
+
+
+/*
+
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let tableView = UITableView()
@@ -75,7 +131,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return cell
     }
 }
-
+*/
 
 //WORKS
 /*
