@@ -25,7 +25,7 @@ class GroupsViewController: UIViewController {
         print("________________________")
         print(" ")
         
-        setupNavigationBar()   // ✅ add navigation bar setup
+        setupNavigationBar()
         setupTableView()
         fetchGroups()
         
@@ -115,7 +115,6 @@ class GroupsViewController: UIViewController {
         // push profile screen here if you want
     }
     
-    /*
     // MARK: - TABLE VIEW
     private func setupTableView() {
         view.addSubview(tableView)
@@ -172,9 +171,11 @@ class GroupsViewController: UIViewController {
             tableView.backgroundView = placeholderLabel
         }
     }
-    */
 
+     
     
+    //WORKING
+    /*
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -209,7 +210,7 @@ class GroupsViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
+    */
     
     
     
@@ -222,11 +223,14 @@ class GroupsViewController: UIViewController {
 
 extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     
+    
+    //WORKING
+    /*
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return GroupDataController.shared.groups.count
     }
+     */
     
-    /*
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if groups.isEmpty && (tableView.backgroundView != nil) {
             return 0
@@ -234,7 +238,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.backgroundView = nil
         return GroupDataController.shared.groups.count
     }
-     */
+     
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let group = GroupDataController.shared.groups[indexPath.row]
@@ -242,6 +246,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(with: group)
         return cell
     }
+
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = GroupDataController.shared.groups[indexPath.row]
@@ -251,6 +256,9 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 }
+
+
+
 
 //WISHLIST: working backup
 /*
