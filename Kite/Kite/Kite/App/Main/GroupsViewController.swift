@@ -26,6 +26,19 @@ class GroupsViewController: UIViewController {
     private let underlineView = UIView()
     private var underlineLeadingConstraint: NSLayoutConstraint!
 
+    // MARK: - Computed Properties for Filtered Groups
+    private var myLists: [GroupModel] {
+        return GroupDataController.shared.groups.filter { group in
+            group.createdBy == GroupDataController.shared.currentUser
+        }
+    }
+    
+    private var sharedWithMe: [GroupModel] {
+        return GroupDataController.shared.groups.filter { group in
+            group.createdBy != GroupDataController.shared.currentUser
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("________________________")
@@ -58,6 +71,8 @@ class GroupsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchGroups()
+        // Ensure table view reflects current segmented control state
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -179,22 +194,8 @@ class GroupsViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
 
-        if sender.selectedSegmentIndex == 0 {
-            // My Lists → show actual groups
-            tableView.backgroundView = nil
-            fetchGroups()
-        } else {
-            // Shared With Me → placeholder
-            tableView.backgroundView = {
-                let placeholderLabel = UILabel()
-                placeholderLabel.text = "Coming Soon..."
-                placeholderLabel.textAlignment = .center
-                placeholderLabel.font = .italicSystemFont(ofSize: 16)
-                placeholderLabel.textColor = .secondaryLabel
-                return placeholderLabel
-            }()
-            tableView.reloadData()
-        }
+        // Reload table view to show filtered groups
+        tableView.reloadData()
     }
 
     
@@ -217,22 +218,44 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     }
      */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if segmentedControl.selectedSegmentIndex == 1 {
-            return 0 // Shared With Me placeholder
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // My Lists
+            return myLists.count
+        case 1: // Shared With Me
+            return sharedWithMe.count
+        default:
+            return 0
         }
-        return GroupDataController.shared.groups.count
     }
 
      
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let group = GroupDataController.shared.groups[indexPath.row]
+        let group: GroupModel
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // My Lists
+            group = myLists[indexPath.row]
+        case 1: // Shared With Me
+            group = sharedWithMe[indexPath.row]
+        default:
+            group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupTableViewCell
         cell.configure(with: group)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let group = GroupDataController.shared.groups[indexPath.row]
+        let group: GroupModel
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // My Lists
+            group = myLists[indexPath.row]
+        case 1: // Shared With Me
+            group = sharedWithMe[indexPath.row]
+        default:
+            group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
+        }
+        
         let storyboard = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
         vc.group = group
