@@ -153,12 +153,7 @@ class LoginAPI {
             
         }
     }
-    
-    
-    func logUserOut() {
-        print("logUserOut")
-    }
-    
+
 
     func getNewAccessToken(username: String) async throws -> AccessTokenResponseModel {
         print("___________________________")
@@ -218,6 +213,70 @@ class LoginAPI {
             print("getNewAccessToken")
             print("___________________________")
             return accessTokenResponseModel
+            
+        }
+
+    }
+    
+
+    func getLoggedInUserStatus(userName: String) async throws -> LoginStatusResponseModel {
+        print("___________________________")
+        print("getLoggedInUserStatus")
+
+        
+        let endpoint = "http://localhost:3003/loginUser"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        
+        let parameters = ["userName": userName] as [String : Any]
+        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            let loginStatusResponseModel = LoginStatusResponseModel()
+            print("Error converting JSON")
+            return loginStatusResponseModel
+        }
+        
+        request.httpBody = httpBody
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("LoginAPI.getLoggedInUserStatus: networkError.invalidResponse")
+            throw networkError.invalidResponse
+        }
+        
+        if httpResponse.statusCode == 200 {
+            // Continue processing as normal
+        } else if httpResponse.statusCode == 498 {
+            print("LoginAPI.getLoggedInUserStatus: 498")
+        } else if httpResponse.statusCode == 401 {
+            print("LoginAPI.getLoggedInUserStatus: 401")
+        } else {
+            print("LoginAPI.getLoggedInUserStatus: networkError.invalidResponse")
+            throw networkError.invalidResponse
+        }
+
+        
+        do {
+            let decoder = JSONDecoder ()
+            let loginStatusResponseModel = try decoder.decode(LoginStatusResponseModel.self, from: data)
+            print(loginStatusResponseModel.message)
+            print("getLoggedInUserStatus")
+            print("___________________________")
+            return loginStatusResponseModel
+            
+        } catch {
+            let loginStatusResponseModel = LoginStatusResponseModel()
+            print("Error decoding data")
+            print("getLoggedInUserStatus")
+            print("___________________________")
+            return loginStatusResponseModel
             
         }
 

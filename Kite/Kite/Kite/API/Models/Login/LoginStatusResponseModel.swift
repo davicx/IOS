@@ -2,7 +2,7 @@
 //  LoginStatusResponseModel.swift
 //  Kite
 //
-// Created by David Vasquez on 12/15/24.
+//  Created by David Vasquez on 9/2/25.
 //
 
 import Foundation
