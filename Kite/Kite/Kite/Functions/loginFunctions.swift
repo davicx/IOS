@@ -36,28 +36,9 @@ class LoginFunctions {
             }
         }
     }
+    
+    
 }
 
 
 //Function A2: Logout User
-
-//NEW!!!
-/*
- import Foundation
-
-
-
- */
-
-/*
- func loginUser(postsArray: [Post]) async throws -> [Post]{
-     for post in postsArray {
-         let imageUrl = URL(string: post.fileUrl!)!
-         let data = try await networker.downloadImageData(from: imageUrl)
-         post.postImageData = UIImage(data: data)
-     }
-     
-    return postsArray
- }
-
- */

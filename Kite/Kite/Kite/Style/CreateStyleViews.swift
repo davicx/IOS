@@ -9,21 +9,108 @@ import UIKit
 
 
 struct CreateViewStyles {
+
+
     
-    
-    
-    static func createUIView(backgroundColor: UIColor = .clear) -> UIView {
-        let view = UIView()
-        view.backgroundColor = backgroundColor
-        return view
-    }
-    
+    //IMAGE
     static func createPostImageView() -> UIView {
         let view = UIView()
         view.backgroundColor = .lightGray
         
         return view
 
+    }
+    
+    //COMMENT  
+    static func createCommentLabel() -> UILabel {
+        let label = UILabel()
+        label.text = "Comment goes here..."
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+    
+    static func createCommentDividerView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }
+    
+
+    
+    
+    //MAIN VIEWS
+    static func createHeaderView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .blue
+        return view
+    }
+
+    static func createBodyView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }
+
+    static func createFooterView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .systemPink
+        return view
+    }
+    
+    //POST
+    static func createPostUserView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .systemRed
+        return view
+    }
+
+    static func createPostUserName() -> UILabel {
+        let label = UILabel()
+        label.text = "Garden Party"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.backgroundColor = .white
+        return label
+    }
+
+    static func createPostImage() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .white
+        return imageView
+    }
+
+    static func createPostSocialsView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .green
+        return view
+    }
+
+    static func createPostSocialsText() -> UILabel {
+        let label = UILabel()
+        label.text = "SOCIALS: Post User"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.backgroundColor = .blue
+        return label
+    }
+
+    static func createPostCaptionView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .green
+        return view
+    }
+
+
+    static func createPostDividerView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .systemRed
+        return view
     }
     
     static func createPostCaptionText() -> UILabel {
@@ -48,87 +135,10 @@ struct CreateViewStyles {
     }
     
     
-    
-    // MARK: - Header, Body, Footer Views
-    
-    static func createHeaderView() -> UIView {
+    //VIEWS
+    static func createUIView(backgroundColor: UIColor = .clear) -> UIView {
         let view = UIView()
-        view.backgroundColor = .blue
-        return view
-    }
-
-    static func createBodyView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }
-
-    static func createFooterView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .systemPink
-        return view
-    }
-    
-    // MARK: - Post User
-    
-    static func createPostUserView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .systemRed
-        return view
-    }
-
-    static func createPostUserName() -> UILabel {
-        let label = UILabel()
-        label.text = "Garden Party"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.backgroundColor = .white
-        return label
-    }
-
-    // MARK: - Post Image
-
-    static func createPostImage() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .white
-        return imageView
-    }
-
-    // MARK: - Post Socials
-    
-    static func createPostSocialsView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .green
-        return view
-    }
-
-    static func createPostSocialsText() -> UILabel {
-        let label = UILabel()
-        label.text = "SOCIALS: Post User"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.backgroundColor = .blue
-        return label
-    }
-
-    // MARK: - Post Caption
-    
-    static func createPostCaptionView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .green
-        return view
-    }
-
-
-
-    // MARK: - Divider
-    
-    static func createPostDividerView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .systemRed
+        view.backgroundColor = backgroundColor
         return view
     }
 }

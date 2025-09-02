@@ -12,6 +12,7 @@ struct GroupModel: Codable {
     let groupID: Int
     let groupName: String
     let groupImage: String?
+    let createdBy: String?
     let activeGroupMembers: [String]
     let pendingGroupMembers: [String]
 }

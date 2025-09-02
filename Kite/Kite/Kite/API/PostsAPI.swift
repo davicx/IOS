@@ -219,7 +219,6 @@ class PostsAPI {
     
     //FUNCTIONS B: All Functions Related to getting Posts
     //Function B1: Get all Group Posts
-    //func getPostsAPI() async throws -> PostResponseModel {
     func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
         //print("GET POSTS!!!")
         
@@ -256,23 +255,48 @@ class PostsAPI {
             
         }
     }
-    
-    /*
-     do {
-         let decoder = JSONDecoder()
-         decoder.keyDecodingStrategy = .useDefaultKeys // or .convertFromSnakeCase if needed
-         let decoded = try decoder.decode(PostResponseModel.self, from: jsonData)
-         print("Decoded successfully!")
-     } catch {
-         print("Decoding error: \(error)")
-     }
-     */
+  
+    //Function B2: Get all Group Items
+    func getItemsAPI(groupID: Int) async throws -> PostResponseModel {
+        //print("GET ITEMS!!!")
+        
+        let endpoint = "http://localhost:3003/items/group/\(groupID)"
+        //print("URL \(endpoint)")
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        let apiURL = URLRequest(url: url)
+        
+        let (data, response) = try await URLSession.shared.data(for: apiURL)
+               
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder ()
+            let postsResponseModel = try decoder.decode(PostResponseModel.self, from: data)
+      
+            return postsResponseModel
+            
+        } catch {
+            let postsResponseModel = PostResponseModel()
+            print("Error decoding data: \(error)")
+
+
+            print("Error decoding data")
+            return postsResponseModel
+            
+        }
+    }
     
 
     
-    //Function B2: Get all User Posts
-    //Function B3: Get Single Post by ID
-    //Function B4: Get All Posts
+    //Function B3: Get all User Posts
+    //Function B4: Get Single Post by ID
+    //Function B5: Get All Posts
     
 
     //FUNCTIONS C: All Functions Related to Post Actions
@@ -376,6 +400,20 @@ class PostsAPI {
 }
 
 //CHAT
+
+
+/*
+ do {
+     let decoder = JSONDecoder()
+     decoder.keyDecodingStrategy = .useDefaultKeys // or .convertFromSnakeCase if needed
+     let decoded = try decoder.decode(PostResponseModel.self, from: jsonData)
+     print("Decoded successfully!")
+ } catch {
+     print("Decoding error: \(error)")
+ }
+ */
+
+
 /*
  func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
      let endpoint = "http://localhost:3003/posts/group/\(groupID)"

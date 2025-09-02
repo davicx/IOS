@@ -1,15 +1,13 @@
 //
-//  PostModel.swift
-//  Instagram
+//  ItemModel.swift
+//  Kite
 //
-//  Created by David Vasquez on 10/19/24.
+//  Created by David Vasquez on 12/19/24.
 //
 
 import Foundation
 
-
-
-struct PostModel: Codable {
+struct ItemModel: Codable {
     let postID: Int
     let postType: String
     let groupID: Int
@@ -39,5 +37,19 @@ struct PostModel: Codable {
     let postLikesArray: [LikeModel]
     let simpleLikesArray: [String]
     
+    // Item-specific fields
+    let item: ItemDetails
 }
 
+struct ItemDetails: Codable {
+    let item_id: Int
+    let item_name: String
+    let item_price: String
+    let item_description: String
+    let item_category: String
+    let item_link: String
+    let purchased: Int
+    let purchased_by: String
+    let store: String
+    let multiple_stores: Int
+}

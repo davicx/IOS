@@ -9,6 +9,7 @@ import UIKit
 
 
 class Style {
+    let iconBackgroundColor = "#687684"
     
     //FONT
     static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
