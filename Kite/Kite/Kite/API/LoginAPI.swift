@@ -227,17 +227,3 @@ class LoginAPI {
 }
 
 
-//REQUEST
-/*
-let loginAPI = LoginAPI()
- 
-Task{
-    do{
-        let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
-        print(newAccessTokenModel)
-    } catch{
-        print("ProfileViewController profileAPI.getUserProfileAPI yo man error!")
-        print(error)
-    }
-}
- */
