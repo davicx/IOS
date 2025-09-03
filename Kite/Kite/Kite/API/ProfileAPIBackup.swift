@@ -182,13 +182,13 @@ class ProfileAPIBackup {
                 return try await getUserProfileAPI(currentUser: currentUser)
             } else {
                 print("PROFILE API - 498 Refresh Failed, Logging Out")
-                AuthManager.shared.logoutCurrentUser()
+                LoginManager.shared.logoutCurrentUser()
                 throw networkError.tokenRefreshFailed
             }
 
         case 401:
             print("PROFILE API - 401 Unauthorized, Logging Out")
-            AuthManager.shared.logoutCurrentUser()
+            LoginManager.shared.logoutCurrentUser()
             throw networkError.unauthorized
 
         default:

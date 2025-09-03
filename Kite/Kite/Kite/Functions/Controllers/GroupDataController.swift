@@ -30,7 +30,7 @@ class GroupDataController {
             do {
                 let response = try await groupsAPI.getGroupsAPI(for: currentUser)
                 if response.statusCode == 401 {
-                    AuthManager.shared.logoutCurrentUser()
+                    LoginManager.shared.logoutCurrentUser()
                     DispatchQueue.main.async {
                         completion()
                     }
