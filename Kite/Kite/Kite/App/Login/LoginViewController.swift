@@ -11,7 +11,6 @@ import UIKit
 
 class LoginViewController: UIViewController, LoginLayoutManagerDelegate {
     let layoutManager = LoginLayoutManager()
-    let loginManager = LoginFunctions()
     let userDefaultManager = UserDefaultManager()
     var activityIndicator = UIActivityIndicatorView()
     var errrorMessage = ""
@@ -56,7 +55,7 @@ class LoginViewController: UIViewController, LoginLayoutManagerDelegate {
         activityIndicator.startAnimating()
         view.isUserInteractionEnabled = false
         
-        loginManager.loginUser(username: logInUser, password: logInPassword, deviceID: deviceID) { success, message in
+        LoginManager.shared.loginUser(username: logInUser, password: logInPassword, deviceID: deviceID) { success, message in
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
                 self.view.isUserInteractionEnabled = true
@@ -82,36 +81,6 @@ class LoginViewController: UIViewController, LoginLayoutManagerDelegate {
         }
     }
 
-    
-    func loginUser(username: String, password: String, deviceID: String) async throws -> String {
-        var outcome = ""
-        do {
-            
-            let loginResponseModel = try await loginAPI.loginUser(username: username, password: password, deviceID: deviceID)
-            if loginResponseModel.data.loginSuccess {
-                let loginOutcome = userDefaultManager.logUserIn(userName: username)
-                if loginOutcome {
-                    print("You just logged \(username) in successfully.")
-                    
-                    outcome = "You just logged \(username) in successfully."
-                    return outcome
-                    
-                } else {
-                    outcome = "There was an error logging in!"
-                    print("There was an error logging in!")
-                    return outcome
-                }
-            } else {
-                print("API returned an error during login!")
-                outcome = "API returned an error during login!"
-                return outcome
-            }
-        } catch {
-            print("An error occurred during login: \(error.localizedDescription)")
-            outcome = "An error occurred during login: \(error.localizedDescription)"
-            return outcome
-        }
-    }
 
 }
 

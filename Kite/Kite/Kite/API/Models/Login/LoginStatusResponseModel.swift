@@ -12,7 +12,6 @@ struct LoginStatusResponseModel: Codable {
     let data: LoginStatusModel
     let messages: [String]
     let success: Bool
-    let statusCode: Int
     let errors: [String]
     let currentUser: String
     
@@ -20,8 +19,8 @@ struct LoginStatusResponseModel: Codable {
         self.data = LoginStatusModel()
         self.messages = []
         self.success = false
-        self.statusCode = 500
         self.errors = []
         self.currentUser = ""
     }
 }
+

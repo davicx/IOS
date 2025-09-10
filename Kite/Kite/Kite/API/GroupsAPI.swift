@@ -16,6 +16,7 @@ FUNCTIONS A: All Functions Related to Groups
     5) Function A5: Get All Groups User is In
     6) Function A6: Get Single Group by ID
     7) Function A7: Get Group Users
+    8) Function A8: Get Group Users by Group ID
 */
 
 class GroupsAPI {
@@ -231,6 +232,34 @@ class GroupsAPI {
     
     //Function A7: Get Single Group by ID
     //Function A8: Get Group Users
+    func getGroupUsers(groupID: String) async throws -> GroupUsersResponseModel {
+        let endpoint = "http://localhost:3003/group/users/\(groupID)"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        let apiURL = URLRequest(url: url)
+        
+        let (data, response) = try await URLSession.shared.data(for: apiURL)
+               
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            let groupUsersResponseModel = try decoder.decode(GroupUsersResponseModel.self, from: data)
+
+            return groupUsersResponseModel
+            
+        } catch {
+            let groupUsersResponseModel = GroupUsersResponseModel()
+            print("Error decoding data")
+            return groupUsersResponseModel
+            
+        }
+    }
 
     
 

@@ -224,7 +224,7 @@ class LoginAPI {
         print("getLoggedInUserStatus")
 
         
-        let endpoint = "http://localhost:3003/loginUser"
+        let endpoint = "http://localhost:3003/refresh/status"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -246,10 +246,20 @@ class LoginAPI {
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
+        // Print raw response data for debugging
+        /*
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print("LoginAPI.getLoggedInUserStatus: Raw JSON Response:")
+            print(jsonString)
+        }
+         */
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             print("LoginAPI.getLoggedInUserStatus: networkError.invalidResponse")
             throw networkError.invalidResponse
         }
+        
+        //print("LoginAPI.getLoggedInUserStatus: HTTP Status Code: \(httpResponse.statusCode)")
         
         if httpResponse.statusCode == 200 {
             // Continue processing as normal
@@ -258,7 +268,7 @@ class LoginAPI {
         } else if httpResponse.statusCode == 401 {
             print("LoginAPI.getLoggedInUserStatus: 401")
         } else {
-            print("LoginAPI.getLoggedInUserStatus: networkError.invalidResponse")
+            print("LoginAPI.getLoggedInUserStatus: networkError.invalidResponse - Status: \(httpResponse.statusCode)")
             throw networkError.invalidResponse
         }
 
