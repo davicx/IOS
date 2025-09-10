@@ -32,11 +32,27 @@ class LoadingViewController: UIViewController {
         isUserLoggedIn = userDefaultManager.getLoggedInUserStatus()
         
         if isUserLoggedIn {
-            PresenterManager.shared.showMainApp()
-            print("LoadingViewController: You are logged in!")
+            // User appears to be logged in locally, verify with server
+            print("LoadingViewController: User appears logged in locally, verifying with server...")
+            LoginManager.shared.getLoggedInUserStatus { isLoggedIn in
+                DispatchQueue.main.async {
+                    print("LoadingViewController: Server verification - User is \(isLoggedIn ? "logged in" : "NOT logged in")")
+                    
+                    if isLoggedIn {
+                        PresenterManager.shared.showMainApp()
+                        print("LoadingViewController: Server confirmed - You are logged in!")
+                    } else {
+                        // Server says user is not logged in, update local state and show onboarding
+                        self.userDefaultManager.logUserOut()
+                        PresenterManager.shared.showOnboarding()
+                        print("LoadingViewController: Server says session expired - showing onboarding")
+                    }
+                }
+            }
         } else {
+            // User is not logged in locally, show onboarding immediately
             PresenterManager.shared.showOnboarding()
-            print("LoadingViewController: You are not logged in!")
+            print("LoadingViewController: You are not logged in locally - showing onboarding")
         }
     }
     

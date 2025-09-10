@@ -8,8 +8,87 @@
 import UIKit
 
 
-import UIKit
+//SCROLL VIEW
+class ViewController: UIViewController {
+    
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        
+        setupScrollView()
+        setupUsers()
+        setupBlueView()
+    }
+    
+    private func setupScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.heightAnchor.constraint(equalToConstant: 120)
+        ])
+        
+        // StackView inside ScrollView
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(stackView)
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        ])
+    }
+    
+    private func setupUsers() {
+        for i in 1...7 {
+            let imageView = UIImageView()
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.image = UIImage(named: "background_\(i)")
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+            imageView.layer.cornerRadius = 50 // Half of 100
+            imageView.layer.masksToBounds = true
+            
+            NSLayoutConstraint.activate([
+                imageView.widthAnchor.constraint(equalToConstant: 100),
+                imageView.heightAnchor.constraint(equalToConstant: 100)
+            ])
+            
+            stackView.addArrangedSubview(imageView)
+        }
+    }
+    
+    private func setupBlueView() {
+        let blueView = UIView()
+        blueView.translatesAutoresizingMaskIntoConstraints = false
+        blueView.backgroundColor = .systemBlue
+        view.addSubview(blueView)
+        
+        NSLayoutConstraint.activate([
+            blueView.topAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            blueView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blueView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blueView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
 
+
+
+
+//MENU
+/*
 class ViewController: UIViewController {
     
     // Menu image (replace with your asset name if you want)
@@ -60,6 +139,8 @@ class ViewController: UIViewController {
         print("Menu tapped!")
     }
 }
+
+*/
 
 
 /*

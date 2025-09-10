@@ -47,7 +47,7 @@ class ProfileViewController: UIViewController {
                 // Get profile
                 userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
                 guard let statusCode = userResponseModel?.statusCode, statusCode != 401 else {
-                    AuthManager.shared.logoutCurrentUser()
+                    LoginManager.shared.logoutCurrentUser()
                     return
                 }
 

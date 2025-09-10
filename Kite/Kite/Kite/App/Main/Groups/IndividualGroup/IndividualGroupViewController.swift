@@ -14,7 +14,6 @@ class IndividualGroupViewController: UIViewController {
     var group: GroupModel?
     private let tableView = UITableView()
     
-    // Shared Data Controller
     let postDataController = PostDataController.shared
     private let pollingManager = PollingManager()
 
