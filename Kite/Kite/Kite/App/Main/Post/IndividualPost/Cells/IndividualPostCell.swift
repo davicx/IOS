@@ -9,6 +9,9 @@ import UIKit
 
 
 class IndividualPostCell: UITableViewCell {
+    
+    let itemView = UIView()
+    let dividerView = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -27,7 +30,31 @@ class IndividualPostCell: UITableViewCell {
     
     //STYLE
     private func setupPostViews() {
- 
+        contentView.addSubview(itemView)
+        contentView.addSubview(dividerView)
+        
+        // Configure ItemView
+        itemView.backgroundColor = .white
+        itemView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Configure DividerView
+        dividerView.backgroundColor = .black
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            // ItemView constraints
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemView.heightAnchor.constraint(equalToConstant: 120),
+            
+            // DividerView constraints
+            dividerView.topAnchor.constraint(equalTo: itemView.bottomAnchor),
+            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: 2),
+            dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
     }
     
 

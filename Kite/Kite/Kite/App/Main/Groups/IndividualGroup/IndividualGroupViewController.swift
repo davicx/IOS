@@ -9,6 +9,84 @@ import UIKit
 
 
 //LISTS: Wishlist
+
+/*
+class IndividualGroupViewController: UIViewController {
+    
+    private let tableView = UITableView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupTableView()
+    }
+
+    // MARK: - Table Setup
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+        
+        tableView.tableHeaderView = createTableHeader()
+        tableView.tableFooterView = UIView()
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+    // MARK: - Custom Header View
+    private func createTableHeader() -> UIView {
+        let headerHeight: CGFloat = 160
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: headerHeight))
+
+        // List Name section
+        let listNameView = UIView()
+        listNameView.backgroundColor = .systemBlue
+        listNameView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(listNameView)
+
+        // List Members section
+        let listMembersView = UIView()
+        listMembersView.backgroundColor = .systemPink
+        listMembersView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(listMembersView)
+
+        NSLayoutConstraint.activate([
+            listNameView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            listNameView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            listNameView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            listNameView.heightAnchor.constraint(equalToConstant: 80),
+
+            listMembersView.topAnchor.constraint(equalTo: listNameView.bottomAnchor),
+            listMembersView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            listMembersView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            listMembersView.heightAnchor.constraint(equalToConstant: 80)
+        ])
+
+        return headerView
+    }
+}
+
+extension IndividualGroupViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10 // example count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
+        return cell
+    }
+}
+*/
+
+
 class IndividualGroupViewController: UIViewController {
 
     var group: GroupModel?
@@ -166,13 +244,17 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         let postCaption = currentPost.postCaption ?? "no caption"
         let postCaptionHeight = round(calculateLabelHeight(text: postCaption))
 
-        return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
+        //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
+        return 122
     }
 }
 
 
+
 /*
-//GROUPS: Kite
+ /*******************/
+ //GROUPS: Kite   //
+/*******************/
 class IndividualGroupViewController: UIViewController {
 
     var group: GroupModel?
