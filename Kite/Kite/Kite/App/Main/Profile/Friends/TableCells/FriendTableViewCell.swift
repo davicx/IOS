@@ -67,9 +67,9 @@ class FriendTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(with user: Friend) {
-        usernameLabel.text = "@\(user.friendName)"
-        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+    func configure(with user: User) {
+        usernameLabel.text = "@\(user.userName)"
+        fullNameLabel.text = user.displayName
         profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
 
         friendActionButton.isUserInteractionEnabled = true

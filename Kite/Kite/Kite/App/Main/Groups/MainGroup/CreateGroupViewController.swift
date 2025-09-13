@@ -10,7 +10,7 @@ import UIKit
 
 
 class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    private var friends: [Friend] = []
+    private var friends: [User] = []
     private var selectedUsernames: Set<String> = []
 
     private let tableView = UITableView()
@@ -287,9 +287,9 @@ extension CreateGroupViewController: UITableViewDataSource, UITableViewDelegate 
         cell.onCheckboxToggle = { [weak self] isChecked in
             guard let self = self else { return }
             if isChecked {
-                self.selectedUsernames.insert(friend.friendName)
+                self.selectedUsernames.insert(friend.userName)
             } else {
-                self.selectedUsernames.remove(friend.friendName)
+                self.selectedUsernames.remove(friend.userName)
             }
         }
         

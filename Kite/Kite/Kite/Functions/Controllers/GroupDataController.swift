@@ -11,7 +11,7 @@ import UIKit
 class GroupDataController {
     static let shared = GroupDataController()
     
-    // MARK: - Groups List Management
+
     private(set) var groups: [GroupModel] = []
     var onGroupsUpdated: (() -> Void)?
     

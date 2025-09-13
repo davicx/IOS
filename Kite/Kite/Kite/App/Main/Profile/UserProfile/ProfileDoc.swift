@@ -39,7 +39,7 @@ class ProfileViewController: UIViewController {
     private let userProfileLayout = UserProfileLayout()
     
     var userResponseModel: UserProfileResponseModel?
-    var friendListArray: [Friend] = []
+    var friendListArray: [User] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,11 +137,11 @@ class ProfileViewController: UIViewController {
     }
     
 
-     func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
+     func loadFriendImages(for friends: [User], using imageHelper: ImageFunctions) async {
          await withTaskGroup(of: Void.self) { group in
              for friend in friends {
                  group.addTask {
-                     if let image = await imageHelper.fetchImage(from: friend.friendImage) {
+                     if let image = await imageHelper.fetchImage(from: friend.profileImageURL) {
                          friend.profileImage = image
                      }
                  }
@@ -237,10 +237,10 @@ protocol YourFriendsViewControllerDelegate: AnyObject {
 class YourFriendsViewController: UIViewController {
     
     //API Data
-    var users: [Friend] = []
-    private var friends: [Friend] = []
-    private var friendRequests: [Friend] = []
-    private var currentData: [Friend] = []
+    var users: [User] = []
+    private var friends: [User] = []
+    private var friendRequests: [User] = []
+    private var currentData: [User] = []
 
     weak var delegate: YourFriendsViewControllerDelegate?
 

@@ -103,11 +103,11 @@ class ProfileViewController: UIViewController {
         self.navigationController?.pushViewController(friendVC, animated: true)
     }
 
-    func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
+    func loadFriendImages(for friends: [User], using imageHelper: ImageFunctions) async {
         await withTaskGroup(of: Void.self) { group in
             for friend in friends {
                 group.addTask {
-                    if let image = await imageHelper.fetchImage(from: friend.friendImage) {
+                    if let image = await imageHelper.fetchImage(from: friend.profileImageURL) {
                         friend.profileImage = image
                     }
                 }

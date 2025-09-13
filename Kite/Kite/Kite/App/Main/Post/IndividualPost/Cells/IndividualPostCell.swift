@@ -8,6 +8,7 @@
 import UIKit
 
 
+//WISHLIST: Item 
 class IndividualPostCell: UITableViewCell {
     
     let itemView = UIView()

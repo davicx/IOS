@@ -17,7 +17,7 @@ class NewGroupFriendTableViewCell: UITableViewCell {
     let selectionCheckbox = UIButton(type: .system)
 
     // Friend reference
-    private var friend: Friend?
+    private var friend: User?
 
     // Selection state
     private var isChecked = false {
@@ -28,7 +28,7 @@ class NewGroupFriendTableViewCell: UITableViewCell {
             
             // Print username on toggle
             if let friend = friend {
-                print(isChecked ? "\(friend.friendName) was checked" : "\(friend.friendName) was unchecked")
+                print(isChecked ? "\(friend.userName) was checked" : "\(friend.userName) was unchecked")
             }
         }
     }
@@ -83,10 +83,10 @@ class NewGroupFriendTableViewCell: UITableViewCell {
     }
 
     // Public configure method
-    func configure(with friend: Friend) {
+    func configure(with friend: User) {
         self.friend = friend
-        usernameLabel.text = "@\(friend.friendName)"
-        fullNameLabel.text = "\(friend.firstName) \(friend.lastName)"
+        usernameLabel.text = "@\(friend.userName)"
+        fullNameLabel.text = friend.displayName
         profileImageView.image = friend.profileImage ?? UIImage(named: "placeholder_profile")
         isChecked = false // Reset each time cell is reused
     }
@@ -164,9 +164,9 @@ class NewGroupFriendTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(with friend: Friend) {
-        usernameLabel.text = "@\(friend.friendName)"
-        fullNameLabel.text = "\(friend.firstName) \(friend.lastName)"
+    func configure(with friend: User) {
+        usernameLabel.text = "@\(friend.userName)"
+        fullNameLabel.text = friend.displayName
         profileImageView.image = friend.profileImage ?? UIImage(named: "placeholder_profile")
         isChecked = false // reset state
     }
@@ -198,8 +198,8 @@ class NewGroupFriendTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with friend: Friend) {
-        usernameLabel.text = "@\(friend.friendName)"
+    func configure(with friend: User) {
+        usernameLabel.text = "@\(friend.userName)"
     }
 }
 */

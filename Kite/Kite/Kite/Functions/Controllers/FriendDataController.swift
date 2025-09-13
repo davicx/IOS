@@ -20,49 +20,40 @@ class FriendDataController {
     private let imageFunctions = ImageFunctions()
     private let userDefaultManager = UserDefaultManager()
 
-    private(set) var friends: [Friend] = []
+    private(set) var friends: [User] = []
     
 
     func fetchFriends() async throws {
         let currentUser = userDefaultManager.getLoggedInUser()
         let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
-        var fetchedFriends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
-
-        // Preload images
-        await withTaskGroup(of: Void.self) { group in
-            for friend in fetchedFriends {
-                group.addTask {
-                    if let image = await self.imageFunctions.fetchImage(from: friend.friendImage) {
-                        friend.profileImage = image
-                    }
-                }
-            }
-        }
+        
+        // Use our new batch image fetching function
+        let fetchedFriends = await createUsersFromFriendsWithImages(friendsResponse.data)
 
         self.friends = fetchedFriends
     }
 
-    func splitFriendsByStatus() -> (friends: [Friend], requests: [Friend]) {
+    func splitFriendsByStatus() -> (friends: [User], requests: [User]) {
         let friends = self.friends.filter {
-            FriendshipStatus(key: $0.friendshipKey) == .friends
+            $0.friendshipStatus == .friends
         }
 
         let requests = self.friends.filter {
-            FriendshipStatus(key: $0.friendshipKey) == .invitePendingSentByYou
+            $0.friendshipStatus == .invitePendingSentByYou
         }
 
         return (friends, requests)
     }
 
     
-    func addFriend(_ friend: Friend) {
-        if !friends.contains(where: { $0.friendID == friend.friendID }) {
+    func addFriend(_ friend: User) {
+        if !friends.contains(where: { $0.userID == friend.userID }) {
             friends.append(friend)
         }
     }
 
-    func removeFriend(_ friend: Friend) {
-        friends.removeAll { $0.friendID == friend.friendID }
+    func removeFriend(_ friend: User) {
+        friends.removeAll { $0.userID == friend.userID }
     }
     
     
@@ -70,18 +61,18 @@ class FriendDataController {
 
 
 extension FriendDataController {
-    func sendFriendRequest(to user: Friend) async -> Bool {
+    func sendFriendRequest(to user: User) async -> Bool {
         do {
             let currentUser = userDefaultManager.getLoggedInUser()
             let response = try await friendAPI.addFriend(
                 masterSite: "kite",
                 currentUser: currentUser,
-                addFriendName: user.friendName
+                addFriendName: user.userName
             )
 
             if response.success {
                 var updatedUser = user
-                updatedUser.friendshipKey = FriendshipStatus.invitePendingSentByYou.rawValue // define this in your enum
+                updatedUser.setFriendProperties(requestPending: 1, requestSentBy: currentUser, friendshipKey: FriendshipStatus.invitePendingSentByYou.rawValue, alsoYourFriend: 0)
                 addFriend(updatedUser)
 
                 // Notify other views
@@ -94,13 +85,13 @@ extension FriendDataController {
         return false
     }
     
-    func cancelFriendRequest(for user: Friend) async -> Bool {
+    func cancelFriendRequest(for user: User) async -> Bool {
         do {
             let currentUser = userDefaultManager.getLoggedInUser()
             let response = try await friendAPI.cancelFriendRequest(
                 masterSite: "kite",
                 currentUser: currentUser,
-                friendName: user.friendName
+                friendName: user.userName
             )
             if response.success {
                 removeFriend(user)
@@ -112,15 +103,14 @@ extension FriendDataController {
         return false
     }
     
-    
 
-    func removeFriendFromServer(_ user: Friend) async -> Bool {
+    func removeFriendFromServer(_ user: User) async -> Bool {
         do {
             let currentUser = userDefaultManager.getLoggedInUser()
             let response = try await friendAPI.removeFriend(
                 masterSite: "kite",
                 currentUser: currentUser,
-                removeFriendName: user.friendName
+                removeFriendName: user.userName
             )
             if response.success {
                 removeFriend(user)
@@ -132,17 +122,17 @@ extension FriendDataController {
         return false
     }
 
-    func acceptFriendInvite(_ user: Friend) async -> Bool {
+    func acceptFriendInvite(_ user: User) async -> Bool {
         do {
             let currentUser = userDefaultManager.getLoggedInUser()
             let response = try await friendAPI.acceptFriendInvite(
                 masterSite: "kite",
                 currentUser: currentUser,
-                friendName: user.friendName
+                friendName: user.userName
             )
             if response.success {
                 var updatedUser = user
-                updatedUser.friendshipKey = FriendshipStatus.friends.rawValue
+                updatedUser.setFriendProperties(requestPending: 0, requestSentBy: currentUser, friendshipKey: FriendshipStatus.friends.rawValue, alsoYourFriend: 1)
                 addFriend(updatedUser)
                 return true
             }
@@ -152,13 +142,13 @@ extension FriendDataController {
         return false
     }
 
-    func declineFriendInvite(_ user: Friend) async -> Bool {
+    func declineFriendInvite(_ user: User) async -> Bool {
         do {
             let currentUser = userDefaultManager.getLoggedInUser()
             let response = try await friendAPI.declineFriendInvite(
                 masterSite: "kite",
                 currentUser: currentUser,
-                friendName: user.friendName
+                friendName: user.userName
             )
             if response.success {
                 removeFriend(user)
@@ -175,12 +165,12 @@ extension FriendDataController {
 // FriendDataController.swift
 extension FriendDataController {
 
-    func cancelRequest(to friend: Friend) async throws {
+    func cancelRequest(to friend: User) async throws {
         let currentUser = UserDefaultManager().getLoggedInUser()
         let response = try await FriendAPI().cancelFriendRequest(
             masterSite: "kite",
             currentUser: currentUser,
-            friendName: friend.friendName
+            friendName: friend.userName
         )
         if response.success {
             removeFriend(friend)
@@ -189,12 +179,12 @@ extension FriendDataController {
         }
     }
 
-    func remove(friend: Friend) async throws {
+    func remove(friend: User) async throws {
         let currentUser = UserDefaultManager().getLoggedInUser()
         let response = try await FriendAPI().removeFriend(
             masterSite: "kite",
             currentUser: currentUser,
-            removeFriendName: friend.friendName
+            removeFriendName: friend.userName
         )
         if response.success {
             removeFriend(friend)
@@ -203,16 +193,16 @@ extension FriendDataController {
         }
     }
 
-    func accept(inviteFrom friend: Friend) async throws -> Friend {
+    func accept(inviteFrom friend: User) async throws -> User {
         let currentUser = UserDefaultManager().getLoggedInUser()
         let response = try await FriendAPI().acceptFriendInvite(
             masterSite: "kite",
             currentUser: currentUser,
-            friendName: friend.friendName
+            friendName: friend.userName
         )
         if response.success {
             var updatedFriend = friend
-            updatedFriend.friendshipKey = FriendshipStatus.friends.rawValue
+            updatedFriend.setFriendProperties(requestPending: 0, requestSentBy: currentUser, friendshipKey: FriendshipStatus.friends.rawValue, alsoYourFriend: 1)
             addFriend(updatedFriend)
             return updatedFriend
         } else {
@@ -220,12 +210,12 @@ extension FriendDataController {
         }
     }
 
-    func decline(inviteFrom friend: Friend) async throws {
+    func decline(inviteFrom friend: User) async throws {
         let currentUser = UserDefaultManager().getLoggedInUser()
         let response = try await FriendAPI().declineFriendInvite(
             masterSite: "kite",
             currentUser: currentUser,
-            friendName: friend.friendName
+            friendName: friend.userName
         )
         if response.success {
             removeFriend(friend)
