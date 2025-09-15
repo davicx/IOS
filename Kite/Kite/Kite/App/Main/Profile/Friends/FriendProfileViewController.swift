@@ -9,13 +9,13 @@ import UIKit
 
 
 class FriendProfileViewController: UIViewController {
-    var friend: Friend?
+    var friend: User?
     let friendAPI = FriendAPI()
     let profileAPI = ProfileAPI()
     let imageFunctions = ImageFunctions()
     let userDefaultManager = UserDefaultManager()
     
-    var friendListArray: [Friend] = []
+    var friendListArray: [User] = []
 
     private let userProfileLayout = UserProfileLayout()
     private let currentUser: String
@@ -53,9 +53,9 @@ class FriendProfileViewController: UIViewController {
         userProfileLayout.userProfileEditView.editButton.isHidden = true
 
         if let friend = friend {
-            //print("Friend profile for: \(friend.friendName)")
+            //print("Friend profile for: \(friend.userName)")
             Task {
-                await fetchFriendDetails(friendName: friend.friendName)
+                await fetchFriendDetails(friendName: friend.userName)
             }
         }
     }
@@ -66,7 +66,7 @@ class FriendProfileViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendListVC = storyboard.instantiateViewController(withIdentifier: "FriendListViewController") as! FriendListViewController
         
-        if let friendName = friend?.friendName {
+        if let friendName = friend?.userName {
             friendListVC.friendUserName = friendName
         }
         
@@ -109,7 +109,7 @@ class FriendProfileViewController: UIViewController {
                 otherUser: friendName,
                 currentUser: self.currentUser
             )
-            let friends = friendAPI.convertToFriendObjects(from: friendsResponse.data)
+            let friends = friendAPI.convertToUserObjects(from: friendsResponse.data)
 
             // Preload images
             await loadFriendImages(for: friends, using: imageFunctions)
@@ -122,11 +122,11 @@ class FriendProfileViewController: UIViewController {
         }
     }
     
-    func loadFriendImages(for friends: [Friend], using imageHelper: ImageFunctions) async {
+    func loadFriendImages(for friends: [User], using imageHelper: ImageFunctions) async {
         await withTaskGroup(of: Void.self) { group in
             for friend in friends {
                 group.addTask {
-                    if let image = await imageHelper.fetchImage(from: friend.friendImage) {
+                    if let image = await imageHelper.fetchImage(from: friend.profileImageURL) {
                         friend.profileImage = image
                     }
                 }

@@ -11,9 +11,9 @@ import UIKit
 class YourFriendsViewController: UIViewController {
 
     // Filtered data
-    private var friends: [Friend] = []
-    private var friendRequests: [Friend] = []
-    private var currentlyDisplayedFriends: [Friend] = []
+    private var friends: [User] = []
+    private var friendRequests: [User] = []
+    private var currentlyDisplayedFriends: [User] = []
 
     // Table View
     internal let tableView = UITableView()
@@ -57,11 +57,11 @@ class YourFriendsViewController: UIViewController {
         let allFriends = FriendDataController.shared.friends
 
         self.friends = allFriends.filter {
-            FriendshipStatus(key: $0.friendshipKey) == .friends
+            $0.friendshipStatus == .friends
         }
 
         self.friendRequests = allFriends.filter {
-            let status = FriendshipStatus(key: $0.friendshipKey)
+            let status = $0.friendshipStatus
             return status == .invitePendingSentByYou || status == .requestPendingSentByThem
         }
     }
@@ -82,18 +82,38 @@ class YourFriendsViewController: UIViewController {
         }
     }
     
-    private func configureCellActions(for user: Friend, cell: YourFriendsTableViewCell) {
-        configureCancelInvite(for: user, in: cell)
-        configureRemoveFriend(for: user, in: cell)
-        configureAcceptInvite(for: user, in: cell)
-        configureDeclineInvite(for: user, in: cell)
+    private func configureCellActions(for user: User, cell: YourFriendsTableViewCell) {
+        // Clear all callbacks first
+        cell.cancelFriendInviteTapped = nil
+        cell.removeFriendTapped = nil
+        cell.acceptFriendInviteTapped = nil
+        cell.declineFriendInviteTapped = nil
+        
+        // Configure based on current tab and user status
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // Friends tab - only show remove friend
+            configureRemoveFriend(for: user, in: cell)
+        } else {
+            // Friend Requests tab - show appropriate buttons based on request type
+            switch user.friendshipStatus {
+            case .requestPendingSentByThem:
+                // Request sent TO you - show Accept/Decline
+                configureAcceptInvite(for: user, in: cell)
+                configureDeclineInvite(for: user, in: cell)
+            case .invitePendingSentByYou:
+                // Request sent BY you - show Cancel
+                configureCancelInvite(for: user, in: cell)
+            default:
+                break
+            }
+        }
     }
 
-    private func configureCancelInvite(for user: Friend, in cell: YourFriendsTableViewCell) {
+    private func configureCancelInvite(for user: User, in cell: YourFriendsTableViewCell) {
         cell.cancelFriendInviteTapped = { [weak self] in
             self?.presentConfirmationAlert(
                 title: "Cancel Friend Request",
-                message: "Are you sure you want to cancel the friend invite to @\(user.friendName)?",
+                message: "Are you sure you want to cancel the friend invite to @\(user.userName)?",
                 confirmTitle: "Remove Request",
                 destructive: true
             ) {
@@ -102,11 +122,11 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    private func configureRemoveFriend(for user: Friend, in cell: YourFriendsTableViewCell) {
+    private func configureRemoveFriend(for user: User, in cell: YourFriendsTableViewCell) {
         cell.removeFriendTapped = { [weak self] in
             self?.presentConfirmationAlert(
                 title: "Remove Friend",
-                message: "Are you sure you want to remove @\(user.friendName) from your friends?",
+                message: "Are you sure you want to remove @\(user.userName) from your friends?",
                 confirmTitle: "Remove",
                 destructive: true
             ) {
@@ -115,23 +135,23 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    private func configureAcceptInvite(for user: Friend, in cell: YourFriendsTableViewCell) {
+    private func configureAcceptInvite(for user: User, in cell: YourFriendsTableViewCell) {
         cell.acceptFriendInviteTapped = { [weak self] in
             Task { await self?.acceptInviteAPI(for: user) }
         }
     }
 
-    private func configureDeclineInvite(for user: Friend, in cell: YourFriendsTableViewCell) {
+    private func configureDeclineInvite(for user: User, in cell: YourFriendsTableViewCell) {
         cell.declineFriendInviteTapped = { [weak self] in
             Task { await self?.declineInviteAPI(for: user) }
         }
     }
 
-    private func cancelFriendAPI(for user: Friend) async {
+    private func cancelFriendAPI(for user: User) async {
         do {
             try await FriendDataController.shared.cancelRequest(to: user)
             DispatchQueue.main.async {
-                print("Successfully cancelled request to \(user.friendName)")
+                print("Successfully cancelled request to \(user.userName)")
                 self.removeUserFromLocalData(user)
                 self.tableView.reloadData()
             }
@@ -140,11 +160,11 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    private func removeFriendAPI(for user: Friend) async {
+    private func removeFriendAPI(for user: User) async {
         do {
             try await FriendDataController.shared.remove(friend: user)
             DispatchQueue.main.async {
-                print("Successfully removed friend: \(user.friendName)")
+                print("Successfully removed friend: \(user.userName)")
                 self.removeUserFromLocalData(user)
                 self.tableView.reloadData()
             }
@@ -153,11 +173,11 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    private func acceptInviteAPI(for user: Friend) async {
+    private func acceptInviteAPI(for user: User) async {
         do {
             let updatedUser = try await FriendDataController.shared.accept(inviteFrom: user)
             DispatchQueue.main.async {
-                print("Accepted invite from \(user.friendName)")
+                print("Accepted invite from \(user.userName)")
                 self.removeUserFromLocalData(user)
                 self.friends.append(updatedUser)
 
@@ -170,11 +190,11 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    private func declineInviteAPI(for user: Friend) async {
+    private func declineInviteAPI(for user: User) async {
         do {
             try await FriendDataController.shared.decline(inviteFrom: user)
             DispatchQueue.main.async {
-                print("Declined invite from \(user.friendName)")
+                print("Declined invite from \(user.userName)")
                 self.removeUserFromLocalData(user)
                 self.tableView.reloadData()
             }
@@ -183,10 +203,10 @@ class YourFriendsViewController: UIViewController {
         }
     }
 
-    private func removeUserFromLocalData(_ user: Friend) {
-        friends.removeAll { $0.friendID == user.friendID }
-        friendRequests.removeAll { $0.friendID == user.friendID }
-        currentlyDisplayedFriends.removeAll { $0.friendID == user.friendID }
+    private func removeUserFromLocalData(_ user: User) {
+        friends.removeAll { $0.userID == user.userID }
+        friendRequests.removeAll { $0.userID == user.userID }
+        currentlyDisplayedFriends.removeAll { $0.userID == user.userID }
     }
 
     private func presentConfirmationAlert(

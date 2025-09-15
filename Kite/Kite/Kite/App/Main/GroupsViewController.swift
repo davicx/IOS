@@ -207,16 +207,7 @@ class GroupsViewController: UIViewController {
 }
 
 extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    /*
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if groups.isEmpty && (tableView.backgroundView != nil) {
-            return 0
-        }
-        tableView.backgroundView = nil
-        return GroupDataController.shared.groups.count
-    }
-     */
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch segmentedControl.selectedSegmentIndex {
         case 0: // My Lists

@@ -114,9 +114,9 @@ class YourFriendsTableViewCell: UITableViewCell {
     }
     
 
-    func configure(with user: Friend) {
-        usernameLabel.text = "@\(user.friendName)"
-        fullNameLabel.text = "\(user.firstName) \(user.lastName)"
+    func configure(with user: User) {
+        usernameLabel.text = "@\(user.userName)"
+        fullNameLabel.text = user.displayName
         profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
 
         // Hide all buttons by default
@@ -125,14 +125,14 @@ class YourFriendsTableViewCell: UITableViewCell {
         acceptButton.isHidden = true
         declineButton.isHidden = true
 
-        switch user.friendshipKey {
-        case "friends":
+        switch user.friendshipStatus {
+        case .friends:
             removeFriendButton.isHidden = false
 
-        case "request_pending":
+        case .invitePendingSentByYou:
             cancelFriendInviteButton.isHidden = false
 
-        case "invite_pending":
+        case .requestPendingSentByThem:
             acceptButton.isHidden = false
             declineButton.isHidden = false
 

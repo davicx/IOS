@@ -11,7 +11,7 @@ import UIKit
 
 class FollowingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var users: [Friend] = []
+    var users: [User] = []
 
     private let tableView = UITableView()
 
@@ -21,7 +21,7 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         view.backgroundColor = .white
         
         for user in users {
-            print("User: \(user.requestSentBy),  \(user.friendName), requestPending: \(user.requestPending)")
+            print("User: \(user.userName), \(user.displayName), requestSentBy: \(user.requestSentBy ?? "N/A"), requestPending: \(user.requestPending ?? 0)")
         }
         
         setupTableView()

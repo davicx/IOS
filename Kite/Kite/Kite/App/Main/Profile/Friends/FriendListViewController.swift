@@ -10,7 +10,7 @@ import UIKit
 
 class FriendListViewController: UIViewController {
     var friendUserName: String?
-    var friendListArray: [Friend] = []
+    var friendListArray: [User] = []
 
     private let tableView = UITableView()
 
@@ -64,13 +64,18 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.friendActionTapped = { [weak self] in
             guard let self = self else { return }
             
-            print("Adding friend: \(friend.friendName)")
+            print("Adding friend: \(friend.userName)")
 
             Task {
                 let success = await FriendDataController.shared.sendFriendRequest(to: friend)
                 if success {
                     // Update the friendshipKey locally to show "Pending" UI or disable button
-                    self.friendListArray[indexPath.row].friendshipKey = FriendshipStatus.invitePendingSentByYou.rawValue
+                    self.friendListArray[indexPath.row].setFriendProperties(
+                        requestPending: 1,
+                        requestSentBy: UserDefaultManager().getLoggedInUser(),
+                        friendshipKey: FriendshipStatus.invitePendingSentByYou.rawValue,
+                        alsoYourFriend: 0
+                    )
 
                     DispatchQueue.main.async {
                         self.tableView.reloadRows(at: [indexPath], with: .none)

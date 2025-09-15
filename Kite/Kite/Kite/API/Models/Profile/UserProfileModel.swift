@@ -26,3 +26,15 @@ struct UserProfileModel: Codable {
     }
 }
 
+/*
+let friendID: Int
+let friendName: String
+let friendImage: String
+let firstName: String
+let lastName: String
+let requestPending: Int
+let requestSentBy: String
+let friendshipKey: String
+let alsoYourFriend: Int
+
+*/

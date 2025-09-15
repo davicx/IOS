@@ -11,38 +11,63 @@ import UIKit
 //LISTS: Wishlist
 class IndividualGroupViewController: UIViewController {
 
+    //GROUPS
     var group: GroupModel?
-    private let tableView = UITableView()
-    
     let postDataController = PostDataController.shared
+    let usersDataController = UsersDataController.shared
+    
+    //GROUP USERS
+    private var groupMembers: [User] = []
+    
+    //VIEWS SETUP
+    private let tableView = UITableView()
     private let pollingManager = PollingManager()
-
+    
+    //MANAGE VIEWS
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        //VIEWS SETUP
         setupTableView()
-
+        printPageInfo(vcName: "IndividualGroupViewController")
+      
+        // Start polling
+        pollingManager.onFetchPosts = { [weak self] in
+            self?.fetchPostsForGroup()
+        }
+        pollingManager.startPolling()
+        
+        //GROUPS
         let groupID = group?.groupID ?? 0
         let groupName = group?.groupName ?? "No Group Name"
-        print("________________________")
-        print("IndividualGroupViewController")
-        print("LISTS: Wishlist")
-        print("________________________")
-        print(" ")
         
 
+        // TEMPORARY: Print group users
+        if let group = group {
+            print("________________________")
+            print("GROUP USERS DEBUG")
+            print("Group ID: \(group.groupID)")
+            print("Group Name: \(group.groupName)")
+            print("Active Members: \(group.activeGroupMembers)")
+            print("Pending Members: \(group.pendingGroupMembers)")
+            print("Created By: \(group.createdBy ?? "Unknown")")
+            print("________________________")
+            
+            // Fetch group member profiles
+            Task {
+                await fetchGroupMemberProfiles()
+            }
+        } else {
+            print("No group data available")
+        }
+        
         // Observe post updates
         postDataController.onPostsUpdated = { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
         }
-
-        // Start polling
-        pollingManager.onFetchPosts = { [weak self] in
-            self?.fetchPostsForGroup()
-        }
-        pollingManager.startPolling()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -56,28 +81,9 @@ class IndividualGroupViewController: UIViewController {
         pollingManager.stopPolling()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segue.showIndividualPost,
-           let postViewController = segue.destination as? IndividualPostViewController,
-           let selectedPost = sender as? Post {
-            postViewController.currentPost = selectedPost
-            //postViewController.commentsArray = selectedPost.commentsArray ?? []
-        }
-    }
 
-    // MARK: - Fetch posts
-    private func fetchPostsForGroup() {
-        guard let groupID = group?.groupID else {
-            print("No group ID available")
-            return
-        }
-
-        Task {
-            await postDataController.fetchPosts(groupID: groupID)
-        }
-    }
-
-    // MARK: - Table Setup
+    //TABLE VIEW:
+    //Header Layout
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,7 +91,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
+        tableView.estimatedRowHeight = 160
         tableView.tableHeaderView = createTableHeader()
         tableView.tableFooterView = UIView()
 
@@ -97,15 +103,25 @@ class IndividualGroupViewController: UIViewController {
         ])
     }
 
-    // MARK: - Custom Header View
-    private func createTableHeader() -> UIView {
-        let headerHeight: CGFloat = 100
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: headerHeight))
 
-        let blueView = UIView()
-        blueView.backgroundColor = .blue
-        blueView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(blueView)
+    private func createTableHeader() -> UIView {
+        let headerHeight: CGFloat = 160
+        let headerView = UIView()
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Create the scroll view for group members
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = false
+        headerView.addSubview(scrollView)
+
+        // Create stack view inside scroll view
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(stackView)
 
         let pinkView = UIView()
         pinkView.backgroundColor = .systemPink
@@ -113,20 +129,191 @@ class IndividualGroupViewController: UIViewController {
         headerView.addSubview(pinkView)
 
         NSLayoutConstraint.activate([
-            blueView.topAnchor.constraint(equalTo: headerView.topAnchor),
-            blueView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            blueView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            blueView.heightAnchor.constraint(equalToConstant: 60),
-
-            pinkView.topAnchor.constraint(equalTo: blueView.bottomAnchor),
+            // Header view constraints
+            headerView.heightAnchor.constraint(equalToConstant: headerHeight),
+            headerView.widthAnchor.constraint(equalToConstant: view.frame.width),
+            
+            // Pink view constraints (at the top)
+            pinkView.topAnchor.constraint(equalTo: headerView.topAnchor),
             pinkView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             pinkView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            pinkView.heightAnchor.constraint(equalToConstant: 40)
+            pinkView.heightAnchor.constraint(equalToConstant: 40),
+
+            // Scroll view constraints (below pink view)
+            scrollView.topAnchor.constraint(equalTo: pinkView.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            scrollView.heightAnchor.constraint(equalToConstant: 120),
+            scrollView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+
+            // Stack view constraints
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         ])
 
+        // Add group members to the scroll view
+        setupGroupMembersInScrollView(stackView)
+
+        // Force layout to ensure proper sizing
+        headerView.layoutIfNeeded()
+        
         return headerView
     }
+    
+
+    //FUNCTIONS
+    private func fetchPostsForGroup() {
+        guard let groupID = group?.groupID else {
+            print("No group ID available")
+            return
+        }
+
+        Task {
+            await postDataController.fetchPosts(groupID: groupID)
+        }
+    }
+    
+    private func fetchGroupMemberProfiles() async {
+        guard let group = group else {
+            print("No group data available for fetching member profiles")
+            return
+        }
+        
+        let allMembers = group.activeGroupMembers + group.pendingGroupMembers
+        
+        print("________________________")
+        print("FETCHING GROUP MEMBER PROFILES")
+        print("Total members to fetch: \(allMembers.count)")
+        print("Members: \(allMembers)")
+        print("________________________")
+        
+        // Fetch all member profiles with images using UsersDataController
+        let groupMembers = await usersDataController.fetchUsersWithImages(usernames: allMembers)
+        
+        print("________________________")
+        print("FETCHED GROUP MEMBER PROFILES")
+        print("Successfully fetched \(groupMembers.count) profiles:")
+        for member in groupMembers {
+            print("- \(member.userName): \(member.displayName)")
+        }
+        print("________________________")
+        
+        // Store groupMembers for use in UI
+        self.groupMembers = groupMembers
+        
+        // Refresh the table header to show the group members
+        DispatchQueue.main.async {
+            self.tableView.tableHeaderView = self.createTableHeader()
+        }
+    }
+    
+    private func setupGroupMembersInScrollView(_ stackView: UIStackView) {
+        // Clear any existing arranged subviews
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        for member in groupMembers {
+            let memberView = createGroupMemberView(for: member)
+            stackView.addArrangedSubview(memberView)
+        }
+    }
+    
+    private func createGroupMemberView(for member: User) -> UIView {
+        // Container view for the member (120x120)
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Profile image view (92x92)
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 42 // Half of 84
+        imageView.layer.masksToBounds = true
+        imageView.backgroundColor = .systemGray5
+        
+        // Set the profile image
+        if let profileImage = member.profileImage {
+            imageView.image = profileImage
+        } else {
+            // Fallback to default image
+            imageView.image = UIImage(named: "background_1")
+        }
+        
+        // Enable user interaction for tap gestures
+        imageView.isUserInteractionEnabled = true
+        
+        // Add tap gesture recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(userImageTapped(_:)))
+        imageView.addGestureRecognizer(tapGesture)
+        
+        // Store the username as a tag on the image view for later use
+        imageView.tag = member.userID
+        
+        // Username label (20 tall, 120 wide)
+        let usernameLabel = UILabel()
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        usernameLabel.text = "@\(member.userName)"
+        usernameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        usernameLabel.textColor = .label
+        usernameLabel.textAlignment = .center
+        usernameLabel.numberOfLines = 1
+        usernameLabel.adjustsFontSizeToFitWidth = true
+        usernameLabel.minimumScaleFactor = 0.8
+        
+        containerView.addSubview(imageView)
+        containerView.addSubview(usernameLabel)
+        
+        NSLayoutConstraint.activate([
+            // Container view constraints (120x120)
+            containerView.widthAnchor.constraint(equalToConstant: 120),
+            containerView.heightAnchor.constraint(equalToConstant: 120),
+            
+            // Image view constraints (84x84, centered horizontally)
+            imageView.widthAnchor.constraint(equalToConstant: 84),
+            imageView.heightAnchor.constraint(equalToConstant: 84),
+            imageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+            imageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            
+            // Username label constraints (16 tall, 120 wide, at bottom)
+            usernameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4),
+            usernameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            usernameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            usernameLabel.heightAnchor.constraint(equalToConstant: 16),
+            usernameLabel.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor, constant: -8)
+        ])
+        
+        return containerView
+    }
+    
+    @objc private func userImageTapped(_ gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else { return }
+        let userID = imageView.tag
+        
+        // Find the user by ID
+        guard let user = groupMembers.first(where: { $0.userID == userID }) else { return }
+        
+        print("Go to Profile: \(user.userName)")
+        
+        // TODO: Add navigation to user profile
+        // For now, just print the username
+    }
+
+    //VIEWS: Navigate to an Individual Post
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Segue.showIndividualPost,
+           let postViewController = segue.destination as? IndividualPostViewController,
+           let selectedPost = sender as? Post {
+            postViewController.currentPost = selectedPost
+            //postViewController.commentsArray = selectedPost.commentsArray ?? []
+        }
+    }
+    
 }
+
+
 
 extension IndividualGroupViewController: UITableViewDataSource, UITableViewDelegate {
 
@@ -152,7 +339,6 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         }
     }
 
-
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentPost = postDataController.posts[indexPath.row]
         let currentPostImage = currentPost.postImageData
@@ -166,13 +352,17 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         let postCaption = currentPost.postCaption ?? "no caption"
         let postCaptionHeight = round(calculateLabelHeight(text: postCaption))
 
-        return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
+        //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
+        return 122
     }
 }
 
 
+
 /*
-//GROUPS: Kite
+ /***************/
+ //GROUPS: Kite //
+/****************/
 class IndividualGroupViewController: UIViewController {
 
     var group: GroupModel?
@@ -189,9 +379,7 @@ class IndividualGroupViewController: UIViewController {
 
         let groupID = group?.groupID ?? 0
         let groupName = group?.groupName ?? "No Group Name"
-        print("________________________")
-        print("IndividualGroupViewController")
-        print("________________________")
+        printPageInfo(vcName: "IndividualGroupViewController")
         
 
         // Observe post updates
