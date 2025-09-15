@@ -133,25 +133,25 @@ class IndividualGroupViewController: UIViewController {
             headerView.heightAnchor.constraint(equalToConstant: headerHeight),
             headerView.widthAnchor.constraint(equalToConstant: view.frame.width),
             
-            // Scroll view constraints
-            scrollView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            // Pink view constraints (at the top)
+            pinkView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            pinkView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            pinkView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            pinkView.heightAnchor.constraint(equalToConstant: 40),
+
+            // Scroll view constraints (below pink view)
+            scrollView.topAnchor.constraint(equalTo: pinkView.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             scrollView.heightAnchor.constraint(equalToConstant: 120),
+            scrollView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
 
             // Stack view constraints
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-            stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-
-            // Pink view constraints
-            pinkView.topAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            pinkView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            pinkView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            pinkView.heightAnchor.constraint(equalToConstant: 40),
-            pinkView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
+            stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         ])
 
         // Add group members to the scroll view
@@ -242,6 +242,16 @@ class IndividualGroupViewController: UIViewController {
             imageView.image = UIImage(named: "background_1")
         }
         
+        // Enable user interaction for tap gestures
+        imageView.isUserInteractionEnabled = true
+        
+        // Add tap gesture recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(userImageTapped(_:)))
+        imageView.addGestureRecognizer(tapGesture)
+        
+        // Store the username as a tag on the image view for later use
+        imageView.tag = member.userID
+        
         // Username label (20 tall, 120 wide)
         let usernameLabel = UILabel()
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -278,6 +288,18 @@ class IndividualGroupViewController: UIViewController {
         return containerView
     }
     
+    @objc private func userImageTapped(_ gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else { return }
+        let userID = imageView.tag
+        
+        // Find the user by ID
+        guard let user = groupMembers.first(where: { $0.userID == userID }) else { return }
+        
+        print("Go to Profile: \(user.userName)")
+        
+        // TODO: Add navigation to user profile
+        // For now, just print the username
+    }
 
     //VIEWS: Navigate to an Individual Post
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
