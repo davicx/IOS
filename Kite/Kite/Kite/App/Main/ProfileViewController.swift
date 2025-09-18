@@ -26,12 +26,6 @@ class ProfileViewController: UIViewController {
         let currentUser = userDefaultManager.getLoggedInUser()
         let deviceId = getDeviceId()
         
-        
-        //BODY
-        // Add action to Buttons
-        userProfileLayout.userProfileEditView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-        userProfileLayout.userProfileSocialsView.viewFriendsButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
-        
         view.addSubview(userProfileLayout)
         userProfileLayout.translatesAutoresizingMaskIntoConstraints = false
         
@@ -42,7 +36,10 @@ class ProfileViewController: UIViewController {
             userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        
+        // Add action to Buttons
+        userProfileLayout.userProfileEditView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        userProfileLayout.userProfileSocialsView.viewFriendsButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
+
         Task {
             do {
                 let currentUser = userDefaultManager.getLoggedInUser()
@@ -85,7 +82,6 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    //VIEW
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("ProfileViewController")
@@ -99,11 +95,6 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    //ACTIONS
-    @objc private func searchButtonTapped() {
-        print("Search button tapped")
-    }
-    
     @objc private func friendsButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
@@ -144,6 +135,8 @@ class ProfileViewController: UIViewController {
 }
 
 
+// MARK: - EditProfileViewControllerDelegate
+
 extension ProfileViewController: EditProfileViewControllerDelegate {
     func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {
         DispatchQueue.main.async {
@@ -151,15 +144,13 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
                 firstName: firstName,
                 lastName: lastName
             )
-
+            
             if let newImage = updatedImage {
                 self.userProfileLayout.profileImageView.imageView.image = newImage
             }
-
+            
             print("Profile updated: \(firstName), \(lastName)")
         }
     }
+    
 }
-
-
-
