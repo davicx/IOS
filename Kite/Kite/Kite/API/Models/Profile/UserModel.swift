@@ -1,5 +1,5 @@
 //
-//  UserProfileModel.swift
+//  UserModel.swift
 //  Kite
 //
 //  Created by David Vasquez on 1/7/25.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct UserProfileModel: Codable {
+struct UserModel: Codable {
     let userName: String
     let userID: Int
     let userImage: String
@@ -33,18 +33,3 @@ struct UserProfileModel: Codable {
         self.alsoYourFriend = 0
     }
 }
-
-/*
- {
-     "userName": "davey",
-     "userID": 1,
-     "userImage": "http://localhost:3003/kite-us-west-two/profile/profileImage-1754177896055-604384021-1597356887small7_p0_master1200.jpg",
-     "firstName": "David",
-     "lastName": "Vasquez",
-     "biography": "They are (or were) a little people, about half our height, and smaller than the bearded dwarves",
-     "friendshipKey": "you",
-     "requestPending": 0,
-     "requestSentBy": "davey",
-     "alsoYourFriend": 1
- },
-*/

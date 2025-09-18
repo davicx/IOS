@@ -30,11 +30,11 @@ struct AddFriendResponseModel: Codable {
 struct AddFriendModel: Codable {
     let currentUser: String
     let friendAddSuccessOutcome: Bool
-    let friendData: FriendModel
+    let friendData: UserModel
 
     init() {
         self.currentUser = ""
         self.friendAddSuccessOutcome = false
-        self.friendData = FriendModel()
+        self.friendData = UserModel()
     }
 }
