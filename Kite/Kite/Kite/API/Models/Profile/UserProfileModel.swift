@@ -15,6 +15,10 @@ struct UserProfileModel: Codable {
     let biography: String
     let firstName: String
     let lastName: String
+    let friendshipKey: String
+    let requestPending: Int
+    let requestSentBy: String
+    let alsoYourFriend: Int
     
     init() {
         self.userName = "userName"
@@ -23,18 +27,24 @@ struct UserProfileModel: Codable {
         self.biography = "biography"
         self.firstName = "firstName"
         self.lastName = "lastName"
+        self.friendshipKey = "friendshipKey"
+        self.requestPending = 0
+        self.requestSentBy = "requestSentBy"
+        self.alsoYourFriend = 0
     }
 }
 
 /*
-let friendID: Int
-let friendName: String
-let friendImage: String
-let firstName: String
-let lastName: String
-let requestPending: Int
-let requestSentBy: String
-let friendshipKey: String
-let alsoYourFriend: Int
-
+ {
+     "userName": "davey",
+     "userID": 1,
+     "userImage": "http://localhost:3003/kite-us-west-two/profile/profileImage-1754177896055-604384021-1597356887small7_p0_master1200.jpg",
+     "firstName": "David",
+     "lastName": "Vasquez",
+     "biography": "They are (or were) a little people, about half our height, and smaller than the bearded dwarves",
+     "friendshipKey": "you",
+     "requestPending": 0,
+     "requestSentBy": "davey",
+     "alsoYourFriend": 1
+ },
 */

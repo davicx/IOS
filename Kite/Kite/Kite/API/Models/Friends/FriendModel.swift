@@ -9,6 +9,7 @@
 import UIKit
 
 
+//REMOVE
 struct FriendModel: Codable {
     let friendID: Int
     let friendName: String

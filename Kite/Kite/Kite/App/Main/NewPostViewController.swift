@@ -8,6 +8,8 @@
 import UIKit
 
 
+
+
 class NewPostViewController: UIViewController {
     let userDefaultManager = UserDefaultManager()
     let postsAPI = PostsAPI()
@@ -24,11 +26,15 @@ class NewPostViewController: UIViewController {
         super.viewDidLoad()
         Buttons.styleTikTokButton(newPostButtonStyle)
         newPostButtonStyle.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        
+        printPageInfo(vcName: "NewPostViewController")
+        
         //newPostImageView.isUserInteractionEnabled = true
         //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectImage))
         //newPostImageView.addGestureRecognizer(tapGesture)
     
     }
+    
     
     @IBAction func selectImageButton(_ sender: UIButton) {
         let picker = UIImagePickerController()
@@ -106,3 +112,4 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         picker.dismiss(animated: true)
     }
 }
+

@@ -225,6 +225,16 @@ class IndividualGroupViewController: UIViewController {
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
+        // Enable user interaction for tap gestures on the entire container
+        containerView.isUserInteractionEnabled = true
+        
+        // Add tap gesture recognizer to the container view
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(userImageTapped(_:)))
+        containerView.addGestureRecognizer(tapGesture)
+        
+        // Store the userID as a tag on the container view for later use
+        containerView.tag = member.userID
+        
         // Profile image view (92x92)
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -241,16 +251,6 @@ class IndividualGroupViewController: UIViewController {
             // Fallback to default image
             imageView.image = UIImage(named: "background_1")
         }
-        
-        // Enable user interaction for tap gestures
-        imageView.isUserInteractionEnabled = true
-        
-        // Add tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(userImageTapped(_:)))
-        imageView.addGestureRecognizer(tapGesture)
-        
-        // Store the username as a tag on the image view for later use
-        imageView.tag = member.userID
         
         // Username label (20 tall, 120 wide)
         let usernameLabel = UILabel()
@@ -289,18 +289,25 @@ class IndividualGroupViewController: UIViewController {
     }
     
     @objc private func userImageTapped(_ gesture: UITapGestureRecognizer) {
-        guard let imageView = gesture.view as? UIImageView else { return }
-        let userID = imageView.tag
+        guard let containerView = gesture.view else { return }
+        let userID = containerView.tag
         
         // Find the user by ID
         guard let user = groupMembers.first(where: { $0.userID == userID }) else { return }
         
         print("Go to Profile: \(user.userName)")
         
-        // TODO: Add navigation to user profile
-        // For now, just print the username
+        // Navigate to IndividualGroupMembersVC
+        let membersVC = IndividualGroupMembersVC()
+        //group.groupName
+        let groupName: String = group?.groupName ?? "Group Members"
+        membersVC.title = groupName
+        membersVC.groupMembers = self.groupMembers
+        navigationController?.pushViewController(membersVC, animated: true)
     }
 
+
+    
     //VIEWS: Navigate to an Individual Post
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Segue.showIndividualPost,
@@ -524,3 +531,22 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 }
 
 */
+
+
+//APPENDIX
+
+/*
+@objc private func userImageTapped(_ gesture: UITapGestureRecognizer) {
+    guard let imageView = gesture.view as? UIImageView else { return }
+    let userID = imageView.tag
+    
+    // Find the user by ID
+    guard let user = groupMembers.first(where: { $0.userID == userID }) else { return }
+    
+    print("Go to Profile: \(user.userName)")
+    
+    // TODO: Add navigation to user profile
+    // For now, just print the username
+}
+
+ */

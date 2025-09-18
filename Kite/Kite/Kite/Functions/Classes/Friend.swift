@@ -7,7 +7,7 @@
 
 import UIKit
 
- 
+
 class Friend {
     let friendID: Int
     let friendName: String
