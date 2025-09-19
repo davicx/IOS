@@ -53,7 +53,7 @@ class ImageCacheManager {
 // MARK: - User Factory Methods
 
 /// Creates a User from UserProfileModel data
-func createUserFromProfile(_ userProfileModel: UserProfileModel, isCurrentUser: Bool = false) -> User {
+func createUserFromProfile(_ userProfileModel: UserModel, isCurrentUser: Bool = false) -> User {
     return User(
         userID: userProfileModel.userID,
         userName: userProfileModel.userName,
@@ -66,7 +66,7 @@ func createUserFromProfile(_ userProfileModel: UserProfileModel, isCurrentUser: 
 }
 
 /// Creates a User from UserProfileModel data and fetches the profile image
-func createUserFromProfileWithImage(_ userProfileModel: UserProfileModel, isCurrentUser: Bool = false) async -> User {
+func createUserFromProfileWithImage(_ userProfileModel: UserModel, isCurrentUser: Bool = false) async -> User {
     let user = createUserFromProfile(userProfileModel, isCurrentUser: isCurrentUser)
     
     // Fetch and cache the profile image
@@ -77,32 +77,32 @@ func createUserFromProfileWithImage(_ userProfileModel: UserProfileModel, isCurr
     return user
 }
 
-/// Creates a User from FriendModel data with friend-specific properties
-func createUserFromFriend(_ friendModel: FriendModel) -> User {
+/// Creates a User from UserModel data with friend-specific properties
+func createUserFromFriend(_ userModel: UserModel) -> User {
     let user = User(
-        userID: friendModel.friendID,
-        userName: friendModel.friendName,
-        profileImageURL: friendModel.friendImage,
-        firstName: friendModel.firstName.isEmpty ? "Unknown" : friendModel.firstName,
-        lastName: friendModel.lastName.isEmpty ? "User" : friendModel.lastName,
-        biography: "", // FriendModel doesn't have biography
+        userID: userModel.userID,
+        userName: userModel.userName,
+        profileImageURL: userModel.userImage,
+        firstName: userModel.firstName.isEmpty ? "Unknown" : userModel.firstName,
+        lastName: userModel.lastName.isEmpty ? "User" : userModel.lastName,
+        biography: userModel.biography,
         isCurrentUser: false
     )
     
     // Set friend-specific properties
     user.setFriendProperties(
-        requestPending: friendModel.requestPending,
-        requestSentBy: friendModel.requestSentBy,
-        friendshipKey: friendModel.friendshipKey,
-        alsoYourFriend: friendModel.alsoYourFriend
+        requestPending: userModel.requestPending,
+        requestSentBy: userModel.requestSentBy,
+        friendshipKey: userModel.friendshipKey,
+        alsoYourFriend: userModel.alsoYourFriend
     )
     
     return user
 }
 
-/// Creates a User from FriendModel data with friend-specific properties and fetches the profile image
-func createUserFromFriendWithImage(_ friendModel: FriendModel) async -> User {
-    let user = createUserFromFriend(friendModel)
+/// Creates a User from UserModel data with friend-specific properties and fetches the profile image
+func createUserFromFriendWithImage(_ userModel: UserModel) async -> User {
+    let user = createUserFromFriend(userModel)
     
     // Fetch and cache the profile image
     if let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: user.profileImageURL) {
@@ -160,7 +160,7 @@ func fetchImagesForUsers(_ users: [User]) async {
 }
 
 /// Creates multiple users from UserProfileModel data and fetches their images in parallel
-func createUsersFromProfilesWithImages(_ userProfileModels: [UserProfileModel], isCurrentUser: Bool = false) async -> [User] {
+func createUsersFromProfilesWithImages(_ userProfileModels: [UserModel], isCurrentUser: Bool = false) async -> [User] {
     // First create all users without images
     let users = userProfileModels.map { createUserFromProfile($0, isCurrentUser: isCurrentUser) }
     
@@ -170,10 +170,10 @@ func createUsersFromProfilesWithImages(_ userProfileModels: [UserProfileModel], 
     return users
 }
 
-/// Creates multiple users from FriendModel data and fetches their images in parallel
-func createUsersFromFriendsWithImages(_ friendModels: [FriendModel]) async -> [User] {
+/// Creates multiple users from UserModel data and fetches their images in parallel
+func createUsersFromFriendsWithImages(_ userModels: [UserModel]) async -> [User] {
     // First create all users without images
-    let users = friendModels.map { createUserFromFriend($0) }
+    let users = userModels.map { createUserFromFriend($0) }
     
     // Then fetch all images in parallel
     await fetchImagesForUsers(users)

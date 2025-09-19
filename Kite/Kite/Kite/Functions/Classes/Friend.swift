@@ -7,7 +7,7 @@
 
 import UIKit
 
- 
+
 class Friend {
     let friendID: Int
     let friendName: String
@@ -21,10 +21,10 @@ class Friend {
     
     var profileImage: UIImage?
     
-    init(from model: FriendModel) {
-        self.friendID = model.friendID
-        self.friendName = model.friendName
-        self.friendImage = model.friendImage
+    init(from model: UserModel) {
+        self.friendID = model.userID
+        self.friendName = model.userName
+        self.friendImage = model.userImage
         self.firstName = model.firstName
         self.lastName = model.lastName
         self.requestPending = model.requestPending

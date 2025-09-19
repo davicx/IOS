@@ -9,6 +9,8 @@ import UIKit
 
 //STRING FUNCTIONS
 
+//let userName: String = inputUserName ?? ""
+
 //NUMBER FORMATTING FUNCTIONS
 func formatCount(_ count: Int) -> String {
     if count >= 1_000_000 {

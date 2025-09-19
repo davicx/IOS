@@ -11,7 +11,7 @@ class UsersDataController {
     static let shared = UsersDataController()
     
     // Dictionary to store user profiles by username
-    private(set) var users: [String: UserProfileModel] = [:]
+    private(set) var users: [String: UserModel] = [:]
     
     // Callback to notify when users are updated
     var onUsersUpdated: (() -> Void)?
@@ -24,7 +24,7 @@ class UsersDataController {
     }
     
     // Get user profile by username (from cache)
-    func getUser(username: String) -> UserProfileModel? {
+    func getUser(username: String) -> UserModel? {
         return users[username]
     }
     
@@ -34,7 +34,7 @@ class UsersDataController {
     }
     
     // Fetch user profile from API and cache it
-    func fetchUser(username: String) async -> UserProfileModel? {
+    func fetchUser(username: String) async -> UserModel? {
         do {
             let response = try await profileAPI.getUserProfileAPI(currentUser: username)
             
@@ -63,7 +63,7 @@ class UsersDataController {
     }
     
     // Get or fetch user profile (checks cache first, then fetches if needed)
-    func getOrFetchUser(username: String) async -> UserProfileModel? {
+    func getOrFetchUser(username: String) async -> UserModel? {
         // Check if we already have this user cached
         if let cachedUser = users[username] {
             return cachedUser
@@ -74,11 +74,11 @@ class UsersDataController {
     }
     
     // Fetch multiple users at once
-    func fetchUsers(usernames: [String]) async -> [UserProfileModel] {
-        var fetchedUsers: [UserProfileModel] = []
+    func fetchUsers(usernames: [String]) async -> [UserModel] {
+        var fetchedUsers: [UserModel] = []
         
         // Process users in parallel
-        await withTaskGroup(of: UserProfileModel?.self) { group in
+        await withTaskGroup(of: UserModel?.self) { group in
             for username in usernames {
                 group.addTask {
                     await self.getOrFetchUser(username: username)
@@ -102,7 +102,7 @@ class UsersDataController {
     }
     
     // Update user profile (when user updates their own profile)
-    func updateUser(username: String, updatedUser: UserProfileModel) {
+    func updateUser(username: String, updatedUser: UserModel) {
         users[username] = updatedUser
         onUsersUpdated?()
     }
@@ -120,12 +120,12 @@ class UsersDataController {
     }
     
     // Get all cached users
-    func getAllUsers() -> [UserProfileModel] {
+    func getAllUsers() -> [UserModel] {
         return Array(users.values)
     }
     
     // Get users by usernames (returns only cached users)
-    func getCachedUsers(usernames: [String]) -> [UserProfileModel] {
+    func getCachedUsers(usernames: [String]) -> [UserModel] {
         return usernames.compactMap { users[$0] }
     }
 }

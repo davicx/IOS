@@ -43,7 +43,6 @@ class User {
         self.profileImage = UIImage(named: "background_1")
     }
     
-    // MARK: - Computed Properties
     var displayName: String {
         if firstName == "Unknown" && lastName == "User" {
             return userName
@@ -59,7 +58,6 @@ class User {
         return calculateFriendshipStatus(for: self)
     }
     
-    // MARK: - Helper Methods
     func setFriendProperties(requestPending: Int, requestSentBy: String, friendshipKey: String, alsoYourFriend: Int) {
         self.requestPending = requestPending
         self.requestSentBy = requestSentBy
@@ -74,7 +72,7 @@ class User {
         self.alsoYourFriend = nil
     }
     
-    /// Manually fetch and cache the profile image for this user
+    //Manually fetch and cache the profile image for this user
     func fetchProfileImage() async {
         if let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: self.profileImageURL) {
             self.profileImage = image

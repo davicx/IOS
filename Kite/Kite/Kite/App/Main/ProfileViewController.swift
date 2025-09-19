@@ -144,15 +144,13 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
                 firstName: firstName,
                 lastName: lastName
             )
-
+            
             if let newImage = updatedImage {
                 self.userProfileLayout.profileImageView.imageView.image = newImage
             }
-
+            
             print("Profile updated: \(firstName), \(lastName)")
         }
     }
+    
 }
-
-
-

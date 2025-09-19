@@ -9,7 +9,7 @@ import UIKit
 
 
 struct FriendListResponseModel: Codable {
-    let data: [FriendModel]
+    let data: [UserModel]
     let message: String
     let success: Bool
     let statusCode: Int

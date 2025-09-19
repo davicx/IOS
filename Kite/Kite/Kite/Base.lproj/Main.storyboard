@@ -203,7 +203,7 @@
             <objects>
                 <viewController id="UIT-vI-uFH" customClass="IndividualPostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k5Y-F6-wbg">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="yAx-eW-caO"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -319,7 +319,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v6R-Ed-7mn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="64.885496183206101" y="1016.9014084507043"/>
+            <point key="canvasLocation" x="268" y="1012"/>
         </scene>
         <!--Friend Profile View Controller-->
         <scene sceneID="aR4-9L-r3s">
@@ -334,7 +334,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BO6-Vg-ijc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="917" y="1017"/>
+            <point key="canvasLocation" x="963" y="1012"/>
         </scene>
         <!--Edit Profile View Controller-->
         <scene sceneID="9We-OY-eaE">
@@ -569,7 +569,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gc1-sd-c2S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2395" y="286"/>
+            <point key="canvasLocation" x="-2445" y="286"/>
         </scene>
         <!--Groups-->
         <scene sceneID="zez-Km-tjZ">
@@ -592,7 +592,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="9PZ-mS-q4W"/>
+        <segue reference="IjC-YF-DI7"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">

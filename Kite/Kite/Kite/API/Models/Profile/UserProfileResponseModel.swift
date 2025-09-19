@@ -9,7 +9,7 @@ import Foundation
 
 
 struct UserProfileResponseModel: Codable {
-    let data: UserProfileModel
+    let data: UserModel
     let message: String
     let success: Bool
     let statusCode: Int
@@ -17,7 +17,7 @@ struct UserProfileResponseModel: Codable {
     let currentUser: String
     
     init() {
-        self.data = UserProfileModel()
+        self.data = UserModel()
         self.message = "Log user out"
         self.success = false
         self.statusCode = 401
