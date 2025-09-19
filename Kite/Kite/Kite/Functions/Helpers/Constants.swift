@@ -28,11 +28,12 @@ struct Constants {
     
     }
     
+    //HomeViewController GroupsViewController DiscoverViewController ProfileViewController
     //MAIN PAGES
     struct StoryboardApp {
         static let homeViewController = "HomeViewController"
-        static let groupsViewController = "GroupsViewController"
-        static let DiscoverViewController = "DiscoverViewController"
+        static let groupsViewController = "GroupsViewController" //TEMP idea but change all others match groupViewControllerID
+        static let discoverViewController = "DiscoverViewController"
         static let profileViewController = "ProfileViewController"
     }
     
@@ -52,14 +53,16 @@ struct Constants {
         static let friendCell = "friendCell"
 
     }
+    
+    static let cornerRadius: CGFloat = 8.0
+
+    struct VariableConstants {
+        static let tempURL = ""
+    }
+
 }
 
 
-static let cornerRadius: CGFloat = 8.0
-
-struct VariableConstants {
-    static let tempURL = ""
-}
 
 //static let groupViewControllerID = "groupViewControllerID"
 //static let listsViewControllerID = "listsViewControllerID"

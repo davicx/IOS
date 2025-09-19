@@ -7,6 +7,55 @@
 
 import UIKit
 
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        window = UIWindow(windowScene: windowScene)
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        // Instantiate from storyboard (make sure storyboard IDs are set!)
+        let homeVC = storyboard.instantiateViewController(withIdentifier: "HomeViewController")
+        let groupsVC = storyboard.instantiateViewController(withIdentifier: "groupViewControllerID")
+        let discoverVC = storyboard.instantiateViewController(withIdentifier: "DiscoverViewController")
+        let profileVC = storyboard.instantiateViewController(withIdentifier: "ProfileViewController")
+
+        // Embed in navigation controllers (so each tab can push new views)
+        let homeNav = UINavigationController(rootViewController: homeVC)
+        homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+
+        let groupsNav = UINavigationController(rootViewController: groupsVC)
+        groupsNav.tabBarItem = UITabBarItem(title: "Groups", image: UIImage(systemName: "person.3"), tag: 1)
+
+        let discoverNav = UINavigationController(rootViewController: discoverVC)
+        discoverNav.tabBarItem = UITabBarItem(title: "Discover", image: UIImage(systemName: "magnifyingglass"), tag: 2)
+
+        let profileNav = UINavigationController(rootViewController: profileVC)
+        profileNav.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 3)
+
+        // Create Tab Bar Controller
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [homeNav, groupsNav, discoverNav, profileNav]
+
+        // Set root
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+    }
+
+    func sceneDidDisconnect(_ scene: UIScene) {}
+    func sceneDidBecomeActive(_ scene: UIScene) {}
+    func sceneWillResignActive(_ scene: UIScene) {}
+    func sceneWillEnterForeground(_ scene: UIScene) {}
+    func sceneDidEnterBackground(_ scene: UIScene) {}
+}
+
+/*
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -50,3 +99,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+*/
