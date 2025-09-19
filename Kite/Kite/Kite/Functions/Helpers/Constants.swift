@@ -9,23 +9,13 @@ import UIKit
 
 
 struct Constants {
-    
-    static let cornerRadius: CGFloat = 8.0
-    
-    struct VariableConstants {
-        static let tempURL = ""
-    }
-    
+
     struct Segue {
         static let showLogin = "showLoginPage"
         static let showRegistrationScreen = "showRegistrationPage"
         static let showMainTabBarController = "showMainTabBarController"
         static let showEditProfileViewController = "showEditProfileViewController"
         static let showIndividualPost = "showIndividualPost"
-        
-        //static let showOnboardingScreen = "showOnboarding"
-        //static let showRegister = "showRegister"
-        
     }
     
     struct StoryboardID {
@@ -33,14 +23,21 @@ struct Constants {
         static let mainTabBarController = "MainTabBarController"
         static let onboardingViewController = "MainOnboardingViewController"
         static let friendProfileViewControllerID = "FriendProfileViewControllerID"
-        //static let groupViewControllerID = "groupViewControllerID"
-        //static let listsViewControllerID = "listsViewControllerID"
         static let individualGroupViewControllerID = "individualGroupViewControllerID"
         static let individualListViewControllerID = "individualListViewControllerID"
-        
-
+    
     }
-
+    
+    //MAIN PAGES
+    struct StoryboardApp {
+        static let homeViewController = "HomeViewController"
+        static let groupsViewController = "GroupsViewController"
+        static let DiscoverViewController = "DiscoverViewController"
+        static let profileViewController = "ProfileViewController"
+    }
+    
+    
+    
     //Image Constants
     struct Image {
         static let liked = "liked"
@@ -57,3 +54,14 @@ struct Constants {
     }
 }
 
+
+static let cornerRadius: CGFloat = 8.0
+
+struct VariableConstants {
+    static let tempURL = ""
+}
+
+//static let groupViewControllerID = "groupViewControllerID"
+//static let listsViewControllerID = "listsViewControllerID"
+//static let showOnboardingScreen = "showOnboarding"
+//static let showRegister = "showRegister"
