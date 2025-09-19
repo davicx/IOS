@@ -492,23 +492,15 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vhZ-Hw-v33" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1744" y="-464"/>
+            <point key="canvasLocation" x="-1744" y="-655"/>
         </scene>
-        <!--Discover View Controller-->
-        <scene sceneID="QeR-sS-gEn">
+        <!--Discover-->
+        <scene sceneID="BCN-18-1E4">
             <objects>
-                <viewController storyboardIdentifier="DiscoverViewController" id="kj3-Kj-bRv" customClass="DiscoverViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dsE-Er-iQ0">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="lqN-DV-Mgs"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="Tjq-4W-3eC"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OX9-Wv-ZHk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Discover" id="TbY-6v-lxa" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NzO-Id-5O6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234.35114503816794" y="-464.08450704225356"/>
+            <point key="canvasLocation" x="-1201" y="-240"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="D7p-UQ-uwW">
@@ -584,24 +576,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1w5-ln-qf8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1744" y="324"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="9kQ-S2-DRd">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Md-gg-hhQ" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fFU-We-CIs">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="kj3-Kj-bRv" kind="relationship" relationship="rootViewController" id="jby-ju-rRP"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6HY-1V-bVv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-692.36641221374043" y="-464.08450704225356"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
