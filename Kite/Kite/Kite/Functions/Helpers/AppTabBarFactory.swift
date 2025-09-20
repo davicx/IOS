@@ -13,12 +13,18 @@ class AppTabBarFactory: UIViewController {
         
         // MAIN: Main storyboard for Home, Groups
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let homeVC = mainStoryboard.instantiateViewController(withIdentifier: "HomeViewController")
-        let groupsVC = mainStoryboard.instantiateViewController(withIdentifier: "groupViewControllerID")
+        //let homeVC = mainStoryboard.instantiateViewController(withIdentifier: "HomeViewController")
+        //let groupsVC = mainStoryboard.instantiateViewController(withIdentifier: "groupViewControllerID")
 
         
-        //HOME: Home Storyboard 
-        
+        //HOME: Home Storyboard
+        let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
+        let homeVC = homeStoryboard.instantiateViewController(withIdentifier: "HomeViewController")
+
+        //GROUPS: Group Storyboard
+        let groupsStoryboard = UIStoryboard(name: "Groups", bundle: nil)
+        let groupsVC = groupsStoryboard.instantiateViewController(withIdentifier: "groupViewControllerID")
+
         // DISCOVER: Discover storyboard
         let discoverStoryboard = UIStoryboard(name: "Discover", bundle: nil)
         let discoverVC = discoverStoryboard.instantiateViewController(withIdentifier: "DiscoverViewController")
@@ -26,7 +32,6 @@ class AppTabBarFactory: UIViewController {
         // PROFILE: Profile storyboard
         let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
         let profileVC = profileStoryboard.instantiateViewController(withIdentifier: "ProfileViewController")
-        
         
 
         // NAVIGATION: Wrap each in navigation controllers

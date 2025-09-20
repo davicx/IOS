@@ -37,6 +37,14 @@ struct Constants {
         static let profileViewController = "ProfileViewController"
     }
     
+    struct StoryboardNames {
+        static let homeStoryboard = "Home"
+        static let groupsStoryboard = "Groups" //TEMP idea but change all others match groupViewControllerID
+        static let discoverStoryboard = "Discover"
+        static let profileStoryboard = "Profile"
+        static let postStoryboard = "Post"
+    }
+    
     
     
     //Image Constants

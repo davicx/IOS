@@ -128,7 +128,7 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func friendsButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
         friendVC.delegate = self
         
@@ -154,7 +154,7 @@ class ProfileViewController: UIViewController {
     @objc private func editButtonTapped() {
         guard let userResponse = userResponseModel else { return }
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let editProfileVC = storyboard.instantiateViewController(withIdentifier: "EditProfileViewController") as! EditProfileViewController
 
         // Send the existing data
@@ -515,7 +515,7 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedFriend = currentData[indexPath.row]
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         if let vc = storyboard.instantiateViewController(
             withIdentifier: "FriendProfileViewControllerID"
         ) as? FriendProfileViewController {

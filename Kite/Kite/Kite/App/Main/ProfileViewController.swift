@@ -142,6 +142,8 @@ class ProfileViewController: UIViewController {
         //friendVC.users = FriendDataController.shared.friends
         self.navigationController?.pushViewController(friendVC, animated: true)
     }
+    
+    
 
     func loadFriendImages(for friends: [User], using imageHelper: ImageFunctions) async {
         await withTaskGroup(of: Void.self) { group in

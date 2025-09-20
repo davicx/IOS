@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
     let postAPI = PostsAPI()

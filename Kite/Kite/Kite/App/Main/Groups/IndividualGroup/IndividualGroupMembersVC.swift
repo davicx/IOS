@@ -66,7 +66,7 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
         let selectedMember = groupMembers[indexPath.row]
         
         // Navigate to member's profile
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
             vc.friend = selectedMember
             navigationController?.pushViewController(vc, animated: true)

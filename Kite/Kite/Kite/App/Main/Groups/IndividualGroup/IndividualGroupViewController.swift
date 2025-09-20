@@ -309,14 +309,6 @@ class IndividualGroupViewController: UIViewController {
 
     
     //VIEWS: Navigate to an Individual Post
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segue.showIndividualPost,
-           let postViewController = segue.destination as? IndividualPostViewController,
-           let selectedPost = sender as? Post {
-            postViewController.currentPost = selectedPost
-            //postViewController.commentsArray = selectedPost.commentsArray ?? []
-        }
-    }
     
 }
 
@@ -339,10 +331,10 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         tableView.deselectRow(at: indexPath, animated: true)
         let post = postDataController.posts[indexPath.row]
 
-        if canPerformSegue(withIdentifier: Constants.Segue.showIndividualPost) {
-            performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
-        } else {
-            print("Segue 'showIndividualPost' is not connected in storyboard for this view controller.")
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+            postViewController.currentPost = post
+            navigationController?.pushViewController(postViewController, animated: true)
         }
     }
 
@@ -505,10 +497,10 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         tableView.deselectRow(at: indexPath, animated: true)
         let post = postDataController.posts[indexPath.row]
 
-        if canPerformSegue(withIdentifier: Constants.Segue.showIndividualPost) {
-            performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
-        } else {
-            print("Segue 'showIndividualPost' is not connected in storyboard for this view controller.")
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+            postViewController.currentPost = post
+            navigationController?.pushViewController(postViewController, animated: true)
         }
     }
 

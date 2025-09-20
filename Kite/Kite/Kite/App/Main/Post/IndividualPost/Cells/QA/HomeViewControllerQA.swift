@@ -91,14 +91,6 @@ class HomeViewControllerQA: UIViewController {
         postsTableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segue.showIndividualPost,
-           let postViewController = segue.destination as? IndividualPostViewController,
-           let selectedPost = sender as? Post {
-            postViewController.currentPost = selectedPost
-            postViewController.commentsArray = selectedPost.commentsArray ?? []
-        }
-    }
     
     //FUNCTIONS
     func fetchPosts() {
@@ -127,7 +119,12 @@ extension HomeViewControllerQA: UITableViewDataSource, UITableViewDelegate {
 
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
          let post = postDataController.posts[indexPath.row]
-         performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
+         
+         let storyboard = UIStoryboard(name: "Post", bundle: nil)
+         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+             postViewController.currentPost = post
+             navigationController?.pushViewController(postViewController, animated: true)
+         }
      }
 
     

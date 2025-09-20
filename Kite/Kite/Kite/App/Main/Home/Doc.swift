@@ -1375,13 +1375,6 @@ func userUnlikePost(currentPostID: Int, likeModel: LikeModel) {
      // Optional: handle likeModel here if needed
  }
   */
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == Constants.Segue.showIndividualPost,
-       let postViewController = segue.destination as? IndividualPostViewController,
-       let selectedPost = sender as? Post {
-        postViewController.currentPost = selectedPost
-    }
-}
 */
 
 //print("heightForRowAt postImageHeight \(postImageHeight) postCaptionHeight \(postCaptionHeight)")

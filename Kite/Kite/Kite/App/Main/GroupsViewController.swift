@@ -247,7 +247,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
             group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
         }
         
-        let storyboard = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil)
+        let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
         vc.group = group
         navigationController?.pushViewController(vc, animated: true)

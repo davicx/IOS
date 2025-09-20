@@ -311,7 +311,12 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
           let post = postDataController.posts[indexPath.row]
-          performSegue(withIdentifier: Constants.Segue.showIndividualPost, sender: post)
+          
+          let storyboard = UIStoryboard(name: "Post", bundle: nil)
+          if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+              postViewController.currentPost = post
+              navigationController?.pushViewController(postViewController, animated: true)
+          }
       }
 
      
