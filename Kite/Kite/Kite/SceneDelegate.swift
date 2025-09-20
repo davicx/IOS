@@ -17,6 +17,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = AppTabBarFactory.makeMainTabBar()
+        window?.makeKeyAndVisible()
+    }
+
+    func sceneDidDisconnect(_ scene: UIScene) {}
+    func sceneDidBecomeActive(_ scene: UIScene) {}
+    func sceneWillResignActive(_ scene: UIScene) {}
+    func sceneWillEnterForeground(_ scene: UIScene) {}
+    func sceneDidEnterBackground(_ scene: UIScene) {}
+}
+
+/*
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        window = UIWindow(windowScene: windowScene)
 
         //MAIN Main storyboard for Home, Groups, Profile
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -52,7 +73,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [homeNav, groupsNav, discoverNav, profileNav]
 
-        window?.rootViewController = tabBarController
+        //window?.rootViewController = tabBarController
+        window?.rootViewController = AppTabBarFactory.makeMainTabBar()
         window?.makeKeyAndVisible()
     }
 
@@ -62,6 +84,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {}
     func sceneDidEnterBackground(_ scene: UIScene) {}
 }
+*/
 
 
 /*

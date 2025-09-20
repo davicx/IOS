@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 class PresenterManager {
         
     //Singleton
@@ -21,18 +20,12 @@ class PresenterManager {
     }
     
     func showMainApp() {
-        var viewController: UIViewController
-        
-        viewController = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil).instantiateViewController(withIdentifier: Constants.StoryboardID.mainTabBarController)
-        
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
-            let window = sceneDelegate.window {
-            window.rootViewController = viewController
-            
-            UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: nil, completion: nil)
+           let window = sceneDelegate.window {
+            window.rootViewController = AppTabBarFactory.makeMainTabBar()
+            window.makeKeyAndVisible()
         }
     }
-    
     
     func showOnboarding() {
         var viewController: UIViewController
@@ -48,10 +41,24 @@ class PresenterManager {
         }
         
     }
-    
-    
      
 }
+
+/*
+func showMainApp() {
+    var viewController: UIViewController
+    
+    viewController = UIStoryboard(name: Constants.StoryboardID.main, bundle: nil).instantiateViewController(withIdentifier: Constants.StoryboardID.mainTabBarController)
+    
+    if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+        let window = sceneDelegate.window {
+        window.rootViewController = viewController
+        
+        UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: nil, completion: nil)
+    }
+}
+ */
+
 
 
 /*
