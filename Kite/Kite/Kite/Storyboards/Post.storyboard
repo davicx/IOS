@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Post-->
+        <scene sceneID="NKW-5e-uIw">
+            <objects>
+                <viewController storyboardIdentifier="NewPostViewController" id="Qmd-6V-jFJ" customClass="NewPostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Yhf-iR-PNq">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="itI-m5-HLl">
+                                <rect key="frame" x="20" y="79" width="353" height="220"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="220" id="FRx-cI-75D"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="New Post" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3gC-W1-ECI">
+                                <rect key="frame" x="20" y="319" width="353" height="120"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="LHH-b1-fOA"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YmV-Jw-CkD">
+                                <rect key="frame" x="20" y="519" width="353" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="KWU-3Q-oml"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Make Post"/>
+                                <connections>
+                                    <action selector="NewPostButton:" destination="Qmd-6V-jFJ" eventType="touchUpInside" id="DM4-42-P8b"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FN9-pv-xxV">
+                                <rect key="frame" x="20" y="459" width="353" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="i5h-ze-xD2"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Select Image"/>
+                                <connections>
+                                    <action selector="selectImageButton:" destination="Qmd-6V-jFJ" eventType="touchUpInside" id="BcY-hR-WnH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Kd-6x-EzM">
+                                <rect key="frame" x="20" y="579" width="353" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ohP-pG-Ckv"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Logout"/>
+                                <connections>
+                                    <action selector="NewPostButton:" destination="Qmd-6V-jFJ" eventType="touchUpInside" id="l9y-Sh-6LQ"/>
+                                    <action selector="tempLogoutButton:" destination="Qmd-6V-jFJ" eventType="touchUpInside" id="y4B-VQ-cNu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Fqj-60-H8f"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="itI-m5-HLl" firstAttribute="top" secondItem="Fqj-60-H8f" secondAttribute="top" constant="20" id="0Zt-NC-id5"/>
+                            <constraint firstItem="1Kd-6x-EzM" firstAttribute="top" secondItem="YmV-Jw-CkD" secondAttribute="bottom" constant="20" id="3e4-bn-SKA"/>
+                            <constraint firstItem="Fqj-60-H8f" firstAttribute="trailing" secondItem="itI-m5-HLl" secondAttribute="trailing" constant="20" id="7hN-nQ-Taf"/>
+                            <constraint firstItem="FN9-pv-xxV" firstAttribute="top" secondItem="3gC-W1-ECI" secondAttribute="bottom" constant="20" id="CTe-wj-Xib"/>
+                            <constraint firstItem="YmV-Jw-CkD" firstAttribute="leading" secondItem="Fqj-60-H8f" secondAttribute="leading" constant="20" id="DPr-NA-xbL"/>
+                            <constraint firstItem="3gC-W1-ECI" firstAttribute="top" secondItem="itI-m5-HLl" secondAttribute="bottom" constant="20" id="Gw6-aJ-Mbm"/>
+                            <constraint firstItem="Fqj-60-H8f" firstAttribute="trailing" secondItem="1Kd-6x-EzM" secondAttribute="trailing" constant="20" id="Ipa-b5-duI"/>
+                            <constraint firstItem="1Kd-6x-EzM" firstAttribute="leading" secondItem="Fqj-60-H8f" secondAttribute="leading" constant="20" id="K7W-xU-bsL"/>
+                            <constraint firstItem="3gC-W1-ECI" firstAttribute="leading" secondItem="Fqj-60-H8f" secondAttribute="leading" constant="20" id="Mvi-QM-4pM"/>
+                            <constraint firstItem="Fqj-60-H8f" firstAttribute="trailing" secondItem="FN9-pv-xxV" secondAttribute="trailing" constant="20" id="Ntw-Ca-4y3"/>
+                            <constraint firstItem="Fqj-60-H8f" firstAttribute="trailing" secondItem="YmV-Jw-CkD" secondAttribute="trailing" constant="20" id="dF4-8v-Ncz"/>
+                            <constraint firstItem="itI-m5-HLl" firstAttribute="leading" secondItem="Fqj-60-H8f" secondAttribute="leading" constant="20" id="iXj-Im-B52"/>
+                            <constraint firstItem="FN9-pv-xxV" firstAttribute="leading" secondItem="Fqj-60-H8f" secondAttribute="leading" constant="20" id="pSb-eW-IcR"/>
+                            <constraint firstItem="YmV-Jw-CkD" firstAttribute="top" secondItem="FN9-pv-xxV" secondAttribute="bottom" constant="20" id="qYw-Kr-lIV"/>
+                            <constraint firstItem="Fqj-60-H8f" firstAttribute="trailing" secondItem="3gC-W1-ECI" secondAttribute="trailing" constant="20" id="yci-Ng-dy3"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Post" id="Wr8-BI-t5I"/>
+                    <connections>
+                        <outlet property="newPostButtonStyle" destination="YmV-Jw-CkD" id="Dln-rD-p78"/>
+                        <outlet property="newPostCaption" destination="3gC-W1-ECI" id="WzT-GN-dlP"/>
+                        <outlet property="newPostImageView" destination="itI-m5-HLl" id="z9K-21-Jt2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Veh-1a-nHk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2473" y="-508"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

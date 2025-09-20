@@ -96,8 +96,8 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func friendsButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendsViewController
         //friendVC.delegate = self
         //friendVC.users = FriendDataController.shared.friends
         self.navigationController?.pushViewController(friendVC, animated: true)

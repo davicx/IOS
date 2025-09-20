@@ -18,17 +18,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window = UIWindow(windowScene: windowScene)
 
-        // Main storyboard for Home, Groups, Profile
+        //MAIN Main storyboard for Home, Groups, Profile
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let homeVC = mainStoryboard.instantiateViewController(withIdentifier: "HomeViewController")
         let groupsVC = mainStoryboard.instantiateViewController(withIdentifier: "groupViewControllerID")
-        let profileVC = mainStoryboard.instantiateViewController(withIdentifier: "ProfileViewController")
+        //let profileVC = mainStoryboard.instantiateViewController(withIdentifier: "ProfileViewController")
 
         // Discover storyboard
         let discoverStoryboard = UIStoryboard(name: "Discover", bundle: nil)
         let discoverVC = discoverStoryboard.instantiateViewController(withIdentifier: "DiscoverViewController")
 
-        // Wrap each in navigation controllers
+        
+        // Profile storyboard
+        let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
+        let profileVC = profileStoryboard.instantiateViewController(withIdentifier: "ProfileViewController")
+
+      
+        
+        //NAVIGATION Wrap each in navigation controllers
         let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
 
