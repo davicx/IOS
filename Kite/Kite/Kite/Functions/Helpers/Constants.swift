@@ -11,21 +11,21 @@ import UIKit
 struct Constants {
 
     struct Segue {
-        static let showLogin = "showLoginPage"
-        static let showRegistrationScreen = "showRegistrationPage"
-        static let showMainTabBarController = "showMainTabBarController"
-        static let showEditProfileViewController = "showEditProfileViewController"
+        //static let showLogin = "showLoginPage"
+        //static let showRegistrationScreen = "showRegistrationPage"
+        //static let showMainTabBarController = "showMainTabBarController"
+        //static let showEditProfileViewController = "showEditProfileViewController"
         static let showIndividualPost = "showIndividualPost"
+    
     }
     
     struct StoryboardID {
         static let main = "Main"
         static let mainTabBarController = "MainTabBarController"
         static let onboardingViewController = "MainOnboardingViewController"
-        static let friendProfileViewControllerID = "FriendProfileViewControllerID"
+        //static let friendProfileViewControllerID = "FriendProfileViewControllerID"
         static let individualGroupViewControllerID = "individualGroupViewControllerID"
-        static let individualListViewControllerID = "individualListViewControllerID"
-    
+        //static let individualListViewControllerID = "individualListViewControllerID"
     }
     
     //HomeViewController GroupsViewController DiscoverViewController ProfileViewController
