@@ -22,6 +22,27 @@ class IndividualPostCell: UITableViewCell {
     // Subviews
     let itemImageView = componentFunctions.createUIView(backgroundColor: UIColor.systemPink)
     let itemDescriptionView = componentFunctions.createUIView(backgroundColor: UIColor.systemTeal)
+    
+    // Add these new UI elements
+    private let productImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .lightGray // placeholder background
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+
+    private let purchaseButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Purchase Me", for: .normal)
+        button.backgroundColor = .systemBlue
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 8
+        return button
+    }()
+
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,6 +51,8 @@ class IndividualPostCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+        purchaseButton.addTarget(self, action: #selector(didTapPurchase), for: .touchUpInside)
+
     }
     
 
@@ -81,6 +104,26 @@ class IndividualPostCell: UITableViewCell {
             itemDescriptionView.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 12),
             itemDescriptionView.trailingAnchor.constraint(equalTo: itemInfoView.trailingAnchor, constant: -12)
         ])
+        
+        //Item Image and Button
+        itemImageView.addSubview(productImageView)
+        itemImageView.addSubview(purchaseButton)
+
+        // Product image constraints
+        NSLayoutConstraint.activate([
+            productImageView.topAnchor.constraint(equalTo: itemImageView.topAnchor, constant: 8),
+            productImageView.centerXAnchor.constraint(equalTo: itemImageView.centerXAnchor),
+            productImageView.widthAnchor.constraint(equalToConstant: 160),
+            productImageView.heightAnchor.constraint(equalToConstant: 160),
+            
+            // Button below image
+            purchaseButton.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 8),
+            purchaseButton.centerXAnchor.constraint(equalTo: itemImageView.centerXAnchor),
+            purchaseButton.widthAnchor.constraint(equalToConstant: 140),
+            purchaseButton.heightAnchor.constraint(equalToConstant: 40),
+            purchaseButton.bottomAnchor.constraint(lessThanOrEqualTo: itemImageView.bottomAnchor, constant: -8)
+        ])
+
     }
     
     
@@ -139,6 +182,13 @@ class IndividualPostCell: UITableViewCell {
             dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
+    //ACTIONS
+    @objc private func didTapPurchase() {
+        print("purchased")
+    }
+
+
 }
 
 /*
