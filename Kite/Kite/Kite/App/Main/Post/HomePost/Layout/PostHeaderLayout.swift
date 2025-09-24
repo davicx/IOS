@@ -11,7 +11,7 @@ import UIKit
 
 class PostHeaderLayout: UIView {
 
-    private let headerView: UIView = CreateViewStyles.createHeaderView()
+    private let headerView: UIView = componentFunctions.createHeaderView()
 
 
     // MARK: - Init

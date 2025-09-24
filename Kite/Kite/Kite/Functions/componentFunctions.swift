@@ -8,9 +8,16 @@
 import UIKit
 
 
-struct CreateViewStyles {
+struct componentFunctions {
 
-
+    //VIEWS
+    static func createUIView(backgroundColor: UIColor = .clear) -> UIView {
+        let view = UIView()
+        view.backgroundColor = backgroundColor
+        return view
+    }
+    
+    
     
     //IMAGE
     static func createPostImageView() -> UIView {
@@ -134,11 +141,4 @@ struct CreateViewStyles {
         return label
     }
     
-    
-    //VIEWS
-    static func createUIView(backgroundColor: UIColor = .clear) -> UIView {
-        let view = UIView()
-        view.backgroundColor = backgroundColor
-        return view
-    }
 }

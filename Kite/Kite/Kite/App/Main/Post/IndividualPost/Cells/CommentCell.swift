@@ -11,19 +11,19 @@ import UIKit
 class CommentCell: UITableViewCell {
     
     //VIEWS
-    let commentView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let commentLeftView = CreateViewStyles.createUIView(backgroundColor: .systemPink)
-    let commentRightView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let commentView = componentFunctions.createUIView(backgroundColor: .clear)
+    let commentLeftView = componentFunctions.createUIView(backgroundColor: .systemPink)
+    let commentRightView = componentFunctions.createUIView(backgroundColor: .clear)
     
-    let commentHeader = CreateViewStyles.createUIView(backgroundColor: .systemYellow)
-    let commentBody = CreateViewStyles.createUIView(backgroundColor: .systemBlue)
-    let commentFooter = CreateViewStyles.createUIView(backgroundColor: .systemGreen)
+    let commentHeader = componentFunctions.createUIView(backgroundColor: .systemYellow)
+    let commentBody = componentFunctions.createUIView(backgroundColor: .systemBlue)
+    let commentFooter = componentFunctions.createUIView(backgroundColor: .systemGreen)
     
-    let dividerView = CreateViewStyles.createCommentDividerView()
+    let dividerView = componentFunctions.createCommentDividerView()
 
  
     //IMAGE AND LABELS
-    let commentLabel = CreateViewStyles.createCommentLabel()
+    let commentLabel = componentFunctions.createCommentLabel()
     let profileImageView = UIImageView()
     
     
@@ -95,22 +95,22 @@ class CommentCell: UITableViewCell {
     }
 
     //HEADER: Username and Menu Label
-    let commentMenuView = CreateViewStyles.createUIView(backgroundColor: .systemRed)
-    let commentUserNameView = CreateViewStyles.createUIView(backgroundColor: .systemOrange)
+    let commentMenuView = componentFunctions.createUIView(backgroundColor: .systemRed)
+    let commentUserNameView = componentFunctions.createUIView(backgroundColor: .systemOrange)
     
     // User name views inside commentUserNameView
-    let userNameView = CreateViewStyles.createUIView(backgroundColor: .systemPurple)
-    let userHandleView = CreateViewStyles.createUIView(backgroundColor: .systemTeal)
+    let userNameView = componentFunctions.createUIView(backgroundColor: .systemPurple)
+    let userHandleView = componentFunctions.createUIView(backgroundColor: .systemTeal)
     
     // Labels for user info
     let userNameLabel = UILabel()
     let userHandleLabel = UILabel()
     
     // Footer holder views
-    let likeHolderView = CreateViewStyles.createUIView(backgroundColor: .systemRed)
-    let likeHolderCount = CreateViewStyles.createUIView(backgroundColor: .systemBlue)
-    let commentHolderView = CreateViewStyles.createUIView(backgroundColor: .systemGreen)
-    let commentHolderCount = CreateViewStyles.createUIView(backgroundColor: .systemOrange)
+    let likeHolderView = componentFunctions.createUIView(backgroundColor: .systemRed)
+    let likeHolderCount = componentFunctions.createUIView(backgroundColor: .systemBlue)
+    let commentHolderView = componentFunctions.createUIView(backgroundColor: .systemGreen)
+    let commentHolderCount = componentFunctions.createUIView(backgroundColor: .systemOrange)
     
     // Footer images and labels
     let likeImageView = UIImageView()

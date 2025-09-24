@@ -15,11 +15,11 @@ class HomePostCell: UITableViewCell {
     private let spinnerHelper = SpinnerHelper()
 
     //MAIN VIEWS
-    let postHeaderView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postCaptionView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postSocialsView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postDividerView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postHeaderView = componentFunctions.createUIView(backgroundColor: .clear)
+    let postImageView = componentFunctions.createUIView(backgroundColor: .clear)
+    let postCaptionView = componentFunctions.createUIView(backgroundColor: .clear)
+    let postSocialsView = componentFunctions.createUIView(backgroundColor: .clear)
+    let postDividerView = componentFunctions.createUIView(backgroundColor: .clear)
     
     // Add height constraint for dynamic sizing
     var postImageHeightConstraint: NSLayoutConstraint?
@@ -27,16 +27,16 @@ class HomePostCell: UITableViewCell {
 
 
     //HEADER
-    let headerGroupImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupImageView = componentFunctions.createUIView(backgroundColor: .clear)
     let headerGroupImage = UIImageView()
     
-    let headerGroupNameView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupNameView = componentFunctions.createUIView(backgroundColor: .clear)
     let headerGroupNameLabel = UILabel()
     
-    let headerGroupInfoView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupInfoView = componentFunctions.createUIView(backgroundColor: .clear)
     let headerGroupInfoLabel = UILabel()
     
-    let headerGroupMenuView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let headerGroupMenuView = componentFunctions.createUIView(backgroundColor: .clear)
     let headerGroupMenuIcon = UIImageView()
     
     //GOOD USES STYLE
@@ -153,14 +153,14 @@ class HomePostCell: UITableViewCell {
     }
     
     //POST CAPTION
-    let postCaptionUserImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postCaptionUserImageView = componentFunctions.createUIView(backgroundColor: .clear)
     let postCaptionUserImage = UIImageView()
     
-    let postCaptionUserNameView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postCaptionUserNameView = componentFunctions.createUIView(backgroundColor: .clear)
     let postCaptionUsernameLabel = UILabel()
     
-    let postCaptionTextView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postCaptionLabel = CreateViewStyles.createPostStyleCaptionText()
+    let postCaptionTextView = componentFunctions.createUIView(backgroundColor: .clear)
+    let postCaptionLabel = componentFunctions.createPostStyleCaptionText()
     
     private func setupCaptionViews() {
         
@@ -241,14 +241,14 @@ class HomePostCell: UITableViewCell {
 
     
     //POST SOCIALS
-    let postSocialLikesView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postSocialLikesView = componentFunctions.createUIView(backgroundColor: .clear)
     let postSocialLikesIcon = UIImageView()
     let postSocialLikesCount = UILabel()
-    let postSocialCommentsView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postSocialCommentsView = componentFunctions.createUIView(backgroundColor: .clear)
     let postSocialCommentsIcon = UIImageView()
     let postSocialCommentsCount = UILabel()
-    let postSocialFillView = CreateViewStyles.createUIView(backgroundColor: .clear)
-    let postSocialBookMarkView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let postSocialFillView = componentFunctions.createUIView(backgroundColor: .clear)
+    let postSocialBookMarkView = componentFunctions.createUIView(backgroundColor: .clear)
    
     private func setupSocialsViews() {
         postSocialsView.translatesAutoresizingMaskIntoConstraints = false

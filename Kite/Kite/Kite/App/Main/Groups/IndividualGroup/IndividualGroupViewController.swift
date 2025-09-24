@@ -30,8 +30,7 @@ class IndividualGroupViewController: UIViewController {
         
         //VIEWS SETUP
         setupTableView()
-        printPageInfo(vcName: "IndividualGroupViewController")
-      
+
         // Start polling
         pollingManager.onFetchPosts = { [weak self] in
             self?.fetchPostsForGroup()
@@ -42,25 +41,6 @@ class IndividualGroupViewController: UIViewController {
         let groupID = group?.groupID ?? 0
         let groupName = group?.groupName ?? "No Group Name"
         
-
-        // TEMPORARY: Print group users
-        if let group = group {
-            print("________________________")
-            print("GROUP USERS DEBUG")
-            print("Group ID: \(group.groupID)")
-            print("Group Name: \(group.groupName)")
-            print("Active Members: \(group.activeGroupMembers)")
-            print("Pending Members: \(group.pendingGroupMembers)")
-            print("Created By: \(group.createdBy ?? "Unknown")")
-            print("________________________")
-            
-            // Fetch group member profiles
-            Task {
-                await fetchGroupMemberProfiles()
-            }
-        } else {
-            print("No group data available")
-        }
         
         // Observe post updates
         postDataController.onPostsUpdated = { [weak self] in
@@ -75,6 +55,10 @@ class IndividualGroupViewController: UIViewController {
         fetchPostsForGroup()
         tableView.reloadData()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "IndividualGroupViewController")
+    }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -82,7 +66,7 @@ class IndividualGroupViewController: UIViewController {
     }
     
 
-    //TABLE VIEW:
+    //LAYOUT
     //Header Layout
     private func setupTableView() {
         view.addSubview(tableView)
@@ -163,6 +147,8 @@ class IndividualGroupViewController: UIViewController {
         return headerView
     }
     
+    
+    
 
     //FUNCTIONS
     private func fetchPostsForGroup() {
@@ -183,31 +169,18 @@ class IndividualGroupViewController: UIViewController {
         }
         
         let allMembers = group.activeGroupMembers + group.pendingGroupMembers
-        
-        print("________________________")
-        print("FETCHING GROUP MEMBER PROFILES")
-        print("Total members to fetch: \(allMembers.count)")
-        print("Members: \(allMembers)")
-        print("________________________")
-        
+     
         // Fetch all member profiles with images using UsersDataController
         let groupMembers = await usersDataController.fetchUsersWithImages(usernames: allMembers)
         
-        print("________________________")
-        print("FETCHED GROUP MEMBER PROFILES")
-        print("Successfully fetched \(groupMembers.count) profiles:")
-        for member in groupMembers {
-            print("- \(member.userName): \(member.displayName)")
-        }
-        print("________________________")
-        
-        // Store groupMembers for use in UI
         self.groupMembers = groupMembers
         
         // Refresh the table header to show the group members
         DispatchQueue.main.async {
             self.tableView.tableHeaderView = self.createTableHeader()
         }
+        
+
     }
     
     private func setupGroupMembersInScrollView(_ stackView: UIStackView) {
@@ -306,12 +279,9 @@ class IndividualGroupViewController: UIViewController {
         navigationController?.pushViewController(membersVC, animated: true)
     }
 
-
-    
     //VIEWS: Navigate to an Individual Post
     
 }
-
 
 
 extension IndividualGroupViewController: UITableViewDataSource, UITableViewDelegate {
@@ -339,6 +309,11 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Auto-sizing for dynamic content
+        return UITableView.automaticDimension
+        
+        // Original manual height calculation (commented out for auto-sizing)
+        /*
         let currentPost = postDataController.posts[indexPath.row]
         let currentPostImage = currentPost.postImageData
 
@@ -353,6 +328,7 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 
         //return StyleConstants.postHeader + postImageHeight + StyleConstants.postSocials + postCaptionHeight + StyleConstants.postDivider
         return 122
+        */
     }
 }
 
@@ -542,3 +518,46 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 }
 
  */
+
+
+//APPENDIX
+/*
+print("________________________")
+print("FETCHING GROUP MEMBER PROFILES")
+print("Total members to fetch: \(allMembers.count)")
+print("Members: \(allMembers)")
+print("________________________")
+
+
+print("________________________")
+print("FETCHED GROUP MEMBER PROFILES")
+print("Successfully fetched \(groupMembers.count) profiles:")
+for member in groupMembers {
+    print("- \(member.userName): \(member.displayName)")
+}
+print("________________________")
+*/
+// Store groupMembers for use in UI
+
+
+
+// TEMPORARY: Print group users
+/*
+if let group = group {
+    print("________________________")
+    print("GROUP USERS DEBUG")
+    print("Group ID: \(group.groupID)")
+    print("Group Name: \(group.groupName)")
+    print("Active Members: \(group.activeGroupMembers)")
+    print("Pending Members: \(group.pendingGroupMembers)")
+    print("Created By: \(group.createdBy ?? "Unknown")")
+    print("________________________")
+    
+    // Fetch group member profiles
+    Task {
+        await fetchGroupMemberProfiles()
+    }
+} else {
+    print("No group data available")
+}
+*/

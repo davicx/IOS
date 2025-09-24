@@ -10,16 +10,16 @@ import UIKit
 class ItemCell: UITableViewCell {
     
     //MAIN VIEWS
-    let productContainerView = CreateViewStyles.createUIView(backgroundColor: .white)
-    let closeButtonView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let productContainerView = componentFunctions.createUIView(backgroundColor: .white)
+    let closeButtonView = componentFunctions.createUIView(backgroundColor: .clear)
     let closeButton = UIImageView()
     
     //PRODUCT IMAGE SECTION
-    let productImageView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let productImageView = componentFunctions.createUIView(backgroundColor: .clear)
     let productImage = UIImageView()
     
     //PRODUCT INFO SECTION
-    let productInfoView = CreateViewStyles.createUIView(backgroundColor: .clear)
+    let productInfoView = componentFunctions.createUIView(backgroundColor: .clear)
     let productPriceLabel = UILabel()
     let productNameLabel = UILabel()
     let productBrandLabel = UILabel()

@@ -11,9 +11,17 @@ import UIKit
 //WISHLIST: Item 
 class IndividualPostCell: UITableViewCell {
     
+    //MAIN VIEWS
     let itemView = UIView()
     let dividerView = UIView()
-
+    
+    // New views with different colors for layout testing
+    let itemInfoView = componentFunctions.createUIView(backgroundColor: UIColor.systemBlue)
+    let itemPurchasedView = componentFunctions.createUIView(backgroundColor: UIColor.systemGreen)
+    let itemStoresView = componentFunctions.createUIView(backgroundColor: UIColor.systemOrange)
+    let itemCaptionView = componentFunctions.createUIView(backgroundColor: UIColor.systemPurple)
+    let itemDividerView = componentFunctions.createUIView(backgroundColor: UIColor.systemRed)
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupPostViews()
@@ -29,28 +37,60 @@ class IndividualPostCell: UITableViewCell {
 
     }
     
-    //STYLE
+    //VIEW: Item Info
     private func setupPostViews() {
-        contentView.addSubview(itemView)
+        // Add all views to contentView
+        contentView.addSubview(itemInfoView)
+        contentView.addSubview(itemPurchasedView)
+        contentView.addSubview(itemStoresView)
+        contentView.addSubview(itemCaptionView)
+        contentView.addSubview(itemDividerView)
         contentView.addSubview(dividerView)
         
-        // Configure ItemView
-        itemView.backgroundColor = .white
-        itemView.translatesAutoresizingMaskIntoConstraints = false
+        // Configure all views
+        itemInfoView.translatesAutoresizingMaskIntoConstraints = false
+        itemPurchasedView.translatesAutoresizingMaskIntoConstraints = false
+        itemStoresView.translatesAutoresizingMaskIntoConstraints = false
+        itemCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        itemDividerView.translatesAutoresizingMaskIntoConstraints = false
         
         // Configure DividerView
         dividerView.backgroundColor = .black
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            // ItemView constraints
-            itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            itemView.heightAnchor.constraint(equalToConstant: 120),
+            // itemInfoView - 320 tall, blue
+            itemInfoView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemInfoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemInfoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemInfoView.heightAnchor.constraint(equalToConstant: 180),
             
+            // itemPurchasedView - 60 tall, green
+            itemPurchasedView.topAnchor.constraint(equalTo: itemInfoView.bottomAnchor),
+            itemPurchasedView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemPurchasedView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemPurchasedView.heightAnchor.constraint(equalToConstant: 60),
+            
+            // itemStoresView - Dynamic height, default 40, orange
+            itemStoresView.topAnchor.constraint(equalTo: itemPurchasedView.bottomAnchor),
+            itemStoresView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemStoresView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemStoresView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+            
+            // itemCaptionView - Dynamic height, default 60, purple
+            itemCaptionView.topAnchor.constraint(equalTo: itemStoresView.bottomAnchor),
+            itemCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemCaptionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
+            
+            // itemDividerView - 2 tall, red
+            itemDividerView.topAnchor.constraint(equalTo: itemCaptionView.bottomAnchor),
+            itemDividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemDividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemDividerView.heightAnchor.constraint(equalToConstant: 2),
+   
             // DividerView constraints
-            dividerView.topAnchor.constraint(equalTo: itemView.bottomAnchor),
+            dividerView.topAnchor.constraint(equalTo: itemDividerView.bottomAnchor),
             dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: 2),
@@ -58,8 +98,16 @@ class IndividualPostCell: UITableViewCell {
         ])
     }
     
-
+    //VIEW: Item Purchased Info
+    //VIEW: Item Store Links
+    //VIEW: Caption
+    //VIEW: Divider
+    
+    
 }
+
+
+
 
 /*
 protocol PostCellDelegate: AnyObject {

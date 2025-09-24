@@ -130,7 +130,7 @@
 		D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */; };
 		D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */; };
 		D79743F72DFB980A00DC97D5 /* LoginDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79743F62DFB980A00DC97D5 /* LoginDoc.swift */; };
-		D798605A2E208A050094B46E /* CreateStyleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79860592E208A050094B46E /* CreateStyleViews.swift */; };
+		D798605A2E208A050094B46E /* componentFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79860592E208A050094B46E /* componentFunctions.swift */; };
 		D798D97D2DED16B800C1960E /* CancelFriendRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798D97C2DED16B800C1960E /* CancelFriendRequestModel.swift */; };
 		D798D97F2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798D97E2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift */; };
 		D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79BE4D92E189112004D13B4 /* NewGroupFriendTableViewCell.swift */; };
@@ -316,7 +316,7 @@
 		D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowers.swift; sourceTree = "<group>"; };
 		D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPIBackup.swift; sourceTree = "<group>"; };
 		D79743F62DFB980A00DC97D5 /* LoginDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDoc.swift; sourceTree = "<group>"; };
-		D79860592E208A050094B46E /* CreateStyleViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateStyleViews.swift; sourceTree = "<group>"; };
+		D79860592E208A050094B46E /* componentFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = componentFunctions.swift; sourceTree = "<group>"; };
 		D798D97C2DED16B800C1960E /* CancelFriendRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelFriendRequestModel.swift; sourceTree = "<group>"; };
 		D798D97E2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelFriendRequestReponseModel.swift; sourceTree = "<group>"; };
 		D79BE4D92E189112004D13B4 /* NewGroupFriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupFriendTableViewCell.swift; sourceTree = "<group>"; };
@@ -389,7 +389,6 @@
 				51B109BB2D276754006E4CCF /* Style.swift */,
 				5139A6302D28B5980029024E /* Buttons.swift */,
 				D74304032DF6593400D7775A /* StyleConstants.swift */,
-				D79860592E208A050094B46E /* CreateStyleViews.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -491,6 +490,7 @@
 				51C69B292D0E576C00C46759 /* postFunctions.swift */,
 				51C58F2B2D1B64B600942386 /* loginFunctions.swift */,
 				51C69B2B2D0E57AD00C46759 /* validationFunctions.swift */,
+				D79860592E208A050094B46E /* componentFunctions.swift */,
 				D78C165D2DD55DBA00EEDD91 /* postLikeFunctions.swift */,
 				D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */,
 				D77FB6712E2B0DB2003E1020 /* groupFunctions.swift */,
@@ -1120,7 +1120,7 @@
 				51C69B492D0E595700C46759 /* RegistrationModel.swift in Sources */,
 				D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */,
 				D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */,
-				D798605A2E208A050094B46E /* CreateStyleViews.swift in Sources */,
+				D798605A2E208A050094B46E /* componentFunctions.swift in Sources */,
 				D78CEF7B2E2F074B002E3712 /* FullOriginalPostToPullFrom.swift in Sources */,
 				D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */,
 				D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */,
