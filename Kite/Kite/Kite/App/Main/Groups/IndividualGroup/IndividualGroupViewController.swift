@@ -41,7 +41,14 @@ class IndividualGroupViewController: UIViewController {
         let groupID = group?.groupID ?? 0
         let groupName = group?.groupName ?? "No Group Name"
         
-        
+        if let group = group {
+            Task {
+                await fetchGroupMemberProfiles()
+            }
+        } else {
+            print("No group data available")
+        }
+         
         // Observe post updates
         postDataController.onPostsUpdated = { [weak self] in
             DispatchQueue.main.async {
@@ -179,8 +186,6 @@ class IndividualGroupViewController: UIViewController {
         DispatchQueue.main.async {
             self.tableView.tableHeaderView = self.createTableHeader()
         }
-        
-
     }
     
     private func setupGroupMembersInScrollView(_ stackView: UIStackView) {
