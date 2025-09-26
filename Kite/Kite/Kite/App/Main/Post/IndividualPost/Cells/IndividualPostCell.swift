@@ -54,7 +54,6 @@ class IndividualPostCell: UITableViewCell {
         purchaseButton.addTarget(self, action: #selector(didTapPurchase), for: .touchUpInside)
 
     }
-    
 
     //CELL SETUP
     func configurePost(with post: Post) {
@@ -190,6 +189,8 @@ class IndividualPostCell: UITableViewCell {
 
 
 }
+
+
 
 /*
 class IndividualPostCell: UITableViewCell {
