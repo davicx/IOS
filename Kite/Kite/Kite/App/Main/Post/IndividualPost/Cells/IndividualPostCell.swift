@@ -23,7 +23,7 @@ class IndividualPostCell: UITableViewCell {
     let itemImageView = componentFunctions.createUIView(backgroundColor: UIColor.systemPink)
     let itemDescriptionView = componentFunctions.createUIView(backgroundColor: UIColor.systemTeal)
     
-    // Add these new UI elements
+    // Add these new UI elements 
     private let productImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +57,26 @@ class IndividualPostCell: UITableViewCell {
 
     //CELL SETUP
     func configurePost(with post: Post) {
-        // posts
+        // Print post information
+        print("=== Post Information ===")
+        print("postID: \(post.postID)")
+        print("groupID: \(post.groupID)")
+        print("postCaption: \(post.postCaption ?? "nil")")
+        print("fileURL: \(post.fileUrl ?? "nil")")
+        
+        // Note: item_name is not available in the current Post class
+        // If you need item information, the Post class may need to be updated
+        // to include an item property or the data structure may be different
+        print("item_name: Not available in current Post structure")
+        print("========================")
+        
+        // Set the post image into productImageView
+        if let postImage = post.postImageData {
+            productImageView.image = postImage
+        } else {
+            // Set a fallback image if no post image is available
+            productImageView.image = UIImage(named: "background_1") // or any default image
+        }
     }
     
     

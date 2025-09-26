@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 //LISTS: Wishlist
 class IndividualGroupViewController: UIViewController {
 
@@ -114,24 +113,57 @@ class IndividualGroupViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(stackView)
 
-        let pinkView = UIView()
-        pinkView.backgroundColor = .systemPink
-        pinkView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(pinkView)
+        let groupHeaderView = UIView()
+        groupHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(groupHeaderView)
+        
+        // Create subviews for groupHeaderView
+        let groupHeaderNameView = UIView()
+        groupHeaderNameView.translatesAutoresizingMaskIntoConstraints = false
+        groupHeaderView.addSubview(groupHeaderNameView)
+        
+        let groupHeaderNewPostView = UIView()
+        groupHeaderNewPostView.translatesAutoresizingMaskIntoConstraints = false
+        groupHeaderView.addSubview(groupHeaderNewPostView)
+        
+        // Add new post button to groupHeaderNewPostView
+        let newPostButton = UIButton(type: .system)
+        newPostButton.setTitle("+", for: .normal)
+        newPostButton.setTitleColor(.systemBlue, for: .normal)
+        newPostButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        newPostButton.translatesAutoresizingMaskIntoConstraints = false
+        newPostButton.addTarget(self, action: #selector(newPostButtonTapped), for: .touchUpInside)
+        groupHeaderNewPostView.addSubview(newPostButton)
 
         NSLayoutConstraint.activate([
             // Header view constraints
             headerView.heightAnchor.constraint(equalToConstant: headerHeight),
             headerView.widthAnchor.constraint(equalToConstant: view.frame.width),
             
-            // Pink view constraints (at the top)
-            pinkView.topAnchor.constraint(equalTo: headerView.topAnchor),
-            pinkView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            pinkView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            pinkView.heightAnchor.constraint(equalToConstant: 40),
+            // Group header view constraints (at the top)
+            groupHeaderView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            groupHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            groupHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            groupHeaderView.heightAnchor.constraint(equalToConstant: 40),
+            
+            // Group header name view constraints (left, centered, fill all space)
+            groupHeaderNameView.topAnchor.constraint(equalTo: groupHeaderView.topAnchor),
+            groupHeaderNameView.leadingAnchor.constraint(equalTo: groupHeaderView.leadingAnchor),
+            groupHeaderNameView.bottomAnchor.constraint(equalTo: groupHeaderView.bottomAnchor),
+            groupHeaderNameView.trailingAnchor.constraint(equalTo: groupHeaderNewPostView.leadingAnchor),
+            
+            // Group header new post view constraints (60 wide, right centered)
+            groupHeaderNewPostView.topAnchor.constraint(equalTo: groupHeaderView.topAnchor),
+            groupHeaderNewPostView.trailingAnchor.constraint(equalTo: groupHeaderView.trailingAnchor),
+            groupHeaderNewPostView.bottomAnchor.constraint(equalTo: groupHeaderView.bottomAnchor),
+            groupHeaderNewPostView.widthAnchor.constraint(equalToConstant: 60),
+            
+            // New post button constraints (centered in groupHeaderNewPostView)
+            newPostButton.centerXAnchor.constraint(equalTo: groupHeaderNewPostView.centerXAnchor),
+            newPostButton.centerYAnchor.constraint(equalTo: groupHeaderNewPostView.centerYAnchor),
 
-            // Scroll view constraints (below pink view)
-            scrollView.topAnchor.constraint(equalTo: pinkView.bottomAnchor),
+            // Scroll view constraints (below group header view)
+            scrollView.topAnchor.constraint(equalTo: groupHeaderView.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             scrollView.heightAnchor.constraint(equalToConstant: 120),
@@ -277,6 +309,7 @@ class IndividualGroupViewController: UIViewController {
         return containerView
     }
     
+    //ACTIONS
     @objc private func userImageTapped(_ gesture: UITapGestureRecognizer) {
         guard let containerView = gesture.view else { return }
         let userID = containerView.tag
@@ -293,6 +326,14 @@ class IndividualGroupViewController: UIViewController {
         membersVC.title = groupName
         membersVC.groupMembers = self.groupMembers
         navigationController?.pushViewController(membersVC, animated: true)
+    }
+    
+    @objc private func newPostButtonTapped() {
+        let storyboard = UIStoryboard(name: "Groups", bundle: nil) // change "Main" if you put it in another storyboard
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? MakePostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen  // makes it fill screen
+            present(newPostVC, animated: true, completion: nil)
+        }
     }
 
     //VIEWS: Navigate to an Individual Post
