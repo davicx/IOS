@@ -104,7 +104,7 @@ class ItemCell: UITableViewCell {
             productContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             productContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             productContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            productContainerView.heightAnchor.constraint(equalToConstant: 120),
+            productContainerView.heightAnchor.constraint(equalToConstant: 160),
             
             // Close button
             closeButtonView.topAnchor.constraint(equalTo: productContainerView.topAnchor, constant: 8),
@@ -120,8 +120,8 @@ class ItemCell: UITableViewCell {
             // Product image (left side)
             productImageView.leadingAnchor.constraint(equalTo: productContainerView.leadingAnchor, constant: 16),
             productImageView.centerYAnchor.constraint(equalTo: productContainerView.centerYAnchor),
-            productImageView.widthAnchor.constraint(equalToConstant: 80),
-            productImageView.heightAnchor.constraint(equalToConstant: 80),
+            productImageView.widthAnchor.constraint(equalToConstant: 100),
+            productImageView.heightAnchor.constraint(equalToConstant: 100),
             
             productImage.topAnchor.constraint(equalTo: productImageView.topAnchor),
             productImage.leadingAnchor.constraint(equalTo: productImageView.leadingAnchor),
@@ -132,7 +132,7 @@ class ItemCell: UITableViewCell {
             productInfoView.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 16),
             productInfoView.trailingAnchor.constraint(equalTo: productContainerView.trailingAnchor, constant: -16),
             productInfoView.centerYAnchor.constraint(equalTo: productContainerView.centerYAnchor),
-            productInfoView.heightAnchor.constraint(equalToConstant: 80),
+            productInfoView.heightAnchor.constraint(equalToConstant: 100),
             
             // Price label
             productPriceLabel.topAnchor.constraint(equalTo: productInfoView.topAnchor),

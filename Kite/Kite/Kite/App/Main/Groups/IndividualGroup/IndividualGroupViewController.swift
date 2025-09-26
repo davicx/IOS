@@ -33,7 +33,7 @@ class IndividualGroupViewController: UIViewController {
 
         // Start polling
         pollingManager.onFetchPosts = { [weak self] in
-            self?.fetchPostsForGroup()
+            self?.fetchItemsForGroup()
         }
         pollingManager.startPolling()
         
@@ -59,7 +59,7 @@ class IndividualGroupViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchPostsForGroup()
+        fetchItemsForGroup()
         tableView.reloadData()
     }
     
@@ -158,14 +158,25 @@ class IndividualGroupViewController: UIViewController {
     
 
     //FUNCTIONS
-    private func fetchPostsForGroup() {
+    private func fetchItemsForGroup() {
         guard let groupID = group?.groupID else {
             print("No group ID available")
             return
         }
 
         Task {
-            await postDataController.fetchPosts(groupID: groupID)
+            await postDataController.fetchItems(groupID: groupID)
+            
+            // Print out item names to verify it's working
+            DispatchQueue.main.async {
+                print("________________________")
+                print("FETCHED ITEMS DEBUG")
+                print("Total items fetched: \(self.postDataController.items.count)")
+                for item in self.postDataController.items {
+                    print("- Item Name: \(item.itemName ?? "No Name")")
+                }
+                print("________________________")
+            }
         }
     }
     
@@ -369,14 +380,14 @@ class IndividualGroupViewController: UIViewController {
 
         // Start polling
         pollingManager.onFetchPosts = { [weak self] in
-            self?.fetchPostsForGroup()
+            self?.fetchItemsForGroup()
         }
         pollingManager.startPolling()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchPostsForGroup()
+        fetchItemsForGroup()
         tableView.reloadData()
     }
 
@@ -395,7 +406,7 @@ class IndividualGroupViewController: UIViewController {
     }
 
     // MARK: - Fetch posts
-    private func fetchPostsForGroup() {
+    private func fetchItemsForGroup() {
         guard let groupID = group?.groupID else {
             print("No group ID available")
             return
@@ -596,14 +607,14 @@ class IndividualGroupViewController: UIViewController {
 
         // Start polling
         pollingManager.onFetchPosts = { [weak self] in
-            self?.fetchPostsForGroup()
+            self?.fetchItemsForGroup()
         }
         pollingManager.startPolling()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchPostsForGroup()
+        fetchItemsForGroup()
         tableView.reloadData()
     }
 
@@ -622,7 +633,7 @@ class IndividualGroupViewController: UIViewController {
     }
 
     // MARK: - Fetch posts
-    private func fetchPostsForGroup() {
+    private func fetchItemsForGroup() {
         guard let groupID = group?.groupID else {
             print("No group ID available")
             return

@@ -64,69 +64,6 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
     return postsArray
 }
 
-//Function A2: Create Posts with Items from API this converts the Post Reponse into an array of Posts
-func createItemsArray(itemsResponseModel: ItemResponseModel) async throws -> [Item]{
-    let itemsTemp = itemsResponseModel.data
-    var itemsArray = [Item]()
-    
-    //STEP 1: Loop over items and Create Item Objects
-    for item in itemsTemp {
-
-        //STEP 2: Create Item
-        let currentItem = Item(postID: item.postID)
-        currentItem.postType = item.postType
-        currentItem.groupID = item.groupID
-        currentItem.groupName = item.groupName
-        currentItem.groupImage = item.groupImage
-        currentItem.listID = item.listID
-        currentItem.postFrom = item.postFrom
-        currentItem.postFromImage = item.postFromImage
-        currentItem.postTo = item.postTo
-        currentItem.postCaption = item.postCaption
-    
-        currentItem.fileName = item.fileURL
-        currentItem.fileNameServer = item.fileURL
-        currentItem.fileUrl = item.fileURL
-        
-        currentItem.cloudBucket = item.cloudBucket
-        currentItem.cloudKey = item.cloudKey
-        currentItem.storageType = item.storageType
-        
-        currentItem.videoURL = item.videoURL
-        currentItem.videoCode = item.videoCode
-        
-        currentItem.postDate = item.postDate
-        currentItem.postTime = item.postTime
-        currentItem.timeMessage = item.timeMessage
-        
-        currentItem.created = item.created
-        currentItem.isLikedByCurrentUser = item.isLikedByCurrentUser
-        
-        //Convert Comments
-        currentItem.commentsArray = item.commentsArray.map { convertToCommentClass(from: $0) }
-        
-        currentItem.postLikesArray = item.postLikesArray
-        currentItem.simpleLikesArray = item.simpleLikesArray
-
-        //STEP 3: Add Item-specific data
-        currentItem.itemID = item.item.item_id
-        currentItem.itemName = item.item.item_name
-        currentItem.itemPrice = item.item.item_price
-        currentItem.itemDescription = item.item.item_description
-        currentItem.itemCategory = item.item.item_category
-        currentItem.itemLink = item.item.item_link
-        currentItem.purchased = item.item.purchased
-        currentItem.purchasedBy = item.item.purchased_by
-        currentItem.store = item.item.store
-        currentItem.multipleStores = item.item.multiple_stores
-
-        //STEP 4: Append to Array
-        itemsArray.append(currentItem)
-
-    }
-    
-    return itemsArray
-}
 
 
 
@@ -355,6 +292,153 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post]{
 
 func printPostLikes(post: Post) {
     let simpleLikesArray : Array = post.simpleLikesArray ?? []
+    for user in simpleLikesArray {
+        print("Liked By, \(user)!")
+    }
+}
+
+//ITEMS HELPER FUNCTIONS
+
+//Function I1: Create Items from API this converts the Item Response into an array of Items
+func createItemsArray(itemsResponseModel: ItemResponseModel) async throws -> [Item]{
+    let itemsTemp = itemsResponseModel.data
+    var itemsArray = [Item]()
+    
+    //STEP 1: Loop over items and Create Item Objects
+    for itemModel in itemsTemp {
+
+        //STEP 2: Create Item
+        let currentItem = Item(postID: itemModel.postID)
+        currentItem.postType = itemModel.postType
+        currentItem.groupID = itemModel.groupID
+        currentItem.groupName = itemModel.groupName
+        currentItem.groupImage = itemModel.groupImage
+        currentItem.listID = itemModel.listID
+        currentItem.postFrom = itemModel.postFrom
+        currentItem.postFromImage = itemModel.postFromImage
+        currentItem.postTo = itemModel.postTo
+        currentItem.postCaption = itemModel.postCaption
+    
+        currentItem.fileName = itemModel.fileURL
+        currentItem.fileNameServer = itemModel.fileURL
+        currentItem.fileUrl = itemModel.fileURL
+        
+        currentItem.cloudBucket = itemModel.cloudBucket
+        currentItem.cloudKey = itemModel.cloudKey
+        currentItem.videoURL = itemModel.videoURL
+        currentItem.videoCode = itemModel.videoCode
+        
+        currentItem.postDate = itemModel.postDate
+        currentItem.postTime = itemModel.postTime
+        currentItem.timeMessage = itemModel.timeMessage
+        
+        currentItem.created = itemModel.created
+        currentItem.isLikedByCurrentUser = itemModel.isLikedByCurrentUser
+        
+        //Convert Comments
+        currentItem.commentsArray = itemModel.commentsArray.map { convertToCommentClass(from: $0) }
+        
+        currentItem.postLikesArray = itemModel.postLikesArray
+        currentItem.simpleLikesArray = itemModel.simpleLikesArray
+
+        //STEP 3: Add Item-specific data
+        currentItem.itemID = itemModel.item.item_id
+        currentItem.itemName = itemModel.item.item_name
+        currentItem.itemPrice = itemModel.item.item_price
+        currentItem.itemDescription = itemModel.item.item_description
+        currentItem.itemCategory = itemModel.item.item_category
+        currentItem.itemLink = itemModel.item.item_link
+        currentItem.purchased = itemModel.item.purchased
+        currentItem.purchasedBy = itemModel.item.purchased_by
+        currentItem.store = itemModel.item.store
+        currentItem.multipleStores = itemModel.item.multiple_stores
+
+        //STEP 4: Append to Array
+        itemsArray.append(currentItem)
+
+    }
+    
+    return itemsArray
+}
+
+//Function I2: Add Image to Items
+func addPostImageToItemsArray(itemsArray: [Item]) async throws -> [Item] {
+    var updatedItems = itemsArray
+    
+    for (index, item) in updatedItems.enumerated() {
+        if let fileUrlString = item.fileUrl,
+           let imageUrl = URL(string: fileUrlString),
+           fileUrlString.lowercased() != "empty" {
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                updatedItems[index].postImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading image for itemID \(item.postID): \(error)")
+                updatedItems[index].postImageData = UIImage(named: "background_1") // Default image
+            }
+        } else {
+            print("Invalid or missing fileURL for itemID \(item.postID), using default image")
+            updatedItems[index].postImageData = UIImage(named: "background_1") // Default image
+        }
+    }
+    
+    return updatedItems
+}
+
+//Function I3: Add Group Image to Items
+func addGroupImageToItemsArray(itemsArray: [Item]) async throws -> [Item] {
+    var updatedItems = itemsArray
+
+    for (index, item) in updatedItems.enumerated() {
+        if let groupImageUrlString = item.groupImage,
+           let imageUrl = URL(string: groupImageUrlString),
+           groupImageUrlString.lowercased() != "empty" {
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                updatedItems[index].groupImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading group image for itemID \(item.postID): \(error)")
+                updatedItems[index].groupImageData = UIImage(named: "background_1") // Default image
+            }
+        } else {
+            print("Invalid or missing groupImage for itemID \(item.postID), using default image")
+            updatedItems[index].groupImageData = UIImage(named: "background_1") // Default image
+        }
+    }
+
+    return updatedItems
+}
+
+//Function I4: Add Post From Image to Items
+func addPostFromImageToItemsArray(itemsArray: [Item]) async throws -> [Item] {
+    var updatedItems = itemsArray
+
+    for (index, item) in updatedItems.enumerated() {
+        if let postFromImageUrlString = item.postFromImage,
+           !postFromImageUrlString.isEmpty,
+           postFromImageUrlString.lowercased() != "empty",
+           let imageUrl = URL(string: postFromImageUrlString),
+           imageUrl.scheme == "http" || imageUrl.scheme == "https" {
+            
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                updatedItems[index].postFromImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading post from image for itemID \(item.postID)")
+                updatedItems[index].postFromImageData = UIImage(named: "background_1")
+            }
+
+        } else {
+            print("Invalid or missing postFromImage for itemID \(item.postID), using default image")
+            updatedItems[index].postFromImageData = UIImage(named: "background_1")
+        }
+    }
+
+    return updatedItems
+}
+
+func printItemLikes(item: Item) {
+    let simpleLikesArray : Array = item.simpleLikesArray ?? []
     for user in simpleLikesArray {
         print("Liked By, \(user)!")
     }

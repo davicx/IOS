@@ -42,7 +42,6 @@ class PostDataController {
     }
 
     
-    
     func getPostByID(postID: Int) -> Post? {
         return posts.first(where: { $0.postID == postID })
     }
@@ -116,5 +115,85 @@ class PostDataController {
         }
     }
 
+    
+    //ITEMS
+    
+    private(set) var items: [Item] = []
+    
+    // Callback to notify when items are updated
+    var onItemsUpdated: (() -> Void)?
+    
+    // Fetch items from API
+    func fetchItems(groupID: Int) async {
+        do {
+            let itemsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+            let noImageItems = try await createItemsArray(itemsResponseModel: itemsResponseModel)
+            let itemsWithImages = try await addPostImageToItemsArray(itemsArray: noImageItems)
+            let itemsWithGroupImages = try await addGroupImageToItemsArray(itemsArray: itemsWithImages)
+            self.items = try await addPostFromImageToItemsArray(itemsArray: itemsWithGroupImages)
+         
+            DispatchQueue.main.async {
+                self.onItemsUpdated?()
+            }
+        } catch {
+            print("PostDataController: Failed to fetch items - \(error)")
+        }
+    }
+    
+    func getItemByID(postID: Int) -> Item? {
+        return items.first(where: { $0.postID == postID })
+    }
+    
+    // Like an item
+    func likeItem(postID: Int, likeModel: LikeModel) {
+        guard let index = items.firstIndex(where: { $0.postID == postID }) else { return }
+
+        var item = items[index]
+        item.simpleLikesArray = (item.simpleLikesArray ?? []).filter { $0 != likeModel.likedByUserName }
+        item.postLikesArray = (item.postLikesArray ?? []).filter { $0.postLikeID != likeModel.postLikeID }
+
+        item.simpleLikesArray?.append(likeModel.likedByUserName)
+        item.postLikesArray?.append(likeModel)
+        item.isLikedByCurrentUser = true
+
+        items[index] = item
+    }
+
+    // Unlike an item
+    func unlikeItem(postID: Int, likeModel: LikeModel) {
+        guard let index = items.firstIndex(where: { $0.postID == postID }) else { return }
+
+        var item = items[index]
+        item.simpleLikesArray?.removeAll(where: { $0 == likeModel.likedByUserName })
+        item.postLikesArray?.removeAll(where: { $0.postLikeID == likeModel.postLikeID })
+        item.isLikedByCurrentUser = false
+
+        items[index] = item
+    }
+    
+    func likeItemComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+        guard let itemIndex = items.firstIndex(where: { $0.postID == postID }),
+              let commentIndex = items[itemIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID }) else {
+            return
+        }
+
+        items[itemIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = true
+        items[itemIndex].commentsArray?[commentIndex].commentLikeCount? += 1
+        items[itemIndex].commentsArray?[commentIndex].commentLikes?.append(commentLikeModel)
+    }
+
+    func unlikeItemComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+        guard let itemIndex = items.firstIndex(where: { $0.postID == postID }),
+              let commentIndex = items[itemIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID }) else {
+            return
+        }
+
+        items[itemIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = false
+        items[itemIndex].commentsArray?[commentIndex].commentLikeCount? -= 1
+        items[itemIndex].commentsArray?[commentIndex].commentLikes?.removeAll {
+            $0.commentLikeID == commentLikeModel.commentLikeID
+        }
+    }
+    
 }
 

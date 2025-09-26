@@ -114,7 +114,7 @@ class IndividualPostCell: UITableViewCell {
             productImageView.topAnchor.constraint(equalTo: itemImageView.topAnchor, constant: 8),
             productImageView.centerXAnchor.constraint(equalTo: itemImageView.centerXAnchor),
             productImageView.widthAnchor.constraint(equalToConstant: 160),
-            productImageView.heightAnchor.constraint(equalToConstant: 160),
+            productImageView.heightAnchor.constraint(equalToConstant: 120),
             
             // Button below image
             purchaseButton.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 8),
