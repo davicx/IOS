@@ -63,7 +63,7 @@ class FriendProfileViewController: UIViewController {
     
     //NAVIGATION: To their friends list
     @objc private func friendsButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let friendListVC = storyboard.instantiateViewController(withIdentifier: "FriendListViewController") as! FriendListViewController
         
         if let friendName = friend?.userName {

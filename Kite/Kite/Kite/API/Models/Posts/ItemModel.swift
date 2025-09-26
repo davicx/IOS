@@ -11,11 +11,11 @@ struct ItemModel: Codable {
     let postID: Int
     let postType: String
     let groupID: Int
-    let groupName: String
-    let groupImage: String
+    let groupName: String?
+    let groupImage: String?
     let listID: Int
     let postFrom: String
-    let postFromImage: String
+    let postFromImage: String?
     let postTo: String
     let postCaption: String
     let fileName: String
@@ -24,7 +24,7 @@ struct ItemModel: Codable {
     
     let cloudBucket: String
     let cloudKey: String
-    let storageType: String
+    let storageType: String?
     
     let videoURL: String
     let videoCode: String

@@ -8,7 +8,7 @@
 import UIKit
 
 
-class YourFriendsViewController: UIViewController {
+class FriendsViewController: UIViewController {
 
     // Filtered data
     private var friends: [User] = []
@@ -225,7 +225,7 @@ class YourFriendsViewController: UIViewController {
 }
 
 // MARK: - TableView
-extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate {
+extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentlyDisplayedFriends.count
     }
@@ -248,7 +248,7 @@ extension YourFriendsViewController: UITableViewDataSource, UITableViewDelegate 
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedFriend = currentlyDisplayedFriends[indexPath.row]
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
             vc.friend = selectedFriend
             navigationController?.pushViewController(vc, animated: true)

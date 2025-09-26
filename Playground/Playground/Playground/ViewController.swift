@@ -8,6 +8,91 @@
 import UIKit
 
 
+//CALENDAR
+import FSCalendar
+
+class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
+
+    private var calendar: FSCalendar!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+
+        calendar = FSCalendar(frame: .zero)
+        calendar.dataSource = self
+        calendar.delegate = self
+        calendar.translatesAutoresizingMaskIntoConstraints = false
+
+        // Basic style
+        calendar.appearance.titleFont = UIFont.systemFont(ofSize: 16, weight: .medium)
+        calendar.appearance.weekdayFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
+
+        calendar.appearance.headerTitleFont = UIFont.systemFont(ofSize: 18, weight: .bold)
+        calendar.appearance.headerTitleColor = .label
+        calendar.appearance.weekdayTextColor = .systemBlue
+
+        // Colors
+        calendar.appearance.todayColor = .systemRed
+        calendar.appearance.selectionColor = .systemBlue
+        calendar.appearance.eventDefaultColor = .systemGreen
+        calendar.appearance.titleDefaultColor = .label
+        calendar.appearance.titleWeekendColor = .systemGray
+
+        view.addSubview(calendar)
+
+        NSLayoutConstraint.activate([
+            calendar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            calendar.heightAnchor.constraint(equalToConstant: 300)
+        ])
+    }
+
+    // Example delegate
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print("Selected date: \(date)")
+    }
+}
+
+
+
+//Basic
+/*
+class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
+
+    private var calendar: FSCalendar!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+
+        // Create calendar
+        calendar = FSCalendar(frame: .zero)
+        calendar.dataSource = self
+        calendar.delegate = self
+        calendar.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add to view
+        view.addSubview(calendar)
+
+        // Constraints
+        NSLayoutConstraint.activate([
+            calendar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            calendar.heightAnchor.constraint(equalToConstant: 300)
+        ])
+    }
+
+    // Example delegate
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print("Selected date: \(date)")
+    }
+}
+*/
+
+/*
 //SCROLL VIEW
 class ViewController: UIViewController {
     
@@ -83,6 +168,7 @@ class ViewController: UIViewController {
         ])
     }
 }
+ */
 
 
 

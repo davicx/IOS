@@ -17,6 +17,7 @@
 		51EF8A752D0A6B570083740C /* PlaygroundUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8A742D0A6B570083740C /* PlaygroundUITests.swift */; };
 		51EF8A772D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8A762D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift */; };
 		D736FEE52D95F3D100AA108D /* BackgroundImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */; };
+		D766492D2E820B0800D50CEE /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = D766492C2E820B0800D50CEE /* FSCalendar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D766492D2E820B0800D50CEE /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,7 +196,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					51EF8A4F2D0A6B560083740C = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -218,6 +220,9 @@
 				Base,
 			);
 			mainGroup = 51EF8A472D0A6B560083740C;
+			packageReferences = (
+				D766492B2E820A7A00D50CEE /* XCRemoteSwiftPackageReference "FSCalendar" */,
+			);
 			productRefGroup = 51EF8A512D0A6B560083740C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -356,6 +361,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -416,6 +422,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -491,7 +498,6 @@
 		51EF8A7E2D0A6B570083740C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -510,7 +516,6 @@
 		51EF8A7F2D0A6B570083740C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -529,7 +534,6 @@
 		51EF8A812D0A6B570083740C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -546,7 +550,6 @@
 		51EF8A822D0A6B570083740C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -600,6 +603,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D766492B2E820A7A00D50CEE /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D766492C2E820B0800D50CEE /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D766492B2E820A7A00D50CEE /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 51EF8A482D0A6B560083740C /* Project object */;
 }

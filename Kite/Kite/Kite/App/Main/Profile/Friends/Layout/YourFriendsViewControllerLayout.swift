@@ -8,7 +8,7 @@
 import UIKit
 
 
-extension YourFriendsViewController {
+extension FriendsViewController {
     
     func setupSegmentedControl() {
         segmentedControl.selectedSegmentIndex = 0
@@ -57,7 +57,7 @@ extension YourFriendsViewController {
 }
 
 
-extension YourFriendsViewController {
+extension FriendsViewController {
     func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)

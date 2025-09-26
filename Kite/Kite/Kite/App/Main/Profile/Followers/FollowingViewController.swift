@@ -66,7 +66,7 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedFriend = users[indexPath.row]
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         if let vc = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController {
             vc.friend = selectedFriend
             navigationController?.pushViewController(vc, animated: true)

@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController {
     let userDefaultManager = UserDefaultManager()
     
     private let userProfileLayout = UserProfileLayout()
+    private let logoutButton = UIButton(type: .system)
     
     var userResponseModel: UserProfileResponseModel?
     
@@ -29,11 +30,26 @@ class ProfileViewController: UIViewController {
         view.addSubview(userProfileLayout)
         userProfileLayout.translatesAutoresizingMaskIntoConstraints = false
         
+        // Setup logout button
+        logoutButton.setTitle("Logout", for: .normal)
+        logoutButton.backgroundColor = .systemBlue
+        logoutButton.setTitleColor(.white, for: .normal)
+        logoutButton.layer.cornerRadius = 8
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        
+        view.addSubview(logoutButton)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             userProfileLayout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             userProfileLayout.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             userProfileLayout.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            logoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            logoutButton.heightAnchor.constraint(equalToConstant: 50),
+            logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
         
         // Add action to Buttons
@@ -95,13 +111,39 @@ class ProfileViewController: UIViewController {
         }
     }
 
+    @objc private func logoutButtonTapped() {
+        Task {
+            do {
+                let currentUser = userDefaultManager.getLoggedInUser()
+                let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? "UnknownDevice"
+
+                let logoutResponse = try await loginAPI.logoutUser(username: currentUser, deviceID: deviceID)
+                
+                if logoutResponse.success {
+                    print("Logout successful!")
+                    // Optional: Perform additional cleanup or navigate to the login screen
+                    self.navigationController?.popToRootViewController(animated: true)
+                    PresenterManager.shared.showOnboarding()
+                    
+                } else {
+                    print("Logout failed. Reason: \(logoutResponse.message ?? "Unknown error")")
+                }
+
+            } catch {
+                print("Failed to logout: \(error.localizedDescription)")
+            }
+        }
+    }
+
     @objc private func friendsButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! YourFriendsViewController
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendsViewController
         //friendVC.delegate = self
         //friendVC.users = FriendDataController.shared.friends
         self.navigationController?.pushViewController(friendVC, animated: true)
     }
+    
+    
 
     func loadFriendImages(for friends: [User], using imageHelper: ImageFunctions) async {
         await withTaskGroup(of: Void.self) { group in
@@ -118,7 +160,7 @@ class ProfileViewController: UIViewController {
     @objc private func editButtonTapped() {
         guard let userResponse = userResponseModel else { return }
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let editProfileVC = storyboard.instantiateViewController(withIdentifier: "EditProfileViewController") as! EditProfileViewController
 
         editProfileVC.inputFirstName = userResponse.data.firstName
