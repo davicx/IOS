@@ -192,128 +192,8 @@ class IndividualPostCell: UITableViewCell {
 
 
 
-/*
-class IndividualPostCell: UITableViewCell {
-    
-    //MAIN VIEWS
-    let itemView = UIView()
-    let itemInfoView = componentFunctions.createUIView(backgroundColor: UIColor.systemBlue)
-    let itemPurchasedView = componentFunctions.createUIView(backgroundColor: UIColor.systemGreen)
-    let itemStoresView = componentFunctions.createUIView(backgroundColor: UIColor.systemOrange)
-    let itemCaptionView = componentFunctions.createUIView(backgroundColor: UIColor.systemPurple)
-    let dividerView = componentFunctions.createUIView(backgroundColor: UIColor.black)
-    
-    //Subviews
-    
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupPostViews()
-    }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-
-    //CELL SETUP
-    func configurePost(with post: Post) {
-        // posts 
-    }
-    
-    
-    //MARK: - Setup Entry Point
-    private func setupPostViews() {
-        setupItemInfoViews()
-        setupItemPurchasedViews()
-        setupItemStoreViews()
-        setupItemCaptionViews()
-        setupDividerView()
-    }
-    
-    
-    //VIEW: Item Info
-    private func setupItemInfoViews() {
-        contentView.addSubview(itemInfoView)
-        itemInfoView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            itemInfoView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            itemInfoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemInfoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            itemInfoView.heightAnchor.constraint(equalToConstant: 240)
-        ])
-    }
-    
-    
-    //VIEW: Item Purchased Info
-    private func setupItemPurchasedViews() {
-        contentView.addSubview(itemPurchasedView)
-        itemPurchasedView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            itemPurchasedView.topAnchor.constraint(equalTo: itemInfoView.bottomAnchor),
-            itemPurchasedView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemPurchasedView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            itemPurchasedView.heightAnchor.constraint(equalToConstant: 40)
-        ])
-    }
-    
-    
-    //VIEW: Item Store Links
-    private func setupItemStoreViews() {
-        contentView.addSubview(itemStoresView)
-        itemStoresView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            itemStoresView.topAnchor.constraint(equalTo: itemPurchasedView.bottomAnchor),
-            itemStoresView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemStoresView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            itemStoresView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
-        ])
-    }
-    
-    
-    //VIEW: Caption
-    private func setupItemCaptionViews() {
-        contentView.addSubview(itemCaptionView)
-        itemCaptionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            itemCaptionView.topAnchor.constraint(equalTo: itemStoresView.bottomAnchor),
-            itemCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            itemCaptionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
-        ])
-    }
-    
-    
-    //VIEW: Divider
-    private func setupDividerView() {
-        contentView.addSubview(dividerView)
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            dividerView.topAnchor.constraint(equalTo: itemCaptionView.bottomAnchor),
-            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            dividerView.heightAnchor.constraint(equalToConstant: 2),
-            dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-    }
-}
-
-*/
-    
-    //VIEW: Item Purchased Info
-    //VIEW: Item Store Links
-    //VIEW: Caption
-    //VIEW: Divider
-    
-
-
-
-
+//KITE: Post
 
 /*
 protocol PostCellDelegate: AnyObject {
@@ -435,3 +315,126 @@ class IndividualPostCell: UITableViewCell {
 }
 
 */
+
+
+//APPENDIX
+
+/*
+class IndividualPostCell: UITableViewCell {
+    
+    //MAIN VIEWS
+    let itemView = UIView()
+    let itemInfoView = componentFunctions.createUIView(backgroundColor: UIColor.systemBlue)
+    let itemPurchasedView = componentFunctions.createUIView(backgroundColor: UIColor.systemGreen)
+    let itemStoresView = componentFunctions.createUIView(backgroundColor: UIColor.systemOrange)
+    let itemCaptionView = componentFunctions.createUIView(backgroundColor: UIColor.systemPurple)
+    let dividerView = componentFunctions.createUIView(backgroundColor: UIColor.black)
+    
+    //Subviews
+    
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupPostViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+
+    //CELL SETUP
+    func configurePost(with post: Post) {
+        // posts
+    }
+    
+    
+    //MARK: - Setup Entry Point
+    private func setupPostViews() {
+        setupItemInfoViews()
+        setupItemPurchasedViews()
+        setupItemStoreViews()
+        setupItemCaptionViews()
+        setupDividerView()
+    }
+    
+    
+    //VIEW: Item Info
+    private func setupItemInfoViews() {
+        contentView.addSubview(itemInfoView)
+        itemInfoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            itemInfoView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemInfoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemInfoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemInfoView.heightAnchor.constraint(equalToConstant: 240)
+        ])
+    }
+    
+    
+    //VIEW: Item Purchased Info
+    private func setupItemPurchasedViews() {
+        contentView.addSubview(itemPurchasedView)
+        itemPurchasedView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            itemPurchasedView.topAnchor.constraint(equalTo: itemInfoView.bottomAnchor),
+            itemPurchasedView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemPurchasedView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemPurchasedView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    
+    //VIEW: Item Store Links
+    private func setupItemStoreViews() {
+        contentView.addSubview(itemStoresView)
+        itemStoresView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            itemStoresView.topAnchor.constraint(equalTo: itemPurchasedView.bottomAnchor),
+            itemStoresView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemStoresView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemStoresView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
+        ])
+    }
+    
+    
+    //VIEW: Caption
+    private func setupItemCaptionViews() {
+        contentView.addSubview(itemCaptionView)
+        itemCaptionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            itemCaptionView.topAnchor.constraint(equalTo: itemStoresView.bottomAnchor),
+            itemCaptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemCaptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemCaptionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
+        ])
+    }
+    
+    
+    //VIEW: Divider
+    private func setupDividerView() {
+        contentView.addSubview(dividerView)
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dividerView.topAnchor.constraint(equalTo: itemCaptionView.bottomAnchor),
+            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: 2),
+            dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+}
+
+*/
+    
+    //VIEW: Item Purchased Info
+    //VIEW: Item Store Links
+    //VIEW: Caption
+    //VIEW: Divider
+    
+
