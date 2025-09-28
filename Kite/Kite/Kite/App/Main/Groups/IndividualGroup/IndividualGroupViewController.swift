@@ -43,6 +43,7 @@ class IndividualGroupViewController: UIViewController {
         if let group = group {
             Task {
                 await fetchGroupMemberProfiles()
+                print("IndividualGroupViewController \(groupID)")
             }
         } else {
             print("No group data available")
