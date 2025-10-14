@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 //LISTS: Wishlist
 class IndividualGroupViewController: UIViewController {
 
@@ -198,12 +199,12 @@ class IndividualGroupViewController: UIViewController {
         }
 
         Task {
-            await postDataController.fetchItems(groupID: groupID)
+            await postDataController.fetchPostItems(groupID: groupID)
             
             // Print out item names to verify it's working
             DispatchQueue.main.async {
                 print("________________________")
-                print("FETCHED ITEMS DEBUG")
+                print("IndividualGroupViewController: fetchItemsForGroup \(groupID)")
                 print("Total items fetched: \(self.postDataController.items.count)")
                 for item in self.postDataController.items {
                     print("- Item Name: \(item.itemName ?? "No Name")")
@@ -345,13 +346,16 @@ class IndividualGroupViewController: UIViewController {
 extension IndividualGroupViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return postDataController.posts.count
+        // return postDataController.posts.count
+        return postDataController.items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let post = postDataController.posts[indexPath.row]
+        // let post = postDataController.posts[indexPath.row]
+        let item = postDataController.items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
-        cell.configurePost(with: post)
+        // cell.configurePost(with: post)
+        cell.configurePost(with: item)
         return cell
     }
 

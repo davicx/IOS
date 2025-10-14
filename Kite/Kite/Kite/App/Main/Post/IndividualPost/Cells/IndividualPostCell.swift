@@ -56,30 +56,24 @@ class IndividualPostCell: UITableViewCell {
     }
 
     //CELL SETUP
-    func configurePost(with post: Post) {
-        // Print post information
-        print("=== Post Information ===")
-        print("postID: \(post.postID)")
-        print("groupID: \(post.groupID)")
-        print("postCaption: \(post.postCaption ?? "nil")")
-        print("fileURL: \(post.fileUrl ?? "nil")")
-        
-        // Note: item_name is not available in the current Post class
-        // If you need item information, the Post class may need to be updated
-        // to include an item property or the data structure may be different
-        print("item_name: Not available in current Post structure")
+    //SO HERE WE NEED TO USE POST
+    // func configurePost(with post: Post) {
+    func configurePost(with item: Item) {
+        // Print item information
+        print("=== IndividualPostCell configurePost ===")
+        print("=== Item Information ===")
+        print("postID: \(item.postID)")
+        print("groupID: \(item.groupID)")
+        print("postCaption: \(item.postCaption ?? "nil")")
+        print("fileURL: \(item.fileUrl ?? "nil")")
+        print("item_name: \(item.itemName ?? "nil")")
         print("========================")
         
-        // Set the post image into productImageView
-        if let postImage = post.postImageData {
-            productImageView.image = postImage
-        } else {
-            // Set a fallback image if no post image is available
-            productImageView.image = UIImage(named: "background_1") // or any default image
-        }
+        // Set the item image (already downloaded by addPostImageToItemsArray)
+        productImageView.image = item.postImageData ?? UIImage(named: "background_1")
     }
     
-    
+  
     // Setup Entry Point
     private func setupPostViews() {
         setupItemInfoViews()
@@ -213,7 +207,6 @@ class IndividualPostCell: UITableViewCell {
 
 
 //KITE: Post
-
 /*
 protocol PostCellDelegate: AnyObject {
     func didTapLikePostButton(in cell: IndividualPostCell)
