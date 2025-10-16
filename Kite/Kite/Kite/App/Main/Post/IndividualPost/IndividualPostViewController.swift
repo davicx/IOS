@@ -13,7 +13,10 @@ import UIKit
 class IndividualPostViewController: UIViewController {
     let postAPI = PostsAPI()
     let currentUser = userDefaultManager.getLoggedInUser()
-    var currentPost: Post!
+    
+    // Support both Post and Item (Item has all Post properties plus item-specific data)
+    var currentPost: Post?
+    var currentItem: Item?
     var comments: [Comment] = []
 
 
@@ -22,14 +25,20 @@ class IndividualPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        // Get postID from either currentItem or currentPost
+        let postID = currentItem?.postID ?? currentPost?.postID ?? 0
         print("________________________")
-        print("IndividualPostViewController: Post ID \(currentPost.postID)")
+        print("IndividualPostViewController: Post ID \(postID)")
         print("LISTS: Wishlist")
+        if let itemName = currentItem?.itemName {
+            print("Item Name: \(itemName)")
+        }
         print("________________________")
         print(" ")
         
-        
-        comments = currentPost.commentsArray ?? []
+        // Get comments from either source
+        comments = currentItem?.commentsArray ?? currentPost?.commentsArray ?? []
         
         for (index, comment) in comments.enumerated() {
             print("Comment \(index): \(comment.commentCaption)")
@@ -73,7 +82,12 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         if indexPath.row == 0 {
             let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
         
-            postCell.updatePost(with: currentPost)
+            // Use currentItem if available (contains all post data), otherwise use currentPost
+            if let item = currentItem {
+                postCell.updateItem(with: item)
+            } else if let post = currentPost {
+                postCell.updatePost(with: post)
+            }
             return postCell
             
         } else {
@@ -87,8 +101,11 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
             //STEP 1: Get Image and Caption Heights
-            let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
-            let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
+            let postImageData = currentItem?.postImageData ?? currentPost?.postImageData
+            let postCaption = currentItem?.postCaption ?? currentPost?.postCaption
+            
+            let postImageHeight = sizeFunctions.calculatePostImageHeight(from: postImageData)
+            let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: postCaption)
             let postCaptionUserNameHeight: CGFloat = 20
         
             //return 85 + postImageHeight + postCaptionHeight + postCaptionUserNameHeight

@@ -81,7 +81,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+        tableView.register(IndividualGroupPostCell.self, forCellReuseIdentifier: "IndividualGroupPostCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 160
         tableView.tableHeaderView = createTableHeader()
@@ -199,6 +199,7 @@ class IndividualGroupViewController: UIViewController {
         }
 
         Task {
+            // Fetch items (items are posts with additional item-specific data)
             await postDataController.fetchPostItems(groupID: groupID)
             
             // Print out item names to verify it's working
@@ -207,7 +208,7 @@ class IndividualGroupViewController: UIViewController {
                 print("IndividualGroupViewController: fetchItemsForGroup \(groupID)")
                 print("Total items fetched: \(self.postDataController.items.count)")
                 for item in self.postDataController.items {
-                    print("- Item Name: \(item.itemName ?? "No Name")")
+                    print("- Item Name: \(item.itemName ?? "No Name"), PostID: \(item.postID)")
                 }
                 print("________________________")
             }
@@ -353,7 +354,7 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // let post = postDataController.posts[indexPath.row]
         let item = postDataController.items[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualGroupPostCell", for: indexPath) as! IndividualGroupPostCell
         // cell.configurePost(with: post)
         cell.configurePost(with: item)
         return cell
@@ -361,11 +362,14 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let post = postDataController.posts[indexPath.row]
+        
+        // Get the item at the tapped index (items are posts with additional item data)
+        let item = postDataController.items[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
-            postViewController.currentPost = post
+            // Pass the item as the current post (Item has all Post properties plus item-specific data)
+            postViewController.currentItem = item
             navigationController?.pushViewController(postViewController, animated: true)
         }
     }
