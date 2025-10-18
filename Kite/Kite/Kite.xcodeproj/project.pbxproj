@@ -94,6 +94,7 @@
 		D74470372E723BA500EF2D2D /* GroupUsersResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74470362E723BA500EF2D2D /* GroupUsersResponseModel.swift */; };
 		D74470392E723BC800EF2D2D /* GroupUsersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74470382E723BC800EF2D2D /* GroupUsersModel.swift */; };
 		D74471192D88EAE6009677B9 /* DividerWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74471182D88EAE6009677B9 /* DividerWithLabel.swift */; };
+		D7468DD92E875A6E005FFD59 /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */; };
 		D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */; };
 		D747F7BB2D824D0800A08602 /* UserNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7BA2D824D0800A08602 /* UserNameView.swift */; };
 		D747F7BD2D824D3200A08602 /* UserProfileSocialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7BC2D824D3200A08602 /* UserProfileSocialsView.swift */; };
@@ -280,6 +281,7 @@
 		D74470362E723BA500EF2D2D /* GroupUsersResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUsersResponseModel.swift; sourceTree = "<group>"; };
 		D74470382E723BC800EF2D2D /* GroupUsersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUsersModel.swift; sourceTree = "<group>"; };
 		D74471182D88EAE6009677B9 /* DividerWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerWithLabel.swift; sourceTree = "<group>"; };
+		D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewController.swift; sourceTree = "<group>"; };
 		D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileImageView.swift; sourceTree = "<group>"; };
 		D747F7BA2D824D0800A08602 /* UserNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameView.swift; sourceTree = "<group>"; };
 		D747F7BC2D824D3200A08602 /* UserProfileSocialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileSocialsView.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 				D70984E12E2DBDDE00157F27 /* HomePost */,
 				D78CEF7A2E2F074B002E3712 /* FullOriginalPostToPullFrom.swift */,
 				D7BD62C02E5546030008F6E1 /* PostDoc.swift */,
+				D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -1084,6 +1087,7 @@
 				D7BD62C12E5546030008F6E1 /* PostDoc.swift in Sources */,
 				51C69B512D0E62A000C46759 /* LoadingViewController.swift in Sources */,
 				51C58F2E2D1B6D3500942386 /* LogoutResponseModel.swift in Sources */,
+				D7468DD92E875A6E005FFD59 /* MakePostViewController.swift in Sources */,
 				51C69B2E2D0E57BF00C46759 /* Functions.swift in Sources */,
 				D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */,
 				51ED44682D2E0B460036DB4B /* UserModel.swift in Sources */,

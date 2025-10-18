@@ -14,6 +14,7 @@ FUNCTIONS A: All Functions Related to Posts
     2) Function A2: Post Photo
     3) Function A3: Post Video
     4) Function A4: Post Article
+    5) Function A5: Post Item
  
 FUNCTIONS B: All Functions Related to getting Posts
     1) Function B1: Get all Group Posts
@@ -214,9 +215,145 @@ class PostsAPI {
             
         }
     }
-
-
     
+    //Function A5: Post Item
+    func makeItemPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String) async throws -> NewPostResponseModel {
+        let postType = "item"
+        let masterSite = "wishlist"
+        let notificationMessage = "Posted a New Item"
+        let notificationType = "new_item"
+        let notificationLink = "http://localhost:3003/posts/group/72"
+        let itemCategory = "video_games"
+        
+        //STEP 1: Create the URL
+        let endpoint = "http://localhost:3003/post/item"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        //STEP 2: Create the Request
+        var request = URLRequest(url: url)
+        let boundary = UUID().uuidString
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        //STEP 3: Create the Form Data and Photo
+        let body = NSMutableData()
+
+        //Post Type
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"postType\"\r\n\r\n")
+        body.appendString("\(postType)\r\n")
+            
+        //Master Site
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"masterSite\"\r\n\r\n")
+        body.appendString("\(masterSite)\r\n")
+
+        //Post From
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"postFrom\"\r\n\r\n")
+        body.appendString("\(postFrom)\r\n")
+        
+        //Post To
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"postTo\"\r\n\r\n")
+        body.appendString("\(postTo)\r\n")
+       
+        //Group ID
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"groupID\"\r\n\r\n")
+        body.appendString("\(groupID)\r\n")
+        
+        //List ID
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"listID\"\r\n\r\n")
+        body.appendString("\(listID)\r\n")
+        
+        //Post Caption
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"postCaption\"\r\n\r\n")
+        body.appendString("\(postCaption)\r\n")
+        
+        //Item Name
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"itemName\"\r\n\r\n")
+        body.appendString("\(itemName)\r\n")
+        
+        //Item Price
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"itemPrice\"\r\n\r\n")
+        body.appendString("\(itemPrice)\r\n")
+        
+        //Item Description
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"itemDescription\"\r\n\r\n")
+        body.appendString("\(itemDescription)\r\n")
+        
+        //Item Link
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"itemLink\"\r\n\r\n")
+        body.appendString("\(itemLink)\r\n")
+        
+        //Item Category
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"itemCategory\"\r\n\r\n")
+        body.appendString("\(itemCategory)\r\n")
+        
+        //Notification Message
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"notificationMessage\"\r\n\r\n")
+        body.appendString("\(notificationMessage)\r\n")
+        
+        //Notification Type
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"notificationType\"\r\n\r\n")
+        body.appendString("\(notificationType)\r\n")
+        
+        //Notification Link
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"notificationLink\"\r\n\r\n")
+        body.appendString("\(notificationLink)\r\n")
+    
+        if let imageData = postImage.jpegData(compressionQuality: 1.0) {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"postImage\"; filename=\"image.jpg\"\r\n")
+            body.appendString("Content-Type: image/jpeg\r\n\r\n")
+            body.append(imageData)
+            body.appendString("\r\n")
+        }
+        
+        body.appendString("--\(boundary)--\r\n")
+        
+        request.httpBody = body as Data
+        
+        //STEP 4: Handle the Response
+        let (data, response) = try await URLSession.shared.data(for: request)
+               
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder ()
+            let newPostResponseModel = try decoder.decode(NewPostResponseModel.self, from: data)
+
+            print("API")
+            print(newPostResponseModel)
+            print("API")
+            return newPostResponseModel
+            
+        } catch {
+            let newPostResponseModel = NewPostResponseModel()
+            print("Error decoding data YOOO")
+            print(newPostResponseModel)
+            return newPostResponseModel
+            
+        }
+    }
+
+
     //FUNCTIONS B: All Functions Related to getting Posts
     //Function B1: Get all Group Posts
     func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
@@ -399,9 +536,8 @@ class PostsAPI {
 
 }
 
-//CHAT
 
-
+//APPENDIX
 /*
  do {
      let decoder = JSONDecoder()
@@ -411,10 +547,7 @@ class PostsAPI {
  } catch {
      print("Decoding error: \(error)")
  }
- */
 
-
-/*
  func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
      let endpoint = "http://localhost:3003/posts/group/\(groupID)"
      

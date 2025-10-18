@@ -44,6 +44,7 @@ class IndividualGroupViewController: UIViewController {
         if let group = group {
             Task {
                 await fetchGroupMemberProfiles()
+                print("IndividualGroupViewController \(groupID)")
             }
         } else {
             print("No group data available")
@@ -80,7 +81,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(IndividualPostCell.self, forCellReuseIdentifier: "IndividualPostCell")
+        tableView.register(IndividualGroupPostCell.self, forCellReuseIdentifier: "IndividualGroupPostCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 160
         tableView.tableHeaderView = createTableHeader()
@@ -114,24 +115,57 @@ class IndividualGroupViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(stackView)
 
-        let pinkView = UIView()
-        pinkView.backgroundColor = .systemPink
-        pinkView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(pinkView)
+        let groupHeaderView = UIView()
+        groupHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(groupHeaderView)
+        
+        // Create subviews for groupHeaderView
+        let groupHeaderNameView = UIView()
+        groupHeaderNameView.translatesAutoresizingMaskIntoConstraints = false
+        groupHeaderView.addSubview(groupHeaderNameView)
+        
+        let groupHeaderNewPostView = UIView()
+        groupHeaderNewPostView.translatesAutoresizingMaskIntoConstraints = false
+        groupHeaderView.addSubview(groupHeaderNewPostView)
+        
+        // Add new post button to groupHeaderNewPostView
+        let newPostButton = UIButton(type: .system)
+        newPostButton.setTitle("+", for: .normal)
+        newPostButton.setTitleColor(.systemBlue, for: .normal)
+        newPostButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        newPostButton.translatesAutoresizingMaskIntoConstraints = false
+        newPostButton.addTarget(self, action: #selector(newPostButtonTapped), for: .touchUpInside)
+        groupHeaderNewPostView.addSubview(newPostButton)
 
         NSLayoutConstraint.activate([
             // Header view constraints
             headerView.heightAnchor.constraint(equalToConstant: headerHeight),
             headerView.widthAnchor.constraint(equalToConstant: view.frame.width),
             
-            // Pink view constraints (at the top)
-            pinkView.topAnchor.constraint(equalTo: headerView.topAnchor),
-            pinkView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            pinkView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            pinkView.heightAnchor.constraint(equalToConstant: 40),
+            // Group header view constraints (at the top)
+            groupHeaderView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            groupHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            groupHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            groupHeaderView.heightAnchor.constraint(equalToConstant: 40),
+            
+            // Group header name view constraints (left, centered, fill all space)
+            groupHeaderNameView.topAnchor.constraint(equalTo: groupHeaderView.topAnchor),
+            groupHeaderNameView.leadingAnchor.constraint(equalTo: groupHeaderView.leadingAnchor),
+            groupHeaderNameView.bottomAnchor.constraint(equalTo: groupHeaderView.bottomAnchor),
+            groupHeaderNameView.trailingAnchor.constraint(equalTo: groupHeaderNewPostView.leadingAnchor),
+            
+            // Group header new post view constraints (60 wide, right centered)
+            groupHeaderNewPostView.topAnchor.constraint(equalTo: groupHeaderView.topAnchor),
+            groupHeaderNewPostView.trailingAnchor.constraint(equalTo: groupHeaderView.trailingAnchor),
+            groupHeaderNewPostView.bottomAnchor.constraint(equalTo: groupHeaderView.bottomAnchor),
+            groupHeaderNewPostView.widthAnchor.constraint(equalToConstant: 60),
+            
+            // New post button constraints (centered in groupHeaderNewPostView)
+            newPostButton.centerXAnchor.constraint(equalTo: groupHeaderNewPostView.centerXAnchor),
+            newPostButton.centerYAnchor.constraint(equalTo: groupHeaderNewPostView.centerYAnchor),
 
-            // Scroll view constraints (below pink view)
-            scrollView.topAnchor.constraint(equalTo: pinkView.bottomAnchor),
+            // Scroll view constraints (below group header view)
+            scrollView.topAnchor.constraint(equalTo: groupHeaderView.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             scrollView.heightAnchor.constraint(equalToConstant: 120),
@@ -165,15 +199,16 @@ class IndividualGroupViewController: UIViewController {
         }
 
         Task {
-            await postDataController.fetchItems(groupID: groupID)
+            // Fetch items (items are posts with additional item-specific data)
+            await postDataController.fetchPostItems(groupID: groupID)
             
             // Print out item names to verify it's working
             DispatchQueue.main.async {
                 print("________________________")
-                print("FETCHED ITEMS DEBUG")
+                print("IndividualGroupViewController: fetchItemsForGroup \(groupID)")
                 print("Total items fetched: \(self.postDataController.items.count)")
                 for item in self.postDataController.items {
-                    print("- Item Name: \(item.itemName ?? "No Name")")
+                    print("- Item Name: \(item.itemName ?? "No Name"), PostID: \(item.postID)")
                 }
                 print("________________________")
             }
@@ -277,6 +312,7 @@ class IndividualGroupViewController: UIViewController {
         return containerView
     }
     
+    //ACTIONS
     @objc private func userImageTapped(_ gesture: UITapGestureRecognizer) {
         guard let containerView = gesture.view else { return }
         let userID = containerView.tag
@@ -294,6 +330,14 @@ class IndividualGroupViewController: UIViewController {
         membersVC.groupMembers = self.groupMembers
         navigationController?.pushViewController(membersVC, animated: true)
     }
+    
+    @objc private func newPostButtonTapped() {
+        let storyboard = UIStoryboard(name: "Groups", bundle: nil) // change "Main" if you put it in another storyboard
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? MakePostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen  // makes it fill screen
+            present(newPostVC, animated: true, completion: nil)
+        }
+    }
 
     //VIEWS: Navigate to an Individual Post
     
@@ -303,23 +347,29 @@ class IndividualGroupViewController: UIViewController {
 extension IndividualGroupViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return postDataController.posts.count
+        // return postDataController.posts.count
+        return postDataController.items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let post = postDataController.posts[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualPostCell", for: indexPath) as! IndividualPostCell
-        cell.configurePost(with: post)
+        // let post = postDataController.posts[indexPath.row]
+        let item = postDataController.items[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualGroupPostCell", for: indexPath) as! IndividualGroupPostCell
+        // cell.configurePost(with: post)
+        cell.configurePost(with: item)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let post = postDataController.posts[indexPath.row]
+        
+        // Get the item at the tapped index (items are posts with additional item data)
+        let item = postDataController.items[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
-            postViewController.currentPost = post
+            // Pass the item as the current post (Item has all Post properties plus item-specific data)
+            postViewController.currentItem = item
             navigationController?.pushViewController(postViewController, animated: true)
         }
     }

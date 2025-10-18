@@ -117,14 +117,13 @@ class PostDataController {
 
     
     //ITEMS
-    
     private(set) var items: [Item] = []
     
     // Callback to notify when items are updated
     var onItemsUpdated: (() -> Void)?
     
     // Fetch items from API
-    func fetchItems(groupID: Int) async {
+    func fetchPostItems(groupID: Int) async {
         do {
             let itemsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
             let noImageItems = try await createItemsArray(itemsResponseModel: itemsResponseModel)

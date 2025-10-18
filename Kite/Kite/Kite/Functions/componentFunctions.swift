@@ -18,7 +18,6 @@ struct componentFunctions {
     }
     
     
-    
     //IMAGE
     static func createPostImageView() -> UIView {
         let view = UIView()
@@ -46,6 +45,7 @@ struct componentFunctions {
     }
     
 
+    //BUTTONS
     
     
     //MAIN VIEWS
@@ -139,6 +139,68 @@ struct componentFunctions {
         label.backgroundColor = .clear
         
         return label
+    }
+    
+    //POST CREATION UI ELEMENTS
+    static func createTitleLabel() -> UILabel {
+        let label = UILabel()
+        label.text = "new post"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+    
+    static func createCloseButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("X", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
+    //POST CREATION FORM ELEMENTS
+    static func createItemDescriptionInput() -> UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.layer.borderWidth = 1.0
+        textView.layer.cornerRadius = 8
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        return textView
+    }
+    
+    static func createItemLinkInput() -> UITextField {
+        let textField = UITextField()
+        textField.placeholder = "Enter link..."
+        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.borderStyle = .roundedRect
+        textField.keyboardType = .URL
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }
+    
+    static func createAddPhotoButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("Add Photo", for: .normal)
+        button.backgroundColor = UIColor.systemBlue
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
+    static func createSubmitItemButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("Submit Item", for: .normal)
+        button.backgroundColor = UIColor.systemGreen
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }
     
 }
