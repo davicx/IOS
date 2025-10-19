@@ -50,8 +50,8 @@ class IndividualGroupViewController: UIViewController {
             print("No group data available")
         }
          
-        // Observe post updates
-        postDataController.onPostsUpdated = { [weak self] in
+        // Observe item updates (not post updates)
+        postDataController.onItemsUpdated = { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
@@ -334,6 +334,8 @@ class IndividualGroupViewController: UIViewController {
     @objc private func newPostButtonTapped() {
         let storyboard = UIStoryboard(name: "Groups", bundle: nil) // change "Main" if you put it in another storyboard
         if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? MakePostViewController {
+            // Pass the current group ID to the MakePostViewController
+            newPostVC.groupID = group?.groupID ?? 0
             newPostVC.modalPresentationStyle = .fullScreen  // makes it fill screen
             present(newPostVC, animated: true, completion: nil)
         }

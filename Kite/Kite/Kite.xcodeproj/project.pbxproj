@@ -720,7 +720,7 @@
 				D70984E12E2DBDDE00157F27 /* HomePost */,
 				D78CEF7A2E2F074B002E3712 /* FullOriginalPostToPullFrom.swift */,
 				D7BD62C02E5546030008F6E1 /* PostDoc.swift */,
-				D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */,
+				D79B456A2EA4617600AD7038 /* NewPost */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -898,6 +898,14 @@
 				D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */,
 			);
 			path = Friends;
+			sourceTree = "<group>";
+		};
+		D79B456A2EA4617600AD7038 /* NewPost */ = {
+			isa = PBXGroup;
+			children = (
+				D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */,
+			);
+			path = NewPost;
 			sourceTree = "<group>";
 		};
 		D7A0BB2F2D7FAA40007EB34C /* templates */ = {
