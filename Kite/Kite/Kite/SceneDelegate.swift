@@ -17,7 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = AppTabBarFactory.makeMainTabBar()
+        
+        // Start with LoadingViewController to check authentication status
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let loadingVC = storyboard.instantiateViewController(withIdentifier: "LoadingViewController")
+        window?.rootViewController = loadingVC
         window?.makeKeyAndVisible()
     }
 

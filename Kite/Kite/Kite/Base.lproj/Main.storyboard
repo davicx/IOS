@@ -12,7 +12,7 @@
         <!--Loading View Controller-->
         <scene sceneID="mOT-t0-5cc">
             <objects>
-                <viewController id="ebe-z7-kyR" customClass="LoadingViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoadingViewController" id="ebe-z7-kyR" customClass="LoadingViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xSg-8O-6H4">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

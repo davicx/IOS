@@ -56,8 +56,6 @@ class IndividualGroupPostCell: UITableViewCell {
     }
 
     //CELL SETUP
-    //SO HERE WE NEED TO USE POST
-    // func configurePost(with post: Post) {
     func configurePost(with item: Item) {
         // Print item information
         print("=== IndividualGroupPostCell configurePost ===")

@@ -15,12 +15,15 @@ class LoadingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("LoadingViewController: viewDidLoad called")
         setupView()
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        print("LoadingViewController: viewDidAppear called")
  
         delay(durationInSeconds: 1.0) {
             self.showInitialView()
@@ -30,6 +33,9 @@ class LoadingViewController: UIViewController {
      
     private func showInitialView() {
         isUserLoggedIn = userDefaultManager.getLoggedInUserStatus()
+        
+        print("LoadingViewController: Starting authentication check...")
+        print("LoadingViewController: Local login status: \(isUserLoggedIn)")
         
         if isUserLoggedIn {
             // User appears to be logged in locally, verify with server
@@ -43,23 +49,24 @@ class LoadingViewController: UIViewController {
                         print("LoadingViewController: Server confirmed - You are logged in!")
                     } else {
                         // Server says user is not logged in, update local state and show onboarding
+                        print("LoadingViewController: Server says session expired - logging out locally")
                         self.userDefaultManager.logUserOut()
                         PresenterManager.shared.showOnboarding()
-                        print("LoadingViewController: Server says session expired - showing onboarding")
+                        print("LoadingViewController: Showing onboarding due to expired session")
                     }
                 }
             }
         } else {
             // User is not logged in locally, show onboarding immediately
+            print("LoadingViewController: User is not logged in locally - showing onboarding")
             PresenterManager.shared.showOnboarding()
-            print("LoadingViewController: You are not logged in locally - showing onboarding")
         }
     }
     
 
     private func setupView() {
+        print("LoadingViewController: setupView called")
         //view.backgroundColor = .blue
-        //print("Don't need")
     }
 
 }

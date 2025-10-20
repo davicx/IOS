@@ -42,6 +42,7 @@ class IndividualGroupPostCell: UITableViewCell {
         button.layer.cornerRadius = 8
         return button
     }()
+    
 
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -72,6 +73,7 @@ class IndividualGroupPostCell: UITableViewCell {
         // Set the item image (already downloaded by addPostImageToItemsArray)
         productImageView.image = item.postImageData ?? UIImage(named: "background_1")
     }
+    
     
   
     // Setup Entry Point
@@ -355,7 +357,8 @@ class IndividualPostCell: UITableViewCell {
     }
     
 
-    //CELL SETUP
+    //CELL SETUP - This method is commented out to avoid conflicts
+    /*
     func configurePost(with post: Post) {
         // posts
     }
