@@ -247,10 +247,23 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
             group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
         }
         
-        let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
-        vc.group = group
-        navigationController?.pushViewController(vc, animated: true)
+        // Navigate to appropriate view controller based on segment
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // My Lists - use IndividualGroupUserViewController
+            let vc = IndividualGroupUserViewController()
+            vc.group = group
+            navigationController?.pushViewController(vc, animated: true)
+        case 1: // Shared With Me - use IndividualGroupFriendViewController
+            let vc = IndividualGroupFriendViewController()
+            vc.group = group
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            // Fallback to original IndividualGroupViewController
+            let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
+            vc.group = group
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 
