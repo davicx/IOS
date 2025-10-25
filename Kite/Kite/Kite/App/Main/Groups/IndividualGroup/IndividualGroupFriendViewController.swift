@@ -340,8 +340,6 @@ class IndividualGroupFriendViewController: UIViewController {
         }
     }
 
-    //VIEWS: Navigate to an Individual Post
-    
 }
 
 
@@ -366,13 +364,18 @@ extension IndividualGroupFriendViewController: UITableViewDataSource, UITableVie
         
         // Get the item at the tapped index (items are posts with additional item data)
         let item = postDataController.items[indexPath.row]
+        
+        print("Right now cant navigate to new item")
 
+
+        /*
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
             // Pass the item as the current post (Item has all Post properties plus item-specific data)
             postViewController.currentItem = item
             navigationController?.pushViewController(postViewController, animated: true)
         }
+        */
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
