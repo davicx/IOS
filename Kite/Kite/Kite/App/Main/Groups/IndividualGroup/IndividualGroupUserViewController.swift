@@ -86,6 +86,7 @@ class IndividualGroupUserViewController: UIViewController {
         tableView.estimatedRowHeight = 160
         tableView.tableHeaderView = createTableHeader()
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none  // Remove separator lines between cells
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

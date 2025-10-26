@@ -149,6 +149,7 @@ class GroupsViewController: UIViewController {
         tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "GroupTableViewCell")
         tableView.rowHeight = 220
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none  // Comment out divider lines between cells
 
         // Header
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 60))

@@ -74,7 +74,24 @@ class GroupItemUserCell: UITableViewCell {
     }
     
     private func setupMainViews() {
+        // Set cell background to white
+        contentView.backgroundColor = .white
         
+        // Add itemView with white border and itemBackgroundColor
+        contentView.addSubview(itemView)
+        itemView.translatesAutoresizingMaskIntoConstraints = false
+        itemView.backgroundColor = UIColor.itemBackgroundColor
+        itemView.layer.borderColor = UIColor.white.cgColor
+        itemView.layer.borderWidth = 4
+        itemView.layer.cornerRadius = 12
+        
+        NSLayoutConstraint.activate([
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            itemView.heightAnchor.constraint(greaterThanOrEqualToConstant: 280),
+            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
     }
     
     /*
