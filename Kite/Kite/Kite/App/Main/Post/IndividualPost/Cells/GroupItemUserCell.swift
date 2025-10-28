@@ -90,7 +90,7 @@ class GroupItemUserCell: UITableViewCell {
             itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             itemView.heightAnchor.constraint(greaterThanOrEqualToConstant: 280),
-            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+P            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
     
