@@ -8,7 +8,7 @@
 import UIKit
 
 
-//LISTS: Wishlist - User's Own Lists
+//LISTS: Wishlist - User's Own Lists (Uses GroupItemUserCell)
 class IndividualGroupUserViewController: UIViewController {
 
     //GROUPS
