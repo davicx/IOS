@@ -13,13 +13,22 @@ class GroupItemUserCell: UITableViewCell {
     
     //MAIN VIEWS
     let itemView = UIView()
+    
+    //itemView contains these children
+    let itemInfoView = UIView()
+    let itemSocialsView = UIView()
+    
+    //itemInfoView: Contains these
     let itemImageHolderView = UIView()
     let itemNameHolderView = UIView()
     let itemPriceHolderView = UIView()
     let itemDescriptionHolderView = UIView()
+    
+    //itemSocialsView contains these below
     let itemPurchaseHolderView = UIView()
     let itemCommentHolderView = UIView()
     let itemSocialsHolderView = UIView()
+    
     
 
     //MAIN: Called from IndividualGroupUserViewController
