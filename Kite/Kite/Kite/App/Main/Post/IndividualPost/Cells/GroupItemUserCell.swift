@@ -8,7 +8,499 @@
 import UIKit
 
 
+
 //WISHLIST: Item
+class GroupItemUserCell: UITableViewCell {
+    
+    // MAIN VIEWS
+    let itemView = UIView()
+    
+    // LEVEL 1
+    let itemInfoView = UIView()
+    let itemSocialsView = UIView()
+    let itemSocialsBarView = UIView()
+    
+    // LEVEL 2
+    let itemImageHolderView = UIView()
+    let itemNamePriceDescriptionHolderView = UIView()
+    
+    // MARK: - Init
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupItemView()
+        setupItemInfoView()
+        setupItemSocialsView()
+        setupItemInfoTextAndImage()
+        setupItemSocialsText()
+        setupItemSocialsBarView()
+    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    
+    // MARK: - Setup Item View
+    private func setupItemView() {
+        contentView.backgroundColor = .white
+        contentView.addSubview(itemView)
+        itemView.translatesAutoresizingMaskIntoConstraints = false
+        itemView.backgroundColor = UIColor.itemBackgroundColor
+        itemView.layer.borderColor = UIColor.white.cgColor
+        itemView.layer.borderWidth = 4
+        itemView.layer.cornerRadius = 12
+        
+        NSLayoutConstraint.activate([
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    
+    // MARK: - Setup Item Info View
+    private func setupItemInfoView() {
+        itemView.addSubview(itemInfoView)
+        itemInfoView.translatesAutoresizingMaskIntoConstraints = false
+        itemInfoView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.15)
+        itemInfoView.layer.cornerRadius = 8
+        
+        NSLayoutConstraint.activate([
+            itemInfoView.topAnchor.constraint(equalTo: itemView.topAnchor, constant: 8),
+            itemInfoView.leadingAnchor.constraint(equalTo: itemView.leadingAnchor, constant: 8),
+            itemInfoView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -8),
+            itemInfoView.heightAnchor.constraint(greaterThanOrEqualToConstant: 140)
+        ])
+        
+        setupItemInfoSubviews()
+    }
+    
+    
+    // MARK: - Setup Item Info Subviews
+    private func setupItemInfoSubviews() {
+        itemInfoView.addSubview(itemImageHolderView)
+        itemInfoView.addSubview(itemNamePriceDescriptionHolderView)
+        
+        itemImageHolderView.translatesAutoresizingMaskIntoConstraints = false
+        itemNamePriceDescriptionHolderView.translatesAutoresizingMaskIntoConstraints = false
+        
+        itemImageHolderView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.3)
+        itemNamePriceDescriptionHolderView.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
+        
+        itemImageHolderView.layer.cornerRadius = 8
+        itemNamePriceDescriptionHolderView.layer.cornerRadius = 8
+        
+        NSLayoutConstraint.activate([
+            itemImageHolderView.leadingAnchor.constraint(equalTo: itemInfoView.leadingAnchor, constant: 8),
+            itemImageHolderView.topAnchor.constraint(equalTo: itemInfoView.topAnchor, constant: 8),
+            itemImageHolderView.bottomAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: -8),
+            itemImageHolderView.widthAnchor.constraint(equalToConstant: 120),
+            
+            itemNamePriceDescriptionHolderView.leadingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor, constant: 8),
+            itemNamePriceDescriptionHolderView.topAnchor.constraint(equalTo: itemInfoView.topAnchor, constant: 8),
+            itemNamePriceDescriptionHolderView.trailingAnchor.constraint(equalTo: itemInfoView.trailingAnchor, constant: -8),
+            itemNamePriceDescriptionHolderView.bottomAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    
+    // MARK: - Setup Item Socials View
+    private func setupItemSocialsView() {
+        itemView.addSubview(itemSocialsView)
+        itemSocialsView.translatesAutoresizingMaskIntoConstraints = false
+        itemSocialsView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.15)
+        itemSocialsView.layer.cornerRadius = 8
+
+        NSLayoutConstraint.activate([
+            itemSocialsView.topAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: 8),
+            itemSocialsView.leadingAnchor.constraint(equalTo: itemView.leadingAnchor, constant: 8),
+            itemSocialsView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -8)
+        ])
+    }
+    
+    // MARK: - Setup Item Socials Bar View
+    private func setupItemSocialsBarView() {
+        itemView.addSubview(itemSocialsBarView)
+        itemSocialsBarView.translatesAutoresizingMaskIntoConstraints = false
+        itemSocialsBarView.backgroundColor = UIColor.systemPink
+        itemSocialsBarView.layer.cornerRadius = 8
+
+        NSLayoutConstraint.activate([
+            itemSocialsBarView.topAnchor.constraint(equalTo: itemSocialsView.bottomAnchor, constant: 8),
+            itemSocialsBarView.leadingAnchor.constraint(equalTo: itemView.leadingAnchor, constant: 8),
+            itemSocialsBarView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -8),
+            itemSocialsBarView.bottomAnchor.constraint(equalTo: itemView.bottomAnchor, constant: -8),
+            itemSocialsBarView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    
+    // MARK: - Setup Item Info Text And Image
+    private func setupItemInfoTextAndImage() {
+        // --- IMAGE ---
+        let itemImageView = UIImageView()
+        itemImageView.translatesAutoresizingMaskIntoConstraints = false
+        itemImageView.contentMode = .scaleAspectFit   // ✅ keeps proportions
+        itemImageView.clipsToBounds = true
+        itemImageView.image = UIImage(named: "chrono.jpg")  // your image
+        itemImageHolderView.addSubview(itemImageView)
+
+        NSLayoutConstraint.activate([
+            itemImageView.topAnchor.constraint(equalTo: itemImageHolderView.topAnchor),
+            itemImageView.leadingAnchor.constraint(equalTo: itemImageHolderView.leadingAnchor),
+            itemImageView.trailingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor),
+            itemImageView.bottomAnchor.constraint(lessThanOrEqualTo: itemImageHolderView.bottomAnchor),
+            itemImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 80) // ✅ max height
+        ])
+        
+        // --- LABELS ---
+        let nameLabel = UILabel()
+        nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        nameLabel.textColor = .label
+        nameLabel.text = "Name"
+
+        let priceLabel = UILabel()
+        priceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        priceLabel.textColor = .secondaryLabel
+        priceLabel.text = "$0.00"
+
+        let descriptionTextView = UITextView()
+        descriptionTextView.font = UIFont.systemFont(ofSize: 14)
+        descriptionTextView.textColor = .darkGray
+        descriptionTextView.isScrollEnabled = false  // ✅ auto-expand
+        descriptionTextView.layer.cornerRadius = 6
+        descriptionTextView.layer.borderWidth = 1
+        descriptionTextView.layer.borderColor = UIColor.systemGray4.cgColor
+        descriptionTextView.text = "Description goes here and expands with text.Description goes here and expands with text."
+
+        // --- STACK VIEW ---
+        let infoStack = UIStackView(arrangedSubviews: [nameLabel, priceLabel, descriptionTextView])
+        infoStack.axis = .vertical
+        infoStack.spacing = 8
+        infoStack.alignment = .leading
+        infoStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        itemNamePriceDescriptionHolderView.addSubview(infoStack)
+        NSLayoutConstraint.activate([
+            infoStack.topAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.topAnchor, constant: 8),
+            infoStack.leadingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.leadingAnchor, constant: 8),
+            infoStack.trailingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.trailingAnchor, constant: -8),
+            infoStack.bottomAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.bottomAnchor, constant: -8)
+        ])
+    }
+
+    
+    // MARK: - Setup Item Socials Text
+    private func setupItemSocialsText() {
+        // PURCHASE BUTTON
+        let purchaseButton = UIButton(type: .system)
+        purchaseButton.setTitle("Purchase", for: .normal)
+        purchaseButton.backgroundColor = .systemBlue
+        purchaseButton.setTitleColor(.white, for: .normal)
+        purchaseButton.layer.cornerRadius = 6
+        purchaseButton.addTarget(self, action: #selector(didTapPurchase), for: .touchUpInside)
+        purchaseButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+
+        // COMMENT
+        let commentTextView = UITextView()
+        commentTextView.font = UIFont.systemFont(ofSize: 14)
+        commentTextView.textColor = .darkGray
+        commentTextView.isScrollEnabled = false  // ✅ auto-expand
+        commentTextView.layer.cornerRadius = 6
+        commentTextView.layer.borderWidth = 1
+        commentTextView.layer.borderColor = UIColor.systemGray4.cgColor
+        commentTextView.text = """
+        Chrono Trigger's six playable characters (plus one optional character) come from different eras of history. Chrono Trigger begins in 1000 AD with Crono, Marle, and Lucca...
+        """
+
+        // STACK VIEW — now only includes purchase + comment
+        let socialsStack = UIStackView(arrangedSubviews: [purchaseButton, commentTextView])
+        socialsStack.axis = .vertical
+        socialsStack.spacing = 8
+        socialsStack.translatesAutoresizingMaskIntoConstraints = false
+
+        itemSocialsView.addSubview(socialsStack)
+        NSLayoutConstraint.activate([
+            socialsStack.topAnchor.constraint(equalTo: itemSocialsView.topAnchor, constant: 8),
+            socialsStack.leadingAnchor.constraint(equalTo: itemSocialsView.leadingAnchor, constant: 8),
+            socialsStack.trailingAnchor.constraint(equalTo: itemSocialsView.trailingAnchor, constant: -8),
+            socialsStack.bottomAnchor.constraint(equalTo: itemSocialsView.bottomAnchor, constant: -8)
+        ])
+    }
+
+
+    // MARK: - Configure
+    func configurePost(with item: Item) {
+        print("=== IndividualGroupPostCell configurePost ===")
+        print("postID: \(item.postID)")
+    }
+    
+    @objc private func didTapPurchase() {
+        print("purchased")
+    }
+}
+
+//WISHLIST: Item
+/*
+class GroupItemUserCell: UITableViewCell {
+    
+    //MAIN VIEWS
+    let itemView = UIView()
+    
+    //LEVEL 1: itemView contains these children
+    let itemInfoView = UIView()
+    let itemSocialsView = UIView()
+    
+    //LEVEL 2: itemInfoView: Contains these
+    let itemImageHolderView = UIView()
+    let itemNamePriceDescriptionHolderView = UIView()
+    
+    //LEVEL 3: itemNamePriceDescriptionHolderView: Contains these text labels Item, Name and Price
+    //Create text labels and image here
+    
+    //LEVEL 2: itemSocialsView contains these
+    //Create text labels here
+
+    
+    //MAIN: Called from IndividualGroupUserViewController
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupItemView()
+        setupItemInfoView()
+        setupItemSocialsView()
+        setupItemInfoTextAndImage()
+        setupItemSocialsText()
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Setup Main Item View
+    private func setupItemView() {
+        contentView.backgroundColor = .white
+        
+        contentView.addSubview(itemView)
+        itemView.translatesAutoresizingMaskIntoConstraints = false
+        itemView.backgroundColor = UIColor.itemBackgroundColor
+        itemView.layer.borderColor = UIColor.white.cgColor
+        itemView.layer.borderWidth = 4
+        itemView.layer.cornerRadius = 12
+        
+        NSLayoutConstraint.activate([
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    
+    // MARK: - Setup Item Info View
+    private func setupItemInfoView() {
+        itemView.addSubview(itemInfoView)
+        itemInfoView.translatesAutoresizingMaskIntoConstraints = false
+        itemInfoView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.15)
+        itemInfoView.layer.cornerRadius = 8
+        
+        NSLayoutConstraint.activate([
+            itemInfoView.topAnchor.constraint(equalTo: itemView.topAnchor, constant: 8),
+            itemInfoView.leadingAnchor.constraint(equalTo: itemView.leadingAnchor, constant: 8),
+            itemInfoView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -8),
+            itemInfoView.heightAnchor.constraint(greaterThanOrEqualToConstant: 140)
+        ])
+        
+        setupItemInfoSubviews()
+    }
+    
+    // MARK: - Setup Item Info Subviews
+    private func setupItemInfoSubviews() {
+        itemInfoView.addSubview(itemImageHolderView)
+        itemInfoView.addSubview(itemNamePriceDescriptionHolderView)
+        
+        itemImageHolderView.translatesAutoresizingMaskIntoConstraints = false
+        itemNamePriceDescriptionHolderView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Example background colors to help visualize
+        itemImageHolderView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.3)
+        itemNamePriceDescriptionHolderView.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
+        
+        itemImageHolderView.layer.cornerRadius = 8
+        itemNamePriceDescriptionHolderView.layer.cornerRadius = 8
+        
+        // Constraints
+        NSLayoutConstraint.activate([
+            // itemImageHolderView (left side)
+            itemImageHolderView.leadingAnchor.constraint(equalTo: itemInfoView.leadingAnchor, constant: 8),
+            itemImageHolderView.topAnchor.constraint(equalTo: itemInfoView.topAnchor, constant: 8),
+            itemImageHolderView.bottomAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: -8),
+            itemImageHolderView.widthAnchor.constraint(equalToConstant: 120),
+            itemImageHolderView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100),
+            
+            // itemNamePriceDescriptionHolderView (right side)
+            itemNamePriceDescriptionHolderView.leadingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor, constant: 8),
+            itemNamePriceDescriptionHolderView.topAnchor.constraint(equalTo: itemInfoView.topAnchor, constant: 8),
+            itemNamePriceDescriptionHolderView.trailingAnchor.constraint(equalTo: itemInfoView.trailingAnchor, constant: -8),
+            itemNamePriceDescriptionHolderView.bottomAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: -8),
+            itemNamePriceDescriptionHolderView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100)
+        ])
+    }
+    
+    
+    // MARK: - Setup Item Socials View
+    private func setupItemSocialsView() {
+        itemView.addSubview(itemSocialsView)
+        itemSocialsView.translatesAutoresizingMaskIntoConstraints = false
+        itemSocialsView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.15)
+        itemSocialsView.layer.cornerRadius = 8
+        
+        NSLayoutConstraint.activate([
+            itemSocialsView.topAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: 8),
+            itemSocialsView.leadingAnchor.constraint(equalTo: itemView.leadingAnchor, constant: 8),
+            itemSocialsView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -8),
+            itemSocialsView.bottomAnchor.constraint(equalTo: itemView.bottomAnchor, constant: -8),
+            itemSocialsView.heightAnchor.constraint(greaterThanOrEqualToConstant: 140)
+        ])
+    }
+    
+
+    // MARK: - Setup Item Info Text And Image
+    private func setupItemInfoTextAndImage() {
+        // --- IMAGE ---
+        let itemImageView = UIImageView()
+        itemImageView.translatesAutoresizingMaskIntoConstraints = false
+        itemImageView.contentMode = .scaleAspectFill
+        itemImageView.clipsToBounds = true
+        itemImageView.backgroundColor = .systemGray5
+        itemImageHolderView.addSubview(itemImageView)
+
+        NSLayoutConstraint.activate([
+            itemImageView.topAnchor.constraint(equalTo: itemImageHolderView.topAnchor),
+            itemImageView.leadingAnchor.constraint(equalTo: itemImageHolderView.leadingAnchor),
+            itemImageView.trailingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor),
+            itemImageView.bottomAnchor.constraint(equalTo: itemImageHolderView.bottomAnchor)
+        ])
+
+        // --- NAME ---
+        let nameLabel = UILabel()
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        nameLabel.textColor = .label
+        nameLabel.text = "Name"
+        itemNamePriceDescriptionHolderView.addSubview(nameLabel)
+
+        // --- PRICE ---
+        let priceLabel = UILabel()
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        priceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        priceLabel.textColor = .secondaryLabel
+        priceLabel.text = "$0.00"
+        itemNamePriceDescriptionHolderView.addSubview(priceLabel)
+
+        // --- DESCRIPTION ---
+        let descriptionTextView = UITextView()
+        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
+        descriptionTextView.font = UIFont.systemFont(ofSize: 14)
+        descriptionTextView.textColor = .darkGray
+        descriptionTextView.isScrollEnabled = true
+        descriptionTextView.layer.cornerRadius = 6
+        descriptionTextView.layer.borderWidth = 1
+        descriptionTextView.layer.borderColor = UIColor.systemGray4.cgColor
+        descriptionTextView.text = "Description"
+        itemNamePriceDescriptionHolderView.addSubview(descriptionTextView)
+
+        NSLayoutConstraint.activate([
+            nameLabel.topAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.topAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.leadingAnchor),
+            nameLabel.trailingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.trailingAnchor),
+            nameLabel.heightAnchor.constraint(equalToConstant: 40),
+
+            priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            priceLabel.leadingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.leadingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.trailingAnchor),
+            priceLabel.heightAnchor.constraint(equalToConstant: 40),
+
+            descriptionTextView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 4),
+            descriptionTextView.leadingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.leadingAnchor),
+            descriptionTextView.trailingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.trailingAnchor),
+            descriptionTextView.bottomAnchor.constraint(lessThanOrEqualTo: itemNamePriceDescriptionHolderView.bottomAnchor),
+            descriptionTextView.heightAnchor.constraint(lessThanOrEqualToConstant: 80)
+        ])
+    }
+
+    // MARK: - Setup Item Socials Text
+    private func setupItemSocialsText() {
+        // PURCHASE button
+        let purchaseButton = UIButton(type: .system)
+        purchaseButton.translatesAutoresizingMaskIntoConstraints = false
+        purchaseButton.setTitle("Purchase", for: .normal)
+        purchaseButton.backgroundColor = .systemBlue
+        purchaseButton.setTitleColor(.white, for: .normal)
+        purchaseButton.layer.cornerRadius = 6
+        purchaseButton.addTarget(self, action: #selector(didTapPurchase), for: .touchUpInside)
+        itemSocialsView.addSubview(purchaseButton)
+        
+        // COMMENT field
+        let commentTextView = UITextView()
+        commentTextView.translatesAutoresizingMaskIntoConstraints = false
+        commentTextView.font = UIFont.systemFont(ofSize: 14)
+        commentTextView.textColor = .darkGray
+        commentTextView.isScrollEnabled = true
+        commentTextView.layer.cornerRadius = 6
+        commentTextView.layer.borderWidth = 1
+        commentTextView.layer.borderColor = UIColor.systemGray4.cgColor
+        commentTextView.text = "Comment"
+        itemSocialsView.addSubview(commentTextView)
+        
+        // SOCIALS placeholder view
+        let socialsBarView = UIView()
+        socialsBarView.translatesAutoresizingMaskIntoConstraints = false
+        socialsBarView.backgroundColor = UIColor.systemGray6
+        itemSocialsView.addSubview(socialsBarView)
+        
+        NSLayoutConstraint.activate([
+            purchaseButton.topAnchor.constraint(equalTo: itemSocialsView.topAnchor, constant: 8),
+            purchaseButton.leadingAnchor.constraint(equalTo: itemSocialsView.leadingAnchor, constant: 8),
+            purchaseButton.trailingAnchor.constraint(equalTo: itemSocialsView.trailingAnchor, constant: -8),
+            purchaseButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            commentTextView.topAnchor.constraint(equalTo: purchaseButton.bottomAnchor, constant: 8),
+            commentTextView.leadingAnchor.constraint(equalTo: itemSocialsView.leadingAnchor, constant: 8),
+            commentTextView.trailingAnchor.constraint(equalTo: itemSocialsView.trailingAnchor, constant: -8),
+            commentTextView.heightAnchor.constraint(lessThanOrEqualToConstant: 80),
+            
+            socialsBarView.topAnchor.constraint(equalTo: commentTextView.bottomAnchor, constant: 8),
+            socialsBarView.leadingAnchor.constraint(equalTo: itemSocialsView.leadingAnchor, constant: 8),
+            socialsBarView.trailingAnchor.constraint(equalTo: itemSocialsView.trailingAnchor, constant: -8),
+            socialsBarView.heightAnchor.constraint(equalToConstant: 40),
+            socialsBarView.bottomAnchor.constraint(equalTo: itemSocialsView.bottomAnchor, constant: -8)
+        ])
+    }
+
+    private func setupItemSocialsBarView() {
+    }
+    
+    // MARK: - Configure
+    func configurePost(with item: Item) {
+        print("=== IndividualGroupPostCell configurePost ===")
+        print("postID: \(item.postID)")
+        print("groupID: \(item.groupID)")
+        print("postCaption: \(item.postCaption ?? "nil")")
+        print("fileURL: \(item.fileUrl ?? "nil")")
+        print("item_name: \(item.itemName ?? "nil")")
+    }
+    @objc private func didTapPurchase() {
+        print("purchased")
+    }
+}
+
+*/
+//let itemPurchaseHolderView = UIView()
+//let itemCommentHolderView = UIView()
+//let itemSocialsHolderView = UIView()
+//let itemNameHolderView = UIView()
+//let itemPriceHolderView = UIView()
+//let itemDescriptionHolderView = UIView()
+
+//WISHLIST: Item
+/*
 class GroupItemUserCell: UITableViewCell {
     
     //MAIN VIEWS
@@ -101,7 +593,7 @@ class GroupItemUserCell: UITableViewCell {
 
 }
 
-
+*/
 
 //APPENDIX
 /*

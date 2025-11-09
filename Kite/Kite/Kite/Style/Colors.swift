@@ -14,7 +14,12 @@ extension UIColor {
     //static let textPrimaryColor = UIColor(hex: "#333333")
 }
 
-
+/*
+ itemInfoView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.15)
+ itemImageHolderView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.3)
+ itemNamePriceDescriptionHolderView.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
+ 
+ */
 //STYLE
 extension UIColor {
     convenience init(hex: String) {
