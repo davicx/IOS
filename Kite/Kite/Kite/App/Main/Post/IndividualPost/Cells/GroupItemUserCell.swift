@@ -24,6 +24,12 @@ class GroupItemUserCell: UITableViewCell {
     let itemImageHolderView = UIView()
     let itemNamePriceDescriptionHolderView = UIView()
     
+    private let productImageView = UIImageView()
+    private let itemNameLabel = UILabel()
+    private let itemPriceLabel = UILabel()
+    private let itemDescriptionTextView = UITextView()
+    private let itemCommentTextView = UITextView()
+    
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -136,43 +142,39 @@ class GroupItemUserCell: UITableViewCell {
     // MARK: - Setup Item Info Text And Image
     private func setupItemInfoTextAndImage() {
         // --- IMAGE ---
-        let itemImageView = UIImageView()
-        itemImageView.translatesAutoresizingMaskIntoConstraints = false
-        itemImageView.contentMode = .scaleAspectFit   // ✅ keeps proportions
-        itemImageView.clipsToBounds = true
-        itemImageView.image = UIImage(named: "chrono.jpg")  // your image
-        itemImageHolderView.addSubview(itemImageView)
+        productImageView.translatesAutoresizingMaskIntoConstraints = false
+        productImageView.contentMode = .scaleAspectFit   // ✅ keeps proportions
+        productImageView.clipsToBounds = true
+        productImageView.image = UIImage(named: "background_1") ?? UIImage()
+        itemImageHolderView.addSubview(productImageView)
 
         NSLayoutConstraint.activate([
-            itemImageView.topAnchor.constraint(equalTo: itemImageHolderView.topAnchor),
-            itemImageView.leadingAnchor.constraint(equalTo: itemImageHolderView.leadingAnchor),
-            itemImageView.trailingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor),
-            itemImageView.bottomAnchor.constraint(lessThanOrEqualTo: itemImageHolderView.bottomAnchor),
-            itemImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 80) // ✅ max height
+            productImageView.topAnchor.constraint(equalTo: itemImageHolderView.topAnchor),
+            productImageView.leadingAnchor.constraint(equalTo: itemImageHolderView.leadingAnchor),
+            productImageView.trailingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor),
+            productImageView.bottomAnchor.constraint(lessThanOrEqualTo: itemImageHolderView.bottomAnchor),
+            productImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 80) // ✅ max height
         ])
         
         // --- LABELS ---
-        let nameLabel = UILabel()
-        nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        nameLabel.textColor = .label
-        nameLabel.text = "Name"
+        itemNameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        itemNameLabel.textColor = .label
+        itemNameLabel.text = "Item Name"
 
-        let priceLabel = UILabel()
-        priceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-        priceLabel.textColor = .secondaryLabel
-        priceLabel.text = "$0.00"
+        itemPriceLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        itemPriceLabel.textColor = .secondaryLabel
+        itemPriceLabel.text = "Item Price"
 
-        let descriptionTextView = UITextView()
-        descriptionTextView.font = UIFont.systemFont(ofSize: 14)
-        descriptionTextView.textColor = .darkGray
-        descriptionTextView.isScrollEnabled = false  // ✅ auto-expand
-        descriptionTextView.layer.cornerRadius = 6
-        descriptionTextView.layer.borderWidth = 1
-        descriptionTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        descriptionTextView.text = "Description goes here and expands with text.Description goes here and expands with text."
+        itemDescriptionTextView.font = UIFont.systemFont(ofSize: 14)
+        itemDescriptionTextView.textColor = .darkGray
+        itemDescriptionTextView.isScrollEnabled = false  // ✅ auto-expand
+        itemDescriptionTextView.layer.cornerRadius = 6
+        itemDescriptionTextView.layer.borderWidth = 1
+        itemDescriptionTextView.layer.borderColor = UIColor.systemGray4.cgColor
+        itemDescriptionTextView.text = "Item Description"
 
         // --- STACK VIEW ---
-        let infoStack = UIStackView(arrangedSubviews: [nameLabel, priceLabel, descriptionTextView])
+        let infoStack = UIStackView(arrangedSubviews: [itemNameLabel, itemPriceLabel, itemDescriptionTextView])
         infoStack.axis = .vertical
         infoStack.spacing = 8
         infoStack.alignment = .leading
@@ -200,19 +202,16 @@ class GroupItemUserCell: UITableViewCell {
         purchaseButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
         // COMMENT
-        let commentTextView = UITextView()
-        commentTextView.font = UIFont.systemFont(ofSize: 14)
-        commentTextView.textColor = .darkGray
-        commentTextView.isScrollEnabled = false  // ✅ auto-expand
-        commentTextView.layer.cornerRadius = 6
-        commentTextView.layer.borderWidth = 1
-        commentTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        commentTextView.text = """
-        Chrono Trigger's six playable characters (plus one optional character) come from different eras of history. Chrono Trigger begins in 1000 AD with Crono, Marle, and Lucca...
-        """
+        itemCommentTextView.font = UIFont.systemFont(ofSize: 14)
+        itemCommentTextView.textColor = .darkGray
+        itemCommentTextView.isScrollEnabled = false  // ✅ auto-expand
+        itemCommentTextView.layer.cornerRadius = 6
+        itemCommentTextView.layer.borderWidth = 1
+        itemCommentTextView.layer.borderColor = UIColor.systemGray4.cgColor
+        itemCommentTextView.text = "Comment"
 
         // STACK VIEW — now only includes purchase + comment
-        let socialsStack = UIStackView(arrangedSubviews: [purchaseButton, commentTextView])
+        let socialsStack = UIStackView(arrangedSubviews: [purchaseButton, itemCommentTextView])
         socialsStack.axis = .vertical
         socialsStack.spacing = 8
         socialsStack.translatesAutoresizingMaskIntoConstraints = false
@@ -231,6 +230,49 @@ class GroupItemUserCell: UITableViewCell {
     func configurePost(with item: Item) {
         print("=== IndividualGroupPostCell configurePost ===")
         print("postID: \(item.postID)")
+        
+        func sanitizedText(_ value: String?, fallback: String) -> String {
+            guard let raw = value?.trimmingCharacters(in: .whitespacesAndNewlines),
+                  !raw.isEmpty else {
+                return fallback
+            }
+            
+            let lowered = raw.lowercased()
+            if lowered == "empty" || lowered == "nil" || lowered == "null" {
+                return fallback
+            }
+            
+            return raw
+        }
+        
+        let fallbackName = "Item Name"
+        let fallbackPrice = "Item Price"
+        let fallbackDescription = "Item Description"
+        let fallbackComment = "Comment"
+        
+        itemNameLabel.text = sanitizedText(item.itemName, fallback: fallbackName)
+        
+        let priceText = sanitizedText(item.itemPrice, fallback: fallbackPrice)
+        if priceText == fallbackPrice {
+            itemPriceLabel.text = priceText
+        } else if let numericPrice = Double(priceText) {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.maximumFractionDigits = 2
+            formatter.minimumFractionDigits = 0
+            itemPriceLabel.text = formatter.string(from: NSNumber(value: numericPrice)) ?? priceText
+        } else {
+            itemPriceLabel.text = priceText
+        }
+        
+        itemDescriptionTextView.text = sanitizedText(item.itemDescription, fallback: fallbackDescription)
+        itemCommentTextView.text = sanitizedText(item.postCaption, fallback: fallbackComment)
+        
+        if let image = item.postImageData {
+            productImageView.image = image
+        } else {
+            productImageView.image = UIImage(named: "background_1") ?? UIImage()
+        }
     }
     
     @objc private func didTapPurchase() {
