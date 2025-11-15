@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 //WISHLIST: Item
 class GroupItemUserCell: UITableViewCell {
     
@@ -28,7 +27,8 @@ class GroupItemUserCell: UITableViewCell {
     private let itemNameLabel = UILabel()
     private let itemPriceLabel = UILabel()
     private let itemDescriptionTextView = UITextView()
-    private let itemCommentTextView = UITextView()
+    private let commentTemplate = CommentTemplate()
+    private let purchaseButton = UIButton(type: .system)
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -37,7 +37,8 @@ class GroupItemUserCell: UITableViewCell {
         setupItemInfoView()
         setupItemSocialsView()
         setupItemInfoTextAndImage()
-        setupItemSocialsText()
+        setupPurchaseButton()
+        setupCommentTextView()
         setupItemSocialsBarView()
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -190,38 +191,34 @@ class GroupItemUserCell: UITableViewCell {
     }
 
     
-    // MARK: - Setup Item Socials Text
-    private func setupItemSocialsText() {
-        // PURCHASE BUTTON
-        let purchaseButton = UIButton(type: .system)
+    // MARK: - Setup Purchase Button
+    private func setupPurchaseButton() {
         purchaseButton.setTitle("Purchase", for: .normal)
         purchaseButton.backgroundColor = .systemBlue
         purchaseButton.setTitleColor(.white, for: .normal)
         purchaseButton.layer.cornerRadius = 6
         purchaseButton.addTarget(self, action: #selector(didTapPurchase), for: .touchUpInside)
-        purchaseButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
-        // COMMENT
-        itemCommentTextView.font = UIFont.systemFont(ofSize: 14)
-        itemCommentTextView.textColor = .darkGray
-        itemCommentTextView.isScrollEnabled = false  // ✅ auto-expand
-        itemCommentTextView.layer.cornerRadius = 6
-        itemCommentTextView.layer.borderWidth = 1
-        itemCommentTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        itemCommentTextView.text = "Comment"
-
-        // STACK VIEW — now only includes purchase + comment
-        let socialsStack = UIStackView(arrangedSubviews: [purchaseButton, itemCommentTextView])
-        socialsStack.axis = .vertical
-        socialsStack.spacing = 8
-        socialsStack.translatesAutoresizingMaskIntoConstraints = false
-
-        itemSocialsView.addSubview(socialsStack)
+        purchaseButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        itemSocialsView.addSubview(purchaseButton)
         NSLayoutConstraint.activate([
-            socialsStack.topAnchor.constraint(equalTo: itemSocialsView.topAnchor, constant: 8),
-            socialsStack.leadingAnchor.constraint(equalTo: itemSocialsView.leadingAnchor, constant: 8),
-            socialsStack.trailingAnchor.constraint(equalTo: itemSocialsView.trailingAnchor, constant: -8),
-            socialsStack.bottomAnchor.constraint(equalTo: itemSocialsView.bottomAnchor, constant: -8)
+            purchaseButton.topAnchor.constraint(equalTo: itemSocialsView.topAnchor, constant: 8),
+            purchaseButton.leadingAnchor.constraint(equalTo: itemSocialsView.leadingAnchor, constant: 8),
+            purchaseButton.trailingAnchor.constraint(equalTo: itemSocialsView.trailingAnchor, constant: -8),
+            purchaseButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    // MARK: - Setup Comment Text View
+    private func setupCommentTextView() {
+        commentTemplate.translatesAutoresizingMaskIntoConstraints = false
+        
+        itemSocialsView.addSubview(commentTemplate)
+        NSLayoutConstraint.activate([
+            commentTemplate.topAnchor.constraint(equalTo: purchaseButton.bottomAnchor, constant: 8),
+            commentTemplate.leadingAnchor.constraint(equalTo: itemSocialsView.leadingAnchor, constant: 8),
+            commentTemplate.trailingAnchor.constraint(equalTo: itemSocialsView.trailingAnchor, constant: -8),
+            commentTemplate.bottomAnchor.constraint(equalTo: itemSocialsView.bottomAnchor, constant: -8)
         ])
     }
 
@@ -266,7 +263,12 @@ class GroupItemUserCell: UITableViewCell {
         }
         
         itemDescriptionTextView.text = sanitizedText(item.itemDescription, fallback: fallbackDescription)
-        itemCommentTextView.text = sanitizedText(item.postCaption, fallback: fallbackComment)
+        
+        let userName = sanitizedText(item.postFrom, fallback: "User")
+        let commentText = sanitizedText(item.postCaption, fallback: fallbackComment)
+        let userImage = item.postFromImageData ?? UIImage(named: "background_1")
+        
+        commentTemplate.configure(userName: userName, commentText: commentText, image: userImage)
         
         if let image = item.postImageData {
             productImageView.image = image

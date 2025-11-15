@@ -19,8 +19,8 @@ class ViewController: UIViewController {
         view.addSubview(commentView)
         
         commentView.configure(
-            userName: "John Doe",
-            commentText: "This looks great! Love how reusable this is.",
+            userName: "Bilbo",
+            commentText: "This looks great! Love how reusable this is. This looks great! Love how reusable this is.",
             image: UIImage(named: "background_1")
         )
         
@@ -31,6 +31,8 @@ class ViewController: UIViewController {
         ])
     }
 }
+
+
 
 
 

@@ -225,6 +225,7 @@
 			mainGroup = 51EF8A472D0A6B560083740C;
 			packageReferences = (
 				D766492B2E820A7A00D50CEE /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				D7DBC7322EC9456B002DD687 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 51EF8A512D0A6B560083740C /* Products */;
 			projectDirPath = "";
@@ -452,6 +453,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XWC4VW95X6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Playground/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -479,6 +481,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XWC4VW95X6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Playground/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -615,6 +618,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.8.4;
+			};
+		};
+		D7DBC7322EC9456B002DD687 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.6.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
