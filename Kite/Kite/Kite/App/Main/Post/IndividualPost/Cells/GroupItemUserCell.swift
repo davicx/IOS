@@ -45,6 +45,7 @@ class GroupItemUserCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupItemView()
         setupItemInfoView()
+        setupMenu()
         setupItemSocialsView()
         setupItemInfoTextAndImage()
         setupPurchaseButton()
@@ -308,7 +309,22 @@ class GroupItemUserCell: UITableViewCell {
     }
     
     @objc private func didTapMenu() {
-        print("menu tapped")
+        print("GroupItemUserCell: menu button tapped")
+    }
+    
+    // MARK: - Menu Setup
+    private func setupMenu() {
+        let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+            print("GroupItemUserCell: Edit tapped")
+        }
+        
+        let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            print("GroupItemUserCell: Delete tapped")
+        }
+        
+        let menu = UIMenu(title: "", children: [editAction, deleteAction])
+        menuButton.menu = menu
+        menuButton.showsMenuAsPrimaryAction = true
     }
 }
 
