@@ -9,7 +9,7 @@ import UIKit
 
 
 
-//HOME FEED: Kite
+//HOME FEED: Kite 
 class PostCell: UITableViewCell {
     
     //POST HEADER: Post Information
@@ -37,7 +37,6 @@ class PostCell: UITableViewCell {
         button.isUserInteractionEnabled = true
         return button
     }()
-
 
     //POST BODY: Post Image, Socials and Caption
     //Post Image

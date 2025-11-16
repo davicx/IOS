@@ -15,13 +15,14 @@ class GroupItemUserCell: UITableViewCell {
     let itemView = UIView()
     
     // LEVEL 1
-    let itemInfoView = UIView()
+    let itemInfoView = UIView() 
     let itemSocialsView = UIView()
     let itemSocialsBarView = UIView()
     
     // LEVEL 2
     let itemImageHolderView = UIView()
     let itemNamePriceDescriptionHolderView = UIView()
+    let editItemView = UIView()
     
     private let productImageView = UIImageView()
     private let itemNameLabel = UILabel()
@@ -29,6 +30,15 @@ class GroupItemUserCell: UITableViewCell {
     private let itemDescriptionTextView = UITextView()
     private let commentTemplate = CommentTemplate()
     private let purchaseButton = UIButton(type: .system)
+    private let menuButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = UIImage(named: "menu-horizontal")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        return button
+    }()
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -62,7 +72,6 @@ class GroupItemUserCell: UITableViewCell {
         ])
     }
     
-    
     // MARK: - Setup Item Info View
     private func setupItemInfoView() {
         itemView.addSubview(itemInfoView)
@@ -85,12 +94,17 @@ class GroupItemUserCell: UITableViewCell {
     private func setupItemInfoSubviews() {
         itemInfoView.addSubview(itemImageHolderView)
         itemInfoView.addSubview(itemNamePriceDescriptionHolderView)
+        itemInfoView.addSubview(editItemView)
+        editItemView.addSubview(menuButton)
+        menuButton.addTarget(self, action: #selector(didTapMenu), for: .touchUpInside)
         
         itemImageHolderView.translatesAutoresizingMaskIntoConstraints = false
         itemNamePriceDescriptionHolderView.translatesAutoresizingMaskIntoConstraints = false
+        editItemView.translatesAutoresizingMaskIntoConstraints = false
         
         itemImageHolderView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.3)
         itemNamePriceDescriptionHolderView.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
+        editItemView.backgroundColor = .red
         
         itemImageHolderView.layer.cornerRadius = 8
         itemNamePriceDescriptionHolderView.layer.cornerRadius = 8
@@ -101,10 +115,22 @@ class GroupItemUserCell: UITableViewCell {
             itemImageHolderView.bottomAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: -8),
             itemImageHolderView.widthAnchor.constraint(equalToConstant: 120),
             
+            editItemView.leadingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.leadingAnchor),
+            editItemView.trailingAnchor.constraint(equalTo: itemNamePriceDescriptionHolderView.trailingAnchor),
+            editItemView.topAnchor.constraint(equalTo: itemInfoView.topAnchor, constant: 8),
+            editItemView.heightAnchor.constraint(equalToConstant: 24),
+            
             itemNamePriceDescriptionHolderView.leadingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor, constant: 8),
-            itemNamePriceDescriptionHolderView.topAnchor.constraint(equalTo: itemInfoView.topAnchor, constant: 8),
+            itemNamePriceDescriptionHolderView.topAnchor.constraint(equalTo: editItemView.bottomAnchor),
             itemNamePriceDescriptionHolderView.trailingAnchor.constraint(equalTo: itemInfoView.trailingAnchor, constant: -8),
             itemNamePriceDescriptionHolderView.bottomAnchor.constraint(equalTo: itemInfoView.bottomAnchor, constant: -8)
+        ])
+        
+        NSLayoutConstraint.activate([
+            menuButton.centerYAnchor.constraint(equalTo: editItemView.centerYAnchor),
+            menuButton.widthAnchor.constraint(equalToConstant: 22),
+            menuButton.heightAnchor.constraint(equalToConstant: 22),
+            menuButton.trailingAnchor.constraint(equalTo: editItemView.trailingAnchor, constant: -8)
         ])
     }
     
@@ -144,7 +170,7 @@ class GroupItemUserCell: UITableViewCell {
     private func setupItemInfoTextAndImage() {
         // --- IMAGE ---
         productImageView.translatesAutoresizingMaskIntoConstraints = false
-        productImageView.contentMode = .scaleAspectFit   // ✅ keeps proportions
+        productImageView.contentMode = .scaleAspectFit   // keeps proportions
         productImageView.clipsToBounds = true
         productImageView.image = UIImage(named: "background_1") ?? UIImage()
         itemImageHolderView.addSubview(productImageView)
@@ -154,7 +180,7 @@ class GroupItemUserCell: UITableViewCell {
             productImageView.leadingAnchor.constraint(equalTo: itemImageHolderView.leadingAnchor),
             productImageView.trailingAnchor.constraint(equalTo: itemImageHolderView.trailingAnchor),
             productImageView.bottomAnchor.constraint(lessThanOrEqualTo: itemImageHolderView.bottomAnchor),
-            productImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 80) // ✅ max height
+            productImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 80) // max height
         ])
         
         // --- LABELS ---
@@ -168,7 +194,7 @@ class GroupItemUserCell: UITableViewCell {
 
         itemDescriptionTextView.font = UIFont.systemFont(ofSize: 14)
         itemDescriptionTextView.textColor = .darkGray
-        itemDescriptionTextView.isScrollEnabled = false  // ✅ auto-expand
+        itemDescriptionTextView.isScrollEnabled = false  // auto-expand
         itemDescriptionTextView.layer.cornerRadius = 6
         itemDescriptionTextView.layer.borderWidth = 1
         itemDescriptionTextView.layer.borderColor = UIColor.systemGray4.cgColor
@@ -279,6 +305,10 @@ class GroupItemUserCell: UITableViewCell {
     
     @objc private func didTapPurchase() {
         print("purchased")
+    }
+    
+    @objc private func didTapMenu() {
+        print("menu tapped")
     }
 }
 
