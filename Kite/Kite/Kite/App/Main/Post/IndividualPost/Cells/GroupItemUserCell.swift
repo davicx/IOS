@@ -11,6 +11,12 @@ import UIKit
 //WISHLIST: Item
 class GroupItemUserCell: UITableViewCell {
     
+    // Current item reference
+    private var currentItem: Item?
+    private let spinnerHelper = SpinnerHelper()
+    private var customSpinner: UIActivityIndicatorView?
+    private var customSpinnerBackground: UIView?
+    
     // MAIN VIEWS
     let itemView = UIView()
     
@@ -23,6 +29,8 @@ class GroupItemUserCell: UITableViewCell {
     let itemImageHolderView = UIView()
     let itemNamePriceDescriptionHolderView = UIView()
     let editItemView = UIView()
+    let likeItemImageView = UIView()
+    let likeItemCountView = UIView()
     
     //UI Elements
     private let productImageView = UIImageView()
@@ -31,6 +39,8 @@ class GroupItemUserCell: UITableViewCell {
     private let itemDescriptionTextView = UITextView()
     private let commentTemplate = CommentTemplate()
     private let purchaseButton = UIButton(type: .system)
+    private let likeItemImage = UIImageView()
+    private let likeItemCountLabel = UILabel()
     
     private let menuButton: UIButton = {
         let button = UIButton(type: .system)
@@ -166,6 +176,63 @@ class GroupItemUserCell: UITableViewCell {
             itemSocialsBarView.bottomAnchor.constraint(equalTo: itemView.bottomAnchor, constant: -8),
             itemSocialsBarView.heightAnchor.constraint(equalToConstant: 40)
         ])
+        
+        // Add like container views
+        itemSocialsBarView.addSubview(likeItemImageView)
+        itemSocialsBarView.addSubview(likeItemCountView)
+        
+        likeItemImageView.translatesAutoresizingMaskIntoConstraints = false
+        likeItemCountView.translatesAutoresizingMaskIntoConstraints = false
+        
+        likeItemImageView.backgroundColor = UIColor.systemBlue
+        likeItemCountView.backgroundColor = UIColor.systemOrange
+        
+        NSLayoutConstraint.activate([
+            // likeItemCountView: Right centered, 8px from right margin, as tall as container, 40 min width, max 60 width
+            likeItemCountView.trailingAnchor.constraint(equalTo: itemSocialsBarView.trailingAnchor, constant: -8),
+            likeItemCountView.topAnchor.constraint(equalTo: itemSocialsBarView.topAnchor),
+            likeItemCountView.bottomAnchor.constraint(equalTo: itemSocialsBarView.bottomAnchor),
+            likeItemCountView.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
+            likeItemCountView.widthAnchor.constraint(lessThanOrEqualToConstant: 60),
+            
+            // likeItemImageView: Right centered, touching likeItemCountView, as tall as container, 40 wide
+            likeItemImageView.trailingAnchor.constraint(equalTo: likeItemCountView.leadingAnchor),
+            likeItemImageView.topAnchor.constraint(equalTo: itemSocialsBarView.topAnchor),
+            likeItemImageView.bottomAnchor.constraint(equalTo: itemSocialsBarView.bottomAnchor),
+            likeItemImageView.widthAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        // Add like image to likeItemImageView
+        likeItemImage.image = UIImage(named: "like")
+        likeItemImage.contentMode = .scaleAspectFit
+        likeItemImage.translatesAutoresizingMaskIntoConstraints = false
+        likeItemImageView.addSubview(likeItemImage)
+        
+        NSLayoutConstraint.activate([
+            likeItemImage.centerXAnchor.constraint(equalTo: likeItemImageView.centerXAnchor),
+            likeItemImage.centerYAnchor.constraint(equalTo: likeItemImageView.centerYAnchor),
+            likeItemImage.widthAnchor.constraint(equalToConstant: 24),
+            likeItemImage.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        // Make likeItemImageView tappable
+        likeItemImageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLike))
+        likeItemImageView.addGestureRecognizer(tapGesture)
+        
+        // Add count label to likeItemCountView
+        likeItemCountLabel.text = "0"
+        likeItemCountLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        likeItemCountLabel.textColor = .label
+        likeItemCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeItemCountView.addSubview(likeItemCountLabel)
+        
+        NSLayoutConstraint.activate([
+            likeItemCountLabel.centerXAnchor.constraint(equalTo: likeItemCountView.centerXAnchor),
+            likeItemCountLabel.centerYAnchor.constraint(equalTo: likeItemCountView.centerYAnchor),
+            likeItemCountLabel.leadingAnchor.constraint(greaterThanOrEqualTo: likeItemCountView.leadingAnchor, constant: 4),
+            likeItemCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: likeItemCountView.trailingAnchor, constant: -4)
+        ])
     }
     
     
@@ -257,6 +324,9 @@ class GroupItemUserCell: UITableViewCell {
         print("=== IndividualGroupPostCell configurePost ===")
         print("postID: \(item.postID)")
         
+        // Store current item reference
+        currentItem = item
+        
         func sanitizedText(_ value: String?, fallback: String) -> String {
             guard let raw = value?.trimmingCharacters(in: .whitespacesAndNewlines),
                   !raw.isEmpty else {
@@ -299,10 +369,27 @@ class GroupItemUserCell: UITableViewCell {
         
         commentTemplate.configure(userName: userName, commentText: commentText, image: userImage)
         
+        // Update like count and image
+        updateLikeUI(with: item)
+        
         if let image = item.postImageData {
             productImageView.image = image
         } else {
             productImageView.image = UIImage(named: "background_1") ?? UIImage()
+        }
+    }
+    
+    // MARK: - Update Like UI
+    private func updateLikeUI(with item: Item) {
+        // Update like count
+        let likeCount = item.postLikesArray?.count ?? item.simpleLikesArray?.count ?? 0
+        likeItemCountLabel.text = "\(likeCount)"
+        
+        // Update like image based on liked state
+        if item.isLikedByCurrentUser == true {
+            likeItemImage.image = UIImage(named: "liked")
+        } else {
+            likeItemImage.image = UIImage(named: "like")
         }
     }
     
@@ -312,6 +399,105 @@ class GroupItemUserCell: UITableViewCell {
     
     @objc private func didTapMenu() {
         print("GroupItemUserCell: menu button tapped")
+    }
+    
+    @objc private func didTapLike() {
+        guard let item = currentItem else { return }
+        
+        // Disable interaction to prevent double-tapping
+        likeItemImageView.isUserInteractionEnabled = false
+        
+        // Get window to show spinner centered on iPhone
+        var targetView: UIView = self.contentView
+        if let window = self.window {
+            targetView = window
+        } else if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+            targetView = window
+        }
+        
+        showCustomSpinner(in: targetView)
+        
+        Task {
+            let groupID = item.groupID ?? 0
+            
+            // Create a temporary Post object from Item for the API call
+            let tempPost = Post(postID: item.postID)
+            tempPost.groupID = item.groupID
+            tempPost.isLikedByCurrentUser = item.isLikedByCurrentUser
+            tempPost.postLikesArray = item.postLikesArray
+            tempPost.simpleLikesArray = item.simpleLikesArray
+            
+            if item.isLikedByCurrentUser == true {
+                // Unlike
+                if let likeModel = await postLikeFunctions.shared.unlikePost(post: tempPost, groupID: groupID) {
+                    PostDataController.shared.unlikeItem(postID: item.postID, likeModel: likeModel)
+                }
+            } else {
+                // Like
+                if let likeModel = await postLikeFunctions.shared.likePost(post: tempPost, groupID: groupID) {
+                    PostDataController.shared.likeItem(postID: item.postID, likeModel: likeModel)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                // Get updated item from PostDataController (single source of truth)
+                let updatedItem = PostDataController.shared.getItemByID(postID: item.postID) ?? item
+                
+                // Update UI with new like state
+                self.updateLikeUI(with: updatedItem)
+                
+                // Update current item reference
+                self.currentItem = updatedItem
+                
+                // Hide spinner and re-enable interaction
+                self.hideCustomSpinner()
+                self.likeItemImageView.isUserInteractionEnabled = true
+            }
+        }
+    }
+    
+    // MARK: - Custom Spinner
+    private func showCustomSpinner(in view: UIView) {
+        hideCustomSpinner() // Clear any existing spinner
+        
+        // Create rounded black background box
+        let backgroundBox = UIView()
+        backgroundBox.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        backgroundBox.layer.cornerRadius = 12
+        backgroundBox.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backgroundBox)
+        
+        // Create spinner
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.color = .white
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        backgroundBox.addSubview(spinner)
+        
+        NSLayoutConstraint.activate([
+            // Background box centered on screen, just bigger than spinner
+            backgroundBox.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            backgroundBox.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            backgroundBox.widthAnchor.constraint(equalToConstant: 100),
+            backgroundBox.heightAnchor.constraint(equalToConstant: 100),
+            
+            // Spinner centered in background box
+            spinner.centerXAnchor.constraint(equalTo: backgroundBox.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: backgroundBox.centerYAnchor)
+        ])
+        
+        spinner.startAnimating()
+        customSpinner = spinner
+        customSpinnerBackground = backgroundBox
+    }
+    
+    private func hideCustomSpinner() {
+        customSpinner?.stopAnimating()
+        customSpinner?.removeFromSuperview()
+        customSpinner = nil
+        
+        customSpinnerBackground?.removeFromSuperview()
+        customSpinnerBackground = nil
     }
     
     // MARK: - Menu Setup
