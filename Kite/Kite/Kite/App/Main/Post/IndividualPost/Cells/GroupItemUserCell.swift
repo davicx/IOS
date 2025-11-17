@@ -24,12 +24,14 @@ class GroupItemUserCell: UITableViewCell {
     let itemNamePriceDescriptionHolderView = UIView()
     let editItemView = UIView()
     
+    //UI Elements
     private let productImageView = UIImageView()
     private let itemNameLabel = UILabel()
     private let itemPriceLabel = UILabel()
     private let itemDescriptionTextView = UITextView()
     private let commentTemplate = CommentTemplate()
     private let purchaseButton = UIButton(type: .system)
+    
     private let menuButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: "menu-horizontal")
