@@ -103,6 +103,7 @@
 		D74ABDB12E344751009ECAEF /* OriginalPostCellThatWorks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74ABDB02E344751009ECAEF /* OriginalPostCellThatWorks.swift */; };
 		D74C9F052D5981AB00947ECE /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F042D5981AB00947ECE /* KeyChainManager.swift */; };
 		D74C9F092D59820400947ECE /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C9F082D59820400947ECE /* KeychainHelper.swift */; };
+		D7529BD92ED27DD0000C1D48 /* ItemDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7529BD82ED27DD0000C1D48 /* ItemDoc.swift */; };
 		D75470122DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */; };
 		D75D6C3F2DEE6DCA0080751C /* AcceptFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */; };
 		D768C1B32E78D3B500350D37 /* IndividualGroupMembersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D768C1B22E78D3B500350D37 /* IndividualGroupMembersVC.swift */; };
@@ -296,6 +297,7 @@
 		D74ABDB02E344751009ECAEF /* OriginalPostCellThatWorks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalPostCellThatWorks.swift; sourceTree = "<group>"; };
 		D74C9F042D5981AB00947ECE /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		D74C9F082D59820400947ECE /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		D7529BD82ED27DD0000C1D48 /* ItemDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDoc.swift; sourceTree = "<group>"; };
 		D75470112DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFriendsViewControllerLayout.swift; sourceTree = "<group>"; };
 		D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptFriendResponseModel.swift; sourceTree = "<group>"; };
 		D768C1B22E78D3B500350D37 /* IndividualGroupMembersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualGroupMembersVC.swift; sourceTree = "<group>"; };
@@ -738,6 +740,33 @@
 			path = Post;
 			sourceTree = "<group>";
 		};
+		D7529BD52ED27D8A000C1D48 /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */,
+				D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */,
+				D7529BD82ED27DD0000C1D48 /* ItemDoc.swift */,
+			);
+			path = Item;
+			sourceTree = "<group>";
+		};
+		D7529BD62ED27D9C000C1D48 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				D71809462DBC37F5003BC46D /* CommentCell.swift */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		D7529BD72ED27DB0000C1D48 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				D71809482DBC3C52003BC46D /* IndividualPostCell.swift */,
+				D78CEF7C2E2F08DD002E3712 /* PostCell.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
 		D768C1B62E78DB1D00350D37 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -808,13 +837,10 @@
 		D78CEF792E2F03BA002E3712 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D71809462DBC37F5003BC46D /* CommentCell.swift */,
-				D71809482DBC3C52003BC46D /* IndividualPostCell.swift */,
-				D78CEF7C2E2F08DD002E3712 /* PostCell.swift */,
+				D7529BD72ED27DB0000C1D48 /* Post */,
+				D7529BD62ED27D9C000C1D48 /* Comment */,
+				D7529BD52ED27D8A000C1D48 /* Item */,
 				D78EBDD92E305A5E0008F3FE /* QA */,
-				D74ABDB02E344751009ECAEF /* OriginalPostCellThatWorks.swift */,
-				D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */,
-				D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -824,6 +850,7 @@
 			children = (
 				D78EBDD72E305A4E0008F3FE /* HomeViewControllerQA.swift */,
 				D78EBDDA2E305A700008F3FE /* IndividualPostCellQA.swift */,
+				D74ABDB02E344751009ECAEF /* OriginalPostCellThatWorks.swift */,
 			);
 			path = QA;
 			sourceTree = "<group>";
@@ -1211,6 +1238,7 @@
 				D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */,
 				D7A75AC92E67A51400BDDA78 /* LoginStatusModel.swift in Sources */,
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,
+				D7529BD92ED27DD0000C1D48 /* ItemDoc.swift in Sources */,
 				D7D803212E174D6F009BA090 /* CreateGroupViewController.swift in Sources */,
 				5139A6312D28B5980029024E /* Buttons.swift in Sources */,
 				51C69AE12D0E549100C46759 /* AppDelegate.swift in Sources */,
