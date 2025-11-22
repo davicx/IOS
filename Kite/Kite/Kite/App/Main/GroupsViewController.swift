@@ -11,22 +11,18 @@ import UIKit
 //GROUPS (Lists): Wishlist
 class GroupsViewController: UIViewController {
 
+    //SETUP
     let groupsAPI = GroupsAPI()
-    let userDefaultManager = UserDefaultManager()
-
     private var groups: [GroupModel] = []
+    
     private let tableView = UITableView()
-
-    // MARK: - Segmented Control + Underline
-    private let segmentedControl: UISegmentedControl = {
-        let sc = UISegmentedControl(items: ["My Lists", "Shared With Me"])
-        return sc
-    }()
-
     private let underlineView = UIView()
     private var underlineLeadingConstraint: NSLayoutConstraint!
 
-    // MARK: - Computed Properties for Filtered Groups
+    let userDefaultManager = UserDefaultManager()
+    let imageFunctions = ImageFunctions()
+
+    //DATA
     private var myLists: [GroupModel] {
         return GroupDataController.shared.groups.filter { group in
             group.createdBy == GroupDataController.shared.currentUser
@@ -39,6 +35,8 @@ class GroupsViewController: UIViewController {
         }
     }
 
+    
+    //GROUPS
     override func viewDidLoad() {
         super.viewDidLoad()
         print("________________________")
@@ -80,7 +78,44 @@ class GroupsViewController: UIViewController {
         GroupDataController.shared.onGroupsUpdated = nil
     }
     
-    // MARK: - NAVIGATION BAR
+    //ACTIONS
+    @objc private func openProfile() {
+        print("Profile tapped")
+    }
+    
+
+    @objc private func openCreateGroup() {
+        let createVC = CreateGroupViewController()
+        createVC.modalPresentationStyle = .pageSheet
+        present(createVC, animated: true)
+    }
+    
+    //SEGMENT CONTROLLER
+    private let segmentedControl: UISegmentedControl = {
+        let sc = UISegmentedControl(items: ["My Lists", "Shared With Me"])
+        return sc
+    }()
+
+    @objc private func segmentChanged(_ sender: UISegmentedControl) {
+        let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
+        underlineLeadingConstraint.constant = segmentWidth * CGFloat(sender.selectedSegmentIndex)
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+
+        // Reload table view to show filtered groups
+        tableView.reloadData()
+    }
+
+    private func setupSegmentedControl() {
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.removeBackgroundAndDivider()
+        segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
+    }
+    
+    
+    //LAYOUT
     private func setupNavigationBar() {
         navigationItem.title = "Wishlist"
 
@@ -92,7 +127,7 @@ class GroupsViewController: UIViewController {
         navigationItem.rightBarButtonItem = createGroupButton
 
         if let image = UIImage(named: "user") {
-            let circularImage = makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
+            let circularImage = imageFunctions.makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
                 .withRenderingMode(.alwaysOriginal)
 
             let profileButton = UIBarButtonItem(
@@ -105,40 +140,7 @@ class GroupsViewController: UIViewController {
         }
     }
 
-    private func makeCircularImage(image: UIImage, size: CGSize) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(size: size)
-        return renderer.image { _ in
-            let rect = CGRect(origin: .zero, size: size)
-            UIBezierPath(ovalIn: rect).addClip()
-            image.draw(in: rect)
-        }
-    }
 
-    private func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        return renderer.image { _ in
-            image.draw(in: CGRect(origin: .zero, size: targetSize))
-        }
-    }
-
-    @objc private func openCreateGroup() {
-        let createVC = CreateGroupViewController()
-        createVC.modalPresentationStyle = .pageSheet
-        present(createVC, animated: true)
-    }
-    
-    @objc private func openProfile() {
-        print("Profile tapped")
-    }
-    
-    // MARK: - Segmented Control Setup
-    private func setupSegmentedControl() {
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.removeBackgroundAndDivider()
-        segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
-    }
-
-    // MARK: - TableView Setup
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -147,6 +149,7 @@ class GroupsViewController: UIViewController {
         tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "GroupTableViewCell")
         tableView.rowHeight = 220
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none  // Comment out divider lines between cells
 
         // Header
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 60))
@@ -185,20 +188,8 @@ class GroupsViewController: UIViewController {
         ])
     }
 
-
-    @objc private func segmentChanged(_ sender: UISegmentedControl) {
-        let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
-        underlineLeadingConstraint.constant = segmentWidth * CGFloat(sender.selectedSegmentIndex)
-
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
-
-        // Reload table view to show filtered groups
-        tableView.reloadData()
-    }
-
     
+    //FUNCTIONS
     private func fetchGroups() {
         GroupDataController.shared.getGroups {
             self.tableView.reloadData()
@@ -206,6 +197,8 @@ class GroupsViewController: UIViewController {
     }
 }
 
+
+//TABLE VIEW
 extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -247,10 +240,23 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
             group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
         }
         
-        let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
-        vc.group = group
-        navigationController?.pushViewController(vc, animated: true)
+        // Navigate to appropriate view controller based on segment
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: // My Lists - use IndividualGroupUserViewController
+            let vc = IndividualGroupUserViewController()
+            vc.group = group
+            navigationController?.pushViewController(vc, animated: true)
+        case 1: // Shared With Me - use IndividualGroupFriendViewController
+            let vc = IndividualGroupFriendViewController()
+            vc.group = group
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            // Fallback to original IndividualGroupViewController
+            let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
+            vc.group = group
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 

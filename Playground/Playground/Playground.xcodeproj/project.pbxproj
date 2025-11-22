@@ -17,6 +17,7 @@
 		51EF8A752D0A6B570083740C /* PlaygroundUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8A742D0A6B570083740C /* PlaygroundUITests.swift */; };
 		51EF8A772D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EF8A762D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift */; };
 		D736FEE52D95F3D100AA108D /* BackgroundImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */; };
+		D74D19752EC55F690046E357 /* UserCommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74D19742EC55F690046E357 /* UserCommentTemplate.swift */; };
 		D766492D2E820B0800D50CEE /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = D766492C2E820B0800D50CEE /* FSCalendar */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		51EF8A742D0A6B570083740C /* PlaygroundUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundUITests.swift; sourceTree = "<group>"; };
 		51EF8A762D0A6B570083740C /* PlaygroundUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageViewController.swift; sourceTree = "<group>"; };
+		D74D19742EC55F690046E357 /* UserCommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCommentTemplate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				51EF8A532D0A6B560083740C /* AppDelegate.swift */,
 				51EF8A552D0A6B560083740C /* SceneDelegate.swift */,
 				51EF8A572D0A6B560083740C /* ViewController.swift */,
+				D74D19742EC55F690046E357 /* UserCommentTemplate.swift */,
 				D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */,
 				51EF8A592D0A6B560083740C /* Main.storyboard */,
 				51EF8A5C2D0A6B570083740C /* Assets.xcassets */,
@@ -222,6 +225,7 @@
 			mainGroup = 51EF8A472D0A6B560083740C;
 			packageReferences = (
 				D766492B2E820A7A00D50CEE /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				D7DBC7322EC9456B002DD687 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 51EF8A512D0A6B560083740C /* Products */;
 			projectDirPath = "";
@@ -270,6 +274,7 @@
 				51EF8A582D0A6B560083740C /* ViewController.swift in Sources */,
 				51EF8A542D0A6B560083740C /* AppDelegate.swift in Sources */,
 				51EF8A562D0A6B560083740C /* SceneDelegate.swift in Sources */,
+				D74D19752EC55F690046E357 /* UserCommentTemplate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +453,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XWC4VW95X6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Playground/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -475,6 +481,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XWC4VW95X6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Playground/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -611,6 +618,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.8.4;
+			};
+		};
+		D7DBC7322EC9456B002DD687 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.6.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

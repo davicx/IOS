@@ -8,7 +8,36 @@
 import UIKit
 
 
+class ViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        
+        let commentView = UserCommentTemplate()
+        commentView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(commentView)
+        
+        commentView.configure(
+            userName: "Bilbo",
+            commentText: "This looks great! Love how reusable this is. This looks great! Love how reusable this is.",
+            image: UIImage(named: "background_1")
+        )
+        
+        NSLayoutConstraint.activate([
+            commentView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            commentView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            commentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40)
+        ])
+    }
+}
+
+
+
+
+
 //CALENDAR
+/*
 import FSCalendar
 
 class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
@@ -54,6 +83,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         print("Selected date: \(date)")
     }
 }
+*/
 
 
 
