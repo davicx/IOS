@@ -2,7 +2,7 @@
 //  TableViewPlaygroundUITests.swift
 //  TableViewPlaygroundUITests
 //
-//  Created by David Vasquez on 11/26/25.
+//  Created by David Vasquez on 11/27/25.
 //
 
 import XCTest
@@ -33,9 +33,11 @@ final class TableViewPlaygroundUITests: XCTestCase {
 
     @MainActor
     func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
+        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
+            // This measures how long it takes to launch your application.
+            measure(metrics: [XCTApplicationLaunchMetric()]) {
+                XCUIApplication().launch()
+            }
         }
     }
 }
