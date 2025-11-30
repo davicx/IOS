@@ -54,7 +54,7 @@ class ImageCacheManager {
 
 /// Creates a User from UserProfileModel data
 func createUserFromProfile(_ userProfileModel: UserModel, isCurrentUser: Bool = false) -> User {
-    return User(
+    let user = User(
         userID: userProfileModel.userID,
         userName: userProfileModel.userName,
         profileImageURL: userProfileModel.userImage,
@@ -63,6 +63,19 @@ func createUserFromProfile(_ userProfileModel: UserModel, isCurrentUser: Bool = 
         biography: userProfileModel.biography.isEmpty ? "" : userProfileModel.biography,
         isCurrentUser: isCurrentUser
     )
+    
+    // Set friendship properties if available in UserModel
+    // Check if friendshipKey is not empty (UserModel always has these fields, but they might be empty strings)
+    if !userProfileModel.friendshipKey.isEmpty && userProfileModel.friendshipKey != "friendshipKey" {
+        user.setFriendProperties(
+            requestPending: userProfileModel.requestPending,
+            requestSentBy: userProfileModel.requestSentBy,
+            friendshipKey: userProfileModel.friendshipKey,
+            alsoYourFriend: userProfileModel.alsoYourFriend
+        )
+    }
+    
+    return user
 }
 
 /// Creates a User from UserProfileModel data and fetches the profile image
