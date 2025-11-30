@@ -50,18 +50,26 @@ class IndividualGroupUserViewController: UIViewController {
             print("No group data available")
         }
          
-        // Observe item updates (not post updates)
-        postDataController.onItemsUpdated = { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
-        }
+        // TEST: Observe item updates using NotificationCenter
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(itemUpdated),
+            name: .itemUpdated,
+            object: nil
+        )
+        
+        // Keep closure callback as backup for now (can remove after testing)
+        // postDataController.onItemsUpdated = { [weak self] in
+        //     DispatchQueue.main.async {
+        //         self?.tableView.reloadData()
+        //     }
+        // }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchItemsForGroup()
-        tableView.reloadData()
+        // Note: tableView.reloadData() is now called inside fetchItemsForGroup() after data is fetched
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -211,6 +219,9 @@ class IndividualGroupUserViewController: UIViewController {
                     print("- Item Name: \(item.itemName ?? "No Name"), PostID: \(item.postID)")
                 }
                 print("________________________")
+                
+                // Reload table view after data is fetched
+                self.tableView.reloadData()
             }
         }
     }
@@ -340,6 +351,18 @@ class IndividualGroupUserViewController: UIViewController {
             present(newPostVC, animated: true, completion: nil)
         }
     }
+    
+    // TEST: Handle item update notification
+    @objc private func itemUpdated() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    deinit {
+        // Remove notification observer
+        NotificationCenter.default.removeObserver(self)
+    }
 
 }
 
@@ -400,3 +423,4 @@ extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewD
         */
     }
 }
+

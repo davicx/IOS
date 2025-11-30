@@ -502,8 +502,8 @@ class GroupItemUserCell: UITableViewCell {
     
     // MARK: - Menu Setup
     private func setupMenu() {
-        let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-            print("GroupItemUserCell: Edit tapped")
+        let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { [weak self] _ in
+            self?.navigateToEditItem()
         }
         
         let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
@@ -513,6 +513,56 @@ class GroupItemUserCell: UITableViewCell {
         let menu = UIMenu(title: "", children: [editAction, deleteAction])
         menuButton.menu = menu
         menuButton.showsMenuAsPrimaryAction = true
+    }
+    
+    // MARK: - Navigation
+    private func navigateToEditItem() {
+        guard let item = currentItem else {
+            print("GroupItemUserCell: No item to edit")
+            return
+        }
+        
+        // Find the parent view controller
+        guard let viewController = findViewController() else {
+            print("GroupItemUserCell: Could not find parent view controller")
+            return
+        }
+        
+        // Small delay to allow menu to dismiss
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            // Use the same pattern as other view controllers in the app
+            let storyboard = UIStoryboard(name: "Post", bundle: nil)
+            
+            // Verify we can instantiate the view controller
+            guard let editItemVC = storyboard.instantiateViewController(withIdentifier: "EditItemVCStoryboardID") as? EditItemViewController else {
+                print("GroupItemUserCell: ERROR - Could not instantiate EditItemViewController")
+                print("GroupItemUserCell: Storyboard name: Post")
+                print("GroupItemUserCell: Storyboard ID: EditItemVCStoryboardID")
+                return
+            }
+            
+            editItemVC.currentItem = item
+            
+            // Verify navigation controller exists
+            guard let navController = viewController.navigationController else {
+                print("GroupItemUserCell: ERROR - No navigation controller found")
+                return
+            }
+            
+            navController.pushViewController(editItemVC, animated: true)
+        }
+    }
+    
+    // Helper to find parent view controller
+    private func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while responder != nil {
+            responder = responder?.next
+            if let viewController = responder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
     }
 }
 
