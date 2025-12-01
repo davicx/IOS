@@ -8,6 +8,7 @@
 import UIKit
 
 
+//IndividualGroupMembersVC FriendTableViewCell
 
 class FriendTableViewCell: UITableViewCell {
 

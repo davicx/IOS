@@ -133,7 +133,6 @@ class GroupItemFriendCell: UITableViewCell {
             purchaseButton.heightAnchor.constraint(equalToConstant: 40),
             purchaseButton.bottomAnchor.constraint(lessThanOrEqualTo: itemImageView.bottomAnchor, constant: -8)
         ])
-
     }
     
     

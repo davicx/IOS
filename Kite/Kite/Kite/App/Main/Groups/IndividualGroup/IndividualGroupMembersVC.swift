@@ -23,6 +23,10 @@ class IndividualGroupMembersVC: UIViewController {
         setupTableView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "IndividualGroupMembersVC")
+    }
+    
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -73,3 +77,5 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
         }
     }
 }
+
+

@@ -235,7 +235,6 @@ class GroupItemUserCell: UITableViewCell {
         ])
     }
     
-    
     // MARK: - Setup Item Info Text And Image
     private func setupItemInfoTextAndImage() {
         // --- IMAGE ---

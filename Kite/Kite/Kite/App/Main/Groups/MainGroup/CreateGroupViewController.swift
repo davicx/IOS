@@ -30,6 +30,8 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImageP
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        printPageInfo(vcName: "CreateGroupViewController")
+
         let localFriends = UsersDataController.shared.splitFriendsByStatus().friends
         if localFriends.isEmpty {
             Task {
@@ -48,6 +50,7 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImageP
             self.tableView.reloadData()
         }
     }
+    
 
     //ACTION
     //Buttons
