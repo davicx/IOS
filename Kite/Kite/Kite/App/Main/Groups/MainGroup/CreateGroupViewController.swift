@@ -30,12 +30,12 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImageP
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        let localFriends = FriendDataController.shared.splitFriendsByStatus().friends
+        let localFriends = UsersDataController.shared.splitFriendsByStatus().friends
         if localFriends.isEmpty {
             Task {
                 do {
-                    try await FriendDataController.shared.fetchFriends()
-                    self.friends = FriendDataController.shared.splitFriendsByStatus().friends
+                    try await UsersDataController.shared.fetchFriends()
+                    self.friends = UsersDataController.shared.splitFriendsByStatus().friends
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }

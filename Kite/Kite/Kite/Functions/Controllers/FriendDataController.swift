@@ -8,9 +8,6 @@
 import UIKit
 
 
-extension Notification.Name {
-    static let friendsUpdated = Notification.Name("friendsUpdated")
-}
 
 
 class FriendDataController {

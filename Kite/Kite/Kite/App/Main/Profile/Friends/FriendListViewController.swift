@@ -26,6 +26,10 @@ class FriendListViewController: UIViewController {
             // Later: Fetch friendListArray via API
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "FriendListViewController")
+    }
 
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +71,7 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
             print("Adding friend: \(friend.userName)")
 
             Task {
-                let success = await FriendDataController.shared.sendFriendRequest(to: friend)
+                let success = await UsersDataController.shared.sendFriendRequest(to: friend)
                 if success {
                     // Update the friendshipKey locally to show "Pending" UI or disable button
                     self.friendListArray[indexPath.row].setFriendProperties(

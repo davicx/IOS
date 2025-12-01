@@ -65,8 +65,6 @@ class FriendProfileViewController: UIViewController {
     }
 
     
-
-    
     //NAVIGATION: To their friends list
     @objc private func friendsButtonTapped() {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
