@@ -78,37 +78,34 @@ class FriendTableViewCell: UITableViewCell {
         friendActionButton.setTitleColor(.white, for: .normal)
         friendActionButton.backgroundColor = .systemBlue
         friendActionButton.layer.borderWidth = 0
+        friendActionButton.isHidden = false
 
-        switch user.friendshipKey {
-        case FriendshipStatus.friends.rawValue:
+        switch user.friendshipStatus {
+        case .friends:
             friendActionButton.setTitle("Friends", for: .normal)
             friendActionButton.backgroundColor = .white
             friendActionButton.setTitleColor(.black, for: .normal)
             friendActionButton.layer.borderWidth = 1
             friendActionButton.layer.borderColor = UIColor.lightGray.cgColor
-            friendActionButton.isEnabled = false
+            friendActionButton.isEnabled = true
 
-        case FriendshipStatus.invitePendingSentByYou.rawValue:
-            friendActionButton.setTitle("Pending (You Sent)", for: .normal)
-            friendActionButton.backgroundColor = .gray
+        case .invitePendingSentByYou:
+            friendActionButton.setTitle("Cancel", for: .normal)
+            friendActionButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0)
             friendActionButton.setTitleColor(.white, for: .normal)
-            friendActionButton.isEnabled = false
-            friendActionButton.isUserInteractionEnabled = false
+            friendActionButton.isEnabled = true
+            friendActionButton.isUserInteractionEnabled = true
 
-        case FriendshipStatus.requestPendingSentByThem.rawValue:
-            friendActionButton.setTitle("Respond (They Sent)", for: .normal)
-            friendActionButton.backgroundColor = .systemOrange
+        case .requestPendingSentByThem:
+            friendActionButton.setTitle("Accept", for: .normal)
+            friendActionButton.backgroundColor = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
             friendActionButton.setTitleColor(.white, for: .normal)
-            friendActionButton.isEnabled = false  // or true if you want to support response here
+            friendActionButton.isEnabled = true
 
-        case FriendshipStatus.you.rawValue:
-            friendActionButton.setTitle("You", for: .normal)
-            friendActionButton.isEnabled = false
-            friendActionButton.backgroundColor = .lightGray
+        case .you:
+            friendActionButton.isHidden = true
 
-        case FriendshipStatus.notFriends.rawValue:
-            fallthrough
-        default:
+        case .notFriends, .unknown:
             friendActionButton.setTitle("Add Friend", for: .normal)
             friendActionButton.backgroundColor = .systemBlue
             friendActionButton.setTitleColor(.white, for: .normal)

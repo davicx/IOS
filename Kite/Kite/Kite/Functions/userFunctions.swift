@@ -129,6 +129,11 @@ func createUserFromFriendWithImage(_ userModel: UserModel) async -> User {
 
 /// Calculates the friendship status between the current user and another user
 func calculateFriendshipStatus(for user: User) -> FriendshipStatus {
+    // Check if this is the current user first
+    if user.isCurrentUser {
+        return .you
+    }
+    
     guard let key = user.friendshipKey else { return .notFriends }
     
     // If friendship is confirmed, return friends regardless of who sent the original request

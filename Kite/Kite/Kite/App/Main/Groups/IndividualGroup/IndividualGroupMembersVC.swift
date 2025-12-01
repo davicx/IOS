@@ -59,10 +59,116 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as! FriendTableViewCell
         cell.configure(with: member)
         
-        // For group members, we'll disable the friend action button since they're already in the group
-        cell.friendActionButton.isHidden = true
+        // Set up button action based on friendship status
+        cell.friendActionTapped = { [weak self] in
+            guard let self = self else { return }
+            self.handleFriendAction(for: member, at: indexPath)
+        }
         
         return cell
+    }
+    
+    private func handleFriendAction(for user: User, at indexPath: IndexPath) {
+        switch user.friendshipStatus {
+        case .notFriends, .unknown:
+            // Add Friend
+            Task {
+                let success = await UsersDataController.shared.sendFriendRequest(to: user)
+                if success {
+                    // Update local member
+                    if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                        groupMembers[indexPath.row] = updatedUser
+                        DispatchQueue.main.async {
+                            self.tableView.reloadRows(at: [indexPath], with: .none)
+                        }
+                    }
+                }
+            }
+            
+        case .invitePendingSentByYou:
+            // Cancel Request
+            presentConfirmationAlert(
+                title: "Cancel Friend Request",
+                message: "Are you sure you want to cancel the friend invite to @\(user.userName)?",
+                confirmTitle: "Cancel Request",
+                destructive: true
+            ) {
+                Task {
+                    do {
+                        try await UsersDataController.shared.cancelRequest(to: user)
+                        if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                            self.groupMembers[indexPath.row] = updatedUser
+                            DispatchQueue.main.async {
+                                self.tableView.reloadRows(at: [indexPath], with: .none)
+                            }
+                        }
+                    } catch {
+                        print("Error cancelling friend request: \(error)")
+                    }
+                }
+            }
+            
+        case .requestPendingSentByThem:
+            // Accept Request
+            Task {
+                do {
+                    let updatedUser = try await UsersDataController.shared.accept(inviteFrom: user)
+                    groupMembers[indexPath.row] = updatedUser
+                    DispatchQueue.main.async {
+                        self.tableView.reloadRows(at: [indexPath], with: .none)
+                    }
+                } catch {
+                    print("Error accepting invite: \(error)")
+                }
+            }
+            
+        case .friends:
+            // Remove Friend
+            presentConfirmationAlert(
+                title: "Remove Friend",
+                message: "Are you sure you want to remove @\(user.userName) from your friends?",
+                confirmTitle: "Remove",
+                destructive: true
+            ) {
+                Task {
+                    do {
+                        try await UsersDataController.shared.remove(friend: user)
+                        if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                            self.groupMembers[indexPath.row] = updatedUser
+                            DispatchQueue.main.async {
+                                self.tableView.reloadRows(at: [indexPath], with: .none)
+                            }
+                        }
+                    } catch {
+                        print("Error removing friend: \(error)")
+                    }
+                }
+            }
+            
+        case .you:
+            // No action for current user
+            break
+        }
+    }
+    
+    private func presentConfirmationAlert(
+        title: String,
+        message: String,
+        confirmTitle: String,
+        destructive: Bool,
+        completion: @escaping () -> Void
+    ) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: confirmTitle, style: destructive ? .destructive : .default) { _ in
+            completion()
+        }
+        alert.addAction(confirmAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
