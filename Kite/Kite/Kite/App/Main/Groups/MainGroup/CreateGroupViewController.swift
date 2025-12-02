@@ -36,7 +36,7 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImageP
         if localFriends.isEmpty {
             Task {
                 do {
-                    try await UsersDataController.shared.fetchFriends()
+                    _ = try await UsersDataController.shared.fetchFriends()
                     self.friends = UsersDataController.shared.splitFriendsByStatus().friends
                     DispatchQueue.main.async {
                         self.tableView.reloadData()

@@ -137,7 +137,20 @@ class UsersDataController {
     }
     
     // Fetch multiple users and convert them to User objects with images
-    func fetchUsersWithImages(usernames: [String]) async -> [User] {
+    // refreshFriendshipStatus: If true, fetches fresh friendship data first before returning users
+    // This ensures friendship status is up-to-date while still caching profile data (name, image, bio)
+    func fetchUsersWithImages(usernames: [String], refreshFriendshipStatus: Bool = false) async -> [User] {
+        // If refresh needed, fetch fresh friends list first to update cache with latest friendship data
+        if refreshFriendshipStatus {
+            do {
+                _ = try await fetchFriends()
+            } catch {
+                print("UsersDataController: Error refreshing friendship status: \(error)")
+                // Continue anyway - we'll use cached data if available
+            }
+        }
+        
+        // Fetch users (will use cached profile data, but friendship data will be fresh if refreshFriendshipStatus was true)
         let users = await fetchUsers(usernames: usernames)
         await fetchImagesForUsers(users)
         return users
@@ -146,15 +159,27 @@ class UsersDataController {
     // MARK: - Friend Management
     
     // Fetch all friends for the current user
-    func fetchFriends() async throws {
+    // This updates the cache with fresh friendship data for all users who have a relationship with the current user
+    // Returns the set of usernames that are in the API response (have a friendship relationship)
+    func fetchFriends() async throws -> Set<String> {
         let currentUsername = currentUser
         let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUsername)
         
         // Convert to User objects with images
         let fetchedFriends = await createUsersFromFriendsWithImages(friendsResponse.data)
         
+        // Track which usernames are in the API response
+        var usernamesInResponse = Set<String>()
+        
         // Store all friends in the users dictionary
+        // This overwrites existing cached users with fresh data from the friends API
+        // The friends API returns complete user profiles (name, image, bio) + friendship status
         for friend in fetchedFriends {
+            usernamesInResponse.insert(friend.userName)
+            // Preserve cached profile image if it exists and is already loaded
+            if let existingUser = users[friend.userName], let cachedImage = existingUser.profileImage {
+                friend.profileImage = cachedImage
+            }
             users[friend.userName] = friend
         }
         
@@ -162,6 +187,8 @@ class UsersDataController {
             self.notifyUsersUpdated()
             NotificationCenter.default.post(name: .friendsUpdated, object: nil)
         }
+        
+        return usernamesInResponse
     }
     
     // Get all friends (users with friendship status)
@@ -197,11 +224,20 @@ class UsersDataController {
             
             if response.success {
                 var updatedUser = user
+                
+                // Use API response data if available, otherwise use defaults
+                let friendData = response.data.friendData
+                // Normalize friendshipKey - API may return "new_request_pending" which should be treated as "invite_pending"
+                var friendshipKey = friendData.friendshipKey.isEmpty ? FriendshipStatus.invitePendingSentByYou.rawValue : friendData.friendshipKey
+                if friendshipKey == "new_request_pending" {
+                    friendshipKey = FriendshipStatus.invitePendingSentByYou.rawValue
+                }
+                
                 updatedUser.setFriendProperties(
-                    requestPending: 1,
-                    requestSentBy: currentUsername,
-                    friendshipKey: FriendshipStatus.invitePendingSentByYou.rawValue,
-                    alsoYourFriend: 0
+                    requestPending: friendData.requestPending,
+                    requestSentBy: friendData.requestSentBy.isEmpty ? currentUsername : friendData.requestSentBy,
+                    friendshipKey: friendshipKey,
+                    alsoYourFriend: friendData.alsoYourFriend
                 )
                 
                 // Update in cache

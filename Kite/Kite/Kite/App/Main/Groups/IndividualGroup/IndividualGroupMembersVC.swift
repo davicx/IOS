@@ -16,6 +16,8 @@ class IndividualGroupMembersVC: UIViewController {
     // Table view for displaying members
     private let tableView = UITableView()
     
+    private let usersDataController = UsersDataController.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -23,8 +25,56 @@ class IndividualGroupMembersVC: UIViewController {
         setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Refresh member data to ensure we have latest friendship status
+        Task {
+            await refreshMembersData()
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         printPageInfo(vcName: "IndividualGroupMembersVC")
+    }
+    
+    // Refresh member data from cache and refresh friendship status if needed
+    private func refreshMembersData() async {
+        // First, refresh friendship status to ensure cache is up-to-date
+        // This returns the set of usernames that are actually in the API response
+        var friendUsernamesFromAPI: Set<String> = []
+        do {
+            friendUsernamesFromAPI = try await usersDataController.fetchFriends()
+        } catch {
+            print("IndividualGroupMembersVC: Error refreshing friendship status: \(error)")
+        }
+        
+        // Then get fresh data from cache for each member
+        // If a member is NOT in the friends API response, clear their friendship properties
+        var refreshedMembers: [User] = []
+        for member in groupMembers {
+            if let freshUser = usersDataController.getUser(username: member.userName) {
+                // If this user is NOT in the friends API response, clear their friendship properties
+                // This handles cases where they were previously friends/pending but are no longer
+                if !friendUsernamesFromAPI.contains(member.userName) {
+                    freshUser.clearFriendProperties()
+                    // Update the cache with cleared friendship data
+                    usersDataController.addOrUpdateUser(freshUser)
+                }
+                refreshedMembers.append(freshUser)
+            } else {
+                // If not in cache, check if they should have friendship data cleared
+                var memberCopy = member
+                if !friendUsernamesFromAPI.contains(member.userName) {
+                    memberCopy.clearFriendProperties()
+                }
+                refreshedMembers.append(memberCopy)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.groupMembers = refreshedMembers
+            self.tableView.reloadData()
+        }
     }
     
     private func setupTableView() {

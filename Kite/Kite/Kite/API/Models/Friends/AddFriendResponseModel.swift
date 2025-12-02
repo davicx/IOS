@@ -30,11 +30,52 @@ struct AddFriendResponseModel: Codable {
 struct AddFriendModel: Codable {
     let currentUser: String
     let friendAddSuccessOutcome: Bool
-    let friendData: UserModel
+    let friendData: AddFriendDataModel
 
     init() {
         self.currentUser = ""
         self.friendAddSuccessOutcome = false
-        self.friendData = UserModel()
+        self.friendData = AddFriendDataModel()
+    }
+}
+
+// Model that matches the API response structure for friendData
+struct AddFriendDataModel: Codable {
+    let friendID: Int
+    let friendName: String
+    let friendImage: String
+    let firstName: String
+    let lastName: String
+    let requestPending: Int
+    let requestSentBy: String
+    let friendshipKey: String
+    let alsoYourFriend: Int
+    
+    init() {
+        self.friendID = 0
+        self.friendName = ""
+        self.friendImage = ""
+        self.firstName = ""
+        self.lastName = ""
+        self.requestPending = 0
+        self.requestSentBy = ""
+        self.friendshipKey = ""
+        self.alsoYourFriend = 0
+    }
+    
+    // Convert to UserModel for compatibility
+    func toUserModel() -> UserModel {
+        return UserModel(
+            userID: friendID,
+            userName: friendName,
+            userImage: friendImage,
+            firstName: firstName,
+            lastName: lastName,
+            biography: "", // Not provided in API response
+            requestPending: requestPending,
+            requestSentBy: requestSentBy,
+            friendshipKey: friendshipKey,
+            alsoYourFriend: alsoYourFriend
+        )
     }
 }

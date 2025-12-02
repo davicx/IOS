@@ -74,7 +74,7 @@ class FriendsViewController: UIViewController {
     @objc private func handleFriendsUpdated() {
         Task {
             do {
-                try await UsersDataController.shared.fetchFriends()
+                _ = try await UsersDataController.shared.fetchFriends()
                 self.splitUsersByStatus()
 
                 DispatchQueue.main.async {

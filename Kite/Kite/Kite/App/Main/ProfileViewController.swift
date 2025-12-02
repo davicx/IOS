@@ -90,7 +90,7 @@ class ProfileViewController: UIViewController {
                 }
 
                 // Fetch friends
-                try await UsersDataController.shared.fetchFriends()
+                _ = try await UsersDataController.shared.fetchFriends()
 
             } catch {
                 print("Error in viewDidLoad: \(error)")
@@ -104,7 +104,7 @@ class ProfileViewController: UIViewController {
 
         Task {
             do {
-                try await UsersDataController.shared.fetchFriends()
+                _ = try await UsersDataController.shared.fetchFriends()
             } catch {
                 print("Error updating friend list: \(error)")
             }
