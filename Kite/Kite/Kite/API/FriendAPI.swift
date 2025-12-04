@@ -575,12 +575,8 @@ class FriendAPI {
         
     }
     
-    func convertToFriendObjects(from models: [UserModel]) -> [Friend] {
-        return models.map { Friend(from: $0) }
-    }
-    
     func convertToUserObjects(from models: [UserModel]) -> [User] {
-        return models.map { createUserFromFriend($0) }
+        return models.map { createUser(from: $0) }
     }
 
 

@@ -56,7 +56,10 @@ class IndividualGroupMembersVC: UIViewController {
                 // If this user is NOT in the friends API response, clear their friendship properties
                 // This handles cases where they were previously friends/pending but are no longer
                 if !friendUsernamesFromAPI.contains(member.userName) {
-                    freshUser.clearFriendProperties()
+                    freshUser.friendshipKey = "not_friends"
+                    freshUser.requestPending = 0
+                    freshUser.requestSentBy = ""
+                    freshUser.alsoYourFriend = 0
                     // Update the cache with cleared friendship data
                     usersDataController.addOrUpdateUser(freshUser)
                 }
@@ -65,7 +68,10 @@ class IndividualGroupMembersVC: UIViewController {
                 // If not in cache, check if they should have friendship data cleared
                 var memberCopy = member
                 if !friendUsernamesFromAPI.contains(member.userName) {
-                    memberCopy.clearFriendProperties()
+                    memberCopy.friendshipKey = "not_friends"
+                    memberCopy.requestPending = 0
+                    memberCopy.requestSentBy = ""
+                    memberCopy.alsoYourFriend = 0
                 }
                 refreshedMembers.append(memberCopy)
             }
@@ -123,14 +129,11 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
         case .notFriends, .unknown:
             // Add Friend
             Task {
-                let success = await UsersDataController.shared.sendFriendRequest(to: user)
-                if success {
-                    // Update local member
-                    if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
-                        groupMembers[indexPath.row] = updatedUser
-                        DispatchQueue.main.async {
-                            self.tableView.reloadRows(at: [indexPath], with: .none)
-                        }
+                if let updatedUser = await UsersDataController.shared.sendFriendRequest(to: user) {
+                    // Update local member with the returned updated user
+                    groupMembers[indexPath.row] = updatedUser
+                    DispatchQueue.main.async {
+                        self.tableView.reloadRows(at: [indexPath], with: .none)
                     }
                 }
             }

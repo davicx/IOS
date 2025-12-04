@@ -71,15 +71,9 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
             print("Adding friend: \(friend.userName)")
 
             Task {
-                let success = await UsersDataController.shared.sendFriendRequest(to: friend)
-                if success {
-                    // Update the friendshipKey locally to show "Pending" UI or disable button
-                    self.friendListArray[indexPath.row].setFriendProperties(
-                        requestPending: 1,
-                        requestSentBy: UserDefaultManager().getLoggedInUser(),
-                        friendshipKey: FriendshipStatus.invitePendingSentByYou.rawValue,
-                        alsoYourFriend: 0
-                    )
+                if let updatedUser = await UsersDataController.shared.sendFriendRequest(to: friend) {
+                    // Update the local array with the returned updated user
+                    self.friendListArray[indexPath.row] = updatedUser
 
                     DispatchQueue.main.async {
                         self.tableView.reloadRows(at: [indexPath], with: .none)

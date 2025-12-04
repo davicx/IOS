@@ -25,7 +25,7 @@ class FriendDataController {
         let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUser)
         
         // Use our new batch image fetching function
-        let fetchedFriends = await createUsersFromFriendsWithImages(friendsResponse.data)
+        let fetchedFriends = await createUsersWithImages(from: friendsResponse.data)
 
         self.friends = fetchedFriends
     }
@@ -69,7 +69,10 @@ extension FriendDataController {
 
             if response.success {
                 var updatedUser = user
-                updatedUser.setFriendProperties(requestPending: 1, requestSentBy: currentUser, friendshipKey: FriendshipStatus.invitePendingSentByYou.rawValue, alsoYourFriend: 0)
+                updatedUser.requestPending = 1
+                updatedUser.requestSentBy = currentUser
+                updatedUser.friendshipKey = FriendshipStatus.invitePendingSentByYou.rawValue
+                updatedUser.alsoYourFriend = 0
                 addFriend(updatedUser)
 
                 // Notify other views
@@ -129,7 +132,10 @@ extension FriendDataController {
             )
             if response.success {
                 var updatedUser = user
-                updatedUser.setFriendProperties(requestPending: 0, requestSentBy: currentUser, friendshipKey: FriendshipStatus.friends.rawValue, alsoYourFriend: 1)
+                updatedUser.requestPending = 0
+                updatedUser.requestSentBy = currentUser
+                updatedUser.friendshipKey = FriendshipStatus.friends.rawValue
+                updatedUser.alsoYourFriend = 1
                 addFriend(updatedUser)
                 return true
             }
@@ -199,7 +205,10 @@ extension FriendDataController {
         )
         if response.success {
             var updatedFriend = friend
-            updatedFriend.setFriendProperties(requestPending: 0, requestSentBy: currentUser, friendshipKey: FriendshipStatus.friends.rawValue, alsoYourFriend: 1)
+            updatedFriend.requestPending = 0
+            updatedFriend.requestSentBy = currentUser
+            updatedFriend.friendshipKey = FriendshipStatus.friends.rawValue
+            updatedFriend.alsoYourFriend = 1
             addFriend(updatedFriend)
             return updatedFriend
         } else {

@@ -18,6 +18,9 @@ class UsersDataController {
     // Dictionary to store all users by username (current user, friends, group members, etc.)
     private(set) var users: [String: User] = [:]
     
+    // Serial queue for thread-safe dictionary access
+    private let usersQueue = DispatchQueue(label: "com.kite.usersDataController")
+    
     // Callback to notify when users are updated (legacy support)
     var onUsersUpdated: (() -> Void)?
     
@@ -33,37 +36,43 @@ class UsersDataController {
     
     // Get user by username (from cache)
     func getUser(username: String) -> User? {
-        return users[username]
+        return usersQueue.sync {
+            return users[username]
+        }
     }
     
     // Get UserModel by username (for backward compatibility - converts User to UserModel)
     func getUserModel(username: String) -> UserModel? {
-        guard let user = users[username] else { return nil }
+        guard let user = usersQueue.sync(execute: { users[username] }) else { return nil }
         // Convert User back to UserModel if needed
-        // Note: This is a lossy conversion - friendship data may not be preserved
         return UserModel(
             userID: user.userID,
             userName: user.userName,
-            userImage: user.profileImageURL,
+            userImage: user.userImage,
             firstName: user.firstName,
             lastName: user.lastName,
             biography: user.biography,
-            requestPending: user.requestPending ?? 0,
-            requestSentBy: user.requestSentBy ?? "",
-            friendshipKey: user.friendshipKey ?? "",
-            alsoYourFriend: user.alsoYourFriend ?? 0
+            requestPending: user.requestPending,
+            requestSentBy: user.requestSentBy,
+            friendshipKey: user.friendshipKey,
+            alsoYourFriend: user.alsoYourFriend
         )
     }
     
     // Check if user is already cached
     func hasUser(username: String) -> Bool {
-        return users[username] != nil
+        return usersQueue.sync {
+            return users[username] != nil
+        }
     }
     
     // Get or fetch user (checks cache first, then fetches if needed)
     func getOrFetchUser(username: String) async -> User? {
         // Check if we already have this user cached
-        if let cachedUser = users[username] {
+        let cachedUser = usersQueue.sync {
+            return users[username]
+        }
+        if let cachedUser = cachedUser {
             return cachedUser
         }
         
@@ -86,10 +95,12 @@ class UsersDataController {
             if response.success {
                 let userProfile = response.data
                 let isCurrentUser = (username == currentUser)
-                let user = createUserFromProfile(userProfile, isCurrentUser: isCurrentUser)
+                let user = createUser(from: userProfile, isCurrentUser: isCurrentUser)
                 
-                // Store in cache
-                users[username] = user
+                // Store in cache (thread-safe)
+                usersQueue.async {
+                    self.users[username] = user
+                }
                 
                 // Fetch image asynchronously
                 Task {
@@ -166,21 +177,30 @@ class UsersDataController {
         let friendsResponse = try await friendAPI.getAllCurrentUserFriends(currentUser: currentUsername)
         
         // Convert to User objects with images
-        let fetchedFriends = await createUsersFromFriendsWithImages(friendsResponse.data)
+        let fetchedFriends = await createUsersWithImages(from: friendsResponse.data)
         
         // Track which usernames are in the API response
         var usernamesInResponse = Set<String>()
         
-        // Store all friends in the users dictionary
-        // This overwrites existing cached users with fresh data from the friends API
-        // The friends API returns complete user profiles (name, image, bio) + friendship status
+        // Collect usernames first
         for friend in fetchedFriends {
             usernamesInResponse.insert(friend.userName)
-            // Preserve cached profile image if it exists and is already loaded
-            if let existingUser = users[friend.userName], let cachedImage = existingUser.profileImage {
-                friend.profileImage = cachedImage
+        }
+        
+        // Store all friends in the users dictionary (thread-safe)
+        // This overwrites existing cached users with fresh data from the friends API
+        // The friends API returns complete user profiles (name, image, bio) + friendship status
+        await withCheckedContinuation { continuation in
+            usersQueue.async {
+                for friend in fetchedFriends {
+                    // Preserve cached profile image if it exists and is already loaded
+                    if let existingUser = self.users[friend.userName], let cachedImage = existingUser.profileImage {
+                        friend.profileImage = cachedImage
+                    }
+                    self.users[friend.userName] = friend
+                }
+                continuation.resume()
             }
-            users[friend.userName] = friend
         }
         
         DispatchQueue.main.async {
@@ -193,7 +213,9 @@ class UsersDataController {
     
     // Get all friends (users with friendship status)
     func getFriends() -> [User] {
-        return Array(users.values).filter { $0.friendshipKey != nil }
+        return usersQueue.sync {
+            return Array(users.values).filter { !$0.friendshipKey.isEmpty && $0.friendshipKey != "not_friends" }
+        }
     }
     
     // Split friends by status
@@ -213,7 +235,7 @@ class UsersDataController {
     
     // MARK: - Friend Actions
     
-    func sendFriendRequest(to user: User) async -> Bool {
+    func sendFriendRequest(to user: User) async -> User? {
         do {
             let currentUsername = currentUser
             let response = try await friendAPI.addFriend(
@@ -227,33 +249,35 @@ class UsersDataController {
                 
                 // Use API response data if available, otherwise use defaults
                 let friendData = response.data.friendData
-                // Normalize friendshipKey - API may return "new_request_pending" which should be treated as "invite_pending"
-                var friendshipKey = friendData.friendshipKey.isEmpty ? FriendshipStatus.invitePendingSentByYou.rawValue : friendData.friendshipKey
+                // API returns "request_pending" when you send a friend request (you can cancel)
+                // This maps to .invitePendingSentByYou via calculateFriendshipStatus
+                var friendshipKey = friendData.friendshipKey.isEmpty ? "request_pending" : friendData.friendshipKey
                 if friendshipKey == "new_request_pending" {
-                    friendshipKey = FriendshipStatus.invitePendingSentByYou.rawValue
+                    friendshipKey = "request_pending"
                 }
                 
-                updatedUser.setFriendProperties(
-                    requestPending: friendData.requestPending,
-                    requestSentBy: friendData.requestSentBy.isEmpty ? currentUsername : friendData.requestSentBy,
-                    friendshipKey: friendshipKey,
-                    alsoYourFriend: friendData.alsoYourFriend
-                )
+                // Update friend properties directly
+                updatedUser.requestPending = friendData.requestPending
+                updatedUser.requestSentBy = friendData.requestSentBy.isEmpty ? currentUsername : friendData.requestSentBy
+                updatedUser.friendshipKey = friendshipKey
+                updatedUser.alsoYourFriend = friendData.alsoYourFriend
                 
-                // Update in cache
-                users[user.userName] = updatedUser
+                // Update in cache (thread-safe, synchronous to ensure update completes)
+                usersQueue.sync {
+                    self.users[user.userName] = updatedUser
+                }
                 
                 DispatchQueue.main.async {
                     self.notifyUsersUpdated()
                     NotificationCenter.default.post(name: .friendsUpdated, object: nil)
                 }
                 
-                return true
+                return updatedUser
             }
         } catch {
             print("Error sending friend request: \(error)")
         }
-        return false
+        return nil
     }
     
     func cancelFriendRequest(for user: User) async -> Bool {
@@ -268,7 +292,10 @@ class UsersDataController {
             if response.success {
                 // Remove friendship properties
                 var updatedUser = user
-                updatedUser.clearFriendProperties()
+                updatedUser.friendshipKey = "not_friends"
+                updatedUser.requestPending = 0
+                updatedUser.requestSentBy = ""
+                updatedUser.alsoYourFriend = 0
                 users[user.userName] = updatedUser
                 
                 DispatchQueue.main.async {
@@ -294,7 +321,10 @@ class UsersDataController {
         
         if response.success {
             var updatedUser = friend
-            updatedUser.clearFriendProperties()
+            updatedUser.friendshipKey = "not_friends"
+            updatedUser.requestPending = 0
+            updatedUser.requestSentBy = ""
+            updatedUser.alsoYourFriend = 0
             users[friend.userName] = updatedUser
             
             DispatchQueue.main.async {
@@ -317,7 +347,10 @@ class UsersDataController {
             
             if response.success {
                 var updatedUser = user
-                updatedUser.clearFriendProperties()
+                updatedUser.friendshipKey = "not_friends"
+                updatedUser.requestPending = 0
+                updatedUser.requestSentBy = ""
+                updatedUser.alsoYourFriend = 0
                 users[user.userName] = updatedUser
                 
                 DispatchQueue.main.async {
@@ -343,7 +376,10 @@ class UsersDataController {
         
         if response.success {
             var updatedUser = friend
-            updatedUser.clearFriendProperties()
+            updatedUser.friendshipKey = "not_friends"
+            updatedUser.requestPending = 0
+            updatedUser.requestSentBy = ""
+            updatedUser.alsoYourFriend = 0
             users[friend.userName] = updatedUser
             
             DispatchQueue.main.async {
@@ -366,12 +402,10 @@ class UsersDataController {
             
             if response.success {
                 var updatedUser = user
-                updatedUser.setFriendProperties(
-                    requestPending: 0,
-                    requestSentBy: currentUsername,
-                    friendshipKey: FriendshipStatus.friends.rawValue,
-                    alsoYourFriend: 1
-                )
+                updatedUser.requestPending = 0
+                updatedUser.requestSentBy = currentUsername
+                updatedUser.friendshipKey = FriendshipStatus.friends.rawValue
+                updatedUser.alsoYourFriend = 1
                 
                 users[user.userName] = updatedUser
                 
@@ -398,12 +432,10 @@ class UsersDataController {
         
         if response.success {
             var updatedFriend = friend
-            updatedFriend.setFriendProperties(
-                requestPending: 0,
-                requestSentBy: currentUsername,
-                friendshipKey: FriendshipStatus.friends.rawValue,
-                alsoYourFriend: 1
-            )
+            updatedFriend.requestPending = 0
+            updatedFriend.requestSentBy = currentUsername
+            updatedFriend.friendshipKey = FriendshipStatus.friends.rawValue
+            updatedFriend.alsoYourFriend = 1
             
             users[friend.userName] = updatedFriend
             
@@ -429,7 +461,10 @@ class UsersDataController {
             
             if response.success {
                 var updatedUser = user
-                updatedUser.clearFriendProperties()
+                updatedUser.friendshipKey = "not_friends"
+                updatedUser.requestPending = 0
+                updatedUser.requestSentBy = ""
+                updatedUser.alsoYourFriend = 0
                 users[user.userName] = updatedUser
                 
                 DispatchQueue.main.async {
@@ -455,7 +490,10 @@ class UsersDataController {
         
         if response.success {
             var updatedUser = friend
-            updatedUser.clearFriendProperties()
+            updatedUser.friendshipKey = "not_friends"
+            updatedUser.requestPending = 0
+            updatedUser.requestSentBy = ""
+            updatedUser.alsoYourFriend = 0
             users[friend.userName] = updatedUser
             
             DispatchQueue.main.async {
@@ -471,44 +509,58 @@ class UsersDataController {
     
     // Add or update a user in the cache
     func addOrUpdateUser(_ user: User) {
-        users[user.userName] = user
+        usersQueue.async {
+            self.users[user.userName] = user
+        }
         notifyUsersUpdated()
     }
     
     // Update user profile (when user updates their own profile)
     func updateUser(username: String, updatedUser: User) {
-        users[username] = updatedUser
+        usersQueue.async {
+            self.users[username] = updatedUser
+        }
         notifyUsersUpdated()
     }
     
     // Update user from UserModel (for backward compatibility)
     func updateUserFromModel(username: String, userModel: UserModel) {
         let isCurrentUser = (username == currentUser)
-        let user = createUserFromProfile(userModel, isCurrentUser: isCurrentUser)
-        users[username] = user
+        let user = createUser(from: userModel, isCurrentUser: isCurrentUser)
+        usersQueue.async {
+            self.users[username] = user
+        }
         notifyUsersUpdated()
     }
     
     // Remove user from cache
     func removeUser(username: String) {
-        users.removeValue(forKey: username)
+        usersQueue.async {
+            self.users.removeValue(forKey: username)
+        }
         notifyUsersUpdated()
     }
     
     // Clear all cached users (useful for logout)
     func clearAllUsers() {
-        users.removeAll()
+        usersQueue.async {
+            self.users.removeAll()
+        }
         notifyUsersUpdated()
     }
     
     // Get all cached users
     func getAllUsers() -> [User] {
-        return Array(users.values)
+        return usersQueue.sync {
+            return Array(users.values)
+        }
     }
     
     // Get users by usernames (returns only cached users)
     func getCachedUsers(usernames: [String]) -> [User] {
-        return usernames.compactMap { users[$0] }
+        return usersQueue.sync {
+            return usernames.compactMap { users[$0] }
+        }
     }
     
     // MARK: - Notifications

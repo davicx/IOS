@@ -130,7 +130,7 @@ class FriendProfileViewController: UIViewController {
         await withTaskGroup(of: Void.self) { group in
             for friend in friends {
                 group.addTask {
-                    if let image = await imageHelper.fetchImage(from: friend.profileImageURL) {
+                    if let image = await imageHelper.fetchImage(from: friend.userImage) {
                         friend.profileImage = image
                     }
                 }
