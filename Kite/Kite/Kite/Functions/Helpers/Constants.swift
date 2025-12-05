@@ -68,9 +68,9 @@ struct Constants {
     }
     
     
-    //Timeout Constants
+    //Timeout Constants (in seconds)
     struct Timeout {
-        static let friendTimeout = "5 seconds"
+        static let friendTimeout: TimeInterval = 10.0
     }
 
     

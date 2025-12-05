@@ -84,6 +84,51 @@ func calculateLabelHeight(text: String, font: UIFont = UIFont.systemFont(ofSize:
     return ceil(boundingRect.height)
 }
 
+//ASYNC TIMEOUT FUNCTIONS
+enum TimeoutError: Error {
+    case timeout
+}
+
+func withTimeout<T>(seconds: TimeInterval, operation: @escaping () async throws -> T) async throws -> T {
+    try await withThrowingTaskGroup(of: T.self) { group in
+        // Add the actual operation
+        group.addTask {
+            try await operation()
+        }
+        
+        // Add a timeout task
+        group.addTask {
+            try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+            throw TimeoutError.timeout
+        }
+        
+        // Return the first completed task and cancel the other
+        let result = try await group.next()!
+        group.cancelAll()
+        return result
+    }
+}
+
+func withTimeout<T>(seconds: TimeInterval, operation: @escaping () async -> T) async throws -> T {
+    try await withThrowingTaskGroup(of: T.self) { group in
+        // Add the actual operation
+        group.addTask {
+            await operation()
+        }
+        
+        // Add a timeout task
+        group.addTask {
+            try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+            throw TimeoutError.timeout
+        }
+        
+        // Return the first completed task and cancel the other
+        let result = try await group.next()!
+        group.cancelAll()
+        return result
+    }
+}
+
 
 //APPENDIX
 /*

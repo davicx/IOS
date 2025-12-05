@@ -18,6 +18,9 @@ class IndividualGroupMembersVC: UIViewController {
     
     private let usersDataController = UsersDataController.shared
     
+    // Track loading state per username to prevent multiple simultaneous requests
+    private var loadingUsernames: Set<String> = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -115,6 +118,11 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as! FriendTableViewCell
         cell.configure(with: member)
         
+        // Set loading state if this user is currently loading
+        if loadingUsernames.contains(member.userName) {
+            cell.setLoading(true)
+        }
+        
         // Set up button action based on friendship status
         cell.friendActionTapped = { [weak self] in
             guard let self = self else { return }
@@ -125,15 +133,38 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     private func handleFriendAction(for user: User, at indexPath: IndexPath) {
+        // Prevent multiple simultaneous requests for the same user
+        guard !loadingUsernames.contains(user.userName) else { return }
+        
+        // Get the cell and set loading state
+        guard let cell = tableView.cellForRow(at: indexPath) as? FriendTableViewCell else { return }
+        loadingUsernames.insert(user.userName)
+        cell.setLoading(true)
+        
         switch user.friendshipStatus {
         case .notFriends, .unknown:
             // Add Friend
             Task {
-                if let updatedUser = await UsersDataController.shared.sendFriendRequest(to: user) {
-                    // Update local member with the returned updated user
-                    groupMembers[indexPath.row] = updatedUser
+                do {
+                    // Use withTimeout to handle timeout
+                    let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
+                        await UsersDataController.shared.sendFriendRequest(to: user)
+                    }
+                    
                     DispatchQueue.main.async {
-                        self.tableView.reloadRows(at: [indexPath], with: .none)
+                        self.loadingUsernames.remove(user.userName)
+                        if let updatedUser = updatedUser {
+                            self.groupMembers[indexPath.row] = updatedUser
+                            cell.configure(with: updatedUser)
+                        } else {
+                            cell.setLoading(false)
+                        }
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.loadingUsernames.remove(user.userName)
+                        cell.setLoading(false)
+                        self.showErrorAlert(message: "Failed to send friend request. Please try again.")
                     }
                 }
             }
@@ -144,34 +175,58 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                 title: "Cancel Friend Request",
                 message: "Are you sure you want to cancel the friend invite to @\(user.userName)?",
                 confirmTitle: "Cancel Request",
-                destructive: true
-            ) {
-                Task {
-                    do {
-                        try await UsersDataController.shared.cancelRequest(to: user)
-                        if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
-                            self.groupMembers[indexPath.row] = updatedUser
+                destructive: true,
+                completion: {
+                    Task {
+                        do {
+                            try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
+                                try await UsersDataController.shared.cancelRequest(to: user)
+                            }
+                            
                             DispatchQueue.main.async {
-                                self.tableView.reloadRows(at: [indexPath], with: .none)
+                                self.loadingUsernames.remove(user.userName)
+                                if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                                    self.groupMembers[indexPath.row] = updatedUser
+                                    cell.configure(with: updatedUser)
+                                } else {
+                                    cell.setLoading(false)
+                                }
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                self.loadingUsernames.remove(user.userName)
+                                cell.setLoading(false)
+                                self.showErrorAlert(message: "Failed to cancel friend request. Please try again.")
                             }
                         }
-                    } catch {
-                        print("Error cancelling friend request: \(error)")
                     }
+                },
+                onCancel: {
+                    // Reset loading state if user cancels the alert
+                    self.loadingUsernames.remove(user.userName)
+                    cell.configure(with: user)
                 }
-            }
+            )
             
         case .requestPendingSentByThem:
             // Accept Request
             Task {
                 do {
-                    let updatedUser = try await UsersDataController.shared.accept(inviteFrom: user)
-                    groupMembers[indexPath.row] = updatedUser
+                    let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
+                        try await UsersDataController.shared.accept(inviteFrom: user)
+                    }
+                    
                     DispatchQueue.main.async {
-                        self.tableView.reloadRows(at: [indexPath], with: .none)
+                        self.loadingUsernames.remove(user.userName)
+                        self.groupMembers[indexPath.row] = updatedUser
+                        cell.configure(with: updatedUser)
                     }
                 } catch {
-                    print("Error accepting invite: \(error)")
+                    DispatchQueue.main.async {
+                        self.loadingUsernames.remove(user.userName)
+                        cell.setLoading(false)
+                        self.showErrorAlert(message: "Failed to accept friend request. Please try again.")
+                    }
                 }
             }
             
@@ -181,27 +236,51 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                 title: "Remove Friend",
                 message: "Are you sure you want to remove @\(user.userName) from your friends?",
                 confirmTitle: "Remove",
-                destructive: true
-            ) {
-                Task {
-                    do {
-                        try await UsersDataController.shared.remove(friend: user)
-                        if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
-                            self.groupMembers[indexPath.row] = updatedUser
+                destructive: true,
+                completion: {
+                    Task {
+                        do {
+                            try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
+                                try await UsersDataController.shared.remove(friend: user)
+                            }
+                            
                             DispatchQueue.main.async {
-                                self.tableView.reloadRows(at: [indexPath], with: .none)
+                                self.loadingUsernames.remove(user.userName)
+                                if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                                    self.groupMembers[indexPath.row] = updatedUser
+                                    cell.configure(with: updatedUser)
+                                } else {
+                                    cell.setLoading(false)
+                                }
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                self.loadingUsernames.remove(user.userName)
+                                cell.setLoading(false)
+                                self.showErrorAlert(message: "Failed to remove friend. Please try again.")
                             }
                         }
-                    } catch {
-                        print("Error removing friend: \(error)")
                     }
+                },
+                onCancel: {
+                    // Reset loading state if user cancels the alert
+                    self.loadingUsernames.remove(user.userName)
+                    cell.configure(with: user)
                 }
-            }
+            )
             
         case .you:
             // No action for current user
+            loadingUsernames.remove(user.userName)
+            cell.setLoading(false)
             break
         }
+    }
+    
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
     private func presentConfirmationAlert(
@@ -209,7 +288,8 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
         message: String,
         confirmTitle: String,
         destructive: Bool,
-        completion: @escaping () -> Void
+        completion: @escaping () -> Void,
+        onCancel: (() -> Void)? = nil
     ) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -218,7 +298,9 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
         }
         alert.addAction(confirmAction)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            onCancel?()
+        }
         alert.addAction(cancelAction)
         
         present(alert, animated: true)

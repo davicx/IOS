@@ -48,6 +48,7 @@ class FriendAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = Constants.Timeout.friendTimeout
 
         let body: [String: String] = [
             "masterSite": masterSite,
@@ -121,6 +122,7 @@ class FriendAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = Constants.Timeout.friendTimeout
 
         let body: [String: String] = [
             "masterSite": masterSite,
@@ -188,6 +190,7 @@ class FriendAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = Constants.Timeout.friendTimeout
 
         let body: [String: String] = [
             "masterSite": masterSite,
@@ -256,6 +259,7 @@ class FriendAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = Constants.Timeout.friendTimeout
 
         let body: [String: String] = [
             "masterSite": masterSite,
@@ -311,6 +315,7 @@ class FriendAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = Constants.Timeout.friendTimeout
 
         let body: [String: String] = [
             "masterSite": masterSite,
