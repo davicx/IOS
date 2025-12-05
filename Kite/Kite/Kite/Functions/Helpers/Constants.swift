@@ -46,8 +46,6 @@ struct Constants {
         static let postStoryboard = "Post"
     }
     
-    
-    
     //Image Constants
     struct Image {
         static let liked = "liked"
@@ -68,7 +66,15 @@ struct Constants {
     struct VariableConstants {
         static let tempURL = ""
     }
+    
+    
+    //Timeout Constants
+    struct Timeout {
+        static let friendTimeout = "5 seconds"
+    }
 
+    
+    
 }
 
 
