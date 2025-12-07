@@ -59,11 +59,9 @@ class GroupsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("________________________")
-        print("GroupsViewController")
-        print("LISTS: Wishlist")
-        print("________________________")
-        print(" ")
+        
+        printPageInfo(vcName: "GroupsViewController")
+ 
     }
 
     override func viewWillAppear(_ animated: Bool) {
