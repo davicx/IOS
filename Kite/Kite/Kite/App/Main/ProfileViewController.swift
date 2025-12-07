@@ -28,7 +28,9 @@ class ProfileViewController: UIViewController {
     private let profileImageView = UIImageView()
     private let dividerLine = UIView()
     private let userNameView = UIView()
+    private let userNameLabel = UILabel()
     private let fullNameView = UIView()
+    private let fullNameLabel = UILabel()
     private let userInfoView = UIView()
     private let userSelectInfoView = UIView()
     private let userBiographyView = UIView()
@@ -65,15 +67,7 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    //ACTIONS
-    @objc private func openProfile() {
-        print("Profile tapped")
-    }
-    
-    @objc private func editProfileButton() {
-        print("Edit Profile")
-    }
-    
+
     //LAYOUT
     private func setupNavigationBar() {
         navigationItem.title = "Profile"
@@ -136,24 +130,46 @@ class ProfileViewController: UIViewController {
         userNameView.backgroundColor = .clear
         userNameView.translatesAutoresizingMaskIntoConstraints = false
         
+        userNameLabel.font = Style.blackFont
+        userNameLabel.textAlignment = .center
+        userNameLabel.textColor = .black
+        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        userNameView.addSubview(userNameLabel)
+        
         NSLayoutConstraint.activate([
             userNameView.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor),
             userNameView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             userNameView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            userNameView.heightAnchor.constraint(equalToConstant: 36)
+            userNameView.heightAnchor.constraint(equalToConstant: 24),
+            
+            userNameLabel.centerXAnchor.constraint(equalTo: userNameView.centerXAnchor),
+            userNameLabel.topAnchor.constraint(equalTo: userNameView.topAnchor),
+            userNameLabel.bottomAnchor.constraint(equalTo: userNameView.bottomAnchor),
+            userNameLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
         ])
     }
 
     func setupFullNameView() {
         view.addSubview(fullNameView)
-        fullNameView.backgroundColor = .systemGreen
+        fullNameView.backgroundColor = .clear
         fullNameView.translatesAutoresizingMaskIntoConstraints = false
+        
+        fullNameLabel.font = Style.grayFont
+        fullNameLabel.textAlignment = .center
+        fullNameLabel.textColor = Style.textDarkGray
+        fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        fullNameView.addSubview(fullNameLabel)
         
         NSLayoutConstraint.activate([
             fullNameView.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
             fullNameView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             fullNameView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            fullNameView.heightAnchor.constraint(equalToConstant: 36)
+            fullNameView.heightAnchor.constraint(equalToConstant: 20),
+            
+            fullNameLabel.centerXAnchor.constraint(equalTo: fullNameView.centerXAnchor),
+            fullNameLabel.topAnchor.constraint(equalTo: fullNameView.topAnchor),
+            fullNameLabel.bottomAnchor.constraint(equalTo: fullNameView.bottomAnchor),
+            fullNameLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
         ])
     }
  
@@ -195,6 +211,16 @@ class ProfileViewController: UIViewController {
             userBiographyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    //ACTIONS
+    @objc private func openProfile() {
+        print("Profile tapped")
+    }
+    
+    @objc private func editProfileButton() {
+        print("Edit Profile")
+    }
+    
     
     //DATA FUNCTIONS
     private func getUserInfo() async {
@@ -272,7 +298,11 @@ class ProfileViewController: UIViewController {
             }
         }
         
-        // TODO: Update other UI elements (userNameView, fullNameView, etc.) with user data
+        // Update username label
+        userNameLabel.text = "@\(user.userName)"
+        
+        // Update full name label
+        fullNameLabel.text = "\(user.firstName) \(user.lastName)".trimmingCharacters(in: .whitespaces)
     }
 
  
