@@ -533,6 +533,66 @@ class UsersDataController {
         notifyUsersUpdated()
     }
     
+    // Fetch and update user counts (totalFriends, totalGroups, totalPosts) from API
+    // Updates the User object if it exists in cache, or creates a new one if it doesn't
+    func fetchAndUpdateUserCounts(username: String) async -> Bool {
+        do {
+            let response = try await profileAPI.getUserCountsAPI(currentUser: username)
+            
+            if response.statusCode == 401 {
+                LoginManager.shared.logoutCurrentUser()
+                return false
+            }
+            
+            if response.success, let countData = response.data.first {
+                let isCurrentUserFlag = (username == currentUser)
+                
+                // Update user in cache (thread-safe)
+                usersQueue.sync {
+                    if var user = self.users[username] {
+                        // Update existing user's counts
+                        user.totalFriends = countData.totalFriends
+                        user.totalGroups = countData.totalGroups
+                        user.totalPosts = countData.totalPosts
+                        self.users[username] = user
+                    } else {
+                        // User doesn't exist in cache yet - create a minimal user with counts
+                        // This shouldn't normally happen, but handle it gracefully
+                        let user = User(
+                            userID: countData.userID,
+                            userName: countData.userName,
+                            userImage: "",
+                            firstName: "",
+                            lastName: "",
+                            biography: "",
+                            isCurrentUser: isCurrentUserFlag,
+                            friendshipKey: "not_friends",
+                            requestPending: 0,
+                            requestSentBy: "",
+                            alsoYourFriend: 0,
+                            totalFriends: countData.totalFriends,
+                            totalGroups: countData.totalGroups,
+                            totalPosts: countData.totalPosts
+                        )
+                        self.users[username] = user
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    self.notifyUsersUpdated()
+                }
+                
+                return true
+            } else {
+                print("UsersDataController: Failed to fetch user counts for \(username) - \(response.message)")
+                return false
+            }
+        } catch {
+            print("UsersDataController: Error fetching user counts for \(username) - \(error)")
+            return false
+        }
+    }
+    
     // Remove user from cache
     func removeUser(username: String) {
         usersQueue.async {

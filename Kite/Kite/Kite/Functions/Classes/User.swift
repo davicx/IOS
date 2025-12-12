@@ -25,10 +25,16 @@ class User {
     var requestSentBy: String
     var alsoYourFriend: Int
     
+    // Count properties (optional - only populated when explicitly fetched from API)
+    // Use -1 to indicate "not fetched yet"
+    var totalFriends: Int
+    var totalGroups: Int
+    var totalPosts: Int
+    
     var profileImage: UIImage?
     
 
-    init(userID: Int, userName: String, userImage: String = "", firstName: String = "", lastName: String = "", biography: String = "", isCurrentUser: Bool = false, friendshipKey: String = "not_friends", requestPending: Int = 0, requestSentBy: String = "", alsoYourFriend: Int = 0) {
+    init(userID: Int, userName: String, userImage: String = "", firstName: String = "", lastName: String = "", biography: String = "", isCurrentUser: Bool = false, friendshipKey: String = "not_friends", requestPending: Int = 0, requestSentBy: String = "", alsoYourFriend: Int = 0, totalFriends: Int = -1, totalGroups: Int = -1, totalPosts: Int = -1) {
         self.userID = userID
         self.userName = userName
         self.userImage = userImage
@@ -42,6 +48,11 @@ class User {
         self.requestPending = requestPending
         self.requestSentBy = requestSentBy
         self.alsoYourFriend = alsoYourFriend
+        
+        // Count properties - default to -1 (not fetched)
+        self.totalFriends = totalFriends
+        self.totalGroups = totalGroups
+        self.totalPosts = totalPosts
         
         self.profileImage = UIImage(named: "background_1")
     }

@@ -12,6 +12,8 @@ FUNCTIONS A: All Functions Related to User Profile
     1) Function A1: Get User Profile Information
     2) Function A2: Update User Profile Information without Image
     3) Function A3: Update User Profile Information
+    4) Function A4: Get User Friend, Group and Post Count
+
 
 */
 
@@ -130,6 +132,52 @@ class ProfileAPI {
             print("Error decoding data")
             return updateProfileResponseModel
             
+        }
+    }
+    
+    //Function A4: Get User Friend, Group and Post Count
+    func getUserCountsAPI(currentUser: String) async throws -> UserCountResponseModel {
+        let endpoint = "http://localhost:3003/profile/info/" + currentUser
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        let apiURL = URLRequest(url: url)
+        
+        let (data, response) = try await URLSession.shared.data(for: apiURL)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw networkError.invalidResponse
+        }
+        
+        switch httpResponse.statusCode {
+        case 200:
+            let decoder = JSONDecoder()
+            let userCountResponseModel = try decoder.decode(UserCountResponseModel.self, from: data)
+            return userCountResponseModel
+            
+        case 498:
+            print("PROFILE API - 498 Refreshing Token")
+            let newAccessTokenModel = try await loginAPI.getNewAccessToken(username: currentUser)
+            print(newAccessTokenModel.message)
+            
+            if newAccessTokenModel.success == true {
+                print("PROFILE API: 498 If Retry")
+                return try await getUserCountsAPI(currentUser: currentUser)
+            } else {
+                print("PROFILE API: 498 Else logoutCurrentUser because we couldnt get a token")
+                let userCountResponseModel = UserCountResponseModel()
+                return userCountResponseModel
+            }
+            
+        case 401:
+            print("PROFILE API - 401 Unauthorized, Logging Out")
+            let userCountResponseModel = UserCountResponseModel()
+            return userCountResponseModel
+        default:
+            print("PROFILE API - Unexpected Status Code: \(httpResponse.statusCode)")
+            throw networkError.serverError(statusCode: httpResponse.statusCode)
         }
     }
     

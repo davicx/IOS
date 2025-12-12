@@ -13,6 +13,8 @@ class Style {
     //FONT
     static let blackFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
     static let grayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let mainDarkFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .bold)
+    static let mainGrayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
     
 
     //CLEAN BELOW
