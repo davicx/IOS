@@ -576,194 +576,317 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
 
 
 /*
- 
- 
- class ProfileViewController: UIViewController {
-     let postsAPI = PostsAPI()
-     let profileAPI = ProfileAPI()
-     let friendAPI = FriendAPI()
-     let loginAPI = LoginAPI()
-     let imageFunctions = ImageFunctions()
-     let userDefaultManager = UserDefaultManager()
-     
-     private let userProfileLayout = UserProfileLayout()
-     private let logoutButton = UIButton(type: .system)
-     
-     var userResponseModel: UserProfileResponseModel?
-     
-     override func viewDidLoad() {
-         super.viewDidLoad()
+ This is a **solid, functional view controller**, but it’s doing **too much**. Most of my feedback is about **structure, safety, and scalability**, not correctness. I’ll go top-down and then give you a **priority list** so you know what actually matters.
 
-         let currentUser = userDefaultManager.getLoggedInUser()
-         let deviceId = getDeviceId()
-         
-         view.addSubview(userProfileLayout)
-         userProfileLayout.translatesAutoresizingMaskIntoConstraints = false
-         
-         // Setup logout button
-         logoutButton.setTitle("Logout", for: .normal)
-         logoutButton.backgroundColor = .systemBlue
-         logoutButton.setTitleColor(.white, for: .normal)
-         logoutButton.layer.cornerRadius = 8
-         logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
-         
-         view.addSubview(logoutButton)
-         logoutButton.translatesAutoresizingMaskIntoConstraints = false
-         
-         NSLayoutConstraint.activate([
-             userProfileLayout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-             userProfileLayout.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-             userProfileLayout.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-             userProfileLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-             
-             logoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-             logoutButton.heightAnchor.constraint(equalToConstant: 50),
-             logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-         ])
-         
-         // Add action to Buttons
-         userProfileLayout.userProfileEditView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-         userProfileLayout.userProfileSocialsView.viewFriendsButton.addTarget(self, action: #selector(friendsButtonTapped), for: .touchUpInside)
+ ---
 
-         Task {
-             do {
-                 let currentUser = userDefaultManager.getLoggedInUser()
-                 
-                 // Get profile
-                 userResponseModel = try await profileAPI.getUserProfileAPI(currentUser: currentUser)
-                 guard let statusCode = userResponseModel?.statusCode, statusCode != 401 else {
-                     LoginManager.shared.logoutCurrentUser()
-                     return
-                 }
+ # High-level assessment (what stands out)
 
-                 if let currentUserData = userResponseModel?.data {
-                     let profileImage = await imageFunctions.fetchImage(from: currentUserData.userImage)
+ ### 👍 What you’re doing well
 
-                     DispatchQueue.main.async {
-                         self.userProfileLayout.userNameView.nameLabel.text = "@\(currentUserData.userName)"
-                         self.userProfileLayout.userProfileBiography.configure(
-                             firstName: currentUserData.firstName,
-                             lastName: currentUserData.lastName
-                         )
-                         if let profileImage = profileImage {
-                             if let cropped = profileImage.croppedToSquare() {
-                                 self.userProfileLayout.profileImageView.imageView.image = cropped
-                             } else {
-                                 self.userProfileLayout.profileImageView.imageView.image = profileImage
-                             }
-                         } else {
-                             self.userProfileLayout.profileImageView.imageView.image = UIImage(named: "background_9")
-                         }
-                         self.userProfileLayout.profileImageView.imageView.makeRounded()
-                     }
-                 }
+ * Programmatic Auto Layout (consistent, explicit)
+ * Async/await usage (modern, good)
+ * Clear separation of UI setup vs data methods
+ * Avoiding blocking the main thread
+ * Defensive UI updates (`guard let user`)
 
-                 // Fetch friends
-                 _ = try await UsersDataController.shared.fetchFriends()
+ ### 🚨 Main issues
 
-             } catch {
-                 print("Error in viewDidLoad: \(error)")
-             }
-         }
-     }
+ 1. **Massive ViewController (God Object)**
+ 2. **UI + Data + Business logic all mixed**
+ 3. **Repeated main-thread hopping**
+ 4. **Too many responsibilities**
+ 5. **Manual layout that should be reusable**
+ 6. **Async tasks not lifecycle-safe**
 
-     override func viewDidAppear(_ animated: Bool) {
-         super.viewDidAppear(animated)
-         print("ProfileViewController")
+ ---
 
-         Task {
-             do {
-                 _ = try await UsersDataController.shared.fetchFriends()
-             } catch {
-                 print("Error updating friend list: \(error)")
-             }
-         }
-     }
+ # 1️⃣ The biggest problem: this ViewController is doing too much
 
-     @objc private func logoutButtonTapped() {
-         Task {
-             do {
-                 let currentUser = userDefaultManager.getLoggedInUser()
-                 let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? "UnknownDevice"
+ Right now `ProfileViewController` is responsible for:
 
-                 let logoutResponse = try await loginAPI.logoutUser(username: currentUser, deviceID: deviceID)
-                 
-                 if logoutResponse.success {
-                     print("Logout successful!")
-                     // Optional: Perform additional cleanup or navigate to the login screen
-                     self.navigationController?.popToRootViewController(animated: true)
-                     PresenterManager.shared.showOnboarding()
-                     
-                 } else {
-                     print("Logout failed. Reason: \(logoutResponse.message ?? "Unknown error")")
-                 }
+ * Building all UI
+ * Fetching users
+ * Fetching friends
+ * Fetching counts
+ * Caching logic
+ * Image loading
+ * Formatting data for UI
 
-             } catch {
-                 print("Failed to logout: \(error.localizedDescription)")
-             }
-         }
-     }
+ This is the **#1 thing managers / senior iOS devs flag** in reviews.
 
-     @objc private func friendsButtonTapped() {
-         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-         let friendVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendsViewController
-         //friendVC.delegate = self
-         //friendVC.users = FriendDataController.shared.friends
-         self.navigationController?.pushViewController(friendVC, animated: true)
-     }
-     
-     
+ ### What this leads to
 
-     func loadFriendImages(for friends: [User], using imageHelper: ImageFunctions) async {
-         await withTaskGroup(of: Void.self) { group in
-             for friend in friends {
-                 group.addTask {
-                     if let image = await imageHelper.fetchImage(from: friend.userImage) {
-                         friend.profileImage = image
-                     }
-                 }
-             }
-         }
-     }
+ * Hard to test
+ * Hard to reuse
+ * Hard to modify without breaking something
+ * Hard to reason about async flows
 
-     @objc private func editButtonTapped() {
-         guard let userResponse = userResponseModel else { return }
-         
-         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-         let editProfileVC = storyboard.instantiateViewController(withIdentifier: "EditProfileViewController") as! EditProfileViewController
+ ---
 
-         editProfileVC.inputFirstName = userResponse.data.firstName
-         editProfileVC.inputLastName = userResponse.data.lastName
-         editProfileVC.inputBiography = userResponse.data.biography
+ ## ✅ Recommended fix (incremental, not a rewrite)
 
-         if let profileImage = userProfileLayout.profileImageView.imageView.image {
-             editProfileVC.inputProfileImage = profileImage
-         }
+ ### Step 1: Introduce a ViewModel
 
-         editProfileVC.delegate = self
-         navigationController?.pushViewController(editProfileVC, animated: true)
-     }
+ Move **all data logic** out:
+
+ ```swift
+ final class ProfileViewModel {
+     @MainActor @Published private(set) var user: User?
+     @MainActor @Published private(set) var friends: [User] = []
+
+     func loadProfile(username: String) async { ... }
+     func refreshCounts(username: String) async { ... }
+ }
+ ```
+
+ Then your VC becomes:
+
+ ```swift
+ Task {
+     await viewModel.loadProfile(username)
+ }
+ ```
+
+ 👉 **Your VC should mostly say:**
+ “when data changes → update UI”
+
+ ---
+
+ # 2️⃣ Async / Main thread usage (important)
+
+ You frequently do this:
+
+ ```swift
+ Task {
+     await getUserInfo()
  }
 
-
- // MARK: - EditProfileViewControllerDelegate
- extension ProfileViewController: EditProfileViewControllerDelegate {
-     func didUpdateProfile(firstName: String, lastName: String, biography: String, updatedImage: UIImage?) {
-         DispatchQueue.main.async {
-             self.userProfileLayout.userProfileBiography.configure(
-                 firstName: firstName,
-                 lastName: lastName
-             )
-             
-             if let newImage = updatedImage {
-                 self.userProfileLayout.profileImageView.imageView.image = newImage
-             }
-             
-             print("Profile updated: \(firstName), \(lastName)")
-         }
-     }
-     
+ DispatchQueue.main.async {
+     self.updateUIWithUserInfo()
  }
+ ```
+
+ ### Problem
+
+ * You’re mixing **structured concurrency** and **GCD**
+ * This is error-prone and unnecessary
+
+ ### Better approach
+
+ Mark UI-updating functions as `@MainActor`
+
+ ```swift
+ @MainActor
+ private func updateUIWithUserInfo() { ... }
+ ```
+
+ Then you can safely call it directly from async code:
+
+ ```swift
+ await updateUIWithUserInfo()
+ ```
+
+ 👉 This is **cleaner, safer, and modern Swift**
+
+ ---
+
+ # 3️⃣ Async tasks tied to view lifecycle (subtle but important)
+
+ You do this in both:
+
+ ```swift
+ viewDidLoad
+ viewDidAppear
+ ```
+
+ ### Risk
+
+ * Multiple overlapping tasks
+ * Updates after the VC is dismissed
+ * Duplicate network calls
+
+ ### Improve this by:
+
+ * Cancelling previous tasks
+ * Or using a single refresh entry point
+
+ ```swift
+ private var loadTask: Task<Void, Never>?
+
+ override func viewDidAppear(_ animated: Bool) {
+     super.viewDidAppear(animated)
+
+     loadTask?.cancel()
+     loadTask = Task {
+         await refresh()
+     }
+ }
+ ```
+
+ ---
+
+ # 4️⃣ UI layout: good, but repetitive
+
+ You’re manually building:
+
+ * Count label
+ * Title label
+ * Container view
+
+ **3 times** for posts / groups / friends.
+
+ ### This is a perfect candidate for a reusable view
+
+ ```swift
+ final class ProfileStatView: UIView {
+     let countLabel = UILabel()
+     let titleLabel = UILabel()
+ }
+ ```
+
+ Then:
+
+ ```swift
+ let postsView = ProfileStatView(title: "Posts")
+ let groupsView = ProfileStatView(title: "Groups")
+ let friendsView = ProfileStatView(title: "Friends")
+ ```
+
+ Benefits:
+
+ * Less code
+ * Easier changes
+ * Cleaner layout logic
+
+ ---
+
+ # 5️⃣ Naming & consistency issues (small but noticeable)
+
+ ### Examples
+
+ ```swift
+ userRightLeftView   // confusing name
+ userMiddleLeftView // confusing
+ ```
+
+ Better:
+
+ ```swift
+ postsContainerView
+ groupsContainerView
+ friendsContainerView
+ ```
+
+ Also:
+
+ * `getUserInfo()` → `loadUserProfile()`
+ * `fetchUserCounts()` → `refreshUserCounts()`
+
+ Naming matters a LOT in large codebases.
+
+ ---
+
+ # 6️⃣ Image handling can be improved
+
+ Right now:
+
+ * Image loading is tied to the VC
+ * Circular image generation happens repeatedly
+
+ ### Improvements
+
+ * Cache circular images
+ * Move image loading into a helper or ViewModel
+ * Consider using `UIImageView` extensions
+
+ ```swift
+ profileImageView.setCircularImage(
+     image: user.profileImage,
+     placeholder: "user"
+ )
+ ```
+
+ ---
+
+ # 7️⃣ TextView placeholders (UX issue)
+
+ You’re using actual text as placeholders:
+
+ ```swift
+ userBiographyTextArea.text = "biography"
+ ```
+
+ This causes:
+
+ * Confusion
+ * Data overwrite risks
+
+ Better:
+
+ * Use a UILabel as placeholder
+ * Or custom UITextView subclass
+
+ ---
+
+ # 8️⃣ Logging & error handling
+
+ You mostly do:
+
+ ```swift
+ print("Error: Failed to fetch")
+ ```
+
+ For production-quality code:
+
+ * Centralize logging
+ * Surface user-visible errors if needed
+ * At least use `os_log` or a logger wrapper
+
+ ---
+
+ # 9️⃣ What I would NOT change (good decisions)
+
+ ✅ Programmatic UI
+ ✅ Auto Layout (not frames)
+ ✅ Async/await over callbacks
+ ✅ Clear separation of setup methods
+ ✅ Guarding optional data
+ ✅ Updating UI only when data exists
+
+ ---
+
+ # 🚀 Priority list (do these in order)
+
+ ### 🔴 High priority
+
+ 1. Introduce a **ViewModel**
+ 2. Use `@MainActor` instead of `DispatchQueue.main.async`
+ 3. Avoid duplicate async tasks in lifecycle methods
+
+ ### 🟡 Medium priority
+
+ 4. Extract reusable UI components (stats views)
+ 5. Improve naming consistency
+ 6. Centralize image logic
+
+ ### 🟢 Low priority
+
+ 7. Improve placeholder handling
+ 8. Better logging
+
+ ---
+
+ # How this would sound in a team review
+
+ > “The view controller works well, but it’s handling too many responsibilities. Extracting a ViewModel and reusable UI components would improve testability, readability, and long-term maintainability.”
+
+ If you want, I can:
+
+ * Refactor **one section** as an example (ViewModel or stat view)
+ * Show what this looks like in **MVVM**
+ * Help you split this file without breaking anything
+
+ Just tell me which part you want to tackle first.
 
  */

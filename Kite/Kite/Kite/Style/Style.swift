@@ -21,8 +21,7 @@ class Style {
     let iconBackgroundColor = "#687684"
     
     
-    
-    
+
     
     
     static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
