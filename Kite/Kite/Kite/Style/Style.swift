@@ -9,14 +9,29 @@ import UIKit
 
 
 class Style {
-    let iconBackgroundColor = "#687684"
     
     //FONT
+    static let blackFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
+    static let grayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let mainDarkFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .bold)
+    static let mainGrayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
+    
+
+    //CLEAN BELOW
+    let iconBackgroundColor = "#687684"
+    
+    
+
+    
+    
     static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     static let groupInfoFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
     
+    
+    
     static let textBlack: UIColor = .black
     static let textGray: UIColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
+    static let textDarkGray: UIColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
     static let textClear: UIColor = .clear
     
 

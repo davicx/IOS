@@ -59,11 +59,9 @@ class GroupsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("________________________")
-        print("GroupsViewController")
-        print("LISTS: Wishlist")
-        print("________________________")
-        print(" ")
+        
+        printPageInfo(vcName: "GroupsViewController")
+ 
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -241,9 +239,11 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         // Navigate to appropriate view controller based on segment
+        let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
+        
         switch segmentedControl.selectedSegmentIndex {
         case 0: // My Lists - use IndividualGroupUserViewController
-            let vc = IndividualGroupUserViewController()
+            guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupUserViewControllerID) as? IndividualGroupUserViewController else { return }
             vc.group = group
             navigationController?.pushViewController(vc, animated: true)
         case 1: // Shared With Me - use IndividualGroupFriendViewController
@@ -252,7 +252,6 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         default:
             // Fallback to original IndividualGroupViewController
-            let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
             vc.group = group
             navigationController?.pushViewController(vc, animated: true)

@@ -156,6 +156,14 @@ class PostDataController {
         item.isLikedByCurrentUser = true
 
         items[index] = item
+        
+        // TEST: Post notification for item update
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .itemUpdated,
+                object: item
+            )
+        }
     }
 
     // Unlike an item
@@ -168,6 +176,14 @@ class PostDataController {
         item.isLikedByCurrentUser = false
 
         items[index] = item
+        
+        // TEST: Post notification for item update
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .itemUpdated,
+                object: item
+            )
+        }
     }
     
     func likeItemComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
@@ -194,5 +210,10 @@ class PostDataController {
         }
     }
     
+}
+
+// TEST: Notification names for PostDataController
+extension Notification.Name {
+    static let itemUpdated = Notification.Name("itemUpdated")
 }
 

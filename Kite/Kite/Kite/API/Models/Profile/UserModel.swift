@@ -32,4 +32,17 @@ struct UserModel: Codable {
         self.requestSentBy = "requestSentBy"
         self.alsoYourFriend = 0
     }
+    
+    init(userID: Int, userName: String, userImage: String, firstName: String, lastName: String, biography: String, requestPending: Int, requestSentBy: String, friendshipKey: String, alsoYourFriend: Int) {
+        self.userID = userID
+        self.userName = userName
+        self.userImage = userImage
+        self.firstName = firstName
+        self.lastName = lastName
+        self.biography = biography
+        self.requestPending = requestPending
+        self.requestSentBy = requestSentBy
+        self.friendshipKey = friendshipKey
+        self.alsoYourFriend = alsoYourFriend
+    }
 }

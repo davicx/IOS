@@ -25,6 +25,7 @@ struct Constants {
         static let onboardingViewController = "MainOnboardingViewController"
         //static let friendProfileViewControllerID = "FriendProfileViewControllerID"
         static let individualGroupViewControllerID = "individualGroupViewControllerID"
+        static let individualGroupUserViewControllerID = "individualGroupUserViewControllerID"
         //static let individualListViewControllerID = "individualListViewControllerID"
     }
     
@@ -44,8 +45,6 @@ struct Constants {
         static let profileStoryboard = "Profile"
         static let postStoryboard = "Post"
     }
-    
-    
     
     //Image Constants
     struct Image {
@@ -67,7 +66,15 @@ struct Constants {
     struct VariableConstants {
         static let tempURL = ""
     }
+    
+    
+    //Timeout Constants (in seconds)
+    struct Timeout {
+        static let friendTimeout: TimeInterval = 10.0
+    }
 
+    
+    
 }
 
 

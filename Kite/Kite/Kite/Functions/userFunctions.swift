@@ -52,60 +52,43 @@ class ImageCacheManager {
 
 // MARK: - User Factory Methods
 
-/// Creates a User from UserProfileModel data
-func createUserFromProfile(_ userProfileModel: UserModel, isCurrentUser: Bool = false) -> User {
-    return User(
-        userID: userProfileModel.userID,
-        userName: userProfileModel.userName,
-        profileImageURL: userProfileModel.userImage,
-        firstName: userProfileModel.firstName.isEmpty ? "Unknown" : userProfileModel.firstName,
-        lastName: userProfileModel.lastName.isEmpty ? "User" : userProfileModel.lastName,
-        biography: userProfileModel.biography.isEmpty ? "" : userProfileModel.biography,
-        isCurrentUser: isCurrentUser
-    )
-}
-
-/// Creates a User from UserProfileModel data and fetches the profile image
-func createUserFromProfileWithImage(_ userProfileModel: UserModel, isCurrentUser: Bool = false) async -> User {
-    let user = createUserFromProfile(userProfileModel, isCurrentUser: isCurrentUser)
+/// Creates a User from UserModel data
+/// This is the single source of truth for creating User objects from API responses
+func createUser(from userModel: UserModel, isCurrentUser: Bool = false) -> User {
+    // Determine if this is current user (check both flag and friendshipKey)
+    let isYou = isCurrentUser || userModel.friendshipKey == "you"
     
-    // Fetch and cache the profile image
-    if let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: user.profileImageURL) {
-        user.profileImage = image
+    // Normalize friendshipKey - handle empty string or default "friendshipKey" value
+    let friendshipKey: String
+    if userModel.friendshipKey.isEmpty || userModel.friendshipKey == "friendshipKey" {
+        friendshipKey = "not_friends"
+    } else {
+        friendshipKey = userModel.friendshipKey
     }
     
-    return user
-}
-
-/// Creates a User from UserModel data with friend-specific properties
-func createUserFromFriend(_ userModel: UserModel) -> User {
     let user = User(
         userID: userModel.userID,
         userName: userModel.userName,
-        profileImageURL: userModel.userImage,
+        userImage: userModel.userImage,
         firstName: userModel.firstName.isEmpty ? "Unknown" : userModel.firstName,
         lastName: userModel.lastName.isEmpty ? "User" : userModel.lastName,
         biography: userModel.biography,
-        isCurrentUser: false
-    )
-    
-    // Set friend-specific properties
-    user.setFriendProperties(
+        isCurrentUser: isYou,
+        friendshipKey: friendshipKey,
         requestPending: userModel.requestPending,
         requestSentBy: userModel.requestSentBy,
-        friendshipKey: userModel.friendshipKey,
         alsoYourFriend: userModel.alsoYourFriend
     )
     
     return user
 }
 
-/// Creates a User from UserModel data with friend-specific properties and fetches the profile image
-func createUserFromFriendWithImage(_ userModel: UserModel) async -> User {
-    let user = createUserFromFriend(userModel)
+/// Creates a User from UserModel data and fetches the profile image
+func createUserWithImage(from userModel: UserModel, isCurrentUser: Bool = false) async -> User {
+    let user = createUser(from: userModel, isCurrentUser: isCurrentUser)
     
     // Fetch and cache the profile image
-    if let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: user.profileImageURL) {
+    if let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: user.userImage) {
         user.profileImage = image
     }
     
@@ -116,32 +99,38 @@ func createUserFromFriendWithImage(_ userModel: UserModel) async -> User {
 
 /// Calculates the friendship status between the current user and another user
 func calculateFriendshipStatus(for user: User) -> FriendshipStatus {
-    guard let key = user.friendshipKey else { return .notFriends }
+    // Check if this is the current user
+    if user.isCurrentUser || user.friendshipKey == "you" {
+        return .you
+    }
     
-    // If friendship is confirmed, return friends regardless of who sent the original request
-    if key == "friends" {
+    // Handle empty string as "not_friends"
+    if user.friendshipKey.isEmpty {
+        return .notFriends
+    }
+    
+    // Direct mapping from API values to enum
+    switch user.friendshipKey {
+    case "friends":
         return .friends
+    case "invite_pending":
+        // They sent invite to you - you can accept/decline
+        return .requestPendingSentByThem
+    case "request_pending":
+        // You sent request to them - you can cancel
+        return .invitePendingSentByYou
+    case "not_friends":
+        return .notFriends
+    case "you":
+        return .you
+    default:
+        return .unknown
     }
-    
-    // For pending requests, check who sent the request
-    let currentUser = UserDefaultManager().getLoggedInUser()
-    if let requestSentBy = user.requestSentBy {
-        if requestSentBy == currentUser {
-            // Current user sent the request - should show "Cancel"
-            return .invitePendingSentByYou
-        } else {
-            // Someone else sent the request to current user - should show "Accept/Decline"
-            return .requestPendingSentByThem
-        }
-    }
-    
-    // Fallback to original enum mapping
-    return FriendshipStatus(key: key)
 }
 
 /// Checks if a user is a friend based on their friendship key
 func isUserFriend(_ user: User) -> Bool {
-    return user.friendshipKey != nil
+    return !user.friendshipKey.isEmpty && user.friendshipKey == "friends"
 }
 
 // MARK: - Batch Image Fetching
@@ -151,7 +140,7 @@ func fetchImagesForUsers(_ users: [User]) async {
     await withTaskGroup(of: Void.self) { group in
         for user in users {
             group.addTask {
-                if let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: user.profileImageURL) {
+                if let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: user.userImage) {
                     user.profileImage = image
                 }
             }
@@ -159,21 +148,10 @@ func fetchImagesForUsers(_ users: [User]) async {
     }
 }
 
-/// Creates multiple users from UserProfileModel data and fetches their images in parallel
-func createUsersFromProfilesWithImages(_ userProfileModels: [UserModel], isCurrentUser: Bool = false) async -> [User] {
-    // First create all users without images
-    let users = userProfileModels.map { createUserFromProfile($0, isCurrentUser: isCurrentUser) }
-    
-    // Then fetch all images in parallel
-    await fetchImagesForUsers(users)
-    
-    return users
-}
-
 /// Creates multiple users from UserModel data and fetches their images in parallel
-func createUsersFromFriendsWithImages(_ userModels: [UserModel]) async -> [User] {
+func createUsersWithImages(from userModels: [UserModel], isCurrentUser: Bool = false) async -> [User] {
     // First create all users without images
-    let users = userModels.map { createUserFromFriend($0) }
+    let users = userModels.map { createUser(from: $0, isCurrentUser: isCurrentUser) }
     
     // Then fetch all images in parallel
     await fetchImagesForUsers(users)

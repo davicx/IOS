@@ -224,7 +224,9 @@ class IndividualGroupViewController: UIViewController {
         let allMembers = group.activeGroupMembers + group.pendingGroupMembers
      
         // Fetch all member profiles with images using UsersDataController
-        let groupMembers = await usersDataController.fetchUsersWithImages(usernames: allMembers)
+        // refreshFriendshipStatus: true ensures we get fresh friendship data (friends, pending, etc.)
+        // while still caching profile data (name, image, bio) for performance
+        let groupMembers = await usersDataController.fetchUsersWithImages(usernames: allMembers, refreshFriendshipStatus: true)
         
         self.groupMembers = groupMembers
         

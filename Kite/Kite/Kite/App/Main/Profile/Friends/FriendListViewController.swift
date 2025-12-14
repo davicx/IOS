@@ -13,6 +13,9 @@ class FriendListViewController: UIViewController {
     var friendListArray: [User] = []
 
     private let tableView = UITableView()
+    
+    // Track loading state per username to prevent multiple simultaneous requests
+    private var loadingUsernames: Set<String> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +28,10 @@ class FriendListViewController: UIViewController {
             print("Viewing friend list of: \(name)")
             // Later: Fetch friendListArray via API
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "FriendListViewController")
     }
 
     private func setupTableView() {
@@ -59,32 +66,57 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
         let friend = friendListArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as! FriendTableViewCell
         cell.configure(with: friend)
+        
+        // Set loading state if this user is currently loading
+        if loadingUsernames.contains(friend.userName) {
+            cell.setLoading(true)
+        }
 
         // Action for "Add Friend" button
         cell.friendActionTapped = { [weak self] in
             guard let self = self else { return }
             
+            // Prevent multiple simultaneous requests for the same user
+            guard !self.loadingUsernames.contains(friend.userName) else { return }
+            
+            self.loadingUsernames.insert(friend.userName)
+            cell.setLoading(true)
+            
             print("Adding friend: \(friend.userName)")
 
             Task {
-                let success = await FriendDataController.shared.sendFriendRequest(to: friend)
-                if success {
-                    // Update the friendshipKey locally to show "Pending" UI or disable button
-                    self.friendListArray[indexPath.row].setFriendProperties(
-                        requestPending: 1,
-                        requestSentBy: UserDefaultManager().getLoggedInUser(),
-                        friendshipKey: FriendshipStatus.invitePendingSentByYou.rawValue,
-                        alsoYourFriend: 0
-                    )
-
+                do {
+                    // Use withTimeout to handle timeout
+                    let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
+                        await UsersDataController.shared.sendFriendRequest(to: friend)
+                    }
+                    
                     DispatchQueue.main.async {
-                        self.tableView.reloadRows(at: [indexPath], with: .none)
+                        self.loadingUsernames.remove(friend.userName)
+                        if let updatedUser = updatedUser {
+                            self.friendListArray[indexPath.row] = updatedUser
+                            cell.configure(with: updatedUser)
+                        } else {
+                            cell.setLoading(false)
+                        }
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.loadingUsernames.remove(friend.userName)
+                        cell.setLoading(false)
+                        self.showErrorAlert(message: "Failed to send friend request. Please try again.")
                     }
                 }
             }
         }
 
         return cell
+    }
+    
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 
 

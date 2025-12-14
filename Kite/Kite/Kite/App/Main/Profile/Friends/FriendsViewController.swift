@@ -35,6 +35,10 @@ class FriendsViewController: UIViewController {
         segmentedControl.selectedSegmentIndex = 0
         currentlyDisplayedFriends = friends
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "FriendsViewController")
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -54,7 +58,7 @@ class FriendsViewController: UIViewController {
     
     //FUNCTIONS
     private func splitUsersByStatus() {
-        let allFriends = FriendDataController.shared.friends
+        let allFriends = UsersDataController.shared.getFriends()
 
         self.friends = allFriends.filter {
             $0.friendshipStatus == .friends
@@ -70,7 +74,7 @@ class FriendsViewController: UIViewController {
     @objc private func handleFriendsUpdated() {
         Task {
             do {
-                try await FriendDataController.shared.fetchFriends()
+                _ = try await UsersDataController.shared.fetchFriends()
                 self.splitUsersByStatus()
 
                 DispatchQueue.main.async {
@@ -149,10 +153,11 @@ class FriendsViewController: UIViewController {
 
     private func cancelFriendAPI(for user: User) async {
         do {
-            try await FriendDataController.shared.cancelRequest(to: user)
+            try await UsersDataController.shared.cancelRequest(to: user)
             DispatchQueue.main.async {
                 print("Successfully cancelled request to \(user.userName)")
                 self.removeUserFromLocalData(user)
+                self.splitUsersByStatus()
                 self.tableView.reloadData()
             }
         } catch {
@@ -162,10 +167,11 @@ class FriendsViewController: UIViewController {
 
     private func removeFriendAPI(for user: User) async {
         do {
-            try await FriendDataController.shared.remove(friend: user)
+            try await UsersDataController.shared.remove(friend: user)
             DispatchQueue.main.async {
                 print("Successfully removed friend: \(user.userName)")
                 self.removeUserFromLocalData(user)
+                self.splitUsersByStatus()
                 self.tableView.reloadData()
             }
         } catch {
@@ -175,11 +181,11 @@ class FriendsViewController: UIViewController {
 
     private func acceptInviteAPI(for user: User) async {
         do {
-            let updatedUser = try await FriendDataController.shared.accept(inviteFrom: user)
+            let updatedUser = try await UsersDataController.shared.accept(inviteFrom: user)
             DispatchQueue.main.async {
                 print("Accepted invite from \(user.userName)")
                 self.removeUserFromLocalData(user)
-                self.friends.append(updatedUser)
+                self.splitUsersByStatus()
 
                 if self.segmentedControl.selectedSegmentIndex == 1 {
                     self.tableView.reloadData()
@@ -192,10 +198,11 @@ class FriendsViewController: UIViewController {
 
     private func declineInviteAPI(for user: User) async {
         do {
-            try await FriendDataController.shared.decline(inviteFrom: user)
+            try await UsersDataController.shared.decline(inviteFrom: user)
             DispatchQueue.main.async {
                 print("Declined invite from \(user.userName)")
                 self.removeUserFromLocalData(user)
+                self.splitUsersByStatus()
                 self.tableView.reloadData()
             }
         } catch {

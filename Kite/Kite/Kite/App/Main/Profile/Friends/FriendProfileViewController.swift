@@ -35,8 +35,6 @@ class FriendProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        print("FriendProfileViewController")
-
         view.addSubview(userProfileLayout)
         userProfileLayout.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -52,14 +50,20 @@ class FriendProfileViewController: UIViewController {
         // Hide or disable buttons not relevant in friend profile
         userProfileLayout.userProfileEditView.editButton.isHidden = true
 
+        
         if let friend = friend {
-            //print("Friend profile for: \(friend.userName)")
+            print("Friend profile for: \(friend.userName) \(friend.friendshipStatus)")
+          
             Task {
                 await fetchFriendDetails(friendName: friend.userName)
             }
         }
     }
-    
+
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "FriendProfileViewController")
+    }
+
     
     //NAVIGATION: To their friends list
     @objc private func friendsButtonTapped() {
@@ -126,7 +130,7 @@ class FriendProfileViewController: UIViewController {
         await withTaskGroup(of: Void.self) { group in
             for friend in friends {
                 group.addTask {
-                    if let image = await imageHelper.fetchImage(from: friend.profileImageURL) {
+                    if let image = await imageHelper.fetchImage(from: friend.userImage) {
                         friend.profileImage = image
                     }
                 }
