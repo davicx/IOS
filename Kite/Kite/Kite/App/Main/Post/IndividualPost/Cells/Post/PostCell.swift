@@ -64,9 +64,9 @@ class PostCell: UITableViewCell {
         setupHeaderViews()
         setupMenu()
         setupBodyImageViews()
-        setupBodyCaptionViews()
-        setupBodySocialsViews()
-        setupFooterViews()
+        //setupBodyCaptionViews()
+        //setupBodySocialsViews()
+        //setupFooterViews()
         
         print("PostCell")
     }
