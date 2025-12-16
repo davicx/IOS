@@ -392,14 +392,13 @@ extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewD
         let item = postDataController.items[indexPath.row]
         print("Right now cant navigate to new item")
 
-        /*
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
             // Pass the item as the current post (Item has all Post properties plus item-specific data)
             postViewController.currentItem = item
             navigationController?.pushViewController(postViewController, animated: true)
         }
-         */
+         
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
