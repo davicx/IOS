@@ -759,14 +759,6 @@
 			path = Item;
 			sourceTree = "<group>";
 		};
-		D7529BD62ED27D9C000C1D48 /* Comment */ = {
-			isa = PBXGroup;
-			children = (
-				D71809462DBC37F5003BC46D /* CommentCell.swift */,
-			);
-			path = Comment;
-			sourceTree = "<group>";
-		};
 		D7529BD72ED27DB0000C1D48 /* Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -847,7 +839,6 @@
 			isa = PBXGroup;
 			children = (
 				D7529BD72ED27DB0000C1D48 /* Post */,
-				D7529BD62ED27D9C000C1D48 /* Comment */,
 				D7529BD52ED27D8A000C1D48 /* Item */,
 				D78EBDD92E305A5E0008F3FE /* QA */,
 			);
@@ -998,6 +989,7 @@
 		D7DBC7332EC94707002DD687 /* Comment */ = {
 			isa = PBXGroup;
 			children = (
+				D7E89C422EF0DBA200772626 /* Cells */,
 				D7DBC7342EC94726002DD687 /* CommentTemplate.swift */,
 			);
 			path = Comment;
@@ -1009,6 +1001,14 @@
 				D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */,
 			);
 			path = Item;
+			sourceTree = "<group>";
+		};
+		D7E89C422EF0DBA200772626 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D71809462DBC37F5003BC46D /* CommentCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		D7FB876C2D6FE00E0054CDF7 /* Home */ = {

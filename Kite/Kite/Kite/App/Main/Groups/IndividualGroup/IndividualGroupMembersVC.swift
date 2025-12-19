@@ -151,7 +151,7 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                         await UsersDataController.shared.sendFriendRequest(to: user)
                     }
                     
-                    DispatchQueue.main.async {
+                        DispatchQueue.main.async {
                         self.loadingUsernames.remove(user.userName)
                         if let updatedUser = updatedUser {
                             self.groupMembers[indexPath.row] = updatedUser
@@ -177,16 +177,16 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                 confirmTitle: "Cancel Request",
                 destructive: true,
                 completion: {
-                    Task {
-                        do {
+                Task {
+                    do {
                             try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                                try await UsersDataController.shared.cancelRequest(to: user)
+                        try await UsersDataController.shared.cancelRequest(to: user)
                             }
                             
                             DispatchQueue.main.async {
                                 self.loadingUsernames.remove(user.userName)
-                                if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
-                                    self.groupMembers[indexPath.row] = updatedUser
+                        if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                            self.groupMembers[indexPath.row] = updatedUser
                                     cell.configure(with: updatedUser)
                                 } else {
                                     cell.setLoading(false)
@@ -238,16 +238,16 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                 confirmTitle: "Remove",
                 destructive: true,
                 completion: {
-                    Task {
-                        do {
+                Task {
+                    do {
                             try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                                try await UsersDataController.shared.remove(friend: user)
+                        try await UsersDataController.shared.remove(friend: user)
                             }
                             
                             DispatchQueue.main.async {
                                 self.loadingUsernames.remove(user.userName)
-                                if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
-                                    self.groupMembers[indexPath.row] = updatedUser
+                        if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                            self.groupMembers[indexPath.row] = updatedUser
                                     cell.configure(with: updatedUser)
                                 } else {
                                     cell.setLoading(false)

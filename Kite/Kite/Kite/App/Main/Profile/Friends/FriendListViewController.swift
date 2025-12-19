@@ -13,7 +13,7 @@ class FriendListViewController: UIViewController {
     var friendListArray: [User] = []
 
     private let tableView = UITableView()
-    
+
     // Track loading state per username to prevent multiple simultaneous requests
     private var loadingUsernames: Set<String> = []
 
@@ -90,7 +90,7 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
                     let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
                         await UsersDataController.shared.sendFriendRequest(to: friend)
                     }
-                    
+
                     DispatchQueue.main.async {
                         self.loadingUsernames.remove(friend.userName)
                         if let updatedUser = updatedUser {

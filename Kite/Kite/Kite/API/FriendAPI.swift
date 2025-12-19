@@ -68,8 +68,8 @@ class FriendAPI {
         case 200:
             let decoder = JSONDecoder()
             do {
-                let responseModel = try decoder.decode(AddFriendResponseModel.self, from: data)
-                return responseModel
+            let responseModel = try decoder.decode(AddFriendResponseModel.self, from: data)
+            return responseModel
             } catch {
                 // If decoding fails but response is 200, try to decode just the success field
                 // This handles cases where API response structure differs slightly
@@ -142,8 +142,8 @@ class FriendAPI {
         case 200:
             let decoder = JSONDecoder()
             do {
-                let responseModel = try decoder.decode(RemoveFriendResponseModel.self, from: data)
-                return responseModel
+            let responseModel = try decoder.decode(RemoveFriendResponseModel.self, from: data)
+            return responseModel
             } catch {
                 // If decoding fails but response is 200, try to decode just the success field
                 // This handles cases where API response structure differs slightly
@@ -210,8 +210,8 @@ class FriendAPI {
         case 200:
             let decoder = JSONDecoder()
             do {
-                let responseModel = try decoder.decode(AcceptFriendResponseModel.self, from: data)
-                return responseModel
+            let responseModel = try decoder.decode(AcceptFriendResponseModel.self, from: data)
+            return responseModel
             } catch {
                 // If decoding fails but response is 200, try to decode just the success field
                 // This handles cases where API response structure differs slightly

@@ -9,36 +9,32 @@
 import UIKit
 
 
-
 class CommentCell: UITableViewCell {
 
-    // MARK: - Main Containers
-
-    private let mainAvatarView = UIView()
+    //LAYOUT
+    //Layout: Main Containers
+    private let mainUserImageView = UIView()
     private let mainCommentView = UIView()
 
-    private let identityView = UIView()
+    private let userNameView = UIView()
     private let contentViewContainer = UIView()
     private let socialsView = UIView()
     
-    // MARK: - Avatar
+    //Layout: UI Elements
     private let profileImageView = UIImageView()
-    
-    // MARK: - Content
     private let commentLabel = UILabel()
-    
-    // MARK: - Identity
     private let usernameLabel = UILabel()
     private let timeLabel = UILabel()
     private let menuButton = UIButton(type: .system)
+    
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
 
-        setupAvatarArea()
+        setupUserImageArea()
         setupCommentArea()
-        setupIdentityArea()
+        setupUsernameArea()
         setupContentArea()
         setupSocialsArea()
     }
@@ -48,11 +44,11 @@ class CommentCell: UITableViewCell {
     }
     
     //MAIN CONTAINERS
-    private func setupAvatarArea() {
-        mainAvatarView.translatesAutoresizingMaskIntoConstraints = false
-        mainAvatarView.backgroundColor = .clear
+    private func setupUserImageArea() {
+        mainUserImageView.translatesAutoresizingMaskIntoConstraints = false
+        mainUserImageView.backgroundColor = .clear
 
-        contentView.addSubview(mainAvatarView)
+        contentView.addSubview(mainUserImageView)
         
         // Setup profile image view
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,17 +58,17 @@ class CommentCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 24 // Half of 52 for circular image
         profileImageView.image = UIImage(named: "background_1")
         
-        mainAvatarView.addSubview(profileImageView)
+        mainUserImageView.addSubview(profileImageView)
 
         NSLayoutConstraint.activate([
-            mainAvatarView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainAvatarView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            mainAvatarView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            mainAvatarView.widthAnchor.constraint(equalToConstant: 68),
+            mainUserImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainUserImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            mainUserImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            mainUserImageView.widthAnchor.constraint(equalToConstant: 68),
             
             // Profile image: 48x48, 4px from top, centered horizontally
-            profileImageView.topAnchor.constraint(equalTo: mainAvatarView.topAnchor, constant: 4),
-            profileImageView.centerXAnchor.constraint(equalTo: mainAvatarView.centerXAnchor),
+            profileImageView.topAnchor.constraint(equalTo: mainUserImageView.topAnchor, constant: 4),
+            profileImageView.centerXAnchor.constraint(equalTo: mainUserImageView.centerXAnchor),
             profileImageView.widthAnchor.constraint(equalToConstant: 48),
             profileImageView.heightAnchor.constraint(equalToConstant: 48)
         ])
@@ -85,7 +81,7 @@ class CommentCell: UITableViewCell {
         contentView.addSubview(mainCommentView)
 
         NSLayoutConstraint.activate([
-            mainCommentView.leadingAnchor.constraint(equalTo: mainAvatarView.trailingAnchor),
+            mainCommentView.leadingAnchor.constraint(equalTo: mainUserImageView.trailingAnchor),
             mainCommentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             mainCommentView.topAnchor.constraint(equalTo: contentView.topAnchor),
             mainCommentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
@@ -95,11 +91,11 @@ class CommentCell: UITableViewCell {
     
     //SUB VIEWS
     //Header: Contains Username, Time, and Menu
-    private func setupIdentityArea() {
-        identityView.translatesAutoresizingMaskIntoConstraints = false
-        identityView.backgroundColor = .clear
+    private func setupUsernameArea() {
+        userNameView.translatesAutoresizingMaskIntoConstraints = false
+        userNameView.backgroundColor = .clear
 
-        mainCommentView.addSubview(identityView)
+        mainCommentView.addSubview(userNameView)
         
         // Setup horizontal stack view
         let stackView = UIStackView()
@@ -111,8 +107,8 @@ class CommentCell: UITableViewCell {
         
         // Setup username label
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
-        usernameLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-        usernameLabel.textColor = .systemBlue // Temporary color for visibility
+        usernameLabel.font = Style.usernameFont
+        usernameLabel.textColor = Style.usernameFontColor
         usernameLabel.textAlignment = .left
         usernameLabel.text = "Username"
         usernameLabel.numberOfLines = 1
@@ -123,8 +119,8 @@ class CommentCell: UITableViewCell {
         
         // Setup time label
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        timeLabel.textColor = .systemGreen // Temporary color for visibility
+        timeLabel.font = Style.timeFont
+        timeLabel.textColor = Style.timeFontColor
         timeLabel.textAlignment = .left
         timeLabel.text = "2h"
         timeLabel.numberOfLines = 1
@@ -157,19 +153,19 @@ class CommentCell: UITableViewCell {
         stackView.setCustomSpacing(4, after: usernameLabel)
         // Spacer will automatically expand to fill space between time and menu
         
-        identityView.addSubview(stackView)
+        userNameView.addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            identityView.topAnchor.constraint(equalTo: mainCommentView.topAnchor),
-            identityView.leadingAnchor.constraint(equalTo: mainCommentView.leadingAnchor),
-            identityView.trailingAnchor.constraint(equalTo: mainCommentView.trailingAnchor),
-            identityView.heightAnchor.constraint(equalToConstant: 28),
+            userNameView.topAnchor.constraint(equalTo: mainCommentView.topAnchor),
+            userNameView.leadingAnchor.constraint(equalTo: mainCommentView.leadingAnchor),
+            userNameView.trailingAnchor.constraint(equalTo: mainCommentView.trailingAnchor),
+            userNameView.heightAnchor.constraint(equalToConstant: 28),
             
             // Stack view: full width with padding
-            stackView.topAnchor.constraint(equalTo: identityView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: identityView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: identityView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: identityView.bottomAnchor),
+            stackView.topAnchor.constraint(equalTo: userNameView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: userNameView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: userNameView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: userNameView.bottomAnchor),
             
             // Username label: min width only (max width handled by content priorities)
             usernameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
@@ -193,15 +189,15 @@ class CommentCell: UITableViewCell {
         
         // Setup comment label
         commentLabel.translatesAutoresizingMaskIntoConstraints = false
-        commentLabel.font = UIFont.systemFont(ofSize: 15)
-        commentLabel.textColor = .label
+        commentLabel.font = Style.mainTextFont
+        commentLabel.textColor = Style.mainTextFontColor
         commentLabel.numberOfLines = 0
         commentLabel.text = "This is a sample comment text that will be replaced with actual comment data."
         
         contentViewContainer.addSubview(commentLabel)
 
         NSLayoutConstraint.activate([
-            contentViewContainer.topAnchor.constraint(equalTo: identityView.bottomAnchor),
+            contentViewContainer.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
             contentViewContainer.leadingAnchor.constraint(equalTo: mainCommentView.leadingAnchor),
             contentViewContainer.trailingAnchor.constraint(equalTo: mainCommentView.trailingAnchor),
             contentViewContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: 12), // Minimum height

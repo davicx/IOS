@@ -497,6 +497,5 @@ class HomePostCell: UITableViewCell {
         // Force layout update
         layoutIfNeeded()
     }
-    
 
 }
