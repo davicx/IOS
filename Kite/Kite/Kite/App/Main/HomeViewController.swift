@@ -43,9 +43,25 @@ class HomeViewController: UIViewController {
             self?.fetchPosts()
         }
         
+        /*
          postDataController.onPostsUpdated = { [weak self] in
              self?.postsTableView.reloadData()
          }
+         */
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostsFetched),
+            name: .postsFetched,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
          
         // Initial data fetch
         fetchPosts()
@@ -81,6 +97,12 @@ class HomeViewController: UIViewController {
         postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
+
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     //FUNCTIONS
     func fetchPosts() {
@@ -88,6 +110,23 @@ class HomeViewController: UIViewController {
             await postDataController.fetchPosts(groupID: 72)
         }
     }
+    
+    @objc private func handlePostsFetched() {
+        postsTableView.reloadData()
+    }
+
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        guard let postID = notification.object as? Int else { return }
+
+        guard let index = postDataController.posts.firstIndex(where: {
+            $0.postID == postID
+        }) else { return }
+
+        let indexPath = IndexPath(row: index, section: 0)
+
+        postsTableView.reloadRows(at: [indexPath], with: .none)
+    }
+
 
 }
 
@@ -146,5 +185,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      
     
 }
+
+
 
 

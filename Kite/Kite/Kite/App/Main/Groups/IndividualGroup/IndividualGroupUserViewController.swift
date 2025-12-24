@@ -51,6 +51,8 @@ class IndividualGroupUserViewController: UIViewController {
         }
          
         // TEST: Observe item updates using NotificationCenter
+        //Type 'NSNotification.Name?' has no member 'itemUpdated'
+        //IndividualGroupUserViewController
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(itemUpdated),

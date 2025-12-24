@@ -38,7 +38,20 @@ class IndividualPostViewController: UIViewController {
         print(" ")
         
         setupIndividualPostTableView()
+        
+        //This can go away
         refreshCommentsFromPostDataController()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,6 +96,25 @@ class IndividualPostViewController: UIViewController {
         print("Total comments: \(comments.count)")
     }
 
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        guard let updatedPostID = notification.object as? Int else { return }
+
+        let currentID = currentItem?.postID ?? currentPost?.postID
+        guard updatedPostID == currentID else { return }
+
+        // Pull fresh data from source of truth
+        if let item = currentItem {
+            currentItem = postDataController.getItemByID(postID: updatedPostID)
+            comments = currentItem?.commentsArray ?? []
+        } else {
+            currentPost = postDataController.getPostByID(postID: updatedPostID)
+            comments = currentPost?.commentsArray ?? []
+        }
+
+        individualPostTableView.reloadData()
+    }
+
+    
     func setupIndividualPostTableView() {
         individualPostTableView.dataSource = self
         individualPostTableView.delegate = self
