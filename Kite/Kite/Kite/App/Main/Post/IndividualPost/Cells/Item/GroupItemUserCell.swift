@@ -430,12 +430,14 @@ class GroupItemUserCell: UITableViewCell {
             if item.isLikedByCurrentUser == true {
                 // Unlike
                 if let likeModel = await postLikeFunctions.shared.unlikePost(post: tempPost, groupID: groupID) {
-                    PostDataController.shared.unlikeItem(postID: item.postID, likeModel: likeModel)
+                    //PostDataController.shared.unlikeItem(postID: item.postID, likeModel: likeModel)
+                    print("Add back! PostDataController.shared.unlikeItem(postID: item.postID, likeModel: likeModel)")
                 }
             } else {
                 // Like
                 if let likeModel = await postLikeFunctions.shared.likePost(post: tempPost, groupID: groupID) {
-                    PostDataController.shared.likeItem(postID: item.postID, likeModel: likeModel)
+                    //PostDataController.shared.likeItem(postID: item.postID, likeModel: likeModel)
+                    print("Add back! PostDataController.shared.likeItem(postID: item.postID, likeModel: likeModel)")
                 }
             }
             
