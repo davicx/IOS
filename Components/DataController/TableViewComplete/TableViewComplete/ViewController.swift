@@ -9,7 +9,7 @@
 import UIKit
 
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController {
 
     var tableView: UITableView!
     var users: [User] = []
@@ -17,6 +17,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupTableView()
+        setupNotifications()
+
+        //Get Data from API
+        Task {
+            await UserDataController.shared.fetchUsers()
+        }
+    }
+    
+    //DATA: User Data
+    @objc private func usersUpdated() {
+        tableView.reloadData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(usersUpdated),
+            name: .usersUpdated,
+            object: nil
+        )
+    }
+
+    //TABLE VIEW
+    private func setupTableView() {
         tableView = UITableView(frame: view.bounds)
         view.addSubview(tableView)
 
@@ -24,47 +53,70 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.delegate = self
 
         tableView.register(UserCell.self, forCellReuseIdentifier: "UserCell")
-
-        users = createUsers()
     }
+    
+}
 
-    func createUsers() -> [User] {
-        let david = User(userName: "David", userImage: UIImage(named: "river"), userFollowers: ["Sam", "Merry"])
-        let frodo = User(userName: "Frodo", userImage: UIImage(named: "train"), userFollowers: ["Sam", "Merry"])
-        let sam = User(userName: "Sam", userImage: UIImage(named: "night"))
-        let merry = User(userName: "Merry", userImage: UIImage(named: "whale"), userFollowers: ["Sam"])
 
-        return [frodo, sam, merry]
-    }
+//NEW PULL IN
+/*
+ // In your table view didSelectRowAt
+ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     // Get the username from the data controller
+     let user = UserDataController.shared.getAllUsers()[indexPath.row]
+     performSegue(withIdentifier: "showIndividualUser", sender: user.userName)
+ }
 
+ // In prepare(for segue:)
+ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     if segue.identifier == "showIndividualUser",
+        let destination = segue.destination as? IndividualPostViewController,
+        let username = sender as? String {
+         destination.selectedUsername = username
+     }
+ }
+ */
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return UserDataController.shared.getAllUsers().count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let user = users[indexPath.row]
+        let users = UserDataController.shared.getAllUsers()
+        let currentUser = users[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
 
-        cell.setUser(user: user)
+        cell.setUser(user: currentUser)
         return cell
+        
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showIndividualUser", sender: users[indexPath.row])
+        let users = UserDataController.shared.getAllUsers()
+        let selectedUser = users[indexPath.row]
+
+        performSegue(withIdentifier: "showIndividualUser", sender: selectedUser)
+        //performSegue(withIdentifier: "showIndividualUser", sender: users[indexPath.row])
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showIndividualUser",
            let destination = segue.destination as? IndividualPostViewController,
-           let user = sender as? User {destination.selectedUser = user }
+           let user = sender as? User {
+                destination.selectedUser = user
+            }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-
 }
+
+
+//NEW
+
 
 
 

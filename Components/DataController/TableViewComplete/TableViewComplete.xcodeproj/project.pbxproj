@@ -14,6 +14,7 @@
 		6326C2D024622AD000F8A539 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6326C2CE24622AD000F8A539 /* LaunchScreen.storyboard */; };
 		6326C2DA24622DF300F8A539 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6326C2D924622DF300F8A539 /* UserCell.swift */; };
 		6326C2DE246235A700F8A539 /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6326C2DD246235A700F8A539 /* IndividualPostViewController.swift */; };
+		D719A6102EFF588500EF2E9D /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D719A60F2EFF588500EF2E9D /* AuthManager.swift */; };
 		D77D272B2EFC9FED00FAF5CA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77D272A2EFC9FED00FAF5CA /* User.swift */; };
 		D77D272D2EFCACE900FAF5CA /* UsersDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77D272C2EFCACE900FAF5CA /* UsersDataController.swift */; };
 		D77D272F2EFCAE5800FAF5CA /* PostsDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77D272E2EFCAE5800FAF5CA /* PostsDataController.swift */; };
@@ -30,6 +31,7 @@
 		6326C2D124622AD000F8A539 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6326C2D924622DF300F8A539 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		6326C2DD246235A700F8A539 /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
+		D719A60F2EFF588500EF2E9D /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		D77D272A2EFC9FED00FAF5CA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D77D272C2EFCACE900FAF5CA /* UsersDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDataController.swift; sourceTree = "<group>"; };
 		D77D272E2EFCAE5800FAF5CA /* PostsDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsDataController.swift; sourceTree = "<group>"; };
@@ -66,20 +68,69 @@
 		6326C2C424622ACE00F8A539 /* TableViewComplete */ = {
 			isa = PBXGroup;
 			children = (
+				D719A60C2EFF4FDD00EF2E9D /* App */,
 				6326C2C524622ACE00F8A539 /* AppDelegate.swift */,
-				D77D272C2EFCACE900FAF5CA /* UsersDataController.swift */,
-				D77D27302EFCAEEB00FAF5CA /* UsersAPI.swift */,
-				D77D272E2EFCAE5800FAF5CA /* PostsDataController.swift */,
 				6326C2DD246235A700F8A539 /* IndividualPostViewController.swift */,
 				5182B4252D220735000EB98C /* ViewController.swift */,
-				6326C2D924622DF300F8A539 /* UserCell.swift */,
-				D77D272A2EFC9FED00FAF5CA /* User.swift */,
 				6326C2C924622ACE00F8A539 /* Main.storyboard */,
 				6326C2CC24622AD000F8A539 /* Assets.xcassets */,
 				6326C2CE24622AD000F8A539 /* LaunchScreen.storyboard */,
 				6326C2D124622AD000F8A539 /* Info.plist */,
 			);
 			path = TableViewComplete;
+			sourceTree = "<group>";
+		};
+		D719A6092EFF4FB900EF2E9D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D77D272C2EFCACE900FAF5CA /* UsersDataController.swift */,
+				D77D272E2EFCAE5800FAF5CA /* PostsDataController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D719A60A2EFF4FC100EF2E9D /* API */ = {
+			isa = PBXGroup;
+			children = (
+				D77D27302EFCAEEB00FAF5CA /* UsersAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		D719A60B2EFF4FD100EF2E9D /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D77D272A2EFC9FED00FAF5CA /* User.swift */,
+				D719A60F2EFF588500EF2E9D /* AuthManager.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		D719A60C2EFF4FDD00EF2E9D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D719A60A2EFF4FC100EF2E9D /* API */,
+				D719A60B2EFF4FD100EF2E9D /* Classes */,
+				D719A6092EFF4FB900EF2E9D /* Controllers */,
+				D719A60D2EFF4FE200EF2E9D /* Users */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D719A60D2EFF4FE200EF2E9D /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				D719A60E2EFF4FE700EF2E9D /* UserCells */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		D719A60E2EFF4FE700EF2E9D /* UserCells */ = {
+			isa = PBXGroup;
+			children = (
+				6326C2D924622DF300F8A539 /* UserCell.swift */,
+			);
+			path = UserCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D77D272D2EFCACE900FAF5CA /* UsersDataController.swift in Sources */,
+				D719A6102EFF588500EF2E9D /* AuthManager.swift in Sources */,
 				5182B4262D220735000EB98C /* ViewController.swift in Sources */,
 				6326C2C624622ACE00F8A539 /* AppDelegate.swift in Sources */,
 				D77D272B2EFC9FED00FAF5CA /* User.swift in Sources */,
@@ -309,6 +361,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWC4VW95X6;
 				INFOPLIST_FILE = TableViewComplete/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -327,6 +380,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWC4VW95X6;
 				INFOPLIST_FILE = TableViewComplete/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

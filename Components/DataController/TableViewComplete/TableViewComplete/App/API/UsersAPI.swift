@@ -12,9 +12,7 @@ import UIKit
 
 final class UsersAPI {
 
-    // ------------------------------------------------
-    // APP DATA: MOCK API — Get Users
-    // ------------------------------------------------
+    //API: Call Get Users 
     func getUsersAPI() async throws -> [User] {
 
         if #available(iOS 13.0, *) {
@@ -29,9 +27,7 @@ final class UsersAPI {
         return createUsers()
     }
 
-    // ------------------------------------------------
-    // APP DATA: Mock backend data
-    // ------------------------------------------------
+    
     private func createUsers() -> [User] {
 
         let david = User(

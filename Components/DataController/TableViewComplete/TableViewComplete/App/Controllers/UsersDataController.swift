@@ -51,11 +51,6 @@ final class UserDataController {
     func getUserByUsername(userName: String) -> User? {
         return users[userName]
     }
-    /*
-    func getUserByUsername(_ userName: String) -> User? {
-        return users[userName]
-    }
-     */
 
     // Read all users
     func getAllUsers() -> [User] {
@@ -115,6 +110,11 @@ extension Notification.Name {
     static let usersUpdated = Notification.Name("usersUpdated")
     static let userUpdated  = Notification.Name("userUpdated")
 }
+
+//NOTES
+/*
+ Observer pattern
+ */
 
 /*
 final class UserDataController {
