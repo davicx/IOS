@@ -12,7 +12,7 @@ import UIKit
 class ViewController: UIViewController {
 
     var tableView: UITableView!
-    var users: [User] = []
+    //var users: [User] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +31,10 @@ class ViewController: UIViewController {
         tableView.reloadData()
     }
     
+    @objc private func userUpdated(_ notification: Notification) {
+        tableView.reloadData()
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -40,6 +44,12 @@ class ViewController: UIViewController {
             self,
             selector: #selector(usersUpdated),
             name: .usersUpdated,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(userUpdated(_:)),
+            name: .userUpdated,
             object: nil
         )
     }
@@ -58,24 +68,6 @@ class ViewController: UIViewController {
 }
 
 
-//NEW PULL IN
-/*
- // In your table view didSelectRowAt
- func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-     // Get the username from the data controller
-     let user = UserDataController.shared.getAllUsers()[indexPath.row]
-     performSegue(withIdentifier: "showIndividualUser", sender: user.userName)
- }
-
- // In prepare(for segue:)
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     if segue.identifier == "showIndividualUser",
-        let destination = segue.destination as? IndividualPostViewController,
-        let username = sender as? String {
-         destination.selectedUsername = username
-     }
- }
- */
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return UserDataController.shared.getAllUsers().count
@@ -94,19 +86,18 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let users = UserDataController.shared.getAllUsers()
-        let selectedUser = users[indexPath.row]
-
-        performSegue(withIdentifier: "showIndividualUser", sender: selectedUser)
-        //performSegue(withIdentifier: "showIndividualUser", sender: users[indexPath.row])
+        let user = UserDataController.shared.getAllUsers()[indexPath.row]
+        performSegue(withIdentifier: "showIndividualUser", sender: user.userName)
+        
     }
 
+    //Send Just the username
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showIndividualUser",
            let destination = segue.destination as? IndividualPostViewController,
-           let user = sender as? User {
-                destination.selectedUser = user
-            }
+           let username = sender as? String {
+            destination.selectedUsername = username
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -117,6 +108,16 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 //NEW
 
+//ORIGINAL
+/*
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == "showIndividualUser",
+       let destination = segue.destination as? IndividualPostViewController,
+       let user = sender as? User {
+            destination.selectedUser = user
+        }
+}
+ */
 
 
 
