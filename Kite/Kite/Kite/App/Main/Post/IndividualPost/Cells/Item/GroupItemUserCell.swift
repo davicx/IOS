@@ -11,8 +11,8 @@ import UIKit
 //WISHLIST: Item
 class GroupItemUserCell: UITableViewCell {
     
-    // Current item reference
-    private var currentItem: Item?
+    // Current post reference
+    private var currentPost: Post?
     private let spinnerHelper = SpinnerHelper()
     private var customSpinner: UIActivityIndicatorView?
     private var customSpinnerBackground: UIView?
@@ -319,12 +319,12 @@ class GroupItemUserCell: UITableViewCell {
 
 
     // MARK: - Configure
-    func configurePost(with item: Item) {
+    func configurePost(with post: Post) {
         print("=== IndividualGroupPostCell configurePost ===")
-        print("postID: \(item.postID)")
+        print("postID: \(post.postID)")
         
-        // Store current item reference
-        currentItem = item
+        // Store current post reference
+        currentPost = post
         
         func sanitizedText(_ value: String?, fallback: String) -> String {
             guard let raw = value?.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -345,9 +345,9 @@ class GroupItemUserCell: UITableViewCell {
         let fallbackDescription = "Item Description"
         let fallbackComment = "Comment"
         
-        itemNameLabel.text = sanitizedText(item.itemName, fallback: fallbackName)
+        itemNameLabel.text = sanitizedText(post.itemName, fallback: fallbackName)
         
-        let priceText = sanitizedText(item.itemPrice, fallback: fallbackPrice)
+        let priceText = sanitizedText(post.itemPrice, fallback: fallbackPrice)
         if priceText == fallbackPrice {
             itemPriceLabel.text = priceText
         } else if let numericPrice = Double(priceText) {
@@ -360,18 +360,18 @@ class GroupItemUserCell: UITableViewCell {
             itemPriceLabel.text = priceText
         }
         
-        itemDescriptionTextView.text = sanitizedText(item.itemDescription, fallback: fallbackDescription)
+        itemDescriptionTextView.text = sanitizedText(post.itemDescription, fallback: fallbackDescription)
         
-        let userName = sanitizedText(item.postFrom, fallback: "User")
-        let commentText = sanitizedText(item.postCaption, fallback: fallbackComment)
-        let userImage = item.postFromImageData ?? UIImage(named: "background_1")
+        let userName = sanitizedText(post.postFrom, fallback: "User")
+        let commentText = sanitizedText(post.postCaption, fallback: fallbackComment)
+        let userImage = post.postFromImageData ?? UIImage(named: "background_1")
         
         commentTemplate.configure(userName: userName, commentText: commentText, image: userImage)
         
         // Update like count and image
-        updateLikeUI(with: item)
+        updateLikeUI(with: post)
         
-        if let image = item.postImageData {
+        if let image = post.postImageData {
             productImageView.image = image
         } else {
             productImageView.image = UIImage(named: "background_1") ?? UIImage()
@@ -379,13 +379,13 @@ class GroupItemUserCell: UITableViewCell {
     }
     
     // MARK: - Update Like UI
-    private func updateLikeUI(with item: Item) {
+    private func updateLikeUI(with post: Post) {
         // Update like count
-        let likeCount = item.postLikesArray?.count ?? item.simpleLikesArray?.count ?? 0
+        let likeCount = post.postLikesArray?.count ?? post.simpleLikesArray?.count ?? 0
         likeItemCountLabel.text = "\(likeCount)"
         
         // Update like image based on liked state
-        if item.isLikedByCurrentUser == true {
+        if post.isLikedByCurrentUser == true {
             likeItemImage.image = UIImage(named: "liked")
         } else {
             likeItemImage.image = UIImage(named: "like")
@@ -401,7 +401,7 @@ class GroupItemUserCell: UITableViewCell {
     }
     
     @objc private func didTapLike() {
-        guard let item = currentItem else { return }
+        guard let post = currentPost else { return }
         
         // Disable interaction to prevent double-tapping
         likeItemImageView.isUserInteractionEnabled = false
@@ -418,38 +418,29 @@ class GroupItemUserCell: UITableViewCell {
         showCustomSpinner(in: targetView)
         
         Task {
-            let groupID = item.groupID ?? 0
+            let groupID = post.groupID ?? 0
             
-            // Create a temporary Post object from Item for the API call
-            let tempPost = Post(postID: item.postID)
-            tempPost.groupID = item.groupID
-            tempPost.isLikedByCurrentUser = item.isLikedByCurrentUser
-            tempPost.postLikesArray = item.postLikesArray
-            tempPost.simpleLikesArray = item.simpleLikesArray
-            
-            if item.isLikedByCurrentUser == true {
+            if post.isLikedByCurrentUser == true {
                 // Unlike
-                if let likeModel = await postLikeFunctions.shared.unlikePost(post: tempPost, groupID: groupID) {
-                    //PostDataController.shared.unlikeItem(postID: item.postID, likeModel: likeModel)
-                    print("Add back! PostDataController.shared.unlikeItem(postID: item.postID, likeModel: likeModel)")
+                if let likeModel = await postLikeFunctions.shared.unlikePost(post: post, groupID: groupID) {
+                    PostDataController.shared.unlikePost(postID: post.postID, likeModel: likeModel)
                 }
             } else {
                 // Like
-                if let likeModel = await postLikeFunctions.shared.likePost(post: tempPost, groupID: groupID) {
-                    //PostDataController.shared.likeItem(postID: item.postID, likeModel: likeModel)
-                    print("Add back! PostDataController.shared.likeItem(postID: item.postID, likeModel: likeModel)")
+                if let likeModel = await postLikeFunctions.shared.likePost(post: post, groupID: groupID) {
+                    PostDataController.shared.likePost(postID: post.postID, likeModel: likeModel)
                 }
             }
             
             DispatchQueue.main.async {
-                // Get updated item from PostDataController (single source of truth)
-                let updatedItem = PostDataController.shared.getItemByID(postID: item.postID) ?? item
+                // Get updated post from PostDataController (single source of truth)
+                let updatedPost = PostDataController.shared.getItemByID(postID: post.postID) ?? post
                 
                 // Update UI with new like state
-                self.updateLikeUI(with: updatedItem)
+                self.updateLikeUI(with: updatedPost)
                 
-                // Update current item reference
-                self.currentItem = updatedItem
+                // Update current post reference
+                self.currentPost = updatedPost
                 
                 // Hide spinner and re-enable interaction
                 self.hideCustomSpinner()
@@ -518,8 +509,8 @@ class GroupItemUserCell: UITableViewCell {
     
     // MARK: - Navigation
     private func navigateToEditItem() {
-        guard let item = currentItem else {
-            print("GroupItemUserCell: No item to edit")
+        guard let post = currentPost else {
+            print("GroupItemUserCell: No post to edit")
             return
         }
         
@@ -542,7 +533,7 @@ class GroupItemUserCell: UITableViewCell {
                 return
             }
             
-            editItemVC.currentItem = item
+            editItemVC.currentPost = post
             
             // Verify navigation controller exists
             guard let navController = viewController.navigationController else {

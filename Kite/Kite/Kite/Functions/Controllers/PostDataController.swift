@@ -68,8 +68,8 @@ class PostDataController {
         return posts.first(where: { $0.postID == postID })
     }
     
-    func getItemByID(postID: Int) -> Item? {
-        return items.first { $0.postID == postID }
+    func getItemByID(postID: Int) -> Post? {
+        return posts.first { $0.postID == postID }
     }
 
 
@@ -198,27 +198,33 @@ class PostDataController {
     }
 
     // ------------------------------------------------
-    // APP DATA: ITEMS (LEFT MOSTLY AS-IS FOR NOW)
+    // APP DATA: ITEMS (using posts array, filtered by postType == "item")
     // ------------------------------------------------
-    private(set) var items: [Item] = []
+    var items: [Post] {
+        return posts.filter { $0.postType == "item" }
+    }
 
     // OLD callback
     var onItemsUpdated: (() -> Void)?
 
     func fetchPostItems(groupID: Int) async {
         do {
-            let itemsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
-            let noImageItems = try await createItemsArray(itemsResponseModel: itemsResponseModel)
-            let itemsWithImages = try await addPostImageToItemsArray(itemsArray: noImageItems)
-            let itemsWithGroupImages = try await addGroupImageToItemsArray(itemsArray: itemsWithImages)
-            self.items = try await addPostFromImageToItemsArray(itemsArray: itemsWithGroupImages)
+            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
+            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
+            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
+            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
+            
+            // Merge items into posts array (items are just posts with postType == "item")
+            for item in itemsWithImages {
+                if let index = posts.firstIndex(where: { $0.postID == item.postID }) {
+                    posts[index] = item
+                } else {
+                    posts.append(item)
+                }
+            }
 
             DispatchQueue.main.async {
-
-                // OLD
-                // self.onItemsUpdated?()
-
-                // NEW
                 NotificationCenter.default.post(
                     name: .itemsFetched,
                     object: nil

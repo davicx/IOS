@@ -7,6 +7,7 @@
 
 import Foundation
 
+/*
 struct ItemResponseModel: Codable {
     let data: [ItemModel]
     let message: String
@@ -24,3 +25,4 @@ struct ItemResponseModel: Codable {
         self.currentUser = ""
     }
 }
+*/

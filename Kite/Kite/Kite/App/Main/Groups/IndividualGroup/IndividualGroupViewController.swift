@@ -356,24 +356,22 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // let post = postDataController.posts[indexPath.row]
-        let item = postDataController.items[indexPath.row]
+        let post = postDataController.items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "IndividualGroupPostCell", for: indexPath) as! IndividualGroupPostCell
-        // cell.configurePost(with: post)
-        cell.configurePost(with: item)
+        cell.configurePost(with: post)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        // Get the item at the tapped index (items are posts with additional item data)
-        let item = postDataController.items[indexPath.row]
+        // Get the post at the tapped index (items are posts with postType == "item")
+        let post = postDataController.items[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
-            // Pass the item as the current post (Item has all Post properties plus item-specific data)
-            postViewController.currentItem = item
+            // Pass the post as currentPost (it's an item if postType == "item")
+            postViewController.currentPost = post
             navigationController?.pushViewController(postViewController, animated: true)
         }
     }

@@ -15,9 +15,8 @@ class IndividualPostViewController: UIViewController {
     let currentUser = userDefaultManager.getLoggedInUser()
     let postDataController = PostDataController.shared
     
-    // Support both Post and Item (Item has all Post properties plus item-specific data)
+    // Support both Post and Item (Item is just a Post with postType == "item")
     var currentPost: Post?
-    var currentItem: Item?
     var comments: [Comment] = []
 
     let individualPostTableView = UITableView()
@@ -26,12 +25,12 @@ class IndividualPostViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        // Get postID from either currentItem or currentPost
-        let postID = currentItem?.postID ?? currentPost?.postID ?? 0
+        // Get postID from currentPost
+        let postID = currentPost?.postID ?? 0
         print("________________________")
         print("IndividualPostViewController: Post ID \(postID)")
         print("LISTS: Wishlist")
-        if let itemName = currentItem?.itemName {
+        if let itemName = currentPost?.itemName {
             print("Item Name: \(itemName)")
         }
         print("________________________")
@@ -61,20 +60,11 @@ class IndividualPostViewController: UIViewController {
     }
     
     private func refreshCommentsFromPostDataController() {
-        let postID = currentItem?.postID ?? currentPost?.postID ?? 0
+        let postID = currentPost?.postID ?? 0
         
-        // Try to get updated post/item from PostDataController
-        if let item = currentItem {
-            // If we have an item, try to get updated version from PostDataController
-            if let updatedItem = postDataController.getItemByID(postID: postID) {
-                currentItem = updatedItem
-                comments = updatedItem.commentsArray ?? []
-            } else {
-                // Fallback to current item's comments if not found in PostDataController
-                comments = item.commentsArray ?? []
-            }
-        } else if let post = currentPost {
-            // If we have a post, try to get updated version from PostDataController
+        // Try to get updated post from PostDataController
+        if let post = currentPost {
+            // Try to get updated version from PostDataController
             if let updatedPost = postDataController.getPostByID(postID: postID) {
                 currentPost = updatedPost
                 comments = updatedPost.commentsArray ?? []
@@ -99,17 +89,12 @@ class IndividualPostViewController: UIViewController {
     @objc private func handlePostUpdated(_ notification: Notification) {
         guard let updatedPostID = notification.object as? Int else { return }
 
-        let currentID = currentItem?.postID ?? currentPost?.postID
+        let currentID = currentPost?.postID
         guard updatedPostID == currentID else { return }
 
         // Pull fresh data from source of truth
-        if let item = currentItem {
-            currentItem = postDataController.getItemByID(postID: updatedPostID)
-            comments = currentItem?.commentsArray ?? []
-        } else {
-            currentPost = postDataController.getPostByID(postID: updatedPostID)
-            comments = currentPost?.commentsArray ?? []
-        }
+        currentPost = postDataController.getPostByID(postID: updatedPostID)
+        comments = currentPost?.commentsArray ?? []
 
         individualPostTableView.reloadData()
     }
@@ -149,11 +134,14 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         if indexPath.row == 0 {
             let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
         
-            // Use currentItem if available (contains all post data), otherwise use currentPost
-            if let item = currentItem {
-                postCell.updateItem(with: item)
-            } else if let post = currentPost {
-                postCell.updatePost(with: post)
+            // Use currentPost (which can be an item if postType == "item")
+            if let post = currentPost {
+                // Check if it's an item and use appropriate method
+                if post.postType == "item" {
+                    postCell.updateItem(with: post)
+                } else {
+                    postCell.updatePost(with: post)
+                }
             }
             return postCell
             
@@ -168,8 +156,8 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
             //STEP 1: Get Image and Caption Heights
-            let postImageData = currentItem?.postImageData ?? currentPost?.postImageData
-            let postCaption = currentItem?.postCaption ?? currentPost?.postCaption
+            let postImageData = currentPost?.postImageData
+            let postCaption = currentPost?.postCaption
             
             let postImageHeight = sizeFunctions.calculatePostImageHeight(from: postImageData)
             let postCaptionHeight = sizeFunctions.calculatePostCaptionHeight(from: postCaption)
