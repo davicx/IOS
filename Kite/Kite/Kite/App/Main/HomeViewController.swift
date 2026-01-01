@@ -34,20 +34,11 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("_______________________")
-        print("HomeViewController")
-        print("_______________________")
-        
         // Setup PollingManager callback
         pollingManager.onFetchPosts = { [weak self] in
             self?.fetchPosts()
         }
         
-        /*
-         postDataController.onPostsUpdated = { [weak self] in
-             self?.postsTableView.reloadData()
-         }
-         */
         
         NotificationCenter.default.addObserver(
             self,
@@ -71,7 +62,7 @@ class HomeViewController: UIViewController {
 
         setupTableView()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         postsTableView.reloadData()
@@ -79,6 +70,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        printPageInfo(vcName: "HomeViewController")
 
         pollingManager.startPolling() // Restart polling if view reappears
         
@@ -118,13 +110,11 @@ class HomeViewController: UIViewController {
     @objc private func handlePostUpdated(_ notification: Notification) {
         guard let postID = notification.object as? Int else { return }
 
-        guard let index = postDataController.posts.firstIndex(where: {
-            $0.postID == postID
-        }) else { return }
+        // Verify the post still exists in the posts array
+        guard postDataController.posts.contains(where: { $0.postID == postID }) else { return }
 
-        let indexPath = IndexPath(row: index, section: 0)
-
-        postsTableView.reloadRows(at: [indexPath], with: .none)
+        // Reload the entire table view to avoid constraint conflicts with dynamic cell heights
+        postsTableView.reloadData()
     }
 
 

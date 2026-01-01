@@ -124,8 +124,6 @@ class HomePostCell: UITableViewCell {
         ])
     }
 
-
-    
     //POST IMAGE
     let postImageUIView = createPostImage()
     

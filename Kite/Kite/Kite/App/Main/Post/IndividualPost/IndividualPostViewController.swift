@@ -9,6 +9,10 @@
 import UIKit
 
 
+//SIMPLIFY ALL FOR NOW
+//JUST DO Like or Unlike a Post
+//Then do Like or Unlike a Comment
+
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
     let postAPI = PostsAPI()
