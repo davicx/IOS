@@ -1,0 +1,79 @@
+# Cursor Rules for Kite iOS Project
+
+## CRITICAL: Code Modification Rules
+
+### NEVER Modify Commented Code
+- **NEVER** modify, delete, or change any code that is between `/*` and `*/` comment blocks
+- If a requested change would require modifying commented code, **STOP** and inform the user - do NOT make the change
+- Commented code is preserved for reference and should remain untouched
+- This rule takes precedence over all other instructions
+
+### Commented Code Handling
+- If asked to remove commented code, clarify with the user first
+- When in doubt about whether code is commented, check for `/*` and `*/` markers
+- Preserve all commented sections exactly as they are
+
+## Architecture Patterns
+
+### Data Management
+- **PostDataController** is the single source of truth for all posts and items
+- Items are Posts with `postType == "item"` - use the same methods for both
+- All data mutations should go through PostDataController
+- PostDataController broadcasts changes via NotificationCenter
+
+### Post Logic
+- Use **PostLogic.shared** for like/unlike operations (not direct API calls)
+- PostLogic handles: API call → PostDataController update → Notification broadcast
+- Cells should call `PostLogic.shared.toggleLike()` instead of multiple methods
+
+### NotificationCenter Pattern
+- Use NotificationCenter for app-wide data synchronization
+- Key notifications:
+  - `.postUpdated` - when a post is liked/unliked
+  - `.commentUpdated` - when a comment is liked/unliked
+  - `.postsFetched` - when posts are fetched from API
+- ViewControllers should observe these notifications and update UI accordingly
+
+## Code Style
+
+### Swift Conventions
+- Use `async/await` for network calls
+- Always update UI on `DispatchQueue.main.async`
+- Use `guard let` for optional unwrapping when appropriate
+- Keep cell classes focused on UI rendering, not data management
+
+### File Organization
+- API models in `Kite/Kite/API/Models/`
+- Data controllers in `Kite/Kite/Functions/Controllers/`
+- Business logic in `Kite/Kite/Functions/`
+- View controllers in `Kite/Kite/App/Main/`
+
+## Common Patterns
+
+### Like/Unlike Flow
+1. User taps like button in cell
+2. Cell calls `PostLogic.shared.toggleLike(post: post, groupID: groupID)`
+3. PostLogic makes API call via `postLikeFunctions`
+4. PostLogic updates `PostDataController.shared.likePost()`
+5. PostDataController broadcasts `.postUpdated` notification
+6. ViewControllers observe notification and update UI
+
+### Error Handling
+- Network errors should be logged but not crash the app
+- Return `nil` or empty results on API failures
+- Show user-friendly error messages when appropriate
+
+## When Making Changes
+
+1. **Check for commented code first** - if change affects commented sections, STOP
+2. Follow existing patterns - don't introduce new architectures
+3. Update all related files consistently
+4. Test that NotificationCenter observers are properly set up
+5. Ensure UI updates happen on main thread
+
+## Questions to Ask
+
+- If a change would modify commented code: "This change would require modifying commented code. Should I proceed?"
+- If unsure about architecture: "Should this follow the PostDataController pattern?"
+- If multiple approaches exist: "Which pattern should I follow here?"
+

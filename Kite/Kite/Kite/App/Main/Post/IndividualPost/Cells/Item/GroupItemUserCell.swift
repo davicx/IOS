@@ -420,6 +420,11 @@ class GroupItemUserCell: UITableViewCell {
         Task {
             let groupID = post.groupID ?? 0
             
+            // NEW: Using PostLogic
+            await PostLogic.shared.toggleLike(post: post, groupID: groupID)
+            
+            // OLD: Two-step process
+            /*
             if post.isLikedByCurrentUser == true {
                 // Unlike
                 if let likeModel = await postLikeFunctions.shared.unlikePost(post: post, groupID: groupID) {
@@ -431,6 +436,7 @@ class GroupItemUserCell: UITableViewCell {
                     PostDataController.shared.likePost(postID: post.postID, likeModel: likeModel)
                 }
             }
+            */
             
             DispatchQueue.main.async {
                 // Get updated post from PostDataController (single source of truth)
