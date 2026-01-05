@@ -8,8 +8,123 @@
 import UIKit
 
 
+//Kite
+class PostCell: UITableViewCell {
 
-//HOME FEED: Kite 
+    private let postDataController = PostDataController.shared
+
+    private let captionLabel = UILabel()
+    private let likeCountLabel = UILabel()
+    private let likeButton = UIButton(type: .system)
+
+    private var postID: Int?
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setupViews()
+        setupLayout()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        captionLabel.numberOfLines = 0
+        captionLabel.font = .systemFont(ofSize: 16)
+
+        likeCountLabel.font = .systemFont(ofSize: 14)
+        likeCountLabel.textColor = .secondaryLabel
+
+        likeButton.setTitle("Like", for: .normal)
+        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+
+        contentView.addSubview(captionLabel)
+        contentView.addSubview(likeCountLabel)
+        contentView.addSubview(likeButton)
+    }
+
+    private func setupLayout() {
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            // Caption
+            captionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            captionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            captionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            // Like count
+            likeCountLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: 12),
+            likeCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            likeCountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+
+            // Like button
+            likeButton.centerYAnchor.constraint(equalTo: likeCountLabel.centerYAnchor),
+            likeButton.leadingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor, constant: 12)
+        ])
+    }
+
+    func configure(postID: Int) {
+        self.postID = postID
+
+        guard let post = postDataController.getPostByID(postID: postID) else {
+            captionLabel.text = "Post not found"
+            likeCountLabel.text = "0 likes"
+            return
+        }
+
+        captionLabel.text = post.postCaption
+
+        let likeCount = post.postLikesArray?.count ?? 0
+        likeCountLabel.text = "\(likeCount) likes"
+    }
+
+    @objc private func likeTapped() {
+        print("like")
+    }
+}
+
+//SIMPLE 1
+/*
+class PostCell: UITableViewCell {
+
+    let postIDLabel = Elements.postIDLabel()
+
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(postIDLabel)
+
+        NSLayoutConstraint.activate([
+            postIDLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            postIDLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    
+    func configure(postID: Int) {
+        print("configure: PostCell")
+        postIDLabel.text = "Post ID: \(postID)"
+    }
+}
+*/
+
+
+
+
+
+
+//WORKING
+//HOME FEED: Kite
+/*
 class PostCell: UITableViewCell {
     
     //POST HEADER: Post Information
@@ -379,8 +494,6 @@ class PostCell: UITableViewCell {
     @objc private func menuButtonTapped() {
         print("PostCell: Menu button was tapped!")
     }
-
-
     
 }
 
@@ -492,4 +605,4 @@ func createPostSocialsText() -> UILabel {
 }
 
 
-
+*/

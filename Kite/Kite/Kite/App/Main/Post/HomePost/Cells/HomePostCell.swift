@@ -505,6 +505,13 @@ class HomePostCell: UITableViewCell {
         layoutIfNeeded()
     }
 
+    }
+
+func createPostImage() -> UIImageView {
+    let imageView = UIImageView()
+    imageView.contentMode = .scaleAspectFit
+    imageView.backgroundColor = .white
+    
+    return imageView
+
 }
-
-
