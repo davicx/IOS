@@ -16,6 +16,17 @@ class Style {
     static let mainDarkFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .bold)
     static let mainGrayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
     
+   
+    
+    static let timeFont: UIFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+    static let timeFontColor: UIColor = .gray
+    
+    static let usernameFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
+    static let usernameFontColor: UIColor = .label
+    
+    static let mainTextFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .regular)
+    static let mainTextFontColor: UIColor = .label
+    
 
     //CLEAN BELOW
     let iconBackgroundColor = "#687684"
@@ -26,8 +37,7 @@ class Style {
     
     static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     static let groupInfoFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-    
-    
+
     
     static let textBlack: UIColor = .black
     static let textGray: UIColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
@@ -58,6 +68,22 @@ class Style {
         label.textColor = .black
         label.backgroundColor = .clear
         label.textAlignment = .left
+    }
+    
+    // Convenience methods for comprehensive font styles
+    static func styleTimeText(_ label: UILabel) {
+        label.font = timeFont
+        label.textColor = timeFontColor
+    }
+    
+    static func styleUsernameText(_ label: UILabel) {
+        label.font = usernameFont
+        label.textColor = usernameFontColor
+    }
+    
+    static func styleMainText(_ label: UILabel) {
+        label.font = mainTextFont
+        label.textColor = mainTextFontColor
     }
     
     //IMAGES

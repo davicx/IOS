@@ -27,5 +27,8 @@ class SearchViewController: UIViewController {
         ])
     }
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "SearchViewController")
+    }
+
 }

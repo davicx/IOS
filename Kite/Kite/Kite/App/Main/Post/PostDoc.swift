@@ -166,6 +166,11 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
         Task {
             let groupID = currentPost.groupID ?? 0
 
+            // NEW: Using PostLogic
+            await PostLogic.shared.toggleLike(post: currentPost, groupID: groupID)
+            
+            // OLD: Two-step process
+            /*
             if currentPost.isLikedByCurrentUser == true {
                 if let likeModel = await postLikeFunctions.shared.unlikePost(post: currentPost, groupID: groupID) {
                     PostDataController.shared.unlikePost(postID: currentPost.postID ?? 0, likeModel: likeModel)
@@ -175,6 +180,7 @@ extension IndividualPostViewController: PostCellDelegate, CommentCellDelegate  {
                     PostDataController.shared.likePost(postID: currentPost.postID ?? 0, likeModel: likeModel)
                 }
             }
+            */
 
             DispatchQueue.main.async {
                 cell.configurePost(with: self.currentPost)

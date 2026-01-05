@@ -26,14 +26,18 @@ class NewPostViewController: UIViewController {
         super.viewDidLoad()
         Buttons.styleTikTokButton(newPostButtonStyle)
         newPostButtonStyle.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
-        
-        printPageInfo(vcName: "NewPostViewController")
-        
+
         //newPostImageView.isUserInteractionEnabled = true
         //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectImage))
         //newPostImageView.addGestureRecognizer(tapGesture)
     
     }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "NewPostViewController")
+    }
+
     
     
     @IBAction func selectImageButton(_ sender: UIButton) {

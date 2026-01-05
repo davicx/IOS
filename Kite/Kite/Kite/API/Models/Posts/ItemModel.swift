@@ -7,6 +7,7 @@
 
 import Foundation
 
+/*
 struct ItemModel: Codable {
     let postID: Int
     let postType: String
@@ -53,3 +54,4 @@ struct ItemDetails: Codable {
     let store: String
     let multiple_stores: Int
 }
+*/

@@ -118,7 +118,7 @@ func calculateFriendshipStatus(for user: User) -> FriendshipStatus {
         return .requestPendingSentByThem
     case "request_pending":
         // You sent request to them - you can cancel
-        return .invitePendingSentByYou
+            return .invitePendingSentByYou
     case "not_friends":
         return .notFriends
     case "you":

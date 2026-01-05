@@ -34,18 +34,25 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("_______________________")
-        print("HomeViewController")
-        print("_______________________")
-        
         // Setup PollingManager callback
         pollingManager.onFetchPosts = { [weak self] in
             self?.fetchPosts()
         }
         
-         postDataController.onPostsUpdated = { [weak self] in
-             self?.postsTableView.reloadData()
-         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostsFetched),
+            name: .postsFetched,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
          
         // Initial data fetch
         fetchPosts()
@@ -55,7 +62,7 @@ class HomeViewController: UIViewController {
 
         setupTableView()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         postsTableView.reloadData()
@@ -63,6 +70,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        printPageInfo(vcName: "HomeViewController")
 
         pollingManager.startPolling() // Restart polling if view reappears
         
@@ -81,6 +89,12 @@ class HomeViewController: UIViewController {
         postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
+
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     //FUNCTIONS
     func fetchPosts() {
@@ -88,6 +102,21 @@ class HomeViewController: UIViewController {
             await postDataController.fetchPosts(groupID: 72)
         }
     }
+    
+    @objc private func handlePostsFetched() {
+        postsTableView.reloadData()
+    }
+
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        guard let postID = notification.object as? Int else { return }
+
+        // Verify the post still exists in the posts array
+        guard postDataController.posts.contains(where: { $0.postID == postID }) else { return }
+
+        // Reload the entire table view to avoid constraint conflicts with dynamic cell heights
+        postsTableView.reloadData()
+    }
+
 
 }
 
@@ -146,5 +175,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      
     
 }
+
+
 
 

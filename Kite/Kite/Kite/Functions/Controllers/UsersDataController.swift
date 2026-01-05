@@ -37,7 +37,7 @@ class UsersDataController {
     // Get user by username (from cache)
     func getUser(username: String) -> User? {
         return usersQueue.sync {
-            return users[username]
+        return users[username]
         }
     }
     
@@ -62,7 +62,7 @@ class UsersDataController {
     // Check if user is already cached
     func hasUser(username: String) -> Bool {
         return usersQueue.sync {
-            return users[username] != nil
+        return users[username] != nil
         }
     }
     
@@ -612,14 +612,14 @@ class UsersDataController {
     // Get all cached users
     func getAllUsers() -> [User] {
         return usersQueue.sync {
-            return Array(users.values)
+        return Array(users.values)
         }
     }
     
     // Get users by usernames (returns only cached users)
     func getCachedUsers(usernames: [String]) -> [User] {
         return usersQueue.sync {
-            return usernames.compactMap { users[$0] }
+        return usernames.compactMap { users[$0] }
         }
     }
     

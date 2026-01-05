@@ -85,6 +85,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        printPageInfo(vcName: "ProfileViewController")
         
         // Refresh friends and counts when view appears
         Task {
@@ -92,7 +93,7 @@ class ProfileViewController: UIViewController {
             await fetchUserCounts()
         }
     }
-    
+
 
     //LAYOUT
     private func setupNavigationBar() {

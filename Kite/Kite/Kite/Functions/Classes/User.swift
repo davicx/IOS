@@ -13,7 +13,7 @@ class User {
     let userName: String
     var userImage: String
     var firstName: String
-    var lastName: String 
+    var lastName: String
     var biography: String
     var isCurrentUser: Bool
     

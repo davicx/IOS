@@ -328,19 +328,19 @@ class PostCell: UITableViewCell {
         layoutIfNeeded()
     }
     
-    //ITEM SETUP: Actual Item Information (Item has all Post properties plus item-specific data)
-    func updateItem(with item: Item) {
+    //ITEM SETUP: Actual Item Information (Post with postType == "item")
+    func updateItem(with post: Post) {
         
         //POST HEADER: Setup
-        let groupImage = item.groupImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let groupImage = post.groupImageData ?? UIImage(named: "background_1") ?? UIImage()
         userImageView.image = groupImage
 
-        userEventNameText.text = item.groupName ?? "No Group"
-        userEventTimeText.text = item.timeMessage ?? "No Time"
+        userEventNameText.text = post.groupName ?? "No Group"
+        userEventTimeText.text = post.timeMessage ?? "No Time"
         
         //POST BODY: Setup
-        let currentImage = item.postImageData ?? UIImage(named: "background_1") ?? UIImage()
-        let postCaption = item.postCaption ?? "no caption"
+        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let postCaption = post.postCaption ?? "no caption"
         
         let imageHeight = getImageHeight(image: currentImage)
         postImageHeightConstraint?.constant = imageHeight
@@ -351,7 +351,7 @@ class PostCell: UITableViewCell {
         postCaptionHeightConstraint?.constant = captionHeight
         postCaptionLabel.text = postCaption
         
-        postSocialsLabel.text = "Post Like Count: \(item.simpleLikesArray?.count ?? 0)"
+        postSocialsLabel.text = "Post Like Count: \(post.simpleLikesArray?.count ?? 0)"
         
         layoutIfNeeded()
     }
