@@ -141,11 +141,11 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          
          let storyboard = UIStoryboard(name: "Post", bundle: nil)
          if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
-             postViewController.currentPost = post
+             //postViewController.currentPost = post
+             postViewController.postID = post.postID 
              navigationController?.pushViewController(postViewController, animated: true)
          }
      }
-
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentPost = postDataController.posts[indexPath.row]

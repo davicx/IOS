@@ -15,6 +15,88 @@ import UIKit
 
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
+    
+    let postAPI = PostsAPI()
+    let postDataController = PostDataController.shared
+    
+    let currentUser = userDefaultManager.getLoggedInUser()
+    var postID: Int!
+
+    let individualPostTableView = UITableView()
+    
+    private var post: Post? {
+        return postDataController.getPostByID(postID: postID)
+    }
+
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupIndividualPostTableView()
+        
+        print("IndividualPostViewController loaded")
+        print("postID =", postID ?? -1)
+
+        if let post = post {
+            print("FOUND POST:", post.postID ?? -1)
+            print(post.postCaption)
+        } else {
+            print("POST NOT FOUND")
+        }
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        printPageInfo(vcName: "IndividualPostViewController")
+    }
+    
+
+    func setupIndividualPostTableView() {
+        individualPostTableView.dataSource = self
+        individualPostTableView.delegate = self
+        individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
+        individualPostTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+
+        //Enable automatic dimension for dynamic cell heights
+        individualPostTableView.rowHeight = UITableView.automaticDimension
+        
+        view.addSubview(individualPostTableView)
+
+        NSLayoutConstraint.activate([
+            individualPostTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            individualPostTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            individualPostTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            individualPostTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
+
+extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+        postCell.configure(postID: postID) 
+        
+        return postCell
+
+    }
+    
+    /*
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    */
+   
+}
+
+
+
+//WORKING
+/*
+//LISTS: Wishlist
+class IndividualPostViewController: UIViewController {
     let postAPI = PostsAPI()
     let currentUser = userDefaultManager.getLoggedInUser()
     let postDataController = PostDataController.shared
@@ -185,3 +267,4 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 }
 
 
+*/

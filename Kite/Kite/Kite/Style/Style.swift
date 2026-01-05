@@ -27,6 +27,7 @@ class Style {
     static let mainTextFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .regular)
     static let mainTextFontColor: UIColor = .label
     
+    
 
     //CLEAN BELOW
     let iconBackgroundColor = "#687684"
