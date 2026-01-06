@@ -115,10 +115,21 @@ class PostDataController {
         // APP DATA: Step 1 – Find post
         guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
 
-        // APP DATA: Step 2 – Mutate data
+        // APP DATA: Step 2 – Mutate data (same pattern as likePost)
         var post = posts[index]
-        post.simpleLikesArray?.removeAll { $0 == likeModel.likedByUserName }
-        post.postLikesArray?.removeAll { $0.postLikeID == likeModel.postLikeID }
+
+
+        // Use currentUser instead of likeModel.likedByUserName (API doesn't populate it for unlike)
+        let userNameToRemove = currentUser
+        
+        post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
+            $0 != userNameToRemove
+        }
+
+        post.postLikesArray = (post.postLikesArray ?? []).filter {
+            $0.postLikeID != likeModel.postLikeID
+        }
+
         post.isLikedByCurrentUser = false
 
         posts[index] = post

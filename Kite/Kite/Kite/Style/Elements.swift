@@ -11,6 +11,13 @@ import UIKit
 
 enum Elements {
 
+    //UI ELEMENTS
+
+    //Generay
+    
+    //Layout
+    
+    //Posts
     static func postIDLabel() -> UILabel {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .bold)
@@ -18,4 +25,8 @@ enum Elements {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
+    
+    //Groups
+    
+    
 }

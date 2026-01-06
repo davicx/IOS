@@ -757,7 +757,6 @@
 			children = (
 				D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */,
 				D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */,
-				D7529BD82ED27DD0000C1D48 /* ItemDoc.swift */,
 			);
 			path = Item;
 			sourceTree = "<group>";
@@ -841,7 +840,6 @@
 			children = (
 				D7529BD72ED27DB0000C1D48 /* Post */,
 				D7529BD52ED27D8A000C1D48 /* Item */,
-				D78EBDD92E305A5E0008F3FE /* QA */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1008,6 +1006,8 @@
 			children = (
 				D78CEF7A2E2F074B002E3712 /* FullOriginalPostToPullFrom.swift */,
 				D7BD62C02E5546030008F6E1 /* PostDoc.swift */,
+				D78EBDD92E305A5E0008F3FE /* QA */,
+				D7529BD82ED27DD0000C1D48 /* ItemDoc.swift */,
 			);
 			path = Docs;
 			sourceTree = "<group>";
@@ -1036,14 +1036,6 @@
 				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		D7FB876C2D6FE00E0054CDF7 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				D7D5F3052D921DAB00EE0A09 /* Doc.swift */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

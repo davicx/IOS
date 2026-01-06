@@ -7,6 +7,7 @@
 
 import UIKit
 
+//PROBABLY DONT NEED
 
 //WISHLIST: Item
 class IndividualGroupPostCell: UITableViewCell {

@@ -385,6 +385,14 @@ class HomePostCell: UITableViewCell {
         setupCaptionViews()
         setupSocialsViews()
         setupDividerViews()
+        
+        // Observe post updates via NotificationCenter
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
         //print("HomePostCell")
     }
 
@@ -392,9 +400,28 @@ class HomePostCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
 
     //ACTIONS
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        guard
+            let updatedPostID = notification.object as? Int,
+            let currentPostID = currentPost?.postID,
+            updatedPostID == currentPostID
+        else { return }
+        
+        // Refresh post from PostDataController and update UI
+        let postDataController = PostDataController.shared
+        if let updatedPost = postDataController.getPostByID(postID: updatedPostID) {
+            currentPost = updatedPost
+            updatePost(with: updatedPost)
+        }
+    }
+    
     @objc private func likesViewTapped() {
         guard let post = currentPost else { return }
         
@@ -420,7 +447,9 @@ class HomePostCell: UITableViewCell {
             */
             
             DispatchQueue.main.async {
+                // NEW: UI will update automatically via NotificationCenter observer
                 
+                // OLD: Manual UI update (replaced by NotificationCenter pattern)
                 /*
                 // Update the current post from the shared data store
                 self.currentPost = PostDataController.shared.getPostByID(postID: post.postID ?? 0) ?? self.currentPost
@@ -515,3 +544,4 @@ func createPostImage() -> UIImageView {
     return imageView
 
 }
+

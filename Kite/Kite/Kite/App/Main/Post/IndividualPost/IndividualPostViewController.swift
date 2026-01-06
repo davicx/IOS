@@ -9,10 +9,6 @@
 import UIKit
 
 
-//SIMPLIFY ALL FOR NOW
-//JUST DO Like or Unlike a Post
-//Then do Like or Unlike a Comment
-
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
     
@@ -39,6 +35,7 @@ class IndividualPostViewController: UIViewController {
         if let post = post {
             print("FOUND POST:", post.postID ?? -1)
             print(post.postCaption)
+            printPostLikes()
         } else {
             print("POST NOT FOUND")
         }
@@ -49,6 +46,35 @@ class IndividualPostViewController: UIViewController {
         printPageInfo(vcName: "IndividualPostViewController")
     }
     
+    // TEMP: Print users who have liked the post
+    func printPostLikes() {
+        guard let post = post else {
+            print("Post not found")
+            return
+        }
+        
+        print("========== POST LIKES ==========")
+        print("Post ID: \(post.postID)")
+        print("Is Liked by Current User: \(post.isLikedByCurrentUser ?? false)")
+        
+        if let simpleLikes = post.simpleLikesArray, !simpleLikes.isEmpty {
+            print("Users who liked this post (\(simpleLikes.count)):")
+            for (index, username) in simpleLikes.enumerated() {
+                print("  \(index + 1). \(username)")
+            }
+        } else {
+            print("No users have liked this post yet")
+        }
+        
+        if let postLikes = post.postLikesArray, !postLikes.isEmpty {
+            print("\nDetailed Likes (\(postLikes.count)):")
+            for (index, likeModel) in postLikes.enumerated() {
+                print("  \(index + 1). \(likeModel.likedByUserName ?? "Unknown")")
+            }
+        }
+        
+        print("=================================")
+    }
 
     func setupIndividualPostTableView() {
         individualPostTableView.dataSource = self
@@ -77,7 +103,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-        postCell.configure(postID: postID) 
+        postCell.configure(postID: postID)
         
         return postCell
 
@@ -92,8 +118,6 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 }
 
 
-
-//WORKING
 /*
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
@@ -265,6 +289,5 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         }
     }
 }
-
 
 */

@@ -39,7 +39,6 @@ class HomeViewController: UIViewController {
             self?.fetchPosts()
         }
         
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handlePostsFetched),
@@ -65,6 +64,8 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Refresh table view to ensure cells show latest data from PostDataController
+        // This is important when returning from other screens where likes may have changed
         postsTableView.reloadData()
     }
     
@@ -73,7 +74,6 @@ class HomeViewController: UIViewController {
         printPageInfo(vcName: "HomeViewController")
 
         pollingManager.startPolling() // Restart polling if view reappears
-        
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -88,8 +88,6 @@ class HomeViewController: UIViewController {
         postsTableView.dataSource = self
         postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
-
-
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -108,12 +106,7 @@ class HomeViewController: UIViewController {
     }
 
     @objc private func handlePostUpdated(_ notification: Notification) {
-        guard let postID = notification.object as? Int else { return }
-
-        // Verify the post still exists in the posts array
-        guard postDataController.posts.contains(where: { $0.postID == postID }) else { return }
-
-        // Reload the entire table view to avoid constraint conflicts with dynamic cell heights
+        // Simple pattern: just reload the table (matches DataController example)
         postsTableView.reloadData()
     }
 
@@ -142,7 +135,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          let storyboard = UIStoryboard(name: "Post", bundle: nil)
          if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
              //postViewController.currentPost = post
-             postViewController.postID = post.postID 
+             postViewController.postID = post.postID
              navigationController?.pushViewController(postViewController, animated: true)
          }
      }
