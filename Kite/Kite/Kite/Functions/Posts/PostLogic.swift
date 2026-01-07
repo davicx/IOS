@@ -24,7 +24,14 @@ final class PostLogic {
         }
     }
     
+
     func like(post: Post, groupID: Int) async {
+        
+        // STEP 5: PostLogic performs API request
+        // STEP 6: API responds with updated post data
+        // STEP 7: PostDataController updates its stored post
+        // STEP 8: PostDataController posts NotificationCenter event
+        
         // Step 1: API call via postLikeFunctions (lazy reference to avoid circular dependency)
         let likeFunctions = postLikeFunctions.shared
         guard let likeModel = await likeFunctions.likePost(post: post, groupID: groupID) else {

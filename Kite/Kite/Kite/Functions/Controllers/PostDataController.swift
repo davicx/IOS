@@ -8,13 +8,17 @@
 import UIKit
 
 
+// ------------------------------------------------
+// APP DATA: OLD WAY (keep for now, but do not use)
+// ------------------------------------------------
+// OLD: Callback-based updates (confusing, will remove later)
+//var onPostsUpdated: (() -> Void)?
+
+
 class PostDataController {
 
     static let shared = PostDataController()
 
-    // ------------------------------------------------
-    // APP DATA: Source of truth for all posts
-    // ------------------------------------------------
     private(set) var posts: [Post] = []
 
     private let postsAPI = PostsAPI()
@@ -24,15 +28,8 @@ class PostDataController {
         return userDefaultManager.getLoggedInUser()
     }
 
-    // ------------------------------------------------
-    // APP DATA: OLD WAY (keep for now, but do not use)
-    // ------------------------------------------------
-    // OLD: Callback-based updates (confusing, will remove later)
-    var onPostsUpdated: (() -> Void)?
-
-    // ------------------------------------------------
-    // APP DATA: FETCH POSTS
-    // ------------------------------------------------
+    //FUNCTIONS A: Post Related
+    //Function A1: Fetch posts from API
     func fetchPosts(groupID: Int) async {
         do {
             let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
@@ -42,15 +39,6 @@ class PostDataController {
             self.posts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
 
             DispatchQueue.main.async {
-
-                // ------------------------------------------------
-                // APP DATA: OLD (do not rely on this anymore)
-                // ------------------------------------------------
-                // self.onPostsUpdated?()
-
-                // ------------------------------------------------
-                // APP DATA: NEW — broadcast to entire app
-                // ------------------------------------------------
                 NotificationCenter.default.post(
                     name: .postsFetched,
                     object: nil
@@ -61,21 +49,18 @@ class PostDataController {
         }
     }
 
-    // ------------------------------------------------
-    // APP DATA: READ — Views pull, never store
-    // ------------------------------------------------
+    //Function A2: Get a Post
     func getPostByID(postID: Int) -> Post? {
         return posts.first(where: { $0.postID == postID })
     }
     
+    //Function A3: Get an Item
     func getItemByID(postID: Int) -> Post? {
         return posts.first { $0.postID == postID }
     }
 
 
-    // ------------------------------------------------
-    // APP DATA: LIKE POST
-    // ------------------------------------------------
+    //Function A4: Like a Post
     func likePost(postID: Int, likeModel: LikeModel) {
 
         // APP DATA: Step 1 – Find post in source of truth
@@ -107,9 +92,7 @@ class PostDataController {
         }
     }
 
-    // ------------------------------------------------
-    // APP DATA: UNLIKE POST
-    // ------------------------------------------------
+    //Function A5: Unlike a Post
     func unlikePost(postID: Int, likeModel: LikeModel) {
 
         // APP DATA: Step 1 – Find post
@@ -143,9 +126,8 @@ class PostDataController {
         }
     }
 
-    // ------------------------------------------------
-    // APP DATA: LIKE COMMENT
-    // ------------------------------------------------
+    //FUNCTIONS B: Comment Related
+    //Function B1: Like a Comment
     func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
 
         // APP DATA: Step 1 – Locate post + comment
@@ -168,6 +150,7 @@ class PostDataController {
         }
     }
 
+    //Function B2: Unlike a Comment
     func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
 
         guard
@@ -188,6 +171,11 @@ class PostDataController {
             )
         }
     }
+    
+    
+    
+    //CLEAN BELOW
+    //CLEAN BELOW
 
     // ------------------------------------------------
     // APP DATA: DEBUG HELPERS
@@ -247,15 +235,13 @@ class PostDataController {
     }
 }
 
-// ------------------------------------------------
-// APP DATA: Notification names
-// ------------------------------------------------
+//NOTIFICATIONS
 extension Notification.Name {
     static let postUpdated = Notification.Name("postUpdated")
     static let postsFetched = Notification.Name("postsFetched")
     static let commentUpdated = Notification.Name("commentUpdated")
 
-    // Items (later)
+ 
     static let itemsFetched = Notification.Name("itemsFetched")
     static let itemUpdated = Notification.Name("itemUpdated")
 }

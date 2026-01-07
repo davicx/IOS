@@ -9,7 +9,6 @@
 import UIKit
 
 
-//UPDATE ALL TO NOTIFICATION CENTER 
 class HomeViewController: UIViewController {
 
     //HOME: API and data
@@ -105,11 +104,13 @@ class HomeViewController: UIViewController {
         postsTableView.reloadData()
     }
 
+    // STEP 10: Home feed hears that a post changed
+    // STEP 11: It refreshes itself from the single source of truth
+
     @objc private func handlePostUpdated(_ notification: Notification) {
         // Simple pattern: just reload the table (matches DataController example)
         postsTableView.reloadData()
     }
-
 
 }
 
