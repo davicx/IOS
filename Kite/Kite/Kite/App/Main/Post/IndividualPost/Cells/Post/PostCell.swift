@@ -11,19 +11,21 @@ import UIKit
 class PostCell: UITableViewCell {
 
     private let postDataController = PostDataController.shared
-
+    private var postID: Int?
+    
+    //UI Elements
     private let captionLabel = UILabel()
     private let likeCountLabel = UILabel()
     private let likeButton = UIButton(type: .system)
 
-    private var postID: Int?
-
+    //Cell Setup
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         setupViews()
         setupLayout()
 
+        //LISTENER: Post Updated
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handlePostUpdated),
@@ -31,11 +33,22 @@ class PostCell: UITableViewCell {
             object: nil
         )
     }
+    
+    func configurePostCell(postID: Int) {
+        self.postID = postID
+        refreshPostCellUI()
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    
+    //LAYOUT
     private func setupViews() {
         captionLabel.numberOfLines = 0
         captionLabel.font = .systemFont(ofSize: 16)
@@ -73,41 +86,56 @@ class PostCell: UITableViewCell {
         ])
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 
-    func configure(postID: Int) {
-        self.postID = postID
-        refreshUI()
-    }
+    //ACTIONS
+    @objc private func likeTapped() {
 
-    private func refreshUI() {
-
-        // 1. Make sure we have a postID
+        //STEP 1: Get the post that was liked
         if postID == nil {
             return
         }
 
-        // 2. Fetch the post from the data controller
+        let currentPostID = postID!
+
+        let post = postDataController.getPostByID(postID: currentPostID)
+
+        if post == nil {
+            return
+        }
+
+        let currentPost = post!
+        let groupID = currentPost.groupID ?? 0
+
+        //STEP 2: Call my Post Logic class to handle liking a post
+        Task {
+            await PostLogic.shared.toggleLike(post: currentPost, groupID: groupID)
+        }
+    }
+    
+    
+    //FUNCTIONS
+    private func refreshPostCellUI() {
+        
+        //STEP 1: Get current Post
+        if postID == nil {
+            return
+        }
+
         let fetchedPost = postDataController.getPostByID(postID: postID!)
 
-        // 3. Make sure the post exists
         if fetchedPost == nil {
             return
         }
 
-        let post = fetchedPost!
+        let currentPost = fetchedPost!
 
-        // 4. Update caption
-        captionLabel.text = post.postCaption
+        //STEP 2: Update the Post Cell UI
+        captionLabel.text = currentPost.postCaption
 
-        // 5. Update like count
-        let likeCount = post.postLikesArray?.count ?? 0
+        let likeCount = currentPost.postLikesArray?.count ?? 0
         likeCountLabel.text = "\(likeCount) likes"
 
-        // 6. Update button title
-        if post.isLikedByCurrentUser == true {
+        if currentPost.isLikedByCurrentUser == true {
             likeButton.setTitle("Liked", for: .normal)
         } else {
             likeButton.setTitle("Like me", for: .normal)
@@ -115,102 +143,74 @@ class PostCell: UITableViewCell {
     }
     
     @objc private func handlePostUpdated(_ notification: Notification) {
-
-        // STEP 12: Cell hears that a post changed somewhere in the app
         let updatedPostID = notification.object as? Int
         if updatedPostID == nil {
             return
         }
 
-        // STEP 13: Only update if this cell represents that post
         if updatedPostID != postID {
             return
         }
 
-        // STEP 14: Pull fresh data and redraw
-        refreshUI()
-    }
-    /*
-    @objc private func handlePostUpdated(_ notification: Notification) {
-
-        // 1. Make sure the notification contains a post ID
-        if notification.object == nil {
-            return
-        }
-
-        let updatedPostID = notification.object as? Int
-        if updatedPostID == nil {
-            return
-        }
-
-        // 2. Make sure this update is for MY post
-        if updatedPostID != postID {
-            return
-        }
-
-        // 3. Update the UI
-        refreshUI()
+        refreshPostCellUI()
     }
 
-    */
-    @objc private func likeTapped() {
-
-        // STEP 1: User taps the Like button in a specific PostCell
-        if postID == nil {
-            return
-        }
-
-        let currentPostID = postID!
-
-        // STEP 2: Ask the data controller for the current version of this post
-        let post = postDataController.getPostByID(postID: currentPostID)
-
-        if post == nil {
-            return
-        }
-
-        let currentPost = post!
-
-        // STEP 3: Gather required context (groupID, user, etc.)
-        let groupID = currentPost.groupID ?? 0
-
-        // STEP 4: Delegate the mutation to business logic (NOT the view)
-        Task {
-            await PostLogic.shared.toggleLike(post: currentPost, groupID: groupID)
-        }
-    }
-    /*
-    @objc private func likeTapped() {
-
-        // 1. Make sure this cell has a postID
-        if postID == nil {
-            return
-        }
-
-        let currentPostID = postID!
-
-        // 2. Fetch the post from the data controller
-        let post = postDataController.getPostByID(postID: currentPostID)
-
-        // 3. Make sure the post exists
-        if post == nil {
-            return
-        }
-
-        let currentPost = post!
-
-        // 4. Get groupID (use 0 as default if missing)
-        let groupID = currentPost.groupID ?? 0
-
-        // 5. Call PostLogic to toggle like (async)
-        Task {
-            await PostLogic.shared.toggleLike(post: currentPost, groupID: groupID)
-        }
-    }
-    */
 
 }
 
+/*
+@objc private func handlePostUpdated(_ notification: Notification) {
+
+    // 1. Make sure the notification contains a post ID
+    if notification.object == nil {
+        return
+    }
+
+    let updatedPostID = notification.object as? Int
+    if updatedPostID == nil {
+        return
+    }
+
+    // 2. Make sure this update is for MY post
+    if updatedPostID != postID {
+        return
+    }
+
+    // 3. Update the UI
+    refreshUI()
+}
+
+*/
+
+/*
+@objc private func likeTapped() {
+
+    // 1. Make sure this cell has a postID
+    if postID == nil {
+        return
+    }
+
+    let currentPostID = postID!
+
+    // 2. Fetch the post from the data controller
+    let post = postDataController.getPostByID(postID: currentPostID)
+
+    // 3. Make sure the post exists
+    if post == nil {
+        return
+    }
+
+    let currentPost = post!
+
+    // 4. Get groupID (use 0 as default if missing)
+    let groupID = currentPost.groupID ?? 0
+
+    // 5. Call PostLogic to toggle like (async)
+    Task {
+        await PostLogic.shared.toggleLike(post: currentPost, groupID: groupID)
+    }
+}
+*/
 
 /*
 private func refreshUI() {

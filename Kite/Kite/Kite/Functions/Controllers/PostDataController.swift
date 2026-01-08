@@ -59,7 +59,6 @@ class PostDataController {
         return posts.first { $0.postID == postID }
     }
 
-
     //Function A4: Like a Post
     func likePost(postID: Int, likeModel: LikeModel) {
 

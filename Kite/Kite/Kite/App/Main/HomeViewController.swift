@@ -45,6 +45,7 @@ class HomeViewController: UIViewController {
             object: nil
         )
 
+        //LISTENER: Post Updated
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handlePostUpdated),
@@ -104,9 +105,6 @@ class HomeViewController: UIViewController {
         postsTableView.reloadData()
     }
 
-    // STEP 10: Home feed hears that a post changed
-    // STEP 11: It refreshes itself from the single source of truth
-
     @objc private func handlePostUpdated(_ notification: Notification) {
         // Simple pattern: just reload the table (matches DataController example)
         postsTableView.reloadData()
@@ -152,7 +150,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //let postCaptionUserInfoHeight: CGFloat = 40 // Fixed height for user info section
         //let totalCaptionHeight = postCaptionUserInfoHeight + postCaptionTextHeight
         
-    
         //STEP 3: Calculate total height (matching actual cell layout)
         // Fixed heights: header (52) + image (dynamic) + caption user info (28) + caption text (dynamic) + socials (32) + divider (2)
         let fixedHeights: CGFloat = 52 + 22 + 32 + 2
@@ -167,9 +164,5 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         return 200 // Estimated height like IndividualPostViewController
     }
      
-    
 }
-
-
-
 

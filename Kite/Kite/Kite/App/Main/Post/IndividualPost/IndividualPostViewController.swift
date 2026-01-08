@@ -103,7 +103,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-        postCell.configure(postID: postID)
+        postCell.configurePostCell(postID: postID)
         
         return postCell
 
