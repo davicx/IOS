@@ -23,7 +23,7 @@ class IndividualGroupPostCell: UITableViewCell {
     let itemImageView = componentFunctions.createUIView(backgroundColor: UIColor.systemPink)
     let itemDescriptionView = componentFunctions.createUIView(backgroundColor: UIColor.systemTeal)
     
-    // Add these new UI elements 
+    // Add these new UI elements
     private let productImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,18 +57,20 @@ class IndividualGroupPostCell: UITableViewCell {
     }
 
     //CELL SETUP
+    //SO HERE WE NEED TO USE POST
     func configurePost(with post: Post) {
-        // Print post information
+    //func configurePost(with item: Item) {
+        // Print item information
         print("=== IndividualGroupPostCell configurePost ===")
-        print("=== Post Information ===")
+        print("=== Item Information ===")
         print("postID: \(post.postID)")
-        print("groupID: \(post.groupID ?? -1)")
+        print("groupID: \(post.groupID)")
         print("postCaption: \(post.postCaption ?? "nil")")
         print("fileURL: \(post.fileUrl ?? "nil")")
         print("item_name: \(post.itemName ?? "nil")")
         print("========================")
         
-        // Set the post image (already downloaded by addPostImageToItemsArray)
+        // Set the item image (already downloaded by addPostImageToItemsArray)
         productImageView.image = post.postImageData ?? UIImage(named: "background_1")
     }
     
@@ -255,7 +257,7 @@ class IndividualPostCell: UITableViewCell {
     
         stopLoading()
 
-    }    
+    }
     
     //FUNCTIONS
     func startLoading() {
@@ -356,7 +358,7 @@ class IndividualPostCell: UITableViewCell {
     
 
     //CELL SETUP - This method is commented out to avoid conflicts
-    /*
+    
     func configurePost(with post: Post) {
         // posts
     }
@@ -444,10 +446,3 @@ class IndividualPostCell: UITableViewCell {
 }
 
 */
-    
-    //VIEW: Item Purchased Info
-    //VIEW: Item Store Links
-    //VIEW: Caption
-    //VIEW: Divider
-    
-

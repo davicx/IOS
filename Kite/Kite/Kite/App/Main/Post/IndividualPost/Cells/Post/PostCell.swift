@@ -154,8 +154,6 @@ class PostCell: UITableViewCell {
 
         refreshPostCellUI()
     }
-
-
 }
 
 /*

@@ -8,12 +8,6 @@
 import UIKit
 
 
-// ------------------------------------------------
-// APP DATA: OLD WAY (keep for now, but do not use)
-// ------------------------------------------------
-// OLD: Callback-based updates (confusing, will remove later)
-//var onPostsUpdated: (() -> Void)?
-
 
 class PostDataController {
 

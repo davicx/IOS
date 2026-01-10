@@ -122,6 +122,7 @@
 		D7834F0C2EA857E900C647AB /* IndividualGroupFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0B2EA857E900C647AB /* IndividualGroupFriendViewController.swift */; };
 		D7834F0E2EA85A6000C647AB /* GroupItemUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */; };
 		D7834F102EA85A7C00C647AB /* GroupItemFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */; };
+		D783E50D2F108241005B5170 /* IndividualGroupPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D783E50C2F108241005B5170 /* IndividualGroupPostCell.swift */; };
 		D78BE98D2E271CEE0082ABC4 /* PostCellBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */; };
 		D78BE98F2E271DAE0082ABC4 /* PostHeaderLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */; };
 		D78C15A52E74DC7B00FB6959 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C15A42E74DC7B00FB6959 /* User.swift */; };
@@ -320,6 +321,7 @@
 		D7834F0B2EA857E900C647AB /* IndividualGroupFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualGroupFriendViewController.swift; sourceTree = "<group>"; };
 		D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupItemUserCell.swift; sourceTree = "<group>"; };
 		D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupItemFriendCell.swift; sourceTree = "<group>"; };
+		D783E50C2F108241005B5170 /* IndividualGroupPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualGroupPostCell.swift; sourceTree = "<group>"; };
 		D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellBackup.swift; sourceTree = "<group>"; };
 		D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHeaderLayout.swift; sourceTree = "<group>"; };
 		D78C15A42E74DC7B00FB6959 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -997,6 +999,7 @@
 			isa = PBXGroup;
 			children = (
 				D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */,
+				D783E50C2F108241005B5170 /* IndividualGroupPostCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1274,6 +1277,7 @@
 				D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */,
 				D7A75AC92E67A51400BDDA78 /* LoginStatusModel.swift in Sources */,
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,
+				D783E50D2F108241005B5170 /* IndividualGroupPostCell.swift in Sources */,
 				D7529BD92ED27DD0000C1D48 /* ItemDoc.swift in Sources */,
 				D7D803212E174D6F009BA090 /* CreateGroupViewController.swift in Sources */,
 				5139A6312D28B5980029024E /* Buttons.swift in Sources */,

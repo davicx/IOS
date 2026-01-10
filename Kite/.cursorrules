@@ -48,6 +48,18 @@
 - Business logic in `Kite/Kite/Functions/`
 - View controllers in `Kite/Kite/App/Main/`
 
+### File Search Priorities
+- **Ignore these files/folders** (they are documentation/example code):
+  - Files ending in `Doc.swift` (e.g., `PostDoc.swift`, `ItemDoc.swift`, `LoginDoc.swift`)
+  - `past/` folder (legacy/old code)
+- **Check when explicitly referenced:**
+  - `DataController/` folder (example/test project) - Check this when user says "following the pattern in DataController" or explicitly references it
+  - Doc files - Only check if explicitly requested by the user
+- **Prioritize these files** when searching:
+  - Active view controllers in `Kite/Kite/App/Main/`
+  - Data controllers in `Kite/Kite/Functions/Controllers/`
+  - Core business logic in `Kite/Kite/Functions/`
+
 ## Common Patterns
 
 ### Like/Unlike Flow

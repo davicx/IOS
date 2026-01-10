@@ -9,7 +9,7 @@
 import UIKit
 
 
-//WISHLIST
+//WISHLIST: Post
 class Post {
     var postID: Int
     var postType: String?
@@ -63,7 +63,7 @@ class Post {
 }
 
 
-//KITE
+//Kite: Post
 /*
 class Post {
     var postID: Int
