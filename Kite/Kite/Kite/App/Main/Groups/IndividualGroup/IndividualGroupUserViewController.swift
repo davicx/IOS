@@ -372,7 +372,6 @@ class IndividualGroupUserViewController: UIViewController {
 
 
 extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return postDataController.posts.count
         return postDataController.items.count

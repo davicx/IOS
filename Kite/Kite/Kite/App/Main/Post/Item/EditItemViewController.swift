@@ -15,6 +15,9 @@ class EditItemViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //EditItemViewController
+        printPageInfo(vcName: "EditItemViewController")
+
         print(currentPost?.postCaption)
         print(currentPost?.itemName)
 
