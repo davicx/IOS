@@ -8,8 +8,276 @@
 import UIKit
 
 
+class PostCell: UITableViewCell {
 
-//HOME FEED: Kite 
+    private let postDataController = PostDataController.shared
+    private var postID: Int?
+    
+    //UI Elements
+    private let captionLabel = UILabel()
+    private let likeCountLabel = UILabel()
+    private let likeButton = UIButton(type: .system)
+
+    //Cell Setup
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setupViews()
+        setupLayout()
+
+        //LISTENER: Post Updated
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
+    }
+    
+    func configurePostCell(postID: Int) {
+        self.postID = postID
+        refreshPostCellUI()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    
+    //LAYOUT
+    private func setupViews() {
+        captionLabel.numberOfLines = 0
+        captionLabel.font = .systemFont(ofSize: 16)
+
+        likeCountLabel.font = .systemFont(ofSize: 14)
+        likeCountLabel.textColor = .secondaryLabel
+
+        likeButton.setTitle("Like", for: .normal)
+        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+
+        contentView.addSubview(captionLabel)
+        contentView.addSubview(likeCountLabel)
+        contentView.addSubview(likeButton)
+    }
+
+    private func setupLayout() {
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            // Caption
+            captionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            captionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            captionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            // Like count
+            likeCountLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: 12),
+            likeCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            likeCountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+
+            // Like button
+            likeButton.centerYAnchor.constraint(equalTo: likeCountLabel.centerYAnchor),
+            likeButton.leadingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor, constant: 12)
+        ])
+    }
+
+
+    //ACTIONS
+    @objc private func likeTapped() {
+
+        //STEP 1: Get the post that was liked
+        if postID == nil {
+            return
+        }
+
+        let currentPostID = postID!
+
+        let post = postDataController.getPostByID(postID: currentPostID)
+
+        if post == nil {
+            return
+        }
+
+        let currentPost = post!
+        let groupID = currentPost.groupID ?? 0
+
+        //STEP 2: Call my Post Logic class to handle liking a post
+        Task {
+            await PostLogic.shared.toggleLike(post: currentPost, groupID: groupID)
+        }
+    }
+    
+    
+    //FUNCTIONS
+    private func refreshPostCellUI() {
+        
+        //STEP 1: Get current Post
+        if postID == nil {
+            return
+        }
+
+        let fetchedPost = postDataController.getPostByID(postID: postID!)
+
+        if fetchedPost == nil {
+            return
+        }
+
+        let currentPost = fetchedPost!
+
+        //STEP 2: Update the Post Cell UI
+        captionLabel.text = currentPost.postCaption
+
+        let likeCount = currentPost.postLikesArray?.count ?? 0
+        likeCountLabel.text = "\(likeCount) likes"
+
+        if currentPost.isLikedByCurrentUser == true {
+            likeButton.setTitle("Liked", for: .normal)
+        } else {
+            likeButton.setTitle("Like me", for: .normal)
+        }
+    }
+    
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        let updatedPostID = notification.object as? Int
+        if updatedPostID == nil {
+            return
+        }
+
+        if updatedPostID != postID {
+            return
+        }
+
+        refreshPostCellUI()
+    }
+}
+
+/*
+@objc private func handlePostUpdated(_ notification: Notification) {
+
+    // 1. Make sure the notification contains a post ID
+    if notification.object == nil {
+        return
+    }
+
+    let updatedPostID = notification.object as? Int
+    if updatedPostID == nil {
+        return
+    }
+
+    // 2. Make sure this update is for MY post
+    if updatedPostID != postID {
+        return
+    }
+
+    // 3. Update the UI
+    refreshUI()
+}
+
+*/
+
+/*
+@objc private func likeTapped() {
+
+    // 1. Make sure this cell has a postID
+    if postID == nil {
+        return
+    }
+
+    let currentPostID = postID!
+
+    // 2. Fetch the post from the data controller
+    let post = postDataController.getPostByID(postID: currentPostID)
+
+    // 3. Make sure the post exists
+    if post == nil {
+        return
+    }
+
+    let currentPost = post!
+
+    // 4. Get groupID (use 0 as default if missing)
+    let groupID = currentPost.groupID ?? 0
+
+    // 5. Call PostLogic to toggle like (async)
+    Task {
+        await PostLogic.shared.toggleLike(post: currentPost, groupID: groupID)
+    }
+}
+*/
+
+/*
+private func refreshUI() {
+    guard
+        let postID = postID,
+        let post = postDataController.getPostByID(postID: postID)
+    else { return }
+
+    captionLabel.text = post.postCaption
+
+    let likeCount = post.postLikesArray?.count ?? 0
+    likeCountLabel.text = "\(likeCount) likes"
+
+    let isLiked = post.isLikedByCurrentUser ?? false
+    likeButton.setTitle(isLiked ? "Liked" : "Like me", for: .normal)
+}
+*/
+
+
+
+/*
+@objc private func handlePostUpdated(_ notification: Notification) {
+    guard
+        let updatedPostID = notification.object as? Int,
+        updatedPostID == postID
+    else { return }
+
+    refreshUI()
+}
+*/
+
+
+/*
+@objc private func likeTapped() {
+    guard
+        let postID = postID,
+        let post = postDataController.getPostByID(postID: postID)
+    else { return }
+
+    let groupID = post.groupID ?? 0
+    
+    // Use PostLogic to handle API call and data controller update
+    Task {
+        await PostLogic.shared.toggleLike(post: post, groupID: groupID)
+    }
+}
+*/
+
+/*
+ class PostCell: UITableViewCell {
+
+
+
+
+
+
+
+     // MARK: - Notifications
+
+
+
+     // MARK: - Actions
+
+
+ }
+
+ */
+//WORKING AND DESIGN LOOKS OK
+/*
 class PostCell: UITableViewCell {
     
     //POST HEADER: Post Information
@@ -64,9 +332,9 @@ class PostCell: UITableViewCell {
         setupHeaderViews()
         setupMenu()
         setupBodyImageViews()
-        setupBodyCaptionViews()
-        setupBodySocialsViews()
-        setupFooterViews()
+        //setupBodyCaptionViews()
+        //setupBodySocialsViews()
+        //setupFooterViews()
         
         print("PostCell")
     }
@@ -328,19 +596,19 @@ class PostCell: UITableViewCell {
         layoutIfNeeded()
     }
     
-    //ITEM SETUP: Actual Item Information (Item has all Post properties plus item-specific data)
-    func updateItem(with item: Item) {
+    //ITEM SETUP: Actual Item Information (Post with postType == "item")
+    func updateItem(with post: Post) {
         
         //POST HEADER: Setup
-        let groupImage = item.groupImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let groupImage = post.groupImageData ?? UIImage(named: "background_1") ?? UIImage()
         userImageView.image = groupImage
 
-        userEventNameText.text = item.groupName ?? "No Group"
-        userEventTimeText.text = item.timeMessage ?? "No Time"
+        userEventNameText.text = post.groupName ?? "No Group"
+        userEventTimeText.text = post.timeMessage ?? "No Time"
         
         //POST BODY: Setup
-        let currentImage = item.postImageData ?? UIImage(named: "background_1") ?? UIImage()
-        let postCaption = item.postCaption ?? "no caption"
+        let currentImage = post.postImageData ?? UIImage(named: "background_1") ?? UIImage()
+        let postCaption = post.postCaption ?? "no caption"
         
         let imageHeight = getImageHeight(image: currentImage)
         postImageHeightConstraint?.constant = imageHeight
@@ -351,7 +619,7 @@ class PostCell: UITableViewCell {
         postCaptionHeightConstraint?.constant = captionHeight
         postCaptionLabel.text = postCaption
         
-        postSocialsLabel.text = "Post Like Count: \(item.simpleLikesArray?.count ?? 0)"
+        postSocialsLabel.text = "Post Like Count: \(post.simpleLikesArray?.count ?? 0)"
         
         layoutIfNeeded()
     }
@@ -379,8 +647,6 @@ class PostCell: UITableViewCell {
     @objc private func menuButtonTapped() {
         print("PostCell: Menu button was tapped!")
     }
-
-
     
 }
 
@@ -490,6 +756,121 @@ func createPostSocialsText() -> UILabel {
     
     return label
 }
+*/
+//Kite
+/*
+class PostCell: UITableViewCell {
+
+    private let postDataController = PostDataController.shared
+
+    private let captionLabel = UILabel()
+    private let likeCountLabel = UILabel()
+    private let likeButton = UIButton(type: .system)
+
+    private var postID: Int?
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setupViews()
+        setupLayout()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        captionLabel.numberOfLines = 0
+        captionLabel.font = .systemFont(ofSize: 16)
+
+        likeCountLabel.font = .systemFont(ofSize: 14)
+        likeCountLabel.textColor = .secondaryLabel
+
+        likeButton.setTitle("Like", for: .normal)
+        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+
+        contentView.addSubview(captionLabel)
+        contentView.addSubview(likeCountLabel)
+        contentView.addSubview(likeButton)
+    }
+
+    private func setupLayout() {
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            // Caption
+            captionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            captionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            captionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            // Like count
+            likeCountLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: 12),
+            likeCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            likeCountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+
+            // Like button
+            likeButton.centerYAnchor.constraint(equalTo: likeCountLabel.centerYAnchor),
+            likeButton.leadingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor, constant: 12)
+        ])
+    }
+
+    func configure(postID: Int) {
+        self.postID = postID
+
+        guard let post = postDataController.getPostByID(postID: postID) else {
+            captionLabel.text = "Post not found"
+            likeCountLabel.text = "0 likes"
+            return
+        }
+
+        captionLabel.text = post.postCaption
+
+        let likeCount = post.postLikesArray?.count ?? 0
+        likeCountLabel.text = "\(likeCount) likes"
+    }
+
+    @objc private func likeTapped() {
+        print("like")
+    }
+}
+*/
+//SIMPLE 1
+/*
+class PostCell: UITableViewCell {
+
+    let postIDLabel = Elements.postIDLabel()
+
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(postIDLabel)
+
+        NSLayoutConstraint.activate([
+            postIDLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            postIDLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    
+    func configure(postID: Int) {
+        print("configure: PostCell")
+        postIDLabel.text = "Post ID: \(postID)"
+    }
+}
+*/
 
 
 
+
+
+
+//WORKING
+//HOME FEED: Kite

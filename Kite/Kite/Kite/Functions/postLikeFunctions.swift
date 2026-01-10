@@ -25,9 +25,12 @@ class postLikeFunctions {
             let response = try await postAPI.likePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
             if response.success {
                 let likeModel = response.data
+                // OLD: PostDataController now handles this mutation
+                /*
                 post.isLikedByCurrentUser = true
                 post.postLikesArray?.append(likeModel)
                 post.simpleLikesArray?.append(likeModel.likedByUserName)
+                */
                 return likeModel
             }
         } catch {
@@ -41,9 +44,12 @@ class postLikeFunctions {
             let response = try await postAPI.unlikePostAPI(currentUser: currentUser, postID: post.postID, groupID: groupID)
             if response.success {
                 let likeModel = response.data
+                // OLD: PostDataController now handles this mutation
+                /*
                 post.isLikedByCurrentUser = false
                 post.postLikesArray = post.postLikesArray?.filter { $0.postLikeID != likeModel.postLikeID }
                 post.simpleLikesArray = post.simpleLikesArray?.filter { $0 != response.currentUser }
+                */
                 return likeModel
             }
         } catch {

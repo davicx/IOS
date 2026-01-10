@@ -122,6 +122,7 @@
 		D7834F0C2EA857E900C647AB /* IndividualGroupFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0B2EA857E900C647AB /* IndividualGroupFriendViewController.swift */; };
 		D7834F0E2EA85A6000C647AB /* GroupItemUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */; };
 		D7834F102EA85A7C00C647AB /* GroupItemFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */; };
+		D783E50D2F108241005B5170 /* IndividualGroupPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D783E50C2F108241005B5170 /* IndividualGroupPostCell.swift */; };
 		D78BE98D2E271CEE0082ABC4 /* PostCellBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */; };
 		D78BE98F2E271DAE0082ABC4 /* PostHeaderLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */; };
 		D78C15A52E74DC7B00FB6959 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78C15A42E74DC7B00FB6959 /* User.swift */; };
@@ -133,6 +134,7 @@
 		D78EBDDB2E305A700008F3FE /* IndividualPostCellQA.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EBDDA2E305A700008F3FE /* IndividualPostCellQA.swift */; };
 		D78EBE5B2E1C93F90087FB56 /* IndividualPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */; };
 		D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */; };
+		D792ED922F073F4D00E0A469 /* PostLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D792ED912F073F4D00E0A469 /* PostLogic.swift */; };
 		D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */; };
 		D79743F72DFB980A00DC97D5 /* LoginDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79743F62DFB980A00DC97D5 /* LoginDoc.swift */; };
 		D798605A2E208A050094B46E /* componentFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79860592E208A050094B46E /* componentFunctions.swift */; };
@@ -164,13 +166,13 @@
 		D7D3DD322D518D8F00B9DAA7 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */; };
 		D7D3DD342D51940000B9DAA7 /* AccessTokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */; };
 		D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */; };
-		D7D5F3062D921DAB00EE0A09 /* Doc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D5F3052D921DAB00EE0A09 /* Doc.swift */; };
 		D7D793162EECE469004046AC /* ProflieDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D793152EECE469004046AC /* ProflieDoc.swift */; };
 		D7D803212E174D6F009BA090 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D803202E174D6F009BA090 /* CreateGroupViewController.swift */; };
 		D7D88BA02D62B8DF002B3084 /* GroupsResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */; };
 		D7D88BA42D62B92B002B3084 /* GroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D88BA32D62B92B002B3084 /* GroupModel.swift */; };
 		D7D9923A2DFCE41200D6B48A /* IndividualGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */; };
 		D7D9923C2DFCE66200D6B48A /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D9923B2DFCE66200D6B48A /* GroupTableViewCell.swift */; };
+		D7DB60A42F09F8F300C43BE8 /* Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DB60A32F09F8F300C43BE8 /* Elements.swift */; };
 		D7DBC7352EC94726002DD687 /* CommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DBC7342EC94726002DD687 /* CommentTemplate.swift */; };
 		D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */; };
 		D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */; };
@@ -319,6 +321,7 @@
 		D7834F0B2EA857E900C647AB /* IndividualGroupFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualGroupFriendViewController.swift; sourceTree = "<group>"; };
 		D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupItemUserCell.swift; sourceTree = "<group>"; };
 		D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupItemFriendCell.swift; sourceTree = "<group>"; };
+		D783E50C2F108241005B5170 /* IndividualGroupPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualGroupPostCell.swift; sourceTree = "<group>"; };
 		D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellBackup.swift; sourceTree = "<group>"; };
 		D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHeaderLayout.swift; sourceTree = "<group>"; };
 		D78C15A42E74DC7B00FB6959 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -330,6 +333,7 @@
 		D78EBDDA2E305A700008F3FE /* IndividualPostCellQA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostCellQA.swift; sourceTree = "<group>"; };
 		D78EBE5A2E1C93F90087FB56 /* IndividualPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostTableViewCell.swift; sourceTree = "<group>"; };
 		D78EDE722D7D13D70095D133 /* UserProfileFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowers.swift; sourceTree = "<group>"; };
+		D792ED912F073F4D00E0A469 /* PostLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLogic.swift; sourceTree = "<group>"; };
 		D7958ADD2D557C5800B22150 /* ProfileAPIBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPIBackup.swift; sourceTree = "<group>"; };
 		D79743F62DFB980A00DC97D5 /* LoginDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDoc.swift; sourceTree = "<group>"; };
 		D79860592E208A050094B46E /* componentFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = componentFunctions.swift; sourceTree = "<group>"; };
@@ -361,13 +365,13 @@
 		D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseModel.swift; sourceTree = "<group>"; };
 		D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenModel.swift; sourceTree = "<group>"; };
-		D7D5F3052D921DAB00EE0A09 /* Doc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doc.swift; sourceTree = "<group>"; };
 		D7D793152EECE469004046AC /* ProflieDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProflieDoc.swift; sourceTree = "<group>"; };
 		D7D803202E174D6F009BA090 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsResponseModel.swift; sourceTree = "<group>"; };
 		D7D88BA32D62B92B002B3084 /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
 		D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualGroupViewController.swift; sourceTree = "<group>"; };
 		D7D9923B2DFCE66200D6B48A /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
+		D7DB60A32F09F8F300C43BE8 /* Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elements.swift; sourceTree = "<group>"; };
 		D7DBC7342EC94726002DD687 /* CommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplate.swift; sourceTree = "<group>"; };
 		D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemViewController.swift; sourceTree = "<group>"; };
 		D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewController.swift; sourceTree = "<group>"; };
@@ -412,6 +416,7 @@
 				5139A6302D28B5980029024E /* Buttons.swift */,
 				D74304032DF6593400D7775A /* StyleConstants.swift */,
 				D7F2CFC32EAD91B400A8E249 /* Colors.swift */,
+				D7DB60A32F09F8F300C43BE8 /* Elements.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -507,6 +512,7 @@
 		51C69B162D0E550100C46759 /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				D792ED902F073F4400E0A469 /* Posts */,
 				D78047872DF507AC00702C01 /* Controllers */,
 				51C69B172D0E550900C46759 /* Classes */,
 				51C69B182D0E550F00C46759 /* Helpers */,
@@ -742,9 +748,8 @@
 				D7E1C93A2ED3D70F000071D0 /* Item */,
 				D70984DE2E2DBD7700157F27 /* IndividualPost */,
 				D70984E12E2DBDDE00157F27 /* HomePost */,
-				D78CEF7A2E2F074B002E3712 /* FullOriginalPostToPullFrom.swift */,
-				D7BD62C02E5546030008F6E1 /* PostDoc.swift */,
 				D79B456A2EA4617600AD7038 /* NewPost */,
+				D7DB60A22F09EE4900C43BE8 /* Docs */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -754,17 +759,8 @@
 			children = (
 				D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */,
 				D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */,
-				D7529BD82ED27DD0000C1D48 /* ItemDoc.swift */,
 			);
 			path = Item;
-			sourceTree = "<group>";
-		};
-		D7529BD62ED27D9C000C1D48 /* Comment */ = {
-			isa = PBXGroup;
-			children = (
-				D71809462DBC37F5003BC46D /* CommentCell.swift */,
-			);
-			path = Comment;
 			sourceTree = "<group>";
 		};
 		D7529BD72ED27DB0000C1D48 /* Post */ = {
@@ -801,7 +797,6 @@
 			children = (
 				D79743F82DFB99D900DC97D5 /* Groups */,
 				51EC39142D34952F0001B6E7 /* Profile */,
-				D7FB876C2D6FE00E0054CDF7 /* Home */,
 				D74AAB382D9F4B7600C8AEB5 /* Post */,
 				D7DBC7332EC94707002DD687 /* Comment */,
 				D768C1B62E78DB1D00350D37 /* Search */,
@@ -838,7 +833,6 @@
 			isa = PBXGroup;
 			children = (
 				D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */,
-				D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -847,9 +841,7 @@
 			isa = PBXGroup;
 			children = (
 				D7529BD72ED27DB0000C1D48 /* Post */,
-				D7529BD62ED27D9C000C1D48 /* Comment */,
 				D7529BD52ED27D8A000C1D48 /* Item */,
-				D78EBDD92E305A5E0008F3FE /* QA */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -882,6 +874,14 @@
 				D7834F0B2EA857E900C647AB /* IndividualGroupFriendViewController.swift */,
 			);
 			path = IndividualGroup;
+			sourceTree = "<group>";
+		};
+		D792ED902F073F4400E0A469 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				D792ED912F073F4D00E0A469 /* PostLogic.swift */,
+			);
+			path = Posts;
 			sourceTree = "<group>";
 		};
 		D79743F82DFB99D900DC97D5 /* Groups */ = {
@@ -995,9 +995,30 @@
 			path = TableCells;
 			sourceTree = "<group>";
 		};
+		D7DB60A12F09EDDC00C43BE8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */,
+				D783E50C2F108241005B5170 /* IndividualGroupPostCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		D7DB60A22F09EE4900C43BE8 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				D78CEF7A2E2F074B002E3712 /* FullOriginalPostToPullFrom.swift */,
+				D7BD62C02E5546030008F6E1 /* PostDoc.swift */,
+				D78EBDD92E305A5E0008F3FE /* QA */,
+				D7529BD82ED27DD0000C1D48 /* ItemDoc.swift */,
+			);
+			path = Docs;
+			sourceTree = "<group>";
+		};
 		D7DBC7332EC94707002DD687 /* Comment */ = {
 			isa = PBXGroup;
 			children = (
+				D7E89C422EF0DBA200772626 /* Cells */,
 				D7DBC7342EC94726002DD687 /* CommentTemplate.swift */,
 			);
 			path = Comment;
@@ -1006,17 +1027,18 @@
 		D7E1C93A2ED3D70F000071D0 /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				D7DB60A12F09EDDC00C43BE8 /* Cells */,
 				D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */,
 			);
 			path = Item;
 			sourceTree = "<group>";
 		};
-		D7FB876C2D6FE00E0054CDF7 /* Home */ = {
+		D7E89C422EF0DBA200772626 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D7D5F3052D921DAB00EE0A09 /* Doc.swift */,
+				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 			);
-			path = Home;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1161,7 +1183,6 @@
 				D747F7BD2D824D3200A08602 /* UserProfileSocialsView.swift in Sources */,
 				D7834F0A2EA857CA00C647AB /* IndividualGroupUserViewController.swift in Sources */,
 				D726CD3F2E7391A900A0A3DA /* UsersDataController.swift in Sources */,
-				D7D5F3062D921DAB00EE0A09 /* Doc.swift in Sources */,
 				51C69B122D0E54CE00C46759 /* PostsAPI.swift in Sources */,
 				D7834F0E2EA85A6000C647AB /* GroupItemUserCell.swift in Sources */,
 				D7BD62C12E5546030008F6E1 /* PostDoc.swift in Sources */,
@@ -1256,6 +1277,7 @@
 				D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */,
 				D7A75AC92E67A51400BDDA78 /* LoginStatusModel.swift in Sources */,
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,
+				D783E50D2F108241005B5170 /* IndividualGroupPostCell.swift in Sources */,
 				D7529BD92ED27DD0000C1D48 /* ItemDoc.swift in Sources */,
 				D7D803212E174D6F009BA090 /* CreateGroupViewController.swift in Sources */,
 				5139A6312D28B5980029024E /* Buttons.swift in Sources */,
@@ -1278,6 +1300,7 @@
 				51ED44632D2E09A60036DB4B /* ProfileAPI.swift in Sources */,
 				51C69AE32D0E549100C46759 /* SceneDelegate.swift in Sources */,
 				D78047892DF507B500702C01 /* PlantDataController.swift in Sources */,
+				D7DB60A42F09F8F300C43BE8 /* Elements.swift in Sources */,
 				D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */,
 				D710E7F32E7E1338008C11BA /* DiscoverViewController.swift in Sources */,
 				D7A3C11C2D80F51E000B4EB7 /* SimpleBottomStackView.swift in Sources */,
@@ -1291,6 +1314,7 @@
 				D78C165E2DD55DBA00EEDD91 /* postLikeFunctions.swift in Sources */,
 				D7AD5CBB2EEB96CA00D90E90 /* UserCountResponseModel.swift in Sources */,
 				51C69B3A2D0E583F00C46759 /* LikePostResponseModel.swift in Sources */,
+				D792ED922F073F4D00E0A469 /* PostLogic.swift in Sources */,
 				D7A3C1202D80FB2E000B4EB7 /* UserProfileLayoutExample.swift in Sources */,
 				D742D6AB2D7A76F7000A1E62 /* UserFollowersView.swift in Sources */,
 				D7AD5CB92EEB96B300D90E90 /* UserCountModel.swift in Sources */,

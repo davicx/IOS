@@ -7,7 +7,9 @@
 
 import UIKit
 
+//PROBABLY DONT NEED
 
+/*
 //WISHLIST: Item
 class IndividualGroupPostCell: UITableViewCell {
     
@@ -56,19 +58,19 @@ class IndividualGroupPostCell: UITableViewCell {
     }
 
     //CELL SETUP
-    func configurePost(with item: Item) {
-        // Print item information
+    func configurePost(with post: Post) {
+        // Print post information
         print("=== IndividualGroupPostCell configurePost ===")
-        print("=== Item Information ===")
-        print("postID: \(item.postID)")
-        print("groupID: \(item.groupID)")
-        print("postCaption: \(item.postCaption ?? "nil")")
-        print("fileURL: \(item.fileUrl ?? "nil")")
-        print("item_name: \(item.itemName ?? "nil")")
+        print("=== Post Information ===")
+        print("postID: \(post.postID)")
+        print("groupID: \(post.groupID)")
+        print("postCaption: \(post.postCaption ?? "nil")")
+        print("fileURL: \(post.fileUrl ?? "nil")")
+        print("item_name: \(post.itemName ?? "nil")")
         print("========================")
         
-        // Set the item image (already downloaded by addPostImageToItemsArray)
-        productImageView.image = item.postImageData ?? UIImage(named: "background_1")
+        // Set the post image (already downloaded by addPostImageToItemsArray)
+        productImageView.image = post.postImageData ?? UIImage(named: "background_1")
     }
     
   
@@ -201,7 +203,7 @@ class IndividualGroupPostCell: UITableViewCell {
 
 }
 
-
+*/
 
 
 //KITE: Post

@@ -1,0 +1,6 @@
+# Ignore documentation/example files
+**/*Doc.swift
+
+# Ignore past/legacy code
+past/
+

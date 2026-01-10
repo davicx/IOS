@@ -394,7 +394,7 @@ class PostsAPI {
     }
   
     //Function B2: Get all Group Items
-    func getItemsAPI(groupID: Int) async throws -> ItemResponseModel {
+    func getItemsAPI(groupID: Int) async throws -> PostResponseModel {
         //print("GET ITEMS!!!")
         
         let endpoint = "http://localhost:3003/items/group/\(groupID)"
@@ -414,17 +414,17 @@ class PostsAPI {
         
         do {
             let decoder = JSONDecoder ()
-            let itemsResponseModel = try decoder.decode(ItemResponseModel.self, from: data)
+            let postsResponseModel = try decoder.decode(PostResponseModel.self, from: data)
       
-            return itemsResponseModel
+            return postsResponseModel
             
         } catch {
-            let itemsResponseModel = ItemResponseModel()
+            let postsResponseModel = PostResponseModel()
             print("Error decoding data: \(error)")
 
 
             print("Error decoding data")
-            return itemsResponseModel
+            return postsResponseModel
             
         }
     }

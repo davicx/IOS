@@ -9,7 +9,6 @@
 import UIKit
 
 
-//UPDATE ALL TO NOTIFICATION CENTER 
 class HomeViewController: UIViewController {
 
     //HOME: API and data
@@ -34,18 +33,25 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("_______________________")
-        print("HomeViewController")
-        print("_______________________")
-        
         // Setup PollingManager callback
         pollingManager.onFetchPosts = { [weak self] in
             self?.fetchPosts()
         }
         
-         postDataController.onPostsUpdated = { [weak self] in
-             self?.postsTableView.reloadData()
-         }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostsFetched),
+            name: .postsFetched,
+            object: nil
+        )
+
+        //LISTENER: Post Updated
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
          
         // Initial data fetch
         fetchPosts()
@@ -55,17 +61,19 @@ class HomeViewController: UIViewController {
 
         setupTableView()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Refresh table view to ensure cells show latest data from PostDataController
+        // This is important when returning from other screens where likes may have changed
         postsTableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        printPageInfo(vcName: "HomeViewController")
 
         pollingManager.startPolling() // Restart polling if view reappears
-        
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -81,12 +89,25 @@ class HomeViewController: UIViewController {
         postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     //FUNCTIONS
     func fetchPosts() {
         Task {
             await postDataController.fetchPosts(groupID: 72)
         }
+    }
+    
+    @objc private func handlePostsFetched() {
+        postsTableView.reloadData()
+    }
+
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        // Simple pattern: just reload the table (matches DataController example)
+        postsTableView.reloadData()
     }
 
 }
@@ -112,11 +133,11 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          
          let storyboard = UIStoryboard(name: "Post", bundle: nil)
          if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
-             postViewController.currentPost = post
+             //postViewController.currentPost = post
+             postViewController.postID = post.postID
              navigationController?.pushViewController(postViewController, animated: true)
          }
      }
-
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentPost = postDataController.posts[indexPath.row]
@@ -129,7 +150,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         //let postCaptionUserInfoHeight: CGFloat = 40 // Fixed height for user info section
         //let totalCaptionHeight = postCaptionUserInfoHeight + postCaptionTextHeight
         
-    
         //STEP 3: Calculate total height (matching actual cell layout)
         // Fixed heights: header (52) + image (dynamic) + caption user info (28) + caption text (dynamic) + socials (32) + divider (2)
         let fixedHeights: CGFloat = 52 + 22 + 32 + 2
@@ -144,7 +164,5 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         return 200 // Estimated height like IndividualPostViewController
     }
      
-    
 }
-
 

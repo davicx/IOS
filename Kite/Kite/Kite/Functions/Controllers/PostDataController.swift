@@ -8,7 +8,243 @@
 import UIKit
 
 
+
 class PostDataController {
+
+    static let shared = PostDataController()
+
+    private(set) var posts: [Post] = []
+
+    private let postsAPI = PostsAPI()
+    private let userDefaultManager = UserDefaultManager()
+
+    var currentUser: String {
+        return userDefaultManager.getLoggedInUser()
+    }
+
+    //FUNCTIONS A: Post Related
+    //Function A1: Fetch posts from API
+    func fetchPosts(groupID: Int) async {
+        do {
+            let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
+            let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
+            let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
+            let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
+            self.posts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .postsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch posts - \(error)")
+        }
+    }
+
+    //Function A2: Get a Post
+    func getPostByID(postID: Int) -> Post? {
+        return posts.first(where: { $0.postID == postID })
+    }
+    
+    //Function A3: Get an Item
+    func getItemByID(postID: Int) -> Post? {
+        return posts.first { $0.postID == postID }
+    }
+
+    //Function A4: Like a Post
+    func likePost(postID: Int, likeModel: LikeModel) {
+
+        // APP DATA: Step 1 – Find post in source of truth
+        guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
+
+        // APP DATA: Step 2 – Mutate data
+        var post = posts[index]
+
+        post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
+            $0 != likeModel.likedByUserName
+        }
+
+        post.postLikesArray = (post.postLikesArray ?? []).filter {
+            $0.postLikeID != likeModel.postLikeID
+        }
+
+        post.simpleLikesArray?.append(likeModel.likedByUserName)
+        post.postLikesArray?.append(likeModel)
+        post.isLikedByCurrentUser = true
+
+        posts[index] = post
+
+        // APP DATA: Step 3 – Notify entire app
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .postUpdated,
+                object: postID
+            )
+        }
+    }
+
+    //Function A5: Unlike a Post
+    func unlikePost(postID: Int, likeModel: LikeModel) {
+
+        // APP DATA: Step 1 – Find post
+        guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
+
+        // APP DATA: Step 2 – Mutate data (same pattern as likePost)
+        var post = posts[index]
+
+
+        // Use currentUser instead of likeModel.likedByUserName (API doesn't populate it for unlike)
+        let userNameToRemove = currentUser
+        
+        post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
+            $0 != userNameToRemove
+        }
+
+        post.postLikesArray = (post.postLikesArray ?? []).filter {
+            $0.postLikeID != likeModel.postLikeID
+        }
+
+        post.isLikedByCurrentUser = false
+
+        posts[index] = post
+
+        // APP DATA: Step 3 – Notify app
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .postUpdated,
+                object: postID
+            )
+        }
+    }
+
+    //FUNCTIONS B: Comment Related
+    //Function B1: Like a Comment
+    func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+
+        // APP DATA: Step 1 – Locate post + comment
+        guard
+            let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+            let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID })
+        else { return }
+
+        // APP DATA: Step 2 – Mutate data
+        posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = true
+        posts[postIndex].commentsArray?[commentIndex].commentLikeCount? += 1
+        posts[postIndex].commentsArray?[commentIndex].commentLikes?.append(commentLikeModel)
+
+        // APP DATA: Step 3 – Notify app
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .commentUpdated,
+                object: postID
+            )
+        }
+    }
+
+    //Function B2: Unlike a Comment
+    func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+
+        guard
+            let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+            let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID })
+        else { return }
+
+        posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = false
+        posts[postIndex].commentsArray?[commentIndex].commentLikeCount? -= 1
+        posts[postIndex].commentsArray?[commentIndex].commentLikes?.removeAll {
+            $0.commentLikeID == commentLikeModel.commentLikeID
+        }
+
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .commentUpdated,
+                object: postID
+            )
+        }
+    }
+    
+    
+    
+    //CLEAN BELOW
+    //CLEAN BELOW
+
+    // ------------------------------------------------
+    // APP DATA: DEBUG HELPERS
+    // ------------------------------------------------
+    func debugPrintCommentLikes() {
+        for post in posts {
+            print("POST ID: \(post.postID ?? -1)")
+            guard let comments = post.commentsArray else {
+                print("No comments")
+                continue
+            }
+
+            for comment in comments {
+                let likedUsernames = comment.commentLikes?.map { $0.likedByUserName } ?? []
+                print("Comment \(comment.commentID ?? -1): \(likedUsernames)")
+            }
+            print("_________________")
+        }
+    }
+
+    // ------------------------------------------------
+    // APP DATA: ITEMS (using posts array, filtered by postType == "item")
+    // ------------------------------------------------
+    var items: [Post] {
+        return posts.filter { $0.postType == "item" }
+    }
+
+    // OLD callback
+    var onItemsUpdated: (() -> Void)?
+
+    func fetchPostItems(groupID: Int) async {
+        do {
+            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
+            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
+            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
+            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
+            
+            // Merge items into posts array (items are just posts with postType == "item")
+            for item in itemsWithImages {
+                if let index = posts.firstIndex(where: { $0.postID == item.postID }) {
+                    posts[index] = item
+                } else {
+                    posts.append(item)
+                }
+            }
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .itemsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch items - \(error)")
+        }
+    }
+}
+
+//NOTIFICATIONS
+extension Notification.Name {
+    static let postUpdated = Notification.Name("postUpdated")
+    static let postsFetched = Notification.Name("postsFetched")
+    static let commentUpdated = Notification.Name("commentUpdated")
+
+ 
+    static let itemsFetched = Notification.Name("itemsFetched")
+    static let itemUpdated = Notification.Name("itemUpdated")
+}
+
+
+
+
+//WORKING
+/*
+ class PostDataController {
     static let shared = PostDataController()
 
     private(set) var posts: [Post] = []
@@ -217,3 +453,4 @@ extension Notification.Name {
     static let itemUpdated = Notification.Name("itemUpdated")
 }
 
+*/

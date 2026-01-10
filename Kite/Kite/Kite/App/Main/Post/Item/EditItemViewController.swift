@@ -11,12 +11,15 @@ import UIKit
 //STORYBOARD ID: EditItemVCStoryboardID
 class EditItemViewController: UIViewController {
     
-    var currentItem: Item?
+    var currentPost: Post?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(currentItem?.postCaption)
-        print(currentItem?.itemName)
+        //EditItemViewController
+        printPageInfo(vcName: "EditItemViewController")
+
+        print(currentPost?.postCaption)
+        print(currentPost?.itemName)
 
     }
 

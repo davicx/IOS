@@ -7,7 +7,8 @@
 
 import UIKit
 
-
+// HomePostCell is a UI renderer It may trigger data changes (like/unlike) it does NOT decide when or how the table refreshes.
+// The ViewController reacts to data changes via NotificationCenter.
 class HomePostCell: UITableViewCell {
     
     // Add properties for like functionality
@@ -123,8 +124,6 @@ class HomePostCell: UITableViewCell {
         ])
     }
 
-
-    
     //POST IMAGE
     let postImageUIView = createPostImage()
     
@@ -386,6 +385,14 @@ class HomePostCell: UITableViewCell {
         setupCaptionViews()
         setupSocialsViews()
         setupDividerViews()
+        
+        // Observe post updates via NotificationCenter
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
         //print("HomePostCell")
     }
 
@@ -393,9 +400,28 @@ class HomePostCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
 
     //ACTIONS
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        guard
+            let updatedPostID = notification.object as? Int,
+            let currentPostID = currentPost?.postID,
+            updatedPostID == currentPostID
+        else { return }
+        
+        // Refresh post from PostDataController and update UI
+        let postDataController = PostDataController.shared
+        if let updatedPost = postDataController.getPostByID(postID: updatedPostID) {
+            currentPost = updatedPost
+            updatePost(with: updatedPost)
+        }
+    }
+    
     @objc private func likesViewTapped() {
         guard let post = currentPost else { return }
         
@@ -404,6 +430,11 @@ class HomePostCell: UITableViewCell {
         Task {
             let groupID = post.groupID ?? 0
             
+            // NEW: Using PostLogic
+            await PostLogic.shared.toggleLike(post: post, groupID: groupID)
+            
+            // OLD: Two-step process
+            /*
             if post.isLikedByCurrentUser == true {
                 if let likeModel = await postLikeFunctions.shared.unlikePost(post: post, groupID: groupID) {
                     PostDataController.shared.unlikePost(postID: post.postID ?? 0, likeModel: likeModel)
@@ -413,8 +444,13 @@ class HomePostCell: UITableViewCell {
                     PostDataController.shared.likePost(postID: post.postID ?? 0, likeModel: likeModel)
                 }
             }
+            */
             
             DispatchQueue.main.async {
+                // NEW: UI will update automatically via NotificationCenter observer
+                
+                // OLD: Manual UI update (replaced by NotificationCenter pattern)
+                /*
                 // Update the current post from the shared data store
                 self.currentPost = PostDataController.shared.getPostByID(postID: post.postID ?? 0) ?? self.currentPost
                 
@@ -422,13 +458,13 @@ class HomePostCell: UITableViewCell {
                 if let updatedPost = self.currentPost {
                     self.updatePost(with: updatedPost)
                 }
+                */
                 
                 self.spinnerHelper.hide()
             }
         }
     }
-    
-    
+
     
     //SETUP: Setup Post on Load
     func updatePost(with post: Post) {
@@ -497,6 +533,15 @@ class HomePostCell: UITableViewCell {
         // Force layout update
         layoutIfNeeded()
     }
+
+    }
+
+func createPostImage() -> UIImageView {
+    let imageView = UIImageView()
+    imageView.contentMode = .scaleAspectFit
+    imageView.backgroundColor = .white
     
+    return imageView
 
 }
+
