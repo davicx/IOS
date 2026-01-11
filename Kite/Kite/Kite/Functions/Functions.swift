@@ -59,6 +59,14 @@ func printPageInfo(vcName: String, listType: String = "LISTS: Wishlist") {
     print(" ")
 }
 
+
+func printCellInfo(cellName: String, listType: String = "LISTS: Wishlist") {
+    print("________________________")
+    print(cellName)
+    print("________________________")
+}
+
+
 //IMAGE FUNCTIONS
 func getImageHeight(image: UIImage) -> CGFloat {
     let aspectRatio = image.size.height / image.size.width

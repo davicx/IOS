@@ -144,7 +144,7 @@ class GroupsViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
         tableView.rowHeight = 220
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none  // Comment out divider lines between cells
@@ -222,7 +222,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
             group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupCell
         cell.configure(with: group)
         return cell
     }
