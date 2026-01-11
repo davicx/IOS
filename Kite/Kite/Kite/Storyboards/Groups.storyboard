@@ -58,7 +58,7 @@
         <!--Make Post View Controller-->
         <scene sceneID="vcI-s1-OM6">
             <objects>
-                <viewController storyboardIdentifier="MakePostViewController" id="Deg-jI-LcC" customClass="MakePostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="I" id="Deg-jI-LcC" customClass="MakePostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0b8-yz-BTk">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
