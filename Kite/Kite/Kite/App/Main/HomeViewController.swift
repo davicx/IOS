@@ -132,7 +132,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          let post = postDataController.posts[indexPath.row]
          
          let storyboard = UIStoryboard(name: "Post", bundle: nil)
-         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+         if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
              //postViewController.currentPost = post
              postViewController.postID = post.postID
              navigationController?.pushViewController(postViewController, animated: true)

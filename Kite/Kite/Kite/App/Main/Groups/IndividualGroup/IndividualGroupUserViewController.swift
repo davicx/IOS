@@ -391,7 +391,7 @@ extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewD
         let post = postDataController.items[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+        if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
             // Pass the post as currentPost (it's an item if postType == "item")
             //postViewController.currentPost = post
             postViewController.postID = post.postID
