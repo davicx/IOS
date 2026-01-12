@@ -763,6 +763,8 @@
 		D701259E2F13280300A9C400 /* IndividualGroup */ = {
 			isa = PBXGroup;
 			children = (
+				D7454AB32F146BC500D76F3B /* cells */,
+				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
 			);
 			path = IndividualGroup;
 			sourceTree = "<group>";
@@ -855,6 +857,13 @@
 				D73A1B6A2E8213B50085E4F1 /* FriendSearchModel.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		D7454AB32F146BC500D76F3B /* cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = cells;
 			sourceTree = "<group>";
 		};
 		D747F7B72D824CCF00A08602 /* original */ = {
@@ -981,7 +990,6 @@
 		D78EBE582E1C8BEA0087FB56 /* IndividualGroup */ = {
 			isa = PBXGroup;
 			children = (
-				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
 				D768C1B22E78D3B500350D37 /* IndividualGroupMembersVC.swift */,
 				D7834F092EA857CA00C647AB /* IndividualGroupUserViewController.swift */,
 				D7834F0B2EA857E900C647AB /* IndividualGroupFriendViewController.swift */,
