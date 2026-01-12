@@ -93,6 +93,7 @@
 		D74470372E723BA500EF2D2D /* GroupUsersResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74470362E723BA500EF2D2D /* GroupUsersResponseModel.swift */; };
 		D74470392E723BC800EF2D2D /* GroupUsersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74470382E723BC800EF2D2D /* GroupUsersModel.swift */; };
 		D74471192D88EAE6009677B9 /* DividerWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74471182D88EAE6009677B9 /* DividerWithLabel.swift */; };
+		D7454AB52F147AD400D76F3B /* GroupLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7454AB42F147AD400D76F3B /* GroupLogic.swift */; };
 		D7468DD92E875A6E005FFD59 /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */; };
 		D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */; };
 		D747F7BB2D824D0800A08602 /* UserNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7BA2D824D0800A08602 /* UserNameView.swift */; };
@@ -292,6 +293,7 @@
 		D74470362E723BA500EF2D2D /* GroupUsersResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUsersResponseModel.swift; sourceTree = "<group>"; };
 		D74470382E723BC800EF2D2D /* GroupUsersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUsersModel.swift; sourceTree = "<group>"; };
 		D74471182D88EAE6009677B9 /* DividerWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerWithLabel.swift; sourceTree = "<group>"; };
+		D7454AB42F147AD400D76F3B /* GroupLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupLogic.swift; sourceTree = "<group>"; };
 		D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewController.swift; sourceTree = "<group>"; };
 		D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileImageView.swift; sourceTree = "<group>"; };
 		D747F7BA2D824D0800A08602 /* UserNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameView.swift; sourceTree = "<group>"; };
@@ -1001,6 +1003,7 @@
 			isa = PBXGroup;
 			children = (
 				D792ED912F073F4D00E0A469 /* PostLogic.swift */,
+				D7454AB42F147AD400D76F3B /* GroupLogic.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -1453,6 +1456,7 @@
 				D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */,
 				51C69B3E2D0E584B00C46759 /* PostModel.swift in Sources */,
 				51CA9DCC2D0FAA67008C36F0 /* NewPostViewController.swift in Sources */,
+				D7454AB52F147AD400D76F3B /* GroupLogic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

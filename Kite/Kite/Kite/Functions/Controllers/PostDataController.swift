@@ -13,7 +13,13 @@ class PostDataController {
 
     static let shared = PostDataController()
 
+    // MARK: - Posts Storage (Dictionary per groupID)
+    private var groupPosts: [Int: [Post]] = [:] // groupID -> [Post]
+    
+    /*
+    //OLD: Single array (replaced all posts when fetching new group)
     private(set) var posts: [Post] = []
+    */
 
     private let postsAPI = PostsAPI()
     private let userDefaultManager = UserDefaultManager()
@@ -21,9 +27,45 @@ class PostDataController {
     var currentUser: String {
         return userDefaultManager.getLoggedInUser()
     }
+    
+    // MARK: - Get Posts
+    
+    /// Get posts for a specific group
+    func getPostsForGroup(groupID: Int) -> [Post] {
+        return groupPosts[groupID] ?? []
+    }
+    
+    /// Get all posts from all groups (for home feed)
+    var allPosts: [Post] {
+        return Array(groupPosts.values).flatMap { $0 }
+    }
 
-    //FUNCTIONS A: Post Related
+    //FUNCTIONS A: Post Related
     //Function A1: Fetch posts from API
+    func fetchPosts(groupID: Int) async {
+        do {
+            let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
+            let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
+            let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
+            let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
+            let fetchedPosts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
+            
+            // Store posts per groupID
+            groupPosts[groupID] = fetchedPosts
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .postsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch posts - \(error)")
+        }
+    }
+    
+    /*
+    //OLD: Replaced entire posts array
     func fetchPosts(groupID: Int) async {
         do {
             let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
@@ -42,15 +84,95 @@ class PostDataController {
             print("PostDataController: Failed to fetch posts - \(error)")
         }
     }
+    */
+    
+    
+    func fetchItems(groupID: Int) async {
+        do {
+            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
+            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
+            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
+            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
+            
+            // Get existing posts for this group (or empty array)
+            var existingPosts = groupPosts[groupID] ?? []
+            
+            // Merge items into existing posts (items are just posts with postType == "item")
+            for item in itemsWithImages {
+                if let index = existingPosts.firstIndex(where: { $0.postID == item.postID }) {
+                    existingPosts[index] = item
+                } else {
+                    existingPosts.append(item)
+                }
+            }
+            
+            // Store updated posts for this group
+            groupPosts[groupID] = existingPosts
 
-    //Function A2: Get a Post
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .itemsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch items - \(error)")
+        }
+    }
+    
+    /*
+    //OLD: Merged items into single posts array
+    func fetchItems(groupID: Int) async {
+        do {
+            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
+            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
+            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
+            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
+            
+            // Merge items into posts array (items are just posts with postType == "item")
+            for item in itemsWithImages {
+                if let index = posts.firstIndex(where: { $0.postID == item.postID }) {
+                    posts[index] = item
+                } else {
+                    posts.append(item)
+                }
+            }
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .itemsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch items - \(error)")
+        }
+    }
+    */
+
+    //Function A2: Get a Post (searches across all groups)
+    func getPostByID(postID: Int) -> Post? {
+        // Search across all groups
+        for posts in groupPosts.values {
+            if let post = posts.first(where: { $0.postID == postID }) {
+                return post
+            }
+        }
+        return nil
+    }
+    
+    /*
+    //OLD: Searched single posts array
     func getPostByID(postID: Int) -> Post? {
         return posts.first(where: { $0.postID == postID })
     }
+    */
     
-    //Function A3: Get an Item
+    //Function A3: Get an Item (searches across all groups)
     func getItemByID(postID: Int) -> Post? {
-        return posts.first { $0.postID == postID }
+        return getPostByID(postID: postID)
     }
 
     //Function A4: Like a Post
@@ -165,67 +287,8 @@ class PostDataController {
         }
     }
     
-    
-    
-    //CLEAN BELOW
-    //CLEAN BELOW
 
-    // ------------------------------------------------
-    // APP DATA: DEBUG HELPERS
-    // ------------------------------------------------
-    func debugPrintCommentLikes() {
-        for post in posts {
-            print("POST ID: \(post.postID ?? -1)")
-            guard let comments = post.commentsArray else {
-                print("No comments")
-                continue
-            }
 
-            for comment in comments {
-                let likedUsernames = comment.commentLikes?.map { $0.likedByUserName } ?? []
-                print("Comment \(comment.commentID ?? -1): \(likedUsernames)")
-            }
-            print("_________________")
-        }
-    }
-
-    // ------------------------------------------------
-    // APP DATA: ITEMS (using posts array, filtered by postType == "item")
-    // ------------------------------------------------
-    var items: [Post] {
-        return posts.filter { $0.postType == "item" }
-    }
-
-    // OLD callback
-    var onItemsUpdated: (() -> Void)?
-
-    func fetchPostItems(groupID: Int) async {
-        do {
-            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
-            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
-            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
-            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
-            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
-            
-            // Merge items into posts array (items are just posts with postType == "item")
-            for item in itemsWithImages {
-                if let index = posts.firstIndex(where: { $0.postID == item.postID }) {
-                    posts[index] = item
-                } else {
-                    posts.append(item)
-                }
-            }
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .itemsFetched,
-                    object: nil
-                )
-            }
-        } catch {
-            print("PostDataController: Failed to fetch items - \(error)")
-        }
-    }
 }
 
 //NOTIFICATIONS
@@ -240,7 +303,43 @@ extension Notification.Name {
 }
 
 
+/*
+ 
+ 
+ //CLEAN BELOW
+ //CLEAN BELOW
 
+ // ------------------------------------------------
+ // APP DATA: DEBUG HELPERS
+ // ------------------------------------------------
+ func debugPrintCommentLikes() {
+     for post in posts {
+         print("POST ID: \(post.postID ?? -1)")
+         guard let comments = post.commentsArray else {
+             print("No comments")
+             continue
+         }
+
+         for comment in comments {
+             let likedUsernames = comment.commentLikes?.map { $0.likedByUserName } ?? []
+             print("Comment \(comment.commentID ?? -1): \(likedUsernames)")
+         }
+         print("_________________")
+     }
+ }
+
+ // ------------------------------------------------
+ // APP DATA: ITEMS (using posts array, filtered by postType == "item")
+ // ------------------------------------------------
+ /*
+ var items: [Post] {
+     return posts.filter { $0.postType == "item" }
+ }
+
+ // OLD callback
+ var onItemsUpdated: (() -> Void)?
+ */
+ */
 
 //WORKING
 /*

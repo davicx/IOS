@@ -28,7 +28,8 @@ class IndividualGroupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-    
+        
+        getGroupPosts()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,6 +44,27 @@ class IndividualGroupViewController: UIViewController {
         print("currentUserOwnsGroup: \(currentUserOwnsGroup)")
         print("________________________")
  
+    }
+    
+    func getGroupPosts() {
+        // Fetch posts for this group
+        if let groupID = groupID {
+            Task {
+                await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
+                
+                // Print post IDs and captions
+                DispatchQueue.main.async {
+                    let posts = self.postDataController.posts
+                    print("________________________")
+                    print("IndividualGroupViewController: Posts for groupID \(groupID)")
+                    print("Total posts: \(posts.count)")
+                    for post in posts {
+                        print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
+                    }
+                    print("________________________")
+                }
+            }
+        }
     }
 
 

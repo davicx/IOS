@@ -51,11 +51,22 @@ class IndividualGroupFriendViewController: UIViewController {
         }
          
         // Observe item updates (not post updates)
-        postDataController.onItemsUpdated = { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(itemsUpdated),
+            name: .itemsFetched,
+            object: nil
+        )
+    }
+    
+    @objc private func itemsUpdated() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -199,14 +210,15 @@ class IndividualGroupFriendViewController: UIViewController {
 
         Task {
             // Fetch items (items are posts with additional item-specific data)
-            await postDataController.fetchPostItems(groupID: groupID)
+            await postDataController.fetchItems(groupID: groupID)
             
             // Print out item names to verify it's working
             DispatchQueue.main.async {
                 print("________________________")
                 print("IndividualGroupFriendViewController: fetchItemsForGroup \(groupID)")
-                print("Total items fetched: \(self.postDataController.items.count)")
-                for item in self.postDataController.items {
+                let items = self.postDataController.posts.filter { $0.postType == "item" }
+                print("Total items fetched: \(items.count)")
+                for item in items {
                     print("- Item Name: \(item.itemName ?? "No Name"), PostID: \(item.postID)")
                 }
                 print("________________________")
@@ -349,11 +361,13 @@ extension IndividualGroupFriendViewController: UITableViewDataSource, UITableVie
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return postDataController.posts.count
-        return postDataController.items.count
+        let items = postDataController.posts.filter { $0.postType == "item" }
+        return items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let post = postDataController.items[indexPath.row]
+        let items = postDataController.posts.filter { $0.postType == "item" }
+        let post = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemFriendCell", for: indexPath) as! GroupItemFriendCell
         cell.configurePost(with: post)
         return cell
@@ -363,7 +377,8 @@ extension IndividualGroupFriendViewController: UITableViewDataSource, UITableVie
         tableView.deselectRow(at: indexPath, animated: true)
         
         // Get the post at the tapped index (items are posts with postType == "item")
-        let post = postDataController.items[indexPath.row]
+        let items = postDataController.posts.filter { $0.postType == "item" }
+        let post = items[indexPath.row]
         
         print("Right now cant navigate to new item")
 

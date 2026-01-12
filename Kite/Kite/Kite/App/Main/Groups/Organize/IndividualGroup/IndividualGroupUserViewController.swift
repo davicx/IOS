@@ -201,7 +201,7 @@ class IndividualGroupUserViewController: UIViewController {
     
     
 
-    //FUNCTIONS
+    //FUNCTIONS IndividualGroupUserViewController
     private func fetchItemsForGroup() {
         guard let groupID = group?.groupID else {
             print("No group ID available")
@@ -210,14 +210,14 @@ class IndividualGroupUserViewController: UIViewController {
 
         Task {
             // Fetch items (items are posts with additional item-specific data)
-            await postDataController.fetchPostItems(groupID: groupID)
+            await postDataController.fetchItems(groupID: groupID)
             
             // Print out item names to verify it's working
             DispatchQueue.main.async {
                 print("________________________")
                 print("IndividualGroupUserViewController: fetchItemsForGroup \(groupID)")
-                print("Total items fetched: \(self.postDataController.items.count)")
-                for post in self.postDataController.items {
+                print("Total items fetched: \(self.postDataController.posts.count)")
+                for post in self.postDataController.posts {
                     print("- Item Name: \(post.itemName ?? "No Name"), PostID: \(post.postID)")
                 }
                 print("________________________")
@@ -374,11 +374,11 @@ class IndividualGroupUserViewController: UIViewController {
 extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return postDataController.posts.count
-        return postDataController.items.count
+        return postDataController.posts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let post = postDataController.items[indexPath.row]
+        let post = postDataController.posts[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemUserCell", for: indexPath) as! GroupItemUserCell
         cell.configurePost(with: post)
         return cell
@@ -388,7 +388,7 @@ extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewD
         tableView.deselectRow(at: indexPath, animated: true)
         
         // Get the post at the tapped index (items are posts with postType == "item")
-        let post = postDataController.items[indexPath.row]
+        let post = postDataController.posts[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
