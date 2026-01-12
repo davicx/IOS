@@ -177,7 +177,44 @@ class PostDataController {
 
     //Function A4: Like a Post
     func likePost(postID: Int, likeModel: LikeModel) {
-
+        // APP DATA: Step 1 – Find post in source of truth (search across all groups)
+        for (groupID, posts) in groupPosts {
+            if let index = posts.firstIndex(where: { $0.postID == postID }) {
+                // APP DATA: Step 2 – Mutate data
+                var post = posts[index]
+                
+                post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
+                    $0 != likeModel.likedByUserName
+                }
+                
+                post.postLikesArray = (post.postLikesArray ?? []).filter {
+                    $0.postLikeID != likeModel.postLikeID
+                }
+                
+                post.simpleLikesArray?.append(likeModel.likedByUserName)
+                post.postLikesArray?.append(likeModel)
+                post.isLikedByCurrentUser = true
+                
+                // Update post in dictionary
+                var updatedPosts = posts
+                updatedPosts[index] = post
+                groupPosts[groupID] = updatedPosts
+                
+                // APP DATA: Step 3 – Notify entire app
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .postUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
+    
+    /*
+    //OLD: Searched single posts array
+    func likePost(postID: Int, likeModel: LikeModel) {
         // APP DATA: Step 1 – Find post in source of truth
         guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
 
@@ -206,16 +243,54 @@ class PostDataController {
             )
         }
     }
+    */
 
     //Function A5: Unlike a Post
     func unlikePost(postID: Int, likeModel: LikeModel) {
-
+        // APP DATA: Step 1 – Find post (search across all groups)
+        for (groupID, posts) in groupPosts {
+            if let index = posts.firstIndex(where: { $0.postID == postID }) {
+                // APP DATA: Step 2 – Mutate data (same pattern as likePost)
+                var post = posts[index]
+                
+                // Use currentUser instead of likeModel.likedByUserName (API doesn't populate it for unlike)
+                let userNameToRemove = currentUser
+                
+                post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
+                    $0 != userNameToRemove
+                }
+                
+                post.postLikesArray = (post.postLikesArray ?? []).filter {
+                    $0.postLikeID != likeModel.postLikeID
+                }
+                
+                post.isLikedByCurrentUser = false
+                
+                // Update post in dictionary
+                var updatedPosts = posts
+                updatedPosts[index] = post
+                groupPosts[groupID] = updatedPosts
+                
+                // APP DATA: Step 3 – Notify app
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .postUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
+    
+    /*
+    //OLD: Searched single posts array
+    func unlikePost(postID: Int, likeModel: LikeModel) {
         // APP DATA: Step 1 – Find post
         guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
 
         // APP DATA: Step 2 – Mutate data (same pattern as likePost)
         var post = posts[index]
-
 
         // Use currentUser instead of likeModel.likedByUserName (API doesn't populate it for unlike)
         let userNameToRemove = currentUser
@@ -240,11 +315,40 @@ class PostDataController {
             )
         }
     }
+    */
 
     //FUNCTIONS B: Comment Related
     //Function B1: Like a Comment
     func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
-
+        // APP DATA: Step 1 – Locate post + comment (search across all groups)
+        for (groupID, posts) in groupPosts {
+            if let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+               let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID }) {
+                
+                // APP DATA: Step 2 – Mutate data
+                var updatedPosts = posts
+                updatedPosts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = true
+                updatedPosts[postIndex].commentsArray?[commentIndex].commentLikeCount? += 1
+                updatedPosts[postIndex].commentsArray?[commentIndex].commentLikes?.append(commentLikeModel)
+                
+                // Update posts in dictionary
+                groupPosts[groupID] = updatedPosts
+                
+                // APP DATA: Step 3 – Notify app
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .commentUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
+    
+    /*
+    //OLD: Searched single posts array
+    func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
         // APP DATA: Step 1 – Locate post + comment
         guard
             let postIndex = posts.firstIndex(where: { $0.postID == postID }),
@@ -264,10 +368,39 @@ class PostDataController {
             )
         }
     }
+    */
 
     //Function B2: Unlike a Comment
     func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
-
+        // Search across all groups
+        for (groupID, posts) in groupPosts {
+            if let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+               let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID }) {
+                
+                var updatedPosts = posts
+                updatedPosts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = false
+                updatedPosts[postIndex].commentsArray?[commentIndex].commentLikeCount? -= 1
+                updatedPosts[postIndex].commentsArray?[commentIndex].commentLikes?.removeAll {
+                    $0.commentLikeID == commentLikeModel.commentLikeID
+                }
+                
+                // Update posts in dictionary
+                groupPosts[groupID] = updatedPosts
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .commentUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
+    
+    /*
+    //OLD: Searched single posts array
+    func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
         guard
             let postIndex = posts.firstIndex(where: { $0.postID == postID }),
             let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID })
@@ -286,6 +419,7 @@ class PostDataController {
             )
         }
     }
+    */
     
 
 
