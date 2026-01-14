@@ -216,7 +216,7 @@ class IndividualGroupFriendViewController: UIViewController {
             DispatchQueue.main.async {
                 print("________________________")
                 print("IndividualGroupFriendViewController: fetchItemsForGroup \(groupID)")
-                let items = self.postDataController.posts.filter { $0.postType == "item" }
+                let items = self.postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
                 print("Total items fetched: \(items.count)")
                 for item in items {
                     print("- Item Name: \(item.itemName ?? "No Name"), PostID: \(item.postID)")
@@ -360,13 +360,17 @@ class IndividualGroupFriendViewController: UIViewController {
 extension IndividualGroupFriendViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let groupID = group?.groupID else { return 0 }
         // return postDataController.posts.count
-        let items = postDataController.posts.filter { $0.postType == "item" }
+        let items = postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
         return items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let items = postDataController.posts.filter { $0.postType == "item" }
+        guard let groupID = group?.groupID else {
+            return UITableViewCell()
+        }
+        let items = postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
         let post = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemFriendCell", for: indexPath) as! GroupItemFriendCell
         cell.configurePost(with: post)
@@ -376,8 +380,9 @@ extension IndividualGroupFriendViewController: UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        guard let groupID = group?.groupID else { return }
         // Get the post at the tapped index (items are posts with postType == "item")
-        let items = postDataController.posts.filter { $0.postType == "item" }
+        let items = postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
         let post = items[indexPath.row]
         
         print("Right now cant navigate to new item")

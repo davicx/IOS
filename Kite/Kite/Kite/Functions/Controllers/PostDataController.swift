@@ -35,6 +35,11 @@ class PostDataController {
         return groupPosts[groupID] ?? []
     }
     
+    /// Get home feed posts (for now, returns posts from group 72)
+    func getHomeFeedPosts() -> [Post] {
+        return getPostsForGroup(groupID: 72)
+    }
+    
     /// Get all posts from all groups (for home feed)
     var allPosts: [Post] {
         return Array(groupPosts.values).flatMap { $0 }

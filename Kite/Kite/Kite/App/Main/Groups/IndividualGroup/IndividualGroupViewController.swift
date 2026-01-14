@@ -54,7 +54,7 @@ class IndividualGroupViewController: UIViewController {
                 
                 // Print post IDs and captions
                 DispatchQueue.main.async {
-                    let posts = self.postDataController.posts
+                    let posts = self.postDataController.getPostsForGroup(groupID: groupID)
                     print("________________________")
                     print("IndividualGroupViewController: Posts for groupID \(groupID)")
                     print("Total posts: \(posts.count)")
