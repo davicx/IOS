@@ -339,7 +339,7 @@ class IndividualGroupUserViewController: UIViewController {
         print("Go to Profile: \(user.userName)")
         
         // Navigate to IndividualGroupMembersVC
-        let membersVC = IndividualGroupMembersVC()
+        let membersVC = GroupMembersViewController()
         //group.groupName
         let groupName: String = group?.groupName ?? "Group Members"
         membersVC.title = groupName
