@@ -8,7 +8,7 @@
 import UIKit
 
 
-
+//CHAT
 class IndividualGroupViewController: UIViewController {
 
     //GROUPS
@@ -23,12 +23,14 @@ class IndividualGroupViewController: UIViewController {
     //VIEWS SETUP
     private let tableView = UITableView()
     private let pollingManager = PollingManager()
+    let imageFunctions = ImageFunctions()
     
     //MANAGE VIEWS
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        setupNavigationBar()
         getGroupPosts()
     }
     
@@ -66,10 +68,146 @@ class IndividualGroupViewController: UIViewController {
             }
         }
     }
+    
+    //LAYOUT
+    private func setupNavigationBar() {
+        navigationItem.title = "Wishlist"
+
+        let newGroupPostButton = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(newGroupPostButton)
+        )
+        navigationItem.rightBarButtonItem = newGroupPostButton
+
+        if let image = UIImage(named: "user") {
+            let circularImage = imageFunctions
+                .makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
+                .withRenderingMode(.alwaysOriginal)
+
+            let button = UIButton(type: .custom)
+            button.setImage(circularImage, for: .normal)
+            button.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
+            button.layer.cornerRadius = 14
+            button.clipsToBounds = true
+            button.contentEdgeInsets = .zero
+            button.imageEdgeInsets = .zero
+            button.addTarget(self, action: #selector(openProfile), for: .touchUpInside)
+
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        }
+    }
+    
+    //ACTIONS
+    @objc private func newGroupPostButton() {
+        print("New Post")
+    }
+    
+    @objc private func openProfile() {
+        print("Profile tapped")
+    }
+}
+
+
+/*
+class IndividualGroupViewController: UIViewController {
+
+    //GROUPS
+    var groupID: Int?
+    var currentUserOwnsGroup: Bool = false
+    let postDataController = PostDataController.shared
+    let usersDataController = UsersDataController.shared
+    
+    //GROUP USERS
+    private var groupMembers: [User] = []
+    
+    //VIEWS SETUP
+    private let tableView = UITableView()
+    private let pollingManager = PollingManager()
+    let imageFunctions = ImageFunctions()
+    
+    //MANAGE VIEWS
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        
+        setupNavigationBar()
+        getGroupPosts()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        printPageInfo(vcName: "IndividualGroupViewController")
+        
+        // Print the passed data
+        print("________________________")
+        print("IndividualGroupViewController Data:")
+        print("groupID: \(groupID ?? -1)")
+        print("currentUserOwnsGroup: \(currentUserOwnsGroup)")
+        print("________________________")
+ 
+    }
+    
+    func getGroupPosts() {
+        // Fetch posts for this group
+        if let groupID = groupID {
+            Task {
+                await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
+                
+                // Print post IDs and captions
+                DispatchQueue.main.async {
+                    let posts = self.postDataController.getPostsForGroup(groupID: groupID)
+                    print("________________________")
+                    print("IndividualGroupViewController: Posts for groupID \(groupID)")
+                    print("Total posts: \(posts.count)")
+                    for post in posts {
+                        print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
+                    }
+                    print("________________________")
+                }
+            }
+        }
+    }
+    
+    //LAYOUT
+    private func setupNavigationBar() {
+        navigationItem.title = "Wishlist"
+
+        let newGroupPostButton = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(newGroupPostButton)
+        )
+        navigationItem.rightBarButtonItem = newGroupPostButton
+
+        if let image = UIImage(named: "user") {
+            let circularImage = imageFunctions.makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
+                .withRenderingMode(.alwaysOriginal)
+
+            let profileButton = UIBarButtonItem(
+                image: circularImage,
+                style: .plain,
+                target: self,
+                action: #selector(openProfile)
+            )
+            navigationItem.leftBarButtonItem = profileButton
+        }
+    }
+    
+    //ACTIONS
+    @objc private func newGroupPostButton() {
+        print("New Post")
+    }
+    
+    @objc private func openProfile() {
+        print("Profile tapped")
+    }
 
 
 }
 
+ */
 
 //WORKING
 //LISTS: Wishlist

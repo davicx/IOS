@@ -760,6 +760,7 @@
 		D701259E2F13280300A9C400 /* IndividualGroup */ = {
 			isa = PBXGroup;
 			children = (
+				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
 				D7E2A61C2F171BB000197572 /* cells */,
 			);
 			path = IndividualGroup;
@@ -1146,7 +1147,6 @@
 		D7E2A61C2F171BB000197572 /* cells */ = {
 			isa = PBXGroup;
 			children = (
-				D7D992392DFCE41200D6B48A /* IndividualGroupViewController.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
