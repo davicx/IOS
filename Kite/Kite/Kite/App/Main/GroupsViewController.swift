@@ -119,7 +119,7 @@ class GroupsViewController: UIViewController {
         )
         navigationItem.rightBarButtonItem = createGroupButton
 
-        if let image = UIImage(named: "user") {
+        if let image = UIImage(named: "background_14") {
             let circularImage = imageFunctions.makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
                 .withRenderingMode(.alwaysOriginal)
 
@@ -133,6 +133,7 @@ class GroupsViewController: UIViewController {
         }
     }
 
+    
 
     private func setupTableView() {
         view.addSubview(tableView)
