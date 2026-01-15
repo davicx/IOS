@@ -33,7 +33,6 @@ class UsersDataController {
     }
     
     // MARK: - User Retrieval
-    
     // Get user by username (from cache)
     func getUser(username: String) -> User? {
         return usersQueue.sync {
@@ -234,7 +233,6 @@ class UsersDataController {
     }
     
     // MARK: - Friend Actions
-    
     func sendFriendRequest(to user: User) async -> User? {
         do {
             let currentUsername = currentUser

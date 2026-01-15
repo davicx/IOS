@@ -5,11 +5,13 @@
 //  Created by David Vasquez on 6/13/25.
 //
 
+//Parents: GroupsViewController
+
 import UIKit
 
 
 //LISTS: Wishlist
-class GroupTableViewCell: UITableViewCell {
+class GroupCell: UITableViewCell {
 
     private let groupIDLabel = UILabel()
     private let groupNameLabel = UILabel()
@@ -18,6 +20,7 @@ class GroupTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLabels()
         //print("GroupTableViewCell")
+        printCellInfo(cellName: "GroupCell")
     }
 
     required init?(coder: NSCoder) {

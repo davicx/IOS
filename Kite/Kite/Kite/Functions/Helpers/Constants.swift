@@ -26,6 +26,7 @@ struct Constants {
         //static let friendProfileViewControllerID = "FriendProfileViewControllerID"
         static let individualGroupViewControllerID = "individualGroupViewControllerID"
         static let individualGroupUserViewControllerID = "individualGroupUserViewControllerID"
+        static let individualPostViewControllerID = "IndividualPostViewControllerID"
         //static let individualListViewControllerID = "individualListViewControllerID"
     }
     
