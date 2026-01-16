@@ -73,7 +73,8 @@ class GroupsViewController: UIViewController {
     
     //ACTIONS
     @objc private func openProfile() {
-        print("Profile tapped")
+        let currentUserName = UsersDataController.shared.currentUser
+        print("Profile tapped - Current user: \(currentUserName)")
     }
     
 

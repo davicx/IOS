@@ -30,7 +30,7 @@ class IndividualGroupViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        setupNavigationBar()
+       // setupNavigationBar()
         getGroupPosts()
     }
     

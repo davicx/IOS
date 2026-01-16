@@ -79,6 +79,16 @@ class UsersDataController {
         return await fetchUser(username: username)
     }
     
+    // Get current user profile (from cache or fetch if needed)
+    func getCurrentUser() -> User? {
+        return getUser(username: currentUser)
+    }
+    
+    // Get or fetch current user profile
+    func getOrFetchCurrentUser() async -> User? {
+        return await getOrFetchUser(username: currentUser)
+    }
+    
     // MARK: - User Fetching
     
     // Fetch user profile from API and cache it as User
@@ -232,7 +242,38 @@ class UsersDataController {
         return (friends, requests)
     }
     
-    // MARK: - Friend Actions
+    // MARK: - Internal Friend Status Updates (called by UserLogic)
+    
+    // Update user friend status in cache and notify
+    func updateUserFriendStatus(user: User) {
+        usersQueue.sync {
+            self.users[user.userName] = user
+        }
+        DispatchQueue.main.async {
+            self.notifyUsersUpdated()
+            NotificationCenter.default.post(name: .friendsUpdated, object: nil)
+        }
+    }
+    
+    // Update user to not_friends status in cache and notify
+    func updateUserFriendStatusToNotFriends(username: String) {
+        usersQueue.sync {
+            if var user = self.users[username] {
+                user.friendshipKey = "not_friends"
+                user.requestPending = 0
+                user.requestSentBy = ""
+                user.alsoYourFriend = 0
+                self.users[username] = user
+            }
+        }
+        DispatchQueue.main.async {
+            self.notifyUsersUpdated()
+            NotificationCenter.default.post(name: .friendsUpdated, object: nil)
+        }
+    }
+    
+    // MARK: - Friend Actions (Deprecated - use UserLogic instead)
+    /*
     func sendFriendRequest(to user: User) async -> User? {
         do {
             let currentUsername = currentUser
@@ -502,6 +543,7 @@ class UsersDataController {
             throw NSError(domain: "DeclineFriendInvite", code: 1, userInfo: [NSLocalizedDescriptionKey: response.message])
         }
     }
+    */
     
     // MARK: - User Management
     
