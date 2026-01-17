@@ -126,6 +126,114 @@ class PostDataController {
         }
     }
     
+    //Function A6: Add new post to groupPosts (called after creating a post via API)
+    func addPost(postModel: PostModel, groupID: Int) async {
+        // Convert PostModel to Post (similar to createItemsArray logic)
+        let newPost = Post(postID: postModel.postID)
+        newPost.postType = postModel.postType
+        newPost.groupID = postModel.groupID
+        newPost.groupName = postModel.groupName
+        newPost.groupImage = postModel.groupImage
+        newPost.listID = postModel.listID
+        newPost.postFrom = postModel.postFrom
+        newPost.postFromImage = postModel.postFromImage
+        newPost.postTo = postModel.postTo
+        newPost.postCaption = postModel.postCaption
+        
+        newPost.fileName = postModel.fileURL
+        newPost.fileNameServer = postModel.fileURL
+        newPost.fileUrl = postModel.fileURL
+        
+        newPost.cloudBucket = postModel.cloudBucket
+        newPost.cloudKey = postModel.cloudKey
+        newPost.videoURL = postModel.videoURL
+        newPost.videoCode = postModel.videoCode
+        
+        newPost.postDate = postModel.postDate
+        newPost.postTime = postModel.postTime
+        newPost.timeMessage = postModel.timeMessage
+        
+        newPost.created = postModel.created
+        newPost.isLikedByCurrentUser = postModel.isLikedByCurrentUser
+        
+        // Convert Comments
+        newPost.commentsArray = postModel.commentsArray.map { convertToCommentClass(from: $0) }
+        
+        newPost.postLikesArray = postModel.postLikesArray
+        newPost.simpleLikesArray = postModel.simpleLikesArray
+        
+        // Add Item-specific data (if item field exists)
+        if let item = postModel.item {
+            newPost.itemID = item.item_id
+            newPost.itemName = item.item_name
+            newPost.itemPrice = item.item_price
+            newPost.itemDescription = item.item_description
+            newPost.itemCategory = item.item_category
+            newPost.itemLink = item.item_link
+            newPost.purchased = item.purchased
+            newPost.purchasedBy = item.purchased_by
+            newPost.store = item.store
+            newPost.multipleStores = item.multiple_stores
+        }
+        
+        // Add images (async operations)
+        var postWithImages = newPost
+        if let fileUrlString = newPost.fileUrl,
+           let imageUrl = URL(string: fileUrlString),
+           fileUrlString.lowercased() != "empty" {
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                postWithImages.postImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading image for new post: \(error)")
+                postWithImages.postImageData = UIImage(named: "background_1")
+            }
+        } else {
+            postWithImages.postImageData = UIImage(named: "background_1")
+        }
+        
+        // Add group image
+        if let groupImageUrlString = postWithImages.groupImage,
+           let imageUrl = URL(string: groupImageUrlString),
+           groupImageUrlString.lowercased() != "empty" {
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                postWithImages.groupImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading group image for new post: \(error)")
+            }
+        }
+        
+        // Add post-from image
+        if let postFromImageUrlString = postWithImages.postFromImage,
+           let imageUrl = URL(string: postFromImageUrlString),
+           postFromImageUrlString.lowercased() != "empty" {
+            do {
+                let data = try await imageFunctions.downloadData(from: imageUrl)
+                postWithImages.postFromImageData = UIImage(data: data)
+            } catch {
+                print("Error downloading post-from image for new post: \(error)")
+            }
+        }
+        
+        // Add post to groupPosts array (prepend to show at top)
+        var existingPosts = groupPosts[groupID] ?? []
+        existingPosts.insert(postWithImages, at: 0)
+        groupPosts[groupID] = existingPosts
+        
+        // Notify app about new post
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .postsFetched,
+                object: nil
+            )
+            NotificationCenter.default.post(
+                name: .postUpdated,
+                object: postModel.postID
+            )
+        }
+    }
+    
     /*
     //OLD: Merged items into single posts array
     func fetchItems(groupID: Int) async {

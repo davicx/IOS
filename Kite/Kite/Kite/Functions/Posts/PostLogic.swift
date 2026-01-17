@@ -5,7 +5,7 @@
 //  Created by David Vasquez on 1/1/26.
 //
 
-import Foundation
+import UIKit
 
 
 final class PostLogic {
@@ -51,6 +51,51 @@ final class PostLogic {
         
         // Step 2: Update data controller (which posts notification)
         postDataController.unlikePost(postID: post.postID, likeModel: likeModel)
+    }
+    
+    // MARK: - Create Post
+    
+    func createItemPost(
+        postImage: UIImage,
+        postFrom: String,
+        postTo: String,
+        postCaption: String,
+        groupID: Int,
+        listID: Int,
+        itemName: String,
+        itemPrice: String,
+        itemDescription: String,
+        itemLink: String
+    ) async -> Bool {
+        // Step 1: API call via PostsAPI
+        let postsAPI = PostsAPI()
+        do {
+            let responseModel = try await postsAPI.makeItemPost(
+                postImage: postImage,
+                postFrom: postFrom,
+                postTo: postTo,
+                postCaption: postCaption,
+                groupID: groupID,
+                listID: listID,
+                itemName: itemName,
+                itemPrice: itemPrice,
+                itemDescription: itemDescription,
+                itemLink: itemLink
+            )
+            
+            guard responseModel.success else {
+                print("PostLogic: Failed to create item post: \(responseModel.message)")
+                return false
+            }
+            
+            // Step 2: Add post to data controller (which posts notification)
+            await postDataController.addPost(postModel: responseModel.data, groupID: groupID)
+            
+            return true
+        } catch {
+            print("PostLogic: Error creating item post: \(error)")
+            return false
+        }
     }
 }
 

@@ -165,6 +165,32 @@ class MakePostViewController: UIViewController {
         print("itemLinkInput: \(itemLinkInput.text ?? "")")
         
         Task {
+            let success = await PostLogic.shared.createItemPost(
+                postImage: postImage,
+                postFrom: postFrom,
+                postTo: postTo,
+                postCaption: postCaption,
+                groupID: groupID,
+                listID: listID,
+                itemName: itemName,
+                itemPrice: itemPrice,
+                itemDescription: itemDescription,
+                itemLink: itemLink
+            )
+            
+            DispatchQueue.main.async {
+                if success {
+                    print("Item post created successfully!")
+                    self.dismiss(animated: true)
+                } else {
+                    print("Failed to create item post")
+                }
+            }
+        }
+        
+        /*
+        //OLD: Direct API call - replaced with PostLogic
+        Task {
             do {
                 let postsAPI = PostsAPI()
                 let newItemResponseModel = try await postsAPI.makeItemPost(
@@ -196,6 +222,7 @@ class MakePostViewController: UIViewController {
                 }
             }
         }
+        */
     }
     
 
