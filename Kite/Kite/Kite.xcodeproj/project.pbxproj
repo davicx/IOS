@@ -726,6 +726,7 @@
 			isa = PBXGroup;
 			children = (
 				D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */,
+				51CA9DCB2D0FAA67008C36F0 /* NewPostViewController.swift */,
 				D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */,
 			);
 			path = PostActions;
@@ -920,7 +921,6 @@
 				D70125992F1325CF00A9C400 /* Docs */,
 				51CA9DC72D0FAA54008C36F0 /* HomeViewController.swift */,
 				51CA9DC92D0FAA5A008C36F0 /* GroupsViewController.swift */,
-				51CA9DCB2D0FAA67008C36F0 /* NewPostViewController.swift */,
 				51CA9DCD2D0FAA6F008C36F0 /* SearchViewController.swift */,
 				51CA9DCF2D0FAA75008C36F0 /* ProfileViewController.swift */,
 				D77FB6732E2B0FCD003E1020 /* MasterLayout.swift */,

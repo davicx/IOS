@@ -30,7 +30,8 @@ class IndividualGroupViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-       // setupNavigationBar()
+        setupNavigationBar()
+      
         getGroupPosts()
     }
     
@@ -73,40 +74,113 @@ class IndividualGroupViewController: UIViewController {
     private func setupNavigationBar() {
         navigationItem.title = "Wishlist"
 
-        let newGroupPostButton = UIBarButtonItem(
-            barButtonSystemItem: .add,
-            target: self,
-            action: #selector(newGroupPostButton)
-        )
-        navigationItem.rightBarButtonItem = newGroupPostButton
-
-        if let image = UIImage(named: "user") {
-            let circularImage = imageFunctions
-                .makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
-                .withRenderingMode(.alwaysOriginal)
-
-            let button = UIButton(type: .custom)
-            button.setImage(circularImage, for: .normal)
-            button.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
-            button.layer.cornerRadius = 14
-            button.clipsToBounds = true
-            button.contentEdgeInsets = .zero
-            button.imageEdgeInsets = .zero
-            button.addTarget(self, action: #selector(openProfile), for: .touchUpInside)
-
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        // Only show if user owns the group
+        guard currentUserOwnsGroup else {
+            navigationItem.rightBarButtonItems = nil
+            return
         }
+
+        // Pink container (represents reserved nav space)
+        let pinkContainer = UIView()
+        pinkContainer.backgroundColor = .systemPink
+        pinkContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            pinkContainer.widthAnchor.constraint(equalToConstant: 120),
+            pinkContainer.heightAnchor.constraint(equalToConstant: 32)
+        ])
+
+        // New Post button
+        let newPostButton = UIButton(type: .system)
+        newPostButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        newPostButton.tintColor = .white
+        newPostButton.translatesAutoresizingMaskIntoConstraints = false
+        newPostButton.addTarget(
+            self,
+            action: #selector(newGroupPostButton),
+            for: .touchUpInside
+        )
+
+        // Match back-arrow style spacing
+        newPostButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
+
+        pinkContainer.addSubview(newPostButton)
+
+        NSLayoutConstraint.activate([
+            newPostButton.centerYAnchor.constraint(equalTo: pinkContainer.centerYAnchor),
+            newPostButton.trailingAnchor.constraint(equalTo: pinkContainer.trailingAnchor, constant: -8)
+        ])
+
+        let rightItem = UIBarButtonItem(customView: pinkContainer)
+        navigationItem.rightBarButtonItems = [rightItem]
     }
+
     
     //ACTIONS
     @objc private func newGroupPostButton() {
-        print("New Post")
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? MakePostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen
+            present(newPostVC, animated: true)
+        }
     }
     
     @objc private func openProfile() {
         print("Profile tapped")
     }
 }
+
+
+
+
+/*
+private func setupTestNavigationBar() {
+    navigationItem.title = "Wishlist"
+
+    // Pink test view (represents future buttons)
+    let pinkView = UIView()
+    pinkView.backgroundColor = .systemPink
+    pinkView.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+        pinkView.widthAnchor.constraint(equalToConstant: 120),
+        pinkView.heightAnchor.constraint(equalToConstant: 32)
+    ])
+
+    let pinkBarItem = UIBarButtonItem(customView: pinkView)
+
+    // Important: use rightBarButtonItems (array)
+    navigationItem.rightBarButtonItems = [pinkBarItem]
+}
+
+private func setupNavigationBar() {
+    navigationItem.title = "Wishlist"
+
+    let newGroupPostButton = UIBarButtonItem(
+        barButtonSystemItem: .add,
+        target: self,
+        action: #selector(newGroupPostButton)
+    )
+    navigationItem.rightBarButtonItem = newGroupPostButton
+
+    if let image = UIImage(named: "user") {
+        let circularImage = imageFunctions
+            .makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
+            .withRenderingMode(.alwaysOriginal)
+
+        let button = UIButton(type: .custom)
+        button.setImage(circularImage, for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
+        button.layer.cornerRadius = 14
+        button.clipsToBounds = true
+        button.contentEdgeInsets = .zero
+        button.imageEdgeInsets = .zero
+        button.addTarget(self, action: #selector(openProfile), for: .touchUpInside)
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+    }
+}
+ */
 
 
 /*

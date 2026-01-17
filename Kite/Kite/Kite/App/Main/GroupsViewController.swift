@@ -134,8 +134,6 @@ class GroupsViewController: UIViewController {
         }
     }
 
-    
-
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -249,4 +247,3 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-//individualGroupUserViewControllerID IndividualGroupFriendViewController IndividualGroupViewController

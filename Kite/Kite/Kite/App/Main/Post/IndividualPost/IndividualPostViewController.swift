@@ -94,6 +94,14 @@ class IndividualPostViewController: UIViewController {
             individualPostTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    @objc private func newGroupPostButton() {
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen
+            present(newPostVC, animated: true)
+        }
+    }
 }
 
 extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
