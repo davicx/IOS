@@ -194,8 +194,10 @@ class PostDataController {
         
         // Add group image
         if let groupImageUrlString = postWithImages.groupImage,
+           !groupImageUrlString.isEmpty,
+           groupImageUrlString.lowercased() != "empty",
            let imageUrl = URL(string: groupImageUrlString),
-           groupImageUrlString.lowercased() != "empty" {
+           imageUrl.scheme == "http" || imageUrl.scheme == "https" {
             do {
                 let data = try await imageFunctions.downloadData(from: imageUrl)
                 postWithImages.groupImageData = UIImage(data: data)

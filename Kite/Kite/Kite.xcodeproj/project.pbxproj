@@ -168,6 +168,7 @@
 		D7D3DD322D518D8F00B9DAA7 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */; };
 		D7D3DD342D51940000B9DAA7 /* AccessTokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */; };
 		D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */; };
+		D7D54E482F1C5DE300C4F8CD /* UserCommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D54E472F1C5DE300C4F8CD /* UserCommentTemplate.swift */; };
 		D7D793162EECE469004046AC /* ProflieDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D793152EECE469004046AC /* ProflieDoc.swift */; };
 		D7D803212E174D6F009BA090 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D803202E174D6F009BA090 /* CreateGroupViewController.swift */; };
 		D7D88BA02D62B8DF002B3084 /* GroupsResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */; };
@@ -370,6 +371,7 @@
 		D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		D7D3DD332D51940000B9DAA7 /* AccessTokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseModel.swift; sourceTree = "<group>"; };
 		D7D3DD352D51940700B9DAA7 /* AccessTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenModel.swift; sourceTree = "<group>"; };
+		D7D54E472F1C5DE300C4F8CD /* UserCommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCommentTemplate.swift; sourceTree = "<group>"; };
 		D7D793152EECE469004046AC /* ProflieDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProflieDoc.swift; sourceTree = "<group>"; };
 		D7D803202E174D6F009BA090 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		D7D88B9F2D62B8DF002B3084 /* GroupsResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsResponseModel.swift; sourceTree = "<group>"; };
@@ -918,6 +920,7 @@
 				D74AAB382D9F4B7600C8AEB5 /* Post */,
 				D768C1B62E78DB1D00350D37 /* Search */,
 				D710E7F42E7E133E008C11BA /* Discover */,
+				D7D54E462F1C5DC000C4F8CD /* Templates */,
 				D70125992F1325CF00A9C400 /* Docs */,
 				51CA9DC72D0FAA54008C36F0 /* HomeViewController.swift */,
 				51CA9DC92D0FAA5A008C36F0 /* GroupsViewController.swift */,
@@ -1085,6 +1088,14 @@
 				D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */,
 			);
 			path = Comments;
+			sourceTree = "<group>";
+		};
+		D7D54E462F1C5DC000C4F8CD /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				D7D54E472F1C5DE300C4F8CD /* UserCommentTemplate.swift */,
+			);
+			path = Templates;
 			sourceTree = "<group>";
 		};
 		D7D992352DFCE28000D6B48A /* TableCells */ = {
@@ -1460,6 +1471,7 @@
 				D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */,
 				D7AF4E322E762B1F00EBD732 /* userFunctions.swift in Sources */,
 				D73A1B6B2E8213B50085E4F1 /* FriendSearchModel.swift in Sources */,
+				D7D54E482F1C5DE300C4F8CD /* UserCommentTemplate.swift in Sources */,
 				D7E2A61E2F171D0B00197572 /* ComparingGroupVCs.swift in Sources */,
 				D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */,
 				51C69B3E2D0E584B00C46759 /* PostModel.swift in Sources */,

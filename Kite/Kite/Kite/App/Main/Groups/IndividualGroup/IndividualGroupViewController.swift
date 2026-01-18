@@ -7,24 +7,29 @@
 
 import UIKit
 
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT
+//ACTIONS
+//FUNCTIONS
 
-//CHAT
 class IndividualGroupViewController: UIViewController {
 
-    //GROUPS
+    //LOGIC
     var groupID: Int?
     var currentUserOwnsGroup: Bool = false
     let postDataController = PostDataController.shared
     let usersDataController = UsersDataController.shared
     
-    //GROUP USERS
+    let imageFunctions = ImageFunctions()
+    private let pollingManager = PollingManager()
+    
     private var groupMembers: [User] = []
     
-    //VIEWS SETUP
+    //UI COMPONENTS
     private let tableView = UITableView()
-    private let pollingManager = PollingManager()
-    let imageFunctions = ImageFunctions()
-    
+
     //MANAGE VIEWS
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,27 +52,6 @@ class IndividualGroupViewController: UIViewController {
         print("currentUserOwnsGroup: \(currentUserOwnsGroup)")
         print("________________________")
  
-    }
-    
-    func getGroupPosts() {
-        // Fetch posts for this group
-        if let groupID = groupID {
-            Task {
-                await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
-                
-                // Print post IDs and captions
-                DispatchQueue.main.async {
-                    let posts = self.postDataController.getPostsForGroup(groupID: groupID)
-                    print("________________________")
-                    print("IndividualGroupViewController: Posts for groupID \(groupID)")
-                    print("Total posts: \(posts.count)")
-                    for post in posts {
-                        print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
-                    }
-                    print("________________________")
-                }
-            }
-        }
     }
     
     //LAYOUT
@@ -128,6 +112,29 @@ class IndividualGroupViewController: UIViewController {
     @objc private func openProfile() {
         print("Profile tapped")
     }
+    
+    //FUNCTIONS
+    func getGroupPosts() {
+        // Fetch posts for this group
+        if let groupID = groupID {
+            Task {
+                await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
+                
+                // Print post IDs and captions
+                DispatchQueue.main.async {
+                    let posts = self.postDataController.getPostsForGroup(groupID: groupID)
+                    print("________________________")
+                    print("IndividualGroupViewController: Posts for groupID \(groupID)")
+                    print("Total posts: \(posts.count)")
+                    for post in posts {
+                        print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
+                    }
+                    print("________________________")
+                }
+            }
+        }
+    }
+
 }
 
 

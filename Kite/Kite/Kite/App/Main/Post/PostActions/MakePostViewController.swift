@@ -7,9 +7,33 @@
 
 import UIKit
 
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT
+//ACTIONS
+//FUNCTIONS
+
+//IN API
+/*
+ fix this to have something 
+ var createdPost = {
+     postID: 0,
+     postType: postType,
+     groupID: Number(groupID),
+     groupName: "needGroupName",
+     groupImage: "needGroupImage",
+ */
 
 class MakePostViewController: UIViewController {
     
+    //LOGIC
+    var groupID: Int = 0
+    var selectedImage: UIImage?
+    private let spinnerHelper = SpinnerHelper()
+
+
+    //UI COMPONENTS
     private let titleLabel = componentFunctions.createTitleLabel()
     private let closeButton = componentFunctions.createCloseButton()
     private let itemDescriptionInput = componentFunctions.createItemDescriptionInput()
@@ -20,12 +44,16 @@ class MakePostViewController: UIViewController {
     private let photoPreviewImageView = UIImageView()
     private let submitItemButton = componentFunctions.createSubmitItemButton()
     
-    var selectedImage: UIImage?
-    var groupID: Int = 0
     
+    //MANAGE VIEWS
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        setupNewPostLayout()
+    }
+    
+
+    //LAYOUT
+    func setupNewPostLayout() {
         
         // Configure photo preview image view
         photoPreviewImageView.contentMode = .scaleAspectFill
@@ -116,7 +144,9 @@ class MakePostViewController: UIViewController {
             submitItemButton.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
+
     
+    //ACTIONS
     @objc private func closeTapped() {
         dismiss(animated: true, completion: nil)
     }
@@ -164,6 +194,9 @@ class MakePostViewController: UIViewController {
         print("itemPriceInput: \(itemPriceInput.text ?? "")")
         print("itemLinkInput: \(itemLinkInput.text ?? "")")
         
+        // Show spinner overlay
+        spinnerHelper.show(in: self.view, delay: 0.0)
+        
         Task {
             let success = await PostLogic.shared.createItemPost(
                 postImage: postImage,
@@ -179,6 +212,9 @@ class MakePostViewController: UIViewController {
             )
             
             DispatchQueue.main.async {
+                // Hide spinner
+                self.spinnerHelper.hide()
+                
                 if success {
                     print("Item post created successfully!")
                     self.dismiss(animated: true)
@@ -188,44 +224,8 @@ class MakePostViewController: UIViewController {
             }
         }
         
-        /*
-        //OLD: Direct API call - replaced with PostLogic
-        Task {
-            do {
-                let postsAPI = PostsAPI()
-                let newItemResponseModel = try await postsAPI.makeItemPost(
-                    postImage: postImage,
-                    postFrom: postFrom,
-                    postTo: postTo,
-                    postCaption: postCaption,
-                    groupID: groupID,
-                    listID: listID,
-                    itemName: itemName,
-                    itemPrice: itemPrice,
-                    itemDescription: itemDescription,
-                    itemLink: itemLink
-                )
-                
-                DispatchQueue.main.async {
-                    if newItemResponseModel.success {
-                        print("Item post created successfully!")
-                        print("Post ID: \(newItemResponseModel.data.postID)")
-                        self.dismiss(animated: true)
-                    } else {
-                        print("Failed to create item post: \(newItemResponseModel.message)")
-                    }
-                }
-                
-            } catch {
-                DispatchQueue.main.async {
-                    print("Error creating item post: \(error.localizedDescription)")
-                }
-            }
-        }
-        */
     }
     
-
 }
 
 extension MakePostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -317,6 +317,42 @@ class MakePostViewController: UIViewController {
     @objc private func submitItemTapped() {
         print("itemDescriptionInput: \(itemDescriptionInput.text ?? "")")
         print("itemLinkInput: \(itemLinkInput.text ?? "")")
+    }
+}
+*/
+
+/*
+//OLD: Direct API call - replaced with PostLogic
+Task {
+    do {
+        let postsAPI = PostsAPI()
+        let newItemResponseModel = try await postsAPI.makeItemPost(
+            postImage: postImage,
+            postFrom: postFrom,
+            postTo: postTo,
+            postCaption: postCaption,
+            groupID: groupID,
+            listID: listID,
+            itemName: itemName,
+            itemPrice: itemPrice,
+            itemDescription: itemDescription,
+            itemLink: itemLink
+        )
+        
+        DispatchQueue.main.async {
+            if newItemResponseModel.success {
+                print("Item post created successfully!")
+                print("Post ID: \(newItemResponseModel.data.postID)")
+                self.dismiss(animated: true)
+            } else {
+                print("Failed to create item post: \(newItemResponseModel.message)")
+            }
+        }
+        
+    } catch {
+        DispatchQueue.main.async {
+            print("Error creating item post: \(error.localizedDescription)")
+        }
     }
 }
 */
