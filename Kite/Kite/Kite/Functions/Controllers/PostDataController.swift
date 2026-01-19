@@ -178,6 +178,19 @@ class PostDataController {
         
         // Add images (async operations)
         var postWithImages = newPost
+        let imageFunctions = ImageFunctions()
+        
+        // Add post image
+        postWithImages.postImageData = await imageFunctions.getImageWithFallback(from: newPost.fileUrl)
+        
+        // Add group image
+        postWithImages.groupImageData = await imageFunctions.getImageWithFallback(from: postWithImages.groupImage)
+        
+        // Add post-from image
+        postWithImages.postFromImageData = await imageFunctions.getImageWithFallback(from: postWithImages.postFromImage)
+        
+        /*
+        //OLD: Manual validation and download
         if let fileUrlString = newPost.fileUrl,
            let imageUrl = URL(string: fileUrlString),
            fileUrlString.lowercased() != "empty" {
@@ -217,6 +230,7 @@ class PostDataController {
                 print("Error downloading post-from image for new post: \(error)")
             }
         }
+        */
         
         // Add post to groupPosts array (prepend to show at top)
         var existingPosts = groupPosts[groupID] ?? []

@@ -36,6 +36,7 @@ class IndividualGroupViewController: UIViewController {
         view.backgroundColor = .white
         
         setupNavigationBar()
+        setupTableView()
       
         getGroupPosts()
     }
@@ -55,6 +56,25 @@ class IndividualGroupViewController: UIViewController {
     }
     
     //LAYOUT
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(HomePostCell.self, forCellReuseIdentifier: "HomePostCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 160
+        tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
     private func setupNavigationBar() {
         navigationItem.title = "Wishlist"
 
@@ -120,7 +140,7 @@ class IndividualGroupViewController: UIViewController {
             Task {
                 await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
                 
-                // Print post IDs and captions
+                // Print post IDs and captions and reload table
                 DispatchQueue.main.async {
                     let posts = self.postDataController.getPostsForGroup(groupID: groupID)
                     print("________________________")
@@ -130,11 +150,46 @@ class IndividualGroupViewController: UIViewController {
                         print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
                     }
                     print("________________________")
+                    
+                    // Reload table view after data is fetched
+                    self.tableView.reloadData()
                 }
             }
         }
     }
 
+}
+
+extension IndividualGroupViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let groupID = groupID else { return 0 }
+        return postDataController.getPostsForGroup(groupID: groupID).count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let groupID = groupID else {
+            return UITableViewCell()
+        }
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HomePostCell", for: indexPath) as! HomePostCell
+        cell.updatePost(with: post)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let groupID = groupID else { return }
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
+            postViewController.postID = post.postID
+            navigationController?.pushViewController(postViewController, animated: true)
+        }
+    }
 }
 
 
@@ -852,4 +907,5 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 }
 
 */
+
 

@@ -99,6 +99,18 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
     
     for (index, post) in updatedPosts.enumerated() {
+        updatedPosts[index].postImageData = await imageFunctions.getImageWithFallback(from: post.fileUrl)
+    }
+    
+    return updatedPosts
+}
+
+/*
+//OLD: Manual validation and download
+func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+    
+    for (index, post) in updatedPosts.enumerated() {
         if let fileUrlString = post.fileUrl,
            let imageUrl = URL(string: fileUrlString),
            fileUrlString.lowercased() != "empty" {
@@ -117,9 +129,22 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     
     return updatedPosts
 }
+*/
 
 
 //Function A5: Add Group Image to Post
+func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+
+    for (index, post) in updatedPosts.enumerated() {
+        updatedPosts[index].groupImageData = await imageFunctions.getImageWithFallback(from: post.groupImage)
+    }
+
+    return updatedPosts
+}
+
+/*
+//OLD: Manual validation and download
 func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 
@@ -146,9 +171,22 @@ func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
 
     return updatedPosts
 }
+*/
 
 
 //Function A6: Add Post From Image to Posts
+func addPostFromImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+
+    for (index, post) in updatedPosts.enumerated() {
+        updatedPosts[index].postFromImageData = await imageFunctions.getImageWithFallback(from: post.postFromImage)
+    }
+
+    return updatedPosts
+}
+
+/*
+//OLD: Manual validation and download
 func addPostFromImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 
@@ -175,6 +213,7 @@ func addPostFromImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
 
     return updatedPosts
 }
+*/
 
 
 /*
@@ -368,6 +407,18 @@ func addPostImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
     
     for (index, post) in updatedPosts.enumerated() {
+        updatedPosts[index].postImageData = await imageFunctions.getImageWithFallback(from: post.fileUrl)
+    }
+    
+    return updatedPosts
+}
+
+/*
+//OLD: Manual validation and download
+func addPostImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+    
+    for (index, post) in updatedPosts.enumerated() {
         if let fileUrlString = post.fileUrl,
            let imageUrl = URL(string: fileUrlString),
            fileUrlString.lowercased() != "empty" {
@@ -386,8 +437,21 @@ func addPostImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
     
     return updatedPosts
 }
+*/
 
 //Function I3: Add Group Image to Posts (for items/wishlist)
+func addGroupImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+
+    for (index, post) in updatedPosts.enumerated() {
+        updatedPosts[index].groupImageData = await imageFunctions.getImageWithFallback(from: post.groupImage)
+    }
+
+    return updatedPosts
+}
+
+/*
+//OLD: Manual validation and download
 func addGroupImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 
@@ -410,8 +474,21 @@ func addGroupImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
 
     return updatedPosts
 }
+*/
 
 //Function I4: Add Post From Image to Posts (for items/wishlist)
+func addPostFromImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
+    var updatedPosts = postsArray
+
+    for (index, post) in updatedPosts.enumerated() {
+        updatedPosts[index].postFromImageData = await imageFunctions.getImageWithFallback(from: post.postFromImage)
+    }
+
+    return updatedPosts
+}
+
+/*
+//OLD: Manual validation and download
 func addPostFromImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 
@@ -438,6 +515,7 @@ func addPostFromImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
 
     return updatedPosts
 }
+*/
 
 func printItemLikes(post: Post) {
     let simpleLikesArray : Array = post.simpleLikesArray ?? []
