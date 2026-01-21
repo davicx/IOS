@@ -9,6 +9,14 @@
 import UIKit
 
 
+
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT
+//ACTIONS
+//FUNCTIONS
+
 class CommentCell: UITableViewCell {
 
     //LAYOUT
@@ -225,6 +233,14 @@ class CommentCell: UITableViewCell {
             socialsView.heightAnchor.constraint(equalToConstant: 24),
             socialsView.bottomAnchor.constraint(equalTo: mainCommentView.bottomAnchor)
         ])
+    }
+    
+    //ACTIONS
+    func configure(with comment: Comment) {
+        usernameLabel.text = comment.userName ?? "Unknown"
+        timeLabel.text = comment.timeMessage ?? ""
+        commentLabel.text = comment.commentCaption ?? ""
+        // Profile image would be set here when we have user image data
     }
 
 }

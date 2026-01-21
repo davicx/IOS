@@ -23,6 +23,10 @@ class IndividualPostViewController: UIViewController {
     private var post: Post? {
         return postDataController.getPostByID(postID: postID)
     }
+    
+    private var comments: [Comment] {
+        return post?.commentsArray ?? []
+    }
 
 
     override func viewDidLoad() {
@@ -35,7 +39,7 @@ class IndividualPostViewController: UIViewController {
         if let post = post {
             print("FOUND POST:", post.postID ?? -1)
             print(post.postCaption)
-            printPostLikes()
+            printPostLikes(post: post)
         } else {
             print("POST NOT FOUND")
         }
@@ -51,6 +55,7 @@ class IndividualPostViewController: UIViewController {
         individualPostTableView.delegate = self
         individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
         individualPostTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+        individualPostTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
 
         //Enable automatic dimension for dynamic cell heights
         individualPostTableView.rowHeight = UITableView.automaticDimension
@@ -76,15 +81,20 @@ class IndividualPostViewController: UIViewController {
 
 extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 1 + comments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-        postCell.configurePostCell(postID: postID)
-        
-        return postCell
-
+        if indexPath.row == 0 {
+            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+            postCell.configurePostCell(postID: postID)
+            return postCell
+        } else {
+            let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+            let comment = comments[indexPath.row - 1]
+            commentCell.configure(with: comment)
+            return commentCell
+        }
     }
     
     /*

@@ -14,6 +14,7 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
+//TABLE VIEW: Home Post Cell 
 class IndividualGroupViewController: UIViewController {
 
     //LOGIC
