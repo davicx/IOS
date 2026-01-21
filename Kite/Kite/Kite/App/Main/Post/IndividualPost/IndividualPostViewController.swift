@@ -43,6 +43,18 @@ class IndividualPostViewController: UIViewController {
         } else {
             print("POST NOT FOUND")
         }
+        
+        // Observe comment updates
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCommentUpdated),
+            name: .commentUpdated,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -75,6 +87,19 @@ class IndividualPostViewController: UIViewController {
         if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
             newPostVC.modalPresentationStyle = .fullScreen
             present(newPostVC, animated: true)
+        }
+    }
+    
+    //ACTIONS
+    @objc private func handleCommentUpdated(_ notification: Notification) {
+        guard let updatedPostID = notification.object as? Int else { return }
+        
+        // Only reload if this notification is for our post
+        guard updatedPostID == postID else { return }
+        
+        // Reload table to show updated comment data
+        DispatchQueue.main.async { [weak self] in
+            self?.individualPostTableView.reloadData()
         }
     }
 }

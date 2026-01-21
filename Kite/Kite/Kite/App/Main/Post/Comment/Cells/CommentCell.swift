@@ -9,7 +9,6 @@
 import UIKit
 
 
-
 //LOGIC
 //UI COMPONENTS
 //MANAGE VIEWS
@@ -19,6 +18,11 @@ import UIKit
 
 class CommentCell: UITableViewCell {
 
+    //LOGIC
+    private let postDataController = PostDataController.shared
+    private var commentID: Int?
+    private var postID: Int?
+    
     //LAYOUT
     //Layout: Main Containers
     private let mainUserImageView = UIView()
@@ -45,10 +49,22 @@ class CommentCell: UITableViewCell {
         setupUsernameArea()
         setupContentArea()
         setupSocialsArea()
+        
+        // Observe comment updates
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCommentUpdated),
+            name: .commentUpdated,
+            object: nil
+        )
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MAIN CONTAINERS
@@ -237,6 +253,30 @@ class CommentCell: UITableViewCell {
     
     //ACTIONS
     func configure(with comment: Comment) {
+        self.commentID = comment.commentID
+        self.postID = comment.postID
+        
+        refreshCommentUI()
+    }
+    
+    @objc private func handleCommentUpdated(_ notification: Notification) {
+        guard let updatedPostID = notification.object as? Int else { return }
+        
+        // Only update if this notification is for our post
+        guard updatedPostID == postID else { return }
+        
+        refreshCommentUI()
+    }
+    
+    //FUNCTIONS
+    private func refreshCommentUI() {
+        guard let commentID = commentID,
+              let postID = postID,
+              let post = postDataController.getPostByID(postID: postID),
+              let comment = post.commentsArray?.first(where: { $0.commentID == commentID }) else {
+            return
+        }
+        
         usernameLabel.text = comment.userName ?? "Unknown"
         timeLabel.text = comment.timeMessage ?? ""
         commentLabel.text = comment.commentCaption ?? ""
@@ -244,6 +284,89 @@ class CommentCell: UITableViewCell {
     }
 
 }
+
+
+/*
+final class CommentCell: UITableViewCell {
+
+    //LOGIC
+    private let postDataController = PostDataController.shared
+    private var commentID: Int?
+    private var postID: Int?
+
+    //UI COMPONENTS
+    private let layout = CommentCellLayout()
+
+    //MANAGE VIEWS
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+
+        contentView.addSubview(layout)
+        layout.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            layout.topAnchor.constraint(equalTo: contentView.topAnchor),
+            layout.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            layout.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            layout.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+
+        // Observe comment updates
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCommentUpdated),
+            name: .commentUpdated,
+            object: nil
+        )
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    //ACTIONS
+    func configure(with comment: Comment) {
+        self.commentID = comment.commentID
+        self.postID = comment.postID
+        
+        refreshCommentUI()
+    }
+
+    //FUNCTIONS
+    @objc private func handleCommentUpdated(_ notification: Notification) {
+        guard
+            let updatedPostID = notification.object as? Int,
+            updatedPostID == postID
+        else { return }
+        
+        refreshCommentUI()
+    }
+    
+    private func refreshCommentUI() {
+        guard
+            let commentID = commentID,
+            let postID = postID,
+            let post = postDataController.getPostByID(postID: postID),
+            let comment = post.commentsArray?.first(where: { $0.commentID == commentID })
+        else { return }
+        
+        layout.apply(
+            username: comment.userName ?? "Unknown",
+            time: comment.timeMessage ?? "",
+            commentCaption: comment.commentCaption ?? "",
+            profileImage: nil // Profile image would be set here when we have user image data
+        )
+    }
+
+}
+
+*/
+
 
 
 /*

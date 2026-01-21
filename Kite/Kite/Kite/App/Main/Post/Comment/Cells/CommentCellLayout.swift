@@ -1,0 +1,195 @@
+//
+//  CommentCellLayout.swift
+//  Kite
+//
+//  Created by David Vasquez on 1/20/26.
+//
+
+import UIKit
+
+
+final class CommentCellLayout: UIView {
+
+    //UI COMPONENTS
+    let profileImageView = UIImageView()
+    let usernameLabel = UILabel()
+    let timeLabel = UILabel()
+    let menuButton = UIButton(type: .system)
+    let commentLabel = UILabel()
+
+    
+    //LOGIC
+    private let mainUserImageView = UIView()
+    private let mainCommentView = UIView()
+    private let userNameView = UIView()
+    private let contentViewContainer = UIView()
+    private let socialsView = UIView()
+    private let stackView = UIStackView()
+
+    //MANAGE VIEWS
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+        setupLayout()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    //LAYOUT
+    private func setupViews() {
+        // Profile image
+        profileImageView.backgroundColor = .lightGray
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = 24
+        profileImageView.image = UIImage(named: "background_1")
+        
+        // Username label
+        usernameLabel.font = Style.usernameFont
+        usernameLabel.textColor = Style.usernameFontColor
+        usernameLabel.textAlignment = .left
+        usernameLabel.numberOfLines = 1
+        usernameLabel.lineBreakMode = .byTruncatingTail
+        usernameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        usernameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+        // Time label
+        timeLabel.font = Style.timeFont
+        timeLabel.textColor = Style.timeFontColor
+        timeLabel.textAlignment = .left
+        timeLabel.numberOfLines = 1
+        timeLabel.setContentHuggingPriority(.required, for: .horizontal)
+        timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        // Menu button
+        menuButton.setImage(UIImage(named: "menu-dots-gray"), for: .normal)
+        menuButton.tintColor = .systemGray
+        menuButton.setContentHuggingPriority(.required, for: .horizontal)
+        menuButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        // Comment label
+        commentLabel.font = Style.mainTextFont
+        commentLabel.textColor = Style.mainTextFontColor
+        commentLabel.numberOfLines = 0
+        
+        // Add container views
+        mainUserImageView.backgroundColor = .clear
+        mainCommentView.backgroundColor = .clear
+        userNameView.backgroundColor = .clear
+        contentViewContainer.backgroundColor = .clear
+        socialsView.backgroundColor = .systemPink
+        
+        addSubview(mainUserImageView)
+        addSubview(mainCommentView)
+        mainCommentView.addSubview(userNameView)
+        mainCommentView.addSubview(contentViewContainer)
+        mainCommentView.addSubview(socialsView)
+        mainUserImageView.addSubview(profileImageView)
+        
+        // Setup username area with stack view
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let spacerView = UIView()
+        spacerView.translatesAutoresizingMaskIntoConstraints = false
+        spacerView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        spacerView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+        stackView.addArrangedSubview(usernameLabel)
+        stackView.addArrangedSubview(timeLabel)
+        stackView.addArrangedSubview(spacerView)
+        stackView.addArrangedSubview(menuButton)
+        stackView.setCustomSpacing(4, after: usernameLabel)
+        
+        userNameView.addSubview(stackView)
+        contentViewContainer.addSubview(commentLabel)
+    }
+
+    private func setupLayout() {
+        mainUserImageView.translatesAutoresizingMaskIntoConstraints = false
+        mainCommentView.translatesAutoresizingMaskIntoConstraints = false
+        userNameView.translatesAutoresizingMaskIntoConstraints = false
+        contentViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        socialsView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        menuButton.translatesAutoresizingMaskIntoConstraints = false
+        commentLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            // Main containers
+            mainUserImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainUserImageView.topAnchor.constraint(equalTo: topAnchor),
+            mainUserImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            mainUserImageView.widthAnchor.constraint(equalToConstant: 68),
+            
+            mainCommentView.leadingAnchor.constraint(equalTo: mainUserImageView.trailingAnchor),
+            mainCommentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainCommentView.topAnchor.constraint(equalTo: topAnchor),
+            mainCommentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            // Profile image
+            profileImageView.topAnchor.constraint(equalTo: mainUserImageView.topAnchor, constant: 4),
+            profileImageView.centerXAnchor.constraint(equalTo: mainUserImageView.centerXAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 48),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+            
+            // Username area
+            userNameView.topAnchor.constraint(equalTo: mainCommentView.topAnchor),
+            userNameView.leadingAnchor.constraint(equalTo: mainCommentView.leadingAnchor),
+            userNameView.trailingAnchor.constraint(equalTo: mainCommentView.trailingAnchor),
+            userNameView.heightAnchor.constraint(equalToConstant: 28),
+            
+            // Stack view inside userNameView
+            stackView.topAnchor.constraint(equalTo: userNameView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: userNameView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: userNameView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: userNameView.bottomAnchor),
+            
+            usernameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
+            timeLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 20),
+            timeLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 40),
+            menuButton.widthAnchor.constraint(equalToConstant: 40),
+            menuButton.heightAnchor.constraint(equalToConstant: 28),
+            
+            // Content area
+            contentViewContainer.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
+            contentViewContainer.leadingAnchor.constraint(equalTo: mainCommentView.leadingAnchor),
+            contentViewContainer.trailingAnchor.constraint(equalTo: mainCommentView.trailingAnchor),
+            contentViewContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: 12),
+            
+            commentLabel.topAnchor.constraint(equalTo: contentViewContainer.topAnchor),
+            commentLabel.leadingAnchor.constraint(equalTo: contentViewContainer.leadingAnchor),
+            commentLabel.trailingAnchor.constraint(equalTo: contentViewContainer.trailingAnchor, constant: -4),
+            commentLabel.bottomAnchor.constraint(equalTo: contentViewContainer.bottomAnchor, constant: 2),
+            
+            // Socials area
+            socialsView.topAnchor.constraint(equalTo: contentViewContainer.bottomAnchor),
+            socialsView.leadingAnchor.constraint(equalTo: mainCommentView.leadingAnchor),
+            socialsView.trailingAnchor.constraint(equalTo: mainCommentView.trailingAnchor),
+            socialsView.heightAnchor.constraint(equalToConstant: 24),
+            socialsView.bottomAnchor.constraint(equalTo: mainCommentView.bottomAnchor)
+        ])
+    }
+
+    //ACTIONS
+    
+    //FUNCTIONS
+    func apply(username: String, time: String, commentCaption: String, profileImage: UIImage?) {
+        usernameLabel.text = username
+        timeLabel.text = time
+        commentLabel.text = commentCaption
+        
+        if let profileImage = profileImage {
+            profileImageView.image = profileImage
+        } else {
+            profileImageView.image = UIImage(named: "background_1")
+        }
+    }
+}
