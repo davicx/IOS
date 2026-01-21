@@ -61,6 +61,42 @@ class ImageFunctions {
             image.draw(in: CGRect(origin: .zero, size: targetSize))
         }
     }
+    
+    //Function: Get Image with Fallback
+    //Validates URL, downloads image, falls back to "background_1" if invalid or fails
+    //imageType parameter reserved for future use (post, comment, group, user)
+    func getImageWithFallback(from urlString: String?, imageType: String? = nil) async -> UIImage? {
+        // Validate URL string exists and is not empty
+        guard let urlString = urlString,
+              !urlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              urlString.lowercased() != "empty",
+              urlString.lowercased() != "needgroupimage",
+              urlString.lowercased() != "needgroupname" else {
+            return UIImage(named: "background_1")
+        }
+        
+        // Validate URL format and scheme
+        guard let imageUrl = URL(string: urlString),
+              imageUrl.scheme != nil,
+              (imageUrl.scheme == "http" || imageUrl.scheme == "https") else {
+            print("ImageFunctions: Invalid or unsupported URL -> \(urlString)")
+            return UIImage(named: "background_1")
+        }
+        
+        // Attempt to download image
+        do {
+            let data = try await downloadData(from: imageUrl)
+            if let image = UIImage(data: data) {
+                return image
+            } else {
+                print("ImageFunctions: Failed to create UIImage from data for URL: \(urlString)")
+                return UIImage(named: "background_1")
+            }
+        } catch {
+            print("ImageFunctions: Error downloading image from \(urlString): \(error)")
+            return UIImage(named: "background_1")
+        }
+    }
 
 }
 

@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 class CommentTemplate: UIView {
     
     // MARK: - Subviews (containers)
@@ -138,6 +136,8 @@ class CommentTemplate: UIView {
         userImage.image = image
     }
 }
+
+
 
 //How to Use
 /*

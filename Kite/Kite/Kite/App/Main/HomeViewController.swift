@@ -112,27 +112,26 @@ class HomeViewController: UIViewController {
 
 }
 
-
 //TABLE VIEW: For Individual Posts in Home Feed
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return postDataController.posts.count
+         return postDataController.getHomeFeedPosts().count
      }
 
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          //Constants.TableViewCellIdentifier.homePostCell could have a crashy error
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
-         let post = postDataController.posts[indexPath.row]
+         let post = postDataController.getHomeFeedPosts()[indexPath.row]
          cell.updatePost(with: post)
          return cell
      }
 
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         let post = postDataController.posts[indexPath.row]
+         let post = postDataController.getHomeFeedPosts()[indexPath.row]
          
          let storyboard = UIStoryboard(name: "Post", bundle: nil)
-         if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+         if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
              //postViewController.currentPost = post
              postViewController.postID = post.postID
              navigationController?.pushViewController(postViewController, animated: true)
@@ -140,7 +139,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let currentPost = postDataController.posts[indexPath.row]
+        let currentPost = postDataController.getHomeFeedPosts()[indexPath.row]
         
         //STEP 1: Get Image Height
         let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)

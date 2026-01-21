@@ -8,7 +8,7 @@
 import UIKit
 
 
-class IndividualGroupMembersVC: UIViewController {
+class GroupMembersViewController: UIViewController {
     
     // Group members data
     var groupMembers: [User] = []
@@ -37,7 +37,7 @@ class IndividualGroupMembersVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        printPageInfo(vcName: "IndividualGroupMembersVC")
+        printPageInfo(vcName: "GroupMembersViewController")
     }
     
     // Refresh member data from cache and refresh friendship status if needed
@@ -48,7 +48,7 @@ class IndividualGroupMembersVC: UIViewController {
         do {
             friendUsernamesFromAPI = try await usersDataController.fetchFriends()
         } catch {
-            print("IndividualGroupMembersVC: Error refreshing friendship status: \(error)")
+            print("GroupMembersViewController: Error refreshing friendship status: \(error)")
         }
         
         // Then get fresh data from cache for each member
@@ -107,7 +107,7 @@ class IndividualGroupMembersVC: UIViewController {
 }
 
 // MARK: - Table View Delegate & Data Source
-extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
+extension GroupMembersViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groupMembers.count
@@ -148,7 +148,7 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                 do {
                     // Use withTimeout to handle timeout
                     let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        await UsersDataController.shared.sendFriendRequest(to: user)
+                        await UserLogic.shared.sendFriendRequest(to: user)
                     }
                     
                         DispatchQueue.main.async {
@@ -180,7 +180,7 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                 Task {
                     do {
                             try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        try await UsersDataController.shared.cancelRequest(to: user)
+                        try await UserLogic.shared.cancelRequest(to: user)
                             }
                             
                             DispatchQueue.main.async {
@@ -213,7 +213,7 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
             Task {
                 do {
                     let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        try await UsersDataController.shared.accept(inviteFrom: user)
+                        try await UserLogic.shared.accept(inviteFrom: user)
                     }
                     
                     DispatchQueue.main.async {
@@ -241,7 +241,7 @@ extension IndividualGroupMembersVC: UITableViewDataSource, UITableViewDelegate {
                 Task {
                     do {
                             try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        try await UsersDataController.shared.remove(friend: user)
+                        try await UserLogic.shared.remove(friend: user)
                             }
                             
                             DispatchQueue.main.async {

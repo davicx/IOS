@@ -23,27 +23,22 @@ class GroupsViewController: UIViewController {
     let imageFunctions = ImageFunctions()
 
     //DATA
-    private var myLists: [GroupModel] {
+    //myGroups are groups the user created and own. sharedGroups are groups the user was invited to
+    private var myGroups: [GroupModel] {
         return GroupDataController.shared.groups.filter { group in
             group.createdBy == GroupDataController.shared.currentUser
         }
     }
     
-    private var sharedWithMe: [GroupModel] {
+    private var sharedGroups: [GroupModel] {
         return GroupDataController.shared.groups.filter { group in
             group.createdBy != GroupDataController.shared.currentUser
         }
     }
-
     
     //GROUPS
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("________________________")
-        print("GroupsViewController")
-        print("LISTS: Wishlist")
-        print("________________________")
-        print(" ")
         
         setupNavigationBar()
         setupTableView()
@@ -78,7 +73,8 @@ class GroupsViewController: UIViewController {
     
     //ACTIONS
     @objc private func openProfile() {
-        print("Profile tapped")
+        let currentUserName = UsersDataController.shared.currentUser
+        print("Profile tapped - Current user: \(currentUserName)")
     }
     
 
@@ -124,7 +120,7 @@ class GroupsViewController: UIViewController {
         )
         navigationItem.rightBarButtonItem = createGroupButton
 
-        if let image = UIImage(named: "user") {
+        if let image = UIImage(named: "background_14") {
             let circularImage = imageFunctions.makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
                 .withRenderingMode(.alwaysOriginal)
 
@@ -138,13 +134,12 @@ class GroupsViewController: UIViewController {
         }
     }
 
-
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(GroupTableViewCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
         tableView.rowHeight = 220
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none  // Comment out divider lines between cells
@@ -202,9 +197,9 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch segmentedControl.selectedSegmentIndex {
         case 0: // My Lists
-            return myLists.count
+            return myGroups.count
         case 1: // Shared With Me
-            return sharedWithMe.count
+            return sharedGroups.count
         default:
             return 0
         }
@@ -215,47 +210,40 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         let group: GroupModel
         switch segmentedControl.selectedSegmentIndex {
         case 0: // My Lists
-            group = myLists[indexPath.row]
+            group = myGroups[indexPath.row]
         case 1: // Shared With Me
-            group = sharedWithMe[indexPath.row]
+            group = sharedGroups[indexPath.row]
         default:
             group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupCell
         cell.configure(with: group)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group: GroupModel
+        let currentUserOwnsGroup: Bool
+        
         switch segmentedControl.selectedSegmentIndex {
         case 0: // My Lists
-            group = myLists[indexPath.row]
+            group = myGroups[indexPath.row]
+            currentUserOwnsGroup = true
         case 1: // Shared With Me
-            group = sharedWithMe[indexPath.row]
+            group = sharedGroups[indexPath.row]
+            currentUserOwnsGroup = false
         default:
             group = GroupModel(groupID: 0, groupName: "", groupImage: nil, createdBy: nil, activeGroupMembers: [], pendingGroupMembers: [])
+            currentUserOwnsGroup = false
         }
         
-        // Navigate to appropriate view controller based on segment
+        // Navigate to IndividualGroupViewController
         let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
-        
-        switch segmentedControl.selectedSegmentIndex {
-        case 0: // My Lists - use IndividualGroupUserViewController
-            guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupUserViewControllerID) as? IndividualGroupUserViewController else { return }
-            vc.group = group
-            navigationController?.pushViewController(vc, animated: true)
-        case 1: // Shared With Me - use IndividualGroupFriendViewController
-            let vc = IndividualGroupFriendViewController()
-            vc.group = group
-            navigationController?.pushViewController(vc, animated: true)
-        default:
-            // Fallback to original IndividualGroupViewController
-            guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
-            vc.group = group
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
+        vc.groupID = group.groupID
+        vc.currentUserOwnsGroup = currentUserOwnsGroup
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

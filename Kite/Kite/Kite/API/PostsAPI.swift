@@ -345,9 +345,33 @@ class PostsAPI {
             return newPostResponseModel
             
         } catch {
-            let newPostResponseModel = NewPostResponseModel()
             print("Error decoding data YOOO")
-            print(newPostResponseModel)
+            print("Decoding error: \(error)")
+            if let decodingError = error as? DecodingError {
+                switch decodingError {
+                case .typeMismatch(let type, let context):
+                    print("Type mismatch for type \(type): \(context.debugDescription)")
+                    print("Coding path: \(context.codingPath)")
+                case .valueNotFound(let type, let context):
+                    print("Value not found for type \(type): \(context.debugDescription)")
+                    print("Coding path: \(context.codingPath)")
+                case .keyNotFound(let key, let context):
+                    print("Key not found: \(key.stringValue) - \(context.debugDescription)")
+                    print("Coding path: \(context.codingPath)")
+                case .dataCorrupted(let context):
+                    print("Data corrupted: \(context.debugDescription)")
+                    print("Coding path: \(context.codingPath)")
+                @unknown default:
+                    print("Unknown decoding error")
+                }
+            }
+            
+            // Print raw response data for debugging
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw JSON response: \(jsonString)")
+            }
+            
+            let newPostResponseModel = NewPostResponseModel()
             return newPostResponseModel
             
         }

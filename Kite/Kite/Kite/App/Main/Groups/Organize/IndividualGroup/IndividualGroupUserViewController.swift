@@ -201,7 +201,7 @@ class IndividualGroupUserViewController: UIViewController {
     
     
 
-    //FUNCTIONS
+    //FUNCTIONS IndividualGroupUserViewController
     private func fetchItemsForGroup() {
         guard let groupID = group?.groupID else {
             print("No group ID available")
@@ -210,14 +210,15 @@ class IndividualGroupUserViewController: UIViewController {
 
         Task {
             // Fetch items (items are posts with additional item-specific data)
-            await postDataController.fetchPostItems(groupID: groupID)
+            await postDataController.fetchItems(groupID: groupID)
             
             // Print out item names to verify it's working
             DispatchQueue.main.async {
                 print("________________________")
                 print("IndividualGroupUserViewController: fetchItemsForGroup \(groupID)")
-                print("Total items fetched: \(self.postDataController.items.count)")
-                for post in self.postDataController.items {
+                let posts = self.postDataController.getPostsForGroup(groupID: groupID)
+                print("Total items fetched: \(posts.count)")
+                for post in posts {
                     print("- Item Name: \(post.itemName ?? "No Name"), PostID: \(post.postID)")
                 }
                 print("________________________")
@@ -338,7 +339,7 @@ class IndividualGroupUserViewController: UIViewController {
         print("Go to Profile: \(user.userName)")
         
         // Navigate to IndividualGroupMembersVC
-        let membersVC = IndividualGroupMembersVC()
+        let membersVC = GroupMembersViewController()
         //group.groupName
         let groupName: String = group?.groupName ?? "Group Members"
         membersVC.title = groupName
@@ -373,12 +374,17 @@ class IndividualGroupUserViewController: UIViewController {
 
 extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let groupID = group?.groupID else { return 0 }
         // return postDataController.posts.count
-        return postDataController.items.count
+        return postDataController.getPostsForGroup(groupID: groupID).count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let post = postDataController.items[indexPath.row]
+        guard let groupID = group?.groupID else {
+            return UITableViewCell()
+        }
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemUserCell", for: indexPath) as! GroupItemUserCell
         cell.configurePost(with: post)
         return cell
@@ -387,11 +393,13 @@ extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        guard let groupID = group?.groupID else { return }
         // Get the post at the tapped index (items are posts with postType == "item")
-        let post = postDataController.items[indexPath.row]
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+        if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
             // Pass the post as currentPost (it's an item if postType == "item")
             //postViewController.currentPost = post
             postViewController.postID = post.postID
@@ -423,4 +431,5 @@ extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewD
         */
     }
 }
+
 

@@ -8,8 +8,6 @@
 import UIKit
 
 
-
-
 class FriendDataController {
     static let shared = FriendDataController()
 

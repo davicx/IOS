@@ -88,7 +88,7 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
                 do {
                     // Use withTimeout to handle timeout
                     let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        await UsersDataController.shared.sendFriendRequest(to: friend)
+                        await UserLogic.shared.sendFriendRequest(to: friend)
                     }
 
                     DispatchQueue.main.async {
