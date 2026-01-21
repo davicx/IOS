@@ -153,7 +153,7 @@ class FriendsViewController: UIViewController {
 
     private func cancelFriendAPI(for user: User) async {
         do {
-            try await UsersDataController.shared.cancelRequest(to: user)
+            try await UserLogic.shared.cancelRequest(to: user)
             DispatchQueue.main.async {
                 print("Successfully cancelled request to \(user.userName)")
                 self.removeUserFromLocalData(user)
@@ -167,7 +167,7 @@ class FriendsViewController: UIViewController {
 
     private func removeFriendAPI(for user: User) async {
         do {
-            try await UsersDataController.shared.remove(friend: user)
+            try await UserLogic.shared.remove(friend: user)
             DispatchQueue.main.async {
                 print("Successfully removed friend: \(user.userName)")
                 self.removeUserFromLocalData(user)
@@ -181,7 +181,7 @@ class FriendsViewController: UIViewController {
 
     private func acceptInviteAPI(for user: User) async {
         do {
-            let updatedUser = try await UsersDataController.shared.accept(inviteFrom: user)
+            let updatedUser = try await UserLogic.shared.accept(inviteFrom: user)
             DispatchQueue.main.async {
                 print("Accepted invite from \(user.userName)")
                 self.removeUserFromLocalData(user)
@@ -198,7 +198,7 @@ class FriendsViewController: UIViewController {
 
     private func declineInviteAPI(for user: User) async {
         do {
-            try await UsersDataController.shared.decline(inviteFrom: user)
+            try await UserLogic.shared.decline(inviteFrom: user)
             DispatchQueue.main.async {
                 print("Declined invite from \(user.userName)")
                 self.removeUserFromLocalData(user)

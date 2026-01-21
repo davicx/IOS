@@ -8,6 +8,220 @@
 import UIKit
 
 
+import UIKit
+
+final class ViewController: UIViewController {
+
+    // MARK: - UI
+
+    private let searchContainer = UIView()
+    private let searchIcon = UIImageView(image: UIImage(systemName: "magnifyingglass"))
+    private let searchPlaceholderLabel = UILabel()
+
+    private let separator = UIView()
+
+    private let rowButton = UIButton(type: .system) // makes the row tappable
+
+    private let avatarCircle = UIView()
+    private let avatarIcon = UIImageView(image: UIImage(systemName: "paperplane.fill")) // stand-in for origami logo
+
+    private let nameLabel = UILabel()
+    private let handleLabel = UILabel()
+    private let dateLabel = UILabel()
+
+    private let previewLabel = UILabel()
+
+    // MARK: - Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+
+        buildSearchBar()
+        buildRow()
+        layoutUI()
+    }
+
+    // MARK: - Build
+
+    private func buildSearchBar() {
+        // Container (rounded light gray pill)
+        searchContainer.backgroundColor = UIColor(white: 0.92, alpha: 1.0)
+        searchContainer.layer.cornerRadius = 22
+        searchContainer.layer.masksToBounds = true
+
+        // Icon
+        searchIcon.tintColor = UIColor(white: 0.55, alpha: 1.0)
+        searchIcon.contentMode = .scaleAspectFit
+
+        // Placeholder text
+        searchPlaceholderLabel.text = "Search for people and groups"
+        searchPlaceholderLabel.textColor = UIColor(white: 0.55, alpha: 1.0)
+        searchPlaceholderLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+
+        view.addSubview(searchContainer)
+        searchContainer.addSubview(searchIcon)
+        searchContainer.addSubview(searchPlaceholderLabel)
+    }
+
+    private func buildRow() {
+        // Row button (no blue highlight)
+        rowButton.backgroundColor = .clear
+        rowButton.tintColor = .clear
+        rowButton.showsTouchWhenHighlighted = false
+        rowButton.adjustsImageWhenHighlighted = false
+
+        // Optional: subtle highlight on touch (very light)
+        rowButton.setBackgroundImage(imageWithColor(UIColor(white: 0.95, alpha: 1.0)), for: .highlighted)
+
+        // Avatar circle
+        avatarCircle.backgroundColor = UIColor.systemBlue
+        avatarCircle.layer.cornerRadius = 28
+        avatarCircle.layer.masksToBounds = true
+
+        avatarIcon.tintColor = .white
+        avatarIcon.contentMode = .scaleAspectFit
+
+        // Name, handle, date
+        nameLabel.text = "AzizDjan"
+        nameLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        nameLabel.textColor = .black
+
+        handleLabel.text = "@A_AzizDjan"
+        handleLabel.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        handleLabel.textColor = UIColor(white: 0.55, alpha: 1.0)
+
+        dateLabel.text = "12/2/19"
+        dateLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        dateLabel.textColor = UIColor(white: 0.55, alpha: 1.0)
+        dateLabel.textAlignment = .right
+
+        // Preview line
+        previewLabel.text = "You: You’re very welcome AzizDjan!"
+        previewLabel.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        previewLabel.textColor = UIColor(white: 0.55, alpha: 1.0)
+        previewLabel.numberOfLines = 1
+
+        // Separator line
+        separator.backgroundColor = UIColor(white: 0.85, alpha: 1.0)
+
+        view.addSubview(rowButton)
+        view.addSubview(separator)
+
+        rowButton.addSubview(avatarCircle)
+        avatarCircle.addSubview(avatarIcon)
+
+        rowButton.addSubview(nameLabel)
+        rowButton.addSubview(handleLabel)
+        rowButton.addSubview(dateLabel)
+        rowButton.addSubview(previewLabel)
+
+        // Tap action (optional)
+        rowButton.addTarget(self, action: #selector(rowTapped), for: .touchUpInside)
+    }
+
+    // MARK: - Layout
+
+    private func layoutUI() {
+        [searchContainer, searchIcon, searchPlaceholderLabel,
+         rowButton, avatarCircle, avatarIcon,
+         nameLabel, handleLabel, dateLabel, previewLabel,
+         separator].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+
+        // Search pill
+        NSLayoutConstraint.activate([
+            searchContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            searchContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
+            searchContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            searchContainer.heightAnchor.constraint(equalToConstant: 52),
+
+            searchIcon.leadingAnchor.constraint(equalTo: searchContainer.leadingAnchor, constant: 16),
+            searchIcon.centerYAnchor.constraint(equalTo: searchContainer.centerYAnchor),
+            searchIcon.widthAnchor.constraint(equalToConstant: 22),
+            searchIcon.heightAnchor.constraint(equalToConstant: 22),
+
+            searchPlaceholderLabel.leadingAnchor.constraint(equalTo: searchIcon.trailingAnchor, constant: 10),
+            searchPlaceholderLabel.centerYAnchor.constraint(equalTo: searchContainer.centerYAnchor, constant: 0),
+            searchPlaceholderLabel.trailingAnchor.constraint(lessThanOrEqualTo: searchContainer.trailingAnchor, constant: -14)
+        ])
+
+        // Row button area
+        NSLayoutConstraint.activate([
+            rowButton.topAnchor.constraint(equalTo: searchContainer.bottomAnchor, constant: 14),
+            rowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            rowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            rowButton.heightAnchor.constraint(equalToConstant: 108)
+        ])
+
+        // Separator line (under search area like screenshot)
+        NSLayoutConstraint.activate([
+            separator.topAnchor.constraint(equalTo: rowButton.topAnchor, constant: -8),
+            separator.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 1)
+        ])
+
+        // Avatar
+        NSLayoutConstraint.activate([
+            avatarCircle.leadingAnchor.constraint(equalTo: rowButton.leadingAnchor, constant: 22),
+            avatarCircle.centerYAnchor.constraint(equalTo: rowButton.centerYAnchor),
+            avatarCircle.widthAnchor.constraint(equalToConstant: 56),
+            avatarCircle.heightAnchor.constraint(equalToConstant: 56),
+
+            avatarIcon.centerXAnchor.constraint(equalTo: avatarCircle.centerXAnchor),
+            avatarIcon.centerYAnchor.constraint(equalTo: avatarCircle.centerYAnchor),
+            avatarIcon.widthAnchor.constraint(equalToConstant: 28),
+            avatarIcon.heightAnchor.constraint(equalToConstant: 28)
+        ])
+
+        // Top line: Name + Handle (left), Date (right)
+        // We place name and handle on same baseline-ish, like the screenshot.
+        NSLayoutConstraint.activate([
+            nameLabel.leadingAnchor.constraint(equalTo: avatarCircle.trailingAnchor, constant: 18),
+            nameLabel.topAnchor.constraint(equalTo: rowButton.topAnchor, constant: 18),
+
+            handleLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
+            handleLabel.firstBaselineAnchor.constraint(equalTo: nameLabel.firstBaselineAnchor),
+
+            dateLabel.trailingAnchor.constraint(equalTo: rowButton.trailingAnchor, constant: -22),
+            dateLabel.firstBaselineAnchor.constraint(equalTo: nameLabel.firstBaselineAnchor),
+
+            // Make sure text doesn't collide with date
+            handleLabel.trailingAnchor.constraint(lessThanOrEqualTo: dateLabel.leadingAnchor, constant: -10)
+        ])
+
+        // Preview line
+        NSLayoutConstraint.activate([
+            previewLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            previewLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 6),
+            previewLabel.trailingAnchor.constraint(
+                lessThanOrEqualTo: dateLabel.leadingAnchor,
+                constant: -12
+            )
+        ])
+
+    }
+
+    // MARK: - Actions
+
+    @objc private func rowTapped() {
+        print("Row tapped")
+    }
+
+    // MARK: - Helpers
+
+    private func imageWithColor(_ color: UIColor) -> UIImage? {
+        let size = CGSize(width: 1, height: 1)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        defer { UIGraphicsEndImageContext() }
+        color.setFill()
+        UIRectFill(CGRect(origin: .zero, size: size))
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+}
+
+
+/*
 class ViewController: UIViewController {
     
     override func viewDidLoad() {
@@ -30,7 +244,7 @@ class ViewController: UIViewController {
             commentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40)
         ])
     }
-}
+}*/
 
 
 

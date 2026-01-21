@@ -45,36 +45,6 @@ class IndividualPostViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         printPageInfo(vcName: "IndividualPostViewController")
     }
-    
-    // TEMP: Print users who have liked the post
-    func printPostLikes() {
-        guard let post = post else {
-            print("Post not found")
-            return
-        }
-        
-        print("========== POST LIKES ==========")
-        print("Post ID: \(post.postID)")
-        print("Is Liked by Current User: \(post.isLikedByCurrentUser ?? false)")
-        
-        if let simpleLikes = post.simpleLikesArray, !simpleLikes.isEmpty {
-            print("Users who liked this post (\(simpleLikes.count)):")
-            for (index, username) in simpleLikes.enumerated() {
-                print("  \(index + 1). \(username)")
-            }
-        } else {
-            print("No users have liked this post yet")
-        }
-        
-        if let postLikes = post.postLikesArray, !postLikes.isEmpty {
-            print("\nDetailed Likes (\(postLikes.count)):")
-            for (index, likeModel) in postLikes.enumerated() {
-                print("  \(index + 1). \(likeModel.likedByUserName ?? "Unknown")")
-            }
-        }
-        
-        print("=================================")
-    }
 
     func setupIndividualPostTableView() {
         individualPostTableView.dataSource = self
@@ -93,6 +63,14 @@ class IndividualPostViewController: UIViewController {
             individualPostTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             individualPostTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    @objc private func newGroupPostButton() {
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen
+            present(newPostVC, animated: true)
+        }
     }
 }
 
@@ -290,4 +268,39 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     }
 }
 
+*/
+
+
+//APPENDIX
+
+/*
+// TEMP: Print users who have liked the post
+func printPostLikes() {
+    guard let post = post else {
+        print("Post not found")
+        return
+    }
+    
+    print("========== POST LIKES ==========")
+    print("Post ID: \(post.postID)")
+    print("Is Liked by Current User: \(post.isLikedByCurrentUser ?? false)")
+    
+    if let simpleLikes = post.simpleLikesArray, !simpleLikes.isEmpty {
+        print("Users who liked this post (\(simpleLikes.count)):")
+        for (index, username) in simpleLikes.enumerated() {
+            print("  \(index + 1). \(username)")
+        }
+    } else {
+        print("No users have liked this post yet")
+    }
+    
+    if let postLikes = post.postLikesArray, !postLikes.isEmpty {
+        print("\nDetailed Likes (\(postLikes.count)):")
+        for (index, likeModel) in postLikes.enumerated() {
+            print("  \(index + 1). \(likeModel.likedByUserName ?? "Unknown")")
+        }
+    }
+    
+    print("=================================")
+}
 */

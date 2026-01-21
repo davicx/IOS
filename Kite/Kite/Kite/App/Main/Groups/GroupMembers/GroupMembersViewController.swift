@@ -148,7 +148,7 @@ extension GroupMembersViewController: UITableViewDataSource, UITableViewDelegate
                 do {
                     // Use withTimeout to handle timeout
                     let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        await UsersDataController.shared.sendFriendRequest(to: user)
+                        await UserLogic.shared.sendFriendRequest(to: user)
                     }
                     
                         DispatchQueue.main.async {
@@ -180,7 +180,7 @@ extension GroupMembersViewController: UITableViewDataSource, UITableViewDelegate
                 Task {
                     do {
                             try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        try await UsersDataController.shared.cancelRequest(to: user)
+                        try await UserLogic.shared.cancelRequest(to: user)
                             }
                             
                             DispatchQueue.main.async {
@@ -213,7 +213,7 @@ extension GroupMembersViewController: UITableViewDataSource, UITableViewDelegate
             Task {
                 do {
                     let updatedUser = try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        try await UsersDataController.shared.accept(inviteFrom: user)
+                        try await UserLogic.shared.accept(inviteFrom: user)
                     }
                     
                     DispatchQueue.main.async {
@@ -241,7 +241,7 @@ extension GroupMembersViewController: UITableViewDataSource, UITableViewDelegate
                 Task {
                     do {
                             try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
-                        try await UsersDataController.shared.remove(friend: user)
+                        try await UserLogic.shared.remove(friend: user)
                             }
                             
                             DispatchQueue.main.async {

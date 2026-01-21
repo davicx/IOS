@@ -73,7 +73,8 @@ class GroupsViewController: UIViewController {
     
     //ACTIONS
     @objc private func openProfile() {
-        print("Profile tapped")
+        let currentUserName = UsersDataController.shared.currentUser
+        print("Profile tapped - Current user: \(currentUserName)")
     }
     
 
@@ -132,8 +133,6 @@ class GroupsViewController: UIViewController {
             navigationItem.leftBarButtonItem = profileButton
         }
     }
-
-    
 
     private func setupTableView() {
         view.addSubview(tableView)
@@ -248,4 +247,3 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-//individualGroupUserViewControllerID IndividualGroupFriendViewController IndividualGroupViewController

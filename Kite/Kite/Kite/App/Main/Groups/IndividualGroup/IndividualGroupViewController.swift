@@ -7,30 +7,37 @@
 
 import UIKit
 
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT
+//ACTIONS
+//FUNCTIONS
 
-//CHAT
 class IndividualGroupViewController: UIViewController {
 
-    //GROUPS
+    //LOGIC
     var groupID: Int?
     var currentUserOwnsGroup: Bool = false
     let postDataController = PostDataController.shared
     let usersDataController = UsersDataController.shared
     
-    //GROUP USERS
+    let imageFunctions = ImageFunctions()
+    private let pollingManager = PollingManager()
+    
     private var groupMembers: [User] = []
     
-    //VIEWS SETUP
+    //UI COMPONENTS
     private let tableView = UITableView()
-    private let pollingManager = PollingManager()
-    let imageFunctions = ImageFunctions()
-    
+
     //MANAGE VIEWS
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         setupNavigationBar()
+        setupTableView()
+      
         getGroupPosts()
     }
     
@@ -48,13 +55,92 @@ class IndividualGroupViewController: UIViewController {
  
     }
     
+    //LAYOUT
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(HomePostCell.self, forCellReuseIdentifier: "HomePostCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 160
+        tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.title = "Wishlist"
+
+        // Only show if user owns the group
+        guard currentUserOwnsGroup else {
+            navigationItem.rightBarButtonItems = nil
+            return
+        }
+
+        // Pink container (represents reserved nav space)
+        let pinkContainer = UIView()
+        pinkContainer.backgroundColor = .systemPink
+        pinkContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            pinkContainer.widthAnchor.constraint(equalToConstant: 120),
+            pinkContainer.heightAnchor.constraint(equalToConstant: 32)
+        ])
+
+        // New Post button
+        let newPostButton = UIButton(type: .system)
+        newPostButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        newPostButton.tintColor = .white
+        newPostButton.translatesAutoresizingMaskIntoConstraints = false
+        newPostButton.addTarget(
+            self,
+            action: #selector(newGroupPostButton),
+            for: .touchUpInside
+        )
+
+        // Match back-arrow style spacing
+        newPostButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
+
+        pinkContainer.addSubview(newPostButton)
+
+        NSLayoutConstraint.activate([
+            newPostButton.centerYAnchor.constraint(equalTo: pinkContainer.centerYAnchor),
+            newPostButton.trailingAnchor.constraint(equalTo: pinkContainer.trailingAnchor, constant: -8)
+        ])
+
+        let rightItem = UIBarButtonItem(customView: pinkContainer)
+        navigationItem.rightBarButtonItems = [rightItem]
+    }
+
+    
+    //ACTIONS
+    @objc private func newGroupPostButton() {
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? MakePostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen
+            present(newPostVC, animated: true)
+        }
+    }
+    
+    @objc private func openProfile() {
+        print("Profile tapped")
+    }
+    
+    //FUNCTIONS
     func getGroupPosts() {
         // Fetch posts for this group
         if let groupID = groupID {
             Task {
                 await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
                 
-                // Print post IDs and captions
+                // Print post IDs and captions and reload table
                 DispatchQueue.main.async {
                     let posts = self.postDataController.getPostsForGroup(groupID: groupID)
                     print("________________________")
@@ -64,49 +150,99 @@ class IndividualGroupViewController: UIViewController {
                         print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
                     }
                     print("________________________")
+                    
+                    // Reload table view after data is fetched
+                    self.tableView.reloadData()
                 }
             }
         }
     }
-    
-    //LAYOUT
-    private func setupNavigationBar() {
-        navigationItem.title = "Wishlist"
 
-        let newGroupPostButton = UIBarButtonItem(
-            barButtonSystemItem: .add,
-            target: self,
-            action: #selector(newGroupPostButton)
-        )
-        navigationItem.rightBarButtonItem = newGroupPostButton
+}
 
-        if let image = UIImage(named: "user") {
-            let circularImage = imageFunctions
-                .makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
-                .withRenderingMode(.alwaysOriginal)
+extension IndividualGroupViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let groupID = groupID else { return 0 }
+        return postDataController.getPostsForGroup(groupID: groupID).count
+    }
 
-            let button = UIButton(type: .custom)
-            button.setImage(circularImage, for: .normal)
-            button.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
-            button.layer.cornerRadius = 14
-            button.clipsToBounds = true
-            button.contentEdgeInsets = .zero
-            button.imageEdgeInsets = .zero
-            button.addTarget(self, action: #selector(openProfile), for: .touchUpInside)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let groupID = groupID else {
+            return UITableViewCell()
+        }
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HomePostCell", for: indexPath) as! HomePostCell
+        cell.updatePost(with: post)
+        return cell
+    }
 
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let groupID = groupID else { return }
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
+            postViewController.postID = post.postID
+            navigationController?.pushViewController(postViewController, animated: true)
         }
     }
-    
-    //ACTIONS
-    @objc private func newGroupPostButton() {
-        print("New Post")
-    }
-    
-    @objc private func openProfile() {
-        print("Profile tapped")
+}
+
+
+
+
+/*
+private func setupTestNavigationBar() {
+    navigationItem.title = "Wishlist"
+
+    // Pink test view (represents future buttons)
+    let pinkView = UIView()
+    pinkView.backgroundColor = .systemPink
+    pinkView.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+        pinkView.widthAnchor.constraint(equalToConstant: 120),
+        pinkView.heightAnchor.constraint(equalToConstant: 32)
+    ])
+
+    let pinkBarItem = UIBarButtonItem(customView: pinkView)
+
+    // Important: use rightBarButtonItems (array)
+    navigationItem.rightBarButtonItems = [pinkBarItem]
+}
+
+private func setupNavigationBar() {
+    navigationItem.title = "Wishlist"
+
+    let newGroupPostButton = UIBarButtonItem(
+        barButtonSystemItem: .add,
+        target: self,
+        action: #selector(newGroupPostButton)
+    )
+    navigationItem.rightBarButtonItem = newGroupPostButton
+
+    if let image = UIImage(named: "user") {
+        let circularImage = imageFunctions
+            .makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
+            .withRenderingMode(.alwaysOriginal)
+
+        let button = UIButton(type: .custom)
+        button.setImage(circularImage, for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
+        button.layer.cornerRadius = 14
+        button.clipsToBounds = true
+        button.contentEdgeInsets = .zero
+        button.imageEdgeInsets = .zero
+        button.addTarget(self, action: #selector(openProfile), for: .touchUpInside)
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
     }
 }
+ */
 
 
 /*
@@ -771,4 +907,5 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
 }
 
 */
+
 

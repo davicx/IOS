@@ -54,6 +54,32 @@ struct ItemDetails: Codable {
     let purchased_by: String
     let store: String
     let multiple_stores: Int
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        item_id = try container.decode(Int.self, forKey: .item_id)
+        item_name = try container.decode(String.self, forKey: .item_name)
+        
+        // Handle item_price which can be either a number or a string
+        if let priceString = try? container.decode(String.self, forKey: .item_price) {
+            item_price = priceString
+        } else if let priceNumber = try? container.decode(Int.self, forKey: .item_price) {
+            item_price = String(priceNumber)
+        } else if let priceDouble = try? container.decode(Double.self, forKey: .item_price) {
+            item_price = String(Int(priceDouble))
+        } else {
+            throw DecodingError.typeMismatch(String.self, DecodingError.Context(codingPath: decoder.codingPath + [CodingKeys.item_price], debugDescription: "Expected String, Int, or Double for item_price"))
+        }
+        
+        item_description = try container.decode(String.self, forKey: .item_description)
+        item_category = try container.decode(String.self, forKey: .item_category)
+        item_link = try container.decode(String.self, forKey: .item_link)
+        purchased = try container.decode(Int.self, forKey: .purchased)
+        purchased_by = try container.decode(String.self, forKey: .purchased_by)
+        store = try container.decode(String.self, forKey: .store)
+        multiple_stores = try container.decode(Int.self, forKey: .multiple_stores)
+    }
 }
 
 
