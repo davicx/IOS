@@ -8,8 +8,9 @@
 import UIKit
 
 
-import UIKit
 
+
+/*
 final class ViewController: UIViewController {
 
     // MARK: - UI
@@ -219,7 +220,7 @@ final class ViewController: UIViewController {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
-
+*/
 
 /*
 class ViewController: UIViewController {
