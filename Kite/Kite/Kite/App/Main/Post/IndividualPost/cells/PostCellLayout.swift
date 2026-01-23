@@ -16,7 +16,6 @@ final class PostCellLayout: UIView {
     let likeCountLabel = UILabel()
     let likeButton = UIButton(type: .system)
 
-    
     //LOGIC
     private var imageHeightConstraint: NSLayoutConstraint?
     private var imageAspectRatioConstraint: NSLayoutConstraint?

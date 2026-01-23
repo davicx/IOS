@@ -8,14 +8,17 @@
 import UIKit
 
 
+// STEP 1: PostLogic performs API request
+// STEP 2: API responds with updated post data
+// STEP 3: PostDataController updates its stored post
+// STEP 4: PostDataController posts NotificationCenter event
+
 final class PostLogic {
     static let shared = PostLogic()
     private init() {}
     
     private let postDataController = PostDataController.shared
-    
-    // MARK: - Likes
-    
+
     func toggleLike(post: Post, groupID: Int) async {
         if post.isLikedByCurrentUser == true {
             await unlike(post: post, groupID: groupID)
@@ -26,11 +29,6 @@ final class PostLogic {
     
 
     func like(post: Post, groupID: Int) async {
-        
-        // STEP 5: PostLogic performs API request
-        // STEP 6: API responds with updated post data
-        // STEP 7: PostDataController updates its stored post
-        // STEP 8: PostDataController posts NotificationCenter event
         
         // Step 1: API call via postLikeFunctions (lazy reference to avoid circular dependency)
         let likeFunctions = postLikeFunctions.shared
@@ -52,23 +50,13 @@ final class PostLogic {
         // Step 2: Update data controller (which posts notification)
         postDataController.unlikePost(postID: post.postID, likeModel: likeModel)
     }
-    
-    // MARK: - Create Post
-    
-    func createItemPost(
-        postImage: UIImage,
-        postFrom: String,
-        postTo: String,
-        postCaption: String,
-        groupID: Int,
-        listID: Int,
-        itemName: String,
-        itemPrice: String,
-        itemDescription: String,
-        itemLink: String
-    ) async -> Bool {
+
+    func createItemPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int,
+        listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String) async -> Bool {
+        
         // Step 1: API call via PostsAPI
         let postsAPI = PostsAPI()
+        
         do {
             let responseModel = try await postsAPI.makeItemPost(
                 postImage: postImage,

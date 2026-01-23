@@ -76,11 +76,23 @@ class ProfileViewController: UIViewController {
         setupUserSelectInfoView()
         setupUserBiographyView()
         
+        // Observe user updates to refresh profile image when it loads
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleUsersUpdated),
+            name: .usersUpdated,
+            object: nil
+        )
+        
         Task {
             await getUserInfo()
             await getUserFriends()
             await fetchUserCounts()
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -427,6 +439,24 @@ class ProfileViewController: UIViewController {
         print("Edit Profile")
     }
     
+    @objc private func handleUsersUpdated() {
+        // Refresh current user from cache to get updated profile image
+        let currentUsername = userDefaultManager.getLoggedInUser()
+        if let updatedUser = UsersDataController.shared.getUser(username: currentUsername) {
+            // Update local reference
+            self.currentUser = updatedUser
+            
+            // Update profile image if it's now available
+            if let profileImage = updatedUser.profileImage {
+                let circularImage = imageFunctions.makeCircularImage(
+                    image: profileImage,
+                    size: CGSize(width: 80, height: 80)
+                )
+                profileImageView.image = circularImage
+            }
+        }
+    }
+    
     
     //DATA FUNCTIONS
     private func getUserInfo() async {
@@ -508,16 +538,23 @@ class ProfileViewController: UIViewController {
             )
             profileImageView.image = circularImage
         } else {
-            // If image not loaded yet, fetch it
+            // If image not loaded yet, try fetching it
+            // Note: UsersDataController may also be fetching it in background,
+            // so we'll get notified via .usersUpdated when it's ready
             Task {
                 await user.fetchProfileImage()
                 DispatchQueue.main.async {
-                    if let profileImage = user.profileImage {
+                    // Refresh from cache to get the latest user data
+                    let currentUsername = self.userDefaultManager.getLoggedInUser()
+                    if let updatedUser = UsersDataController.shared.getUser(username: currentUsername),
+                       let profileImage = updatedUser.profileImage {
                         let circularImage = self.imageFunctions.makeCircularImage(
                             image: profileImage,
                             size: CGSize(width: 80, height: 80)
                         )
                         self.profileImageView.image = circularImage
+                        // Update local reference
+                        self.currentUser = updatedUser
                     } else {
                         // Fallback to placeholder
                         if let placeholderImage = UIImage(named: "user") {
