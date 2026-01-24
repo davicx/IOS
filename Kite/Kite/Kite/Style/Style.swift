@@ -16,8 +16,6 @@ class Style {
     static let mainDarkFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .bold)
     static let mainGrayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
     
-   
-    
     static let timeFont: UIFont = UIFont.systemFont(ofSize: 12, weight: .regular)
     static let timeFontColor: UIColor = .gray
     
@@ -26,7 +24,6 @@ class Style {
     
     static let mainTextFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .regular)
     static let mainTextFontColor: UIColor = .label
-    
     
 
     //CLEAN BELOW

@@ -16,6 +16,93 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
+
+final class CommentCell: UITableViewCell {
+
+    //LOGIC
+    private let postDataController = PostDataController.shared
+    private var commentID: Int?
+    private var postID: Int?
+
+    //UI COMPONENTS
+    //CHAT: moved all UI into CommentCellLayout (like PostCell)
+    private let layout = CommentCellLayout()
+
+    //MANAGE VIEWS
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+
+        //CHAT: layout is now the single UI root view inside the cell (same pattern as PostCell)
+        contentView.addSubview(layout)
+        layout.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            layout.topAnchor.constraint(equalTo: contentView.topAnchor),
+            layout.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            layout.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            layout.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+
+        // Observe comment updates
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCommentUpdated),
+            name: .commentUpdated,
+            object: nil
+        )
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        //CHAT: If you ever use storyboard/xib for this cell, you’ll need to add the same layout setup here too.
+        //CHAT: /**/
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    //ACTIONS
+    func configure(with comment: Comment) {
+        self.commentID = comment.commentID
+        self.postID = comment.postID
+
+        refreshCommentUI()
+    }
+
+    @objc private func handleCommentUpdated(_ notification: Notification) {
+        guard let updatedPostID = notification.object as? Int else { return }
+
+        // Only update if this notification is for our post
+        guard updatedPostID == postID else { return }
+
+        refreshCommentUI()
+    }
+
+    //FUNCTIONS
+    private func refreshCommentUI() {
+        guard let commentID = commentID,
+              let postID = postID,
+              let post = postDataController.getPostByID(postID: postID),
+              let comment = post.commentsArray?.first(where: { $0.commentID == commentID }) else {
+            return
+        }
+
+        //CHAT: UI now lives in layout, so we update through layout (minimal change to logic)
+        layout.usernameLabel.text = comment.userName ?? "Unknown"
+        layout.timeLabel.text = comment.timeMessage ?? "Unknown"
+        layout.commentLabel.text = comment.commentCaption ?? "Unknown"
+        // Profile image would be set here when we have user image data
+    }
+
+}
+
+
+
+
+
+/*
 class CommentCell: UITableViewCell {
 
     //LOGIC
@@ -285,7 +372,12 @@ class CommentCell: UITableViewCell {
 
 }
 
+*/
 
+
+
+
+//APPENDIX
 /*
 final class CommentCell: UITableViewCell {
 
