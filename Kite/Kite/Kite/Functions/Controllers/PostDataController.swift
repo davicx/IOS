@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 class PostDataController {
 
     static let shared = PostDataController()
@@ -189,49 +188,7 @@ class PostDataController {
         // Add post-from image
         postWithImages.postFromImageData = await imageFunctions.getImageWithFallback(from: postWithImages.postFromImage)
         
-        /*
-        //OLD: Manual validation and download
-        if let fileUrlString = newPost.fileUrl,
-           let imageUrl = URL(string: fileUrlString),
-           fileUrlString.lowercased() != "empty" {
-            do {
-                let data = try await imageFunctions.downloadData(from: imageUrl)
-                postWithImages.postImageData = UIImage(data: data)
-            } catch {
-                print("Error downloading image for new post: \(error)")
-                postWithImages.postImageData = UIImage(named: "background_1")
-            }
-        } else {
-            postWithImages.postImageData = UIImage(named: "background_1")
-        }
-        
-        // Add group image
-        if let groupImageUrlString = postWithImages.groupImage,
-           !groupImageUrlString.isEmpty,
-           groupImageUrlString.lowercased() != "empty",
-           let imageUrl = URL(string: groupImageUrlString),
-           imageUrl.scheme == "http" || imageUrl.scheme == "https" {
-            do {
-                let data = try await imageFunctions.downloadData(from: imageUrl)
-                postWithImages.groupImageData = UIImage(data: data)
-            } catch {
-                print("Error downloading group image for new post: \(error)")
-            }
-        }
-        
-        // Add post-from image
-        if let postFromImageUrlString = postWithImages.postFromImage,
-           let imageUrl = URL(string: postFromImageUrlString),
-           postFromImageUrlString.lowercased() != "empty" {
-            do {
-                let data = try await imageFunctions.downloadData(from: imageUrl)
-                postWithImages.postFromImageData = UIImage(data: data)
-            } catch {
-                print("Error downloading post-from image for new post: \(error)")
-            }
-        }
-        */
-        
+   
         // Add post to groupPosts array (prepend to show at top)
         var existingPosts = groupPosts[groupID] ?? []
         existingPosts.insert(postWithImages, at: 0)
@@ -250,36 +207,7 @@ class PostDataController {
         }
     }
     
-    /*
-    //OLD: Merged items into single posts array
-    func fetchItems(groupID: Int) async {
-        do {
-            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
-            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
-            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
-            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
-            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
-            
-            // Merge items into posts array (items are just posts with postType == "item")
-            for item in itemsWithImages {
-                if let index = posts.firstIndex(where: { $0.postID == item.postID }) {
-                    posts[index] = item
-                } else {
-                    posts.append(item)
-                }
-            }
 
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .itemsFetched,
-                    object: nil
-                )
-            }
-        } catch {
-            print("PostDataController: Failed to fetch items - \(error)")
-        }
-    }
-    */
 
     //Function A2: Get a Post (searches across all groups)
     func getPostByID(postID: Int) -> Post? {
@@ -341,38 +269,7 @@ class PostDataController {
         }
     }
     
-    /*
-    //OLD: Searched single posts array
-    func likePost(postID: Int, likeModel: LikeModel) {
-        // APP DATA: Step 1 – Find post in source of truth
-        guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
 
-        // APP DATA: Step 2 – Mutate data
-        var post = posts[index]
-
-        post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
-            $0 != likeModel.likedByUserName
-        }
-
-        post.postLikesArray = (post.postLikesArray ?? []).filter {
-            $0.postLikeID != likeModel.postLikeID
-        }
-
-        post.simpleLikesArray?.append(likeModel.likedByUserName)
-        post.postLikesArray?.append(likeModel)
-        post.isLikedByCurrentUser = true
-
-        posts[index] = post
-
-        // APP DATA: Step 3 – Notify entire app
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(
-                name: .postUpdated,
-                object: postID
-            )
-        }
-    }
-    */
 
     //Function A5: Unlike a Post
     func unlikePost(postID: Int, likeModel: LikeModel) {
@@ -412,39 +309,6 @@ class PostDataController {
         }
     }
     
-    /*
-    //OLD: Searched single posts array
-    func unlikePost(postID: Int, likeModel: LikeModel) {
-        // APP DATA: Step 1 – Find post
-        guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
-
-        // APP DATA: Step 2 – Mutate data (same pattern as likePost)
-        var post = posts[index]
-
-        // Use currentUser instead of likeModel.likedByUserName (API doesn't populate it for unlike)
-        let userNameToRemove = currentUser
-        
-        post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
-            $0 != userNameToRemove
-        }
-
-        post.postLikesArray = (post.postLikesArray ?? []).filter {
-            $0.postLikeID != likeModel.postLikeID
-        }
-
-        post.isLikedByCurrentUser = false
-
-        posts[index] = post
-
-        // APP DATA: Step 3 – Notify app
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(
-                name: .postUpdated,
-                object: postID
-            )
-        }
-    }
-    */
 
     //FUNCTIONS B: Comment Related
     //Function B1: Like a Comment
@@ -474,30 +338,7 @@ class PostDataController {
             }
         }
     }
-    
-    /*
-    //OLD: Searched single posts array
-    func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
-        // APP DATA: Step 1 – Locate post + comment
-        guard
-            let postIndex = posts.firstIndex(where: { $0.postID == postID }),
-            let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID })
-        else { return }
 
-        // APP DATA: Step 2 – Mutate data
-        posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = true
-        posts[postIndex].commentsArray?[commentIndex].commentLikeCount? += 1
-        posts[postIndex].commentsArray?[commentIndex].commentLikes?.append(commentLikeModel)
-
-        // APP DATA: Step 3 – Notify app
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(
-                name: .commentUpdated,
-                object: postID
-            )
-        }
-    }
-    */
 
     //Function B2: Unlike a Comment
     func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
@@ -526,30 +367,7 @@ class PostDataController {
             }
         }
     }
-    
-    /*
-    //OLD: Searched single posts array
-    func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
-        guard
-            let postIndex = posts.firstIndex(where: { $0.postID == postID }),
-            let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID })
-        else { return }
 
-        posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = false
-        posts[postIndex].commentsArray?[commentIndex].commentLikeCount? -= 1
-        posts[postIndex].commentsArray?[commentIndex].commentLikes?.removeAll {
-            $0.commentLikeID == commentLikeModel.commentLikeID
-        }
-
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(
-                name: .commentUpdated,
-                object: postID
-            )
-        }
-    }
-    */
-    
 
 
 }
@@ -564,6 +382,194 @@ extension Notification.Name {
     static let itemsFetched = Notification.Name("itemsFetched")
     static let itemUpdated = Notification.Name("itemUpdated")
 }
+
+/*
+//OLD: Merged items into single posts array
+func fetchItems(groupID: Int) async {
+    do {
+        let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+        let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
+        let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
+        let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
+        let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
+        
+        // Merge items into posts array (items are just posts with postType == "item")
+        for item in itemsWithImages {
+            if let index = posts.firstIndex(where: { $0.postID == item.postID }) {
+                posts[index] = item
+            } else {
+                posts.append(item)
+            }
+        }
+
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .itemsFetched,
+                object: nil
+            )
+        }
+    } catch {
+        print("PostDataController: Failed to fetch items - \(error)")
+    }
+}
+*/
+
+/*
+//OLD: Manual validation and download
+if let fileUrlString = newPost.fileUrl,
+   let imageUrl = URL(string: fileUrlString),
+   fileUrlString.lowercased() != "empty" {
+    do {
+        let data = try await imageFunctions.downloadData(from: imageUrl)
+        postWithImages.postImageData = UIImage(data: data)
+    } catch {
+        print("Error downloading image for new post: \(error)")
+        postWithImages.postImageData = UIImage(named: "background_1")
+    }
+} else {
+    postWithImages.postImageData = UIImage(named: "background_1")
+}
+
+// Add group image
+if let groupImageUrlString = postWithImages.groupImage,
+   !groupImageUrlString.isEmpty,
+   groupImageUrlString.lowercased() != "empty",
+   let imageUrl = URL(string: groupImageUrlString),
+   imageUrl.scheme == "http" || imageUrl.scheme == "https" {
+    do {
+        let data = try await imageFunctions.downloadData(from: imageUrl)
+        postWithImages.groupImageData = UIImage(data: data)
+    } catch {
+        print("Error downloading group image for new post: \(error)")
+    }
+}
+
+// Add post-from image
+if let postFromImageUrlString = postWithImages.postFromImage,
+   let imageUrl = URL(string: postFromImageUrlString),
+   postFromImageUrlString.lowercased() != "empty" {
+    do {
+        let data = try await imageFunctions.downloadData(from: imageUrl)
+        postWithImages.postFromImageData = UIImage(data: data)
+    } catch {
+        print("Error downloading post-from image for new post: \(error)")
+    }
+}
+*/
+
+/*
+//OLD: Searched single posts array
+func likePost(postID: Int, likeModel: LikeModel) {
+    // APP DATA: Step 1 – Find post in source of truth
+    guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
+
+    // APP DATA: Step 2 – Mutate data
+    var post = posts[index]
+
+    post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
+        $0 != likeModel.likedByUserName
+    }
+
+    post.postLikesArray = (post.postLikesArray ?? []).filter {
+        $0.postLikeID != likeModel.postLikeID
+    }
+
+    post.simpleLikesArray?.append(likeModel.likedByUserName)
+    post.postLikesArray?.append(likeModel)
+    post.isLikedByCurrentUser = true
+
+    posts[index] = post
+
+    // APP DATA: Step 3 – Notify entire app
+    DispatchQueue.main.async {
+        NotificationCenter.default.post(
+            name: .postUpdated,
+            object: postID
+        )
+    }
+}
+*/
+
+/*
+//OLD: Searched single posts array
+func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+    // APP DATA: Step 1 – Locate post + comment
+    guard
+        let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+        let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID })
+    else { return }
+
+    // APP DATA: Step 2 – Mutate data
+    posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = true
+    posts[postIndex].commentsArray?[commentIndex].commentLikeCount? += 1
+    posts[postIndex].commentsArray?[commentIndex].commentLikes?.append(commentLikeModel)
+
+    // APP DATA: Step 3 – Notify app
+    DispatchQueue.main.async {
+        NotificationCenter.default.post(
+            name: .commentUpdated,
+            object: postID
+        )
+    }
+}
+*/
+/*
+//OLD: Searched single posts array
+func unlikePost(postID: Int, likeModel: LikeModel) {
+    // APP DATA: Step 1 – Find post
+    guard let index = posts.firstIndex(where: { $0.postID == postID }) else { return }
+
+    // APP DATA: Step 2 – Mutate data (same pattern as likePost)
+    var post = posts[index]
+
+    // Use currentUser instead of likeModel.likedByUserName (API doesn't populate it for unlike)
+    let userNameToRemove = currentUser
+    
+    post.simpleLikesArray = (post.simpleLikesArray ?? []).filter {
+        $0 != userNameToRemove
+    }
+
+    post.postLikesArray = (post.postLikesArray ?? []).filter {
+        $0.postLikeID != likeModel.postLikeID
+    }
+
+    post.isLikedByCurrentUser = false
+
+    posts[index] = post
+
+    // APP DATA: Step 3 – Notify app
+    DispatchQueue.main.async {
+        NotificationCenter.default.post(
+            name: .postUpdated,
+            object: postID
+        )
+    }
+}
+*/
+
+
+/*
+//OLD: Searched single posts array
+func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
+    guard
+        let postIndex = posts.firstIndex(where: { $0.postID == postID }),
+        let commentIndex = posts[postIndex].commentsArray?.firstIndex(where: { $0.commentID == commentID })
+    else { return }
+
+    posts[postIndex].commentsArray?[commentIndex].commentLikedByCurrentUser = false
+    posts[postIndex].commentsArray?[commentIndex].commentLikeCount? -= 1
+    posts[postIndex].commentsArray?[commentIndex].commentLikes?.removeAll {
+        $0.commentLikeID == commentLikeModel.commentLikeID
+    }
+
+    DispatchQueue.main.async {
+        NotificationCenter.default.post(
+            name: .commentUpdated,
+            object: postID
+        )
+    }
+}
+*/
 
 
 /*

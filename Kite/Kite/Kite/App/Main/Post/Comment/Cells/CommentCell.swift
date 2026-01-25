@@ -8,14 +8,12 @@
 
 import UIKit
 
-
 //LOGIC
 //UI COMPONENTS
 //MANAGE VIEWS
 //LAYOUT
 //ACTIONS
 //FUNCTIONS
-
 
 final class CommentCell: UITableViewCell {
 
