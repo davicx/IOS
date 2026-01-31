@@ -9,6 +9,9 @@
 import UIKit
 
 
+//tableView.delaysContentTouches = false
+//cell.selectionStyle = .none
+
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
     

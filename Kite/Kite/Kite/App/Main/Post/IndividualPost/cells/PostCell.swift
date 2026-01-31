@@ -16,7 +16,7 @@ final class PostCell: UITableViewCell {
     private var postID: Int?
 
     //UI COMPONENTS
-    private let layout = PostCellLayout()
+    private let layout = ItemCellLayout()
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -32,7 +32,7 @@ final class PostCell: UITableViewCell {
             layout.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
 
-        layout.likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+        layout.purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
 
         NotificationCenter.default.addObserver(
             self,
@@ -57,6 +57,10 @@ final class PostCell: UITableViewCell {
     }
 
     //FUNCTIONS
+    @objc private func purchaseTapped() {
+        print("purchase")
+    }
+
     @objc private func likeTapped() {
         guard
             let postID,
@@ -73,14 +77,7 @@ final class PostCell: UITableViewCell {
             let post = postDataController.getPostByID(postID: postID)
         else { return }
 
-        let likeCount = post.postLikesArray?.count ?? 0
-
-        layout.apply(
-            postCaption: post.postCaption ?? "post caption",
-            likeCountText: "\(likeCount) likes",
-            isLiked: post.isLikedByCurrentUser == true,
-            image: post.postImageData
-        )
+        layout.apply(image: post.postImageData)
     }
 
     @objc private func handlePostUpdated(_ notification: Notification) {
