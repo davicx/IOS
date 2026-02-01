@@ -67,29 +67,7 @@ class PostDataController {
             print("PostDataController: Failed to fetch posts - \(error)")
         }
     }
-    
-    /*
-    //OLD: Replaced entire posts array
-    func fetchPosts(groupID: Int) async {
-        do {
-            let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
-            let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
-            let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
-            let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
-            self.posts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
 
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .postsFetched,
-                    object: nil
-                )
-            }
-        } catch {
-            print("PostDataController: Failed to fetch posts - \(error)")
-        }
-    }
-    */
-    
     
     func fetchItems(groupID: Int) async {
         do {
@@ -382,6 +360,29 @@ extension Notification.Name {
     static let itemsFetched = Notification.Name("itemsFetched")
     static let itemUpdated = Notification.Name("itemUpdated")
 }
+
+
+/*
+//OLD: Replaced entire posts array
+func fetchPosts(groupID: Int) async {
+    do {
+        let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
+        let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
+        let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
+        let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
+        self.posts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
+
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .postsFetched,
+                object: nil
+            )
+        }
+    } catch {
+        print("PostDataController: Failed to fetch posts - \(error)")
+    }
+}
+*/
 
 /*
 //OLD: Merged items into single posts array

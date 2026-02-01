@@ -56,6 +56,20 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.postLikesArray = post.postLikesArray
         currentPost.simpleLikesArray = post.simpleLikesArray
 
+        // Add Item-specific data (if item field exists) - same as createItemsArray
+        if let item = post.item {
+            currentPost.itemID = item.item_id
+            currentPost.itemName = item.item_name
+            currentPost.itemPrice = item.item_price
+            currentPost.itemDescription = item.item_description
+            currentPost.itemCategory = item.item_category
+            currentPost.itemLink = item.item_link
+            currentPost.purchased = item.purchased
+            currentPost.purchasedBy = item.purchased_by
+            currentPost.store = item.store
+            currentPost.multipleStores = item.multiple_stores
+        }
+
         //STEP 3: Append to Array
         postsArray.append(currentPost)
 

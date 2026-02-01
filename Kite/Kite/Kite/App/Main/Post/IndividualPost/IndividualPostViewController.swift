@@ -42,6 +42,8 @@ class IndividualPostViewController: UIViewController {
         if let post = post {
             print("FOUND POST:", post.postID ?? -1)
             print(post.postCaption)
+            print(post.itemDescription)
+            print(post.itemPrice)
             printPostLikes(post: post)
         } else {
             print("POST NOT FOUND")

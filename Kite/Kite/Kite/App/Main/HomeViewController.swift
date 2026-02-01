@@ -97,7 +97,11 @@ class HomeViewController: UIViewController {
     //FUNCTIONS
     func fetchPosts() {
         Task {
-            await postDataController.fetchPosts(groupID: 72)
+            //APP: Kite
+            //await postDataController.fetchPosts(groupID: 72)
+            
+            //APP: Evently
+            await postDataController.fetchItems(groupID: 72)
         }
     }
     
