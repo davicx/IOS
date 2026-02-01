@@ -25,7 +25,6 @@ class Style {
     static let mainTextFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .regular)
     static let mainTextFontColor: UIColor = .label
     
-    
     //ITEM FONT
     static let itemNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     static let itemPriceFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .medium)
@@ -34,7 +33,6 @@ class Style {
 
     //CLEAN BELOW
     let iconBackgroundColor = "#687684"
-    
     
     
     static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -86,6 +84,38 @@ class Style {
     static func styleMainText(_ label: UILabel) {
         label.font = mainTextFont
         label.textColor = mainTextFontColor
+    }
+    
+    //ITEM LABELS
+    static func styleItemNameLabel(_ label: UILabel) {
+        label.font = itemNameFont
+        label.textColor = .label
+        label.numberOfLines = 2
+        label.lineBreakMode = .byTruncatingTail
+    }
+    
+    static func styleItemPriceLabel(_ label: UILabel) {
+        label.font = itemPriceFont
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+    }
+    
+    static func styleItemDescriptionLabel(_ label: UILabel) {
+        label.font = itemDescriptionFont
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 5
+        label.lineBreakMode = .byTruncatingTail
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
+        label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    }
+    
+    static func styleItemLinkLabel(_ label: UILabel) {
+        label.font = itemLinkFont
+        label.textColor = .systemBlue
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingMiddle
     }
     
     //IMAGES

@@ -12,6 +12,13 @@ import UIKit
 //let userName: String = inputUserName ?? ""
 
 //NUMBER FORMATTING FUNCTIONS
+func formatPrice(_ price: String?) -> String {
+    guard let price, !price.trimmingCharacters(in: .whitespaces).isEmpty else { return "$0.00" }
+    let trimmed = price.trimmingCharacters(in: .whitespaces)
+    if trimmed.hasPrefix("$") { return trimmed }
+    return "$\(trimmed)"
+}
+
 func formatCount(_ count: Int) -> String {
     if count >= 1_000_000 {
         let millions = Double(count) / 1_000_000.0

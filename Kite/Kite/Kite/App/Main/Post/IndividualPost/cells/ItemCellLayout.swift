@@ -150,36 +150,17 @@ final class ItemCellLayout: UIView {
         ItemBodyView.addSubview(ItemBodyRightView)
         ItemBodyRightView.translatesAutoresizingMaskIntoConstraints = false
 
-        // Name: 2 lines, tail truncation
+        Style.styleItemNameLabel(itemNameLabel)
         itemNameLabel.text = "Item Name"
-        itemNameLabel.font = Style.itemNameFont
-        itemNameLabel.textColor = .label
-        itemNameLabel.numberOfLines = 2
-        itemNameLabel.lineBreakMode = .byTruncatingTail
 
-        // Price: 1 line, tail truncation
+        Style.styleItemPriceLabel(itemPriceLabel)
         itemPriceLabel.text = "$0.00"
-        itemPriceLabel.font = Style.itemPriceFont
-        itemPriceLabel.textColor = .secondaryLabel
-        itemPriceLabel.numberOfLines = 1
-        itemPriceLabel.lineBreakMode = .byTruncatingTail
 
-        // Description: 5 lines, tail truncation, text shrinks down to ~75% (min ~10.5pt)
+        Style.styleItemDescriptionLabel(itemDescriptionLabel)
         itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."
-        itemDescriptionLabel.font = Style.itemDescriptionFont
-        itemDescriptionLabel.textColor = .secondaryLabel
-        itemDescriptionLabel.numberOfLines = 5
-        itemDescriptionLabel.lineBreakMode = .byTruncatingTail
-        itemDescriptionLabel.adjustsFontSizeToFitWidth = true
-        itemDescriptionLabel.minimumScaleFactor = 0.75
-        itemDescriptionLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
-        // Link: 1 line, middle truncation
+        Style.styleItemLinkLabel(itemLinkLabel)
         itemLinkLabel.text = "www.example.com"
-        itemLinkLabel.font = Style.itemLinkFont
-        itemLinkLabel.textColor = .systemBlue
-        itemLinkLabel.numberOfLines = 1
-        itemLinkLabel.lineBreakMode = .byTruncatingMiddle
 
         ItemBodyRightView.addSubview(itemNameLabel)
         ItemBodyRightView.addSubview(itemPriceLabel)
@@ -248,9 +229,25 @@ final class ItemCellLayout: UIView {
     }
 
     //FUNCTIONS
-    func apply(image: UIImage?) {
-        itemImageView.image = image
-        updateImageAspectRatioConstraint(for: image)
+    func apply(post: Post) {
+        itemImageView.image = post.postImageData
+        updateImageAspectRatioConstraint(for: post.postImageData)
+
+        itemNameLabel.text = post.itemName?.isEmpty == false ? post.itemName : "Item Name"
+        itemPriceLabel.text = formatPrice(post.itemPrice)
+        itemDescriptionLabel.text = post.itemDescription?.isEmpty == false ? post.itemDescription : "add a description here"
+        itemLinkLabel.text = post.itemLink?.isEmpty == false ? post.itemLink : "www.example.com"
+
+        isPurchased = (post.purchased ?? 0) != 0
+        if isPurchased {
+            purchaseButton.setTitle("Purchased", for: .normal)
+            purchaseButton.setTitleColor(UIColor(hex: "#008300"), for: .normal)
+            purchaseButton.layer.borderColor = UIColor(hex: "#008300").cgColor
+        } else {
+            purchaseButton.setTitle("Purchase", for: .normal)
+            purchaseButton.setTitleColor(UIColor(hex: "#343434"), for: .normal)
+            purchaseButton.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+        }
     }
 
     private func updateImageAspectRatioConstraint(for image: UIImage?) {
@@ -289,6 +286,8 @@ final class ItemCellLayout: UIView {
     }
 
 }
+
+
 
 /*
 final class ItemCellLayout: UIView {

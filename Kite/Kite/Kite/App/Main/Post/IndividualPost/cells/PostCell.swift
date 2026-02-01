@@ -82,7 +82,7 @@ final class PostCell: UITableViewCell {
             let post = postDataController.getPostByID(postID: postID)
         else { return }
 
-        layout.apply(image: post.postImageData)
+        layout.apply(post: post)
     }
 
     @objc private func handlePostUpdated(_ notification: Notification) {
