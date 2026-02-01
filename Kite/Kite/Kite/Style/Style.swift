@@ -25,12 +25,16 @@ class Style {
     static let mainTextFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .regular)
     static let mainTextFontColor: UIColor = .label
     
+    
+    //ITEM FONT
+    static let itemNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let itemPriceFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .medium)
+    static let itemDescriptionFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+    static let itemLinkFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
 
     //CLEAN BELOW
     let iconBackgroundColor = "#687684"
     
-    
-
     
     
     static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)

@@ -11,12 +11,36 @@ import UIKit
 final class ItemCellLayout: UIView {
 
     //UI COMPONENTS
+    //Main Components
     let ItemHeaderView = UIView()
     let ItemBodyView = UIView()
+    let ItemFooterView = UIView()
+    
+    //Header
+    //TO DO: Add header subviews (group image, group name, user, etc.)
+    
+    
+    //Body
     let ItemBodyLeftView = UIView()
     let ItemBodyRightView = UIView()
-    let ItemFooterView = UIView()
+    let ItemBodyLeftImageView = UIView()
+    let itemImageView = UIImageView()
+    let ItemBodyLeftPurchasedView = UIView()
     let purchaseButton = UIButton(type: .system)
+    let itemNameLabel = UILabel()
+    let itemPriceLabel = UILabel()
+    let itemDescriptionLabel = UILabel()
+    let itemLinkLabel = UILabel()
+    
+    //Footer
+    //TO DO: Add footer subviews (purchase button, like button, etc.)
+    
+
+    //LOGIC
+    private var imageAspectRatioConstraint: NSLayoutConstraint?
+    private var imageHeightConstraint: NSLayoutConstraint?
+    private var isPurchased = false
+
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
@@ -31,8 +55,10 @@ final class ItemCellLayout: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //LAYOUT: Header
+    //LAYOUT
+    //Layout: Header
     private func setupHeaderViews() {
+        //TO DO: Replace with Style colors for production
         ItemHeaderView.backgroundColor = .systemPink
         ItemHeaderView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(ItemHeaderView)
@@ -45,8 +71,9 @@ final class ItemCellLayout: UIView {
         ])
     }
 
-    //LAYOUT: Body
+    //Layout: Body
     private func setupBodyViews() {
+        //TO DO: Replace with Style colors for production
         ItemBodyView.backgroundColor = .systemGray6
         ItemBodyView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(ItemBodyView)
@@ -59,68 +86,139 @@ final class ItemCellLayout: UIView {
         ])
         ItemBodyView.setContentHuggingPriority(.defaultLow, for: .vertical)
 
-        //ItemBodyLeftView.backgroundColor = .systemBlue
-        ItemBodyRightView.backgroundColor = .systemTeal
+        setupItemBodyLeftView()
+        setupItemBodyRightView()
+    }
+    
+    private func setupItemBodyLeftView () {
         ItemBodyView.addSubview(ItemBodyLeftView)
-        ItemBodyView.addSubview(ItemBodyRightView)
-
         ItemBodyLeftView.translatesAutoresizingMaskIntoConstraints = false
-        ItemBodyRightView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Create these with different colors
+        ItemBodyLeftImageView.backgroundColor = .systemBlue
+        ItemBodyLeftPurchasedView.backgroundColor = .systemOrange
+        ItemBodyLeftView.addSubview(ItemBodyLeftImageView)
+        ItemBodyLeftView.addSubview(ItemBodyLeftPurchasedView)
+        ItemBodyLeftImageView.translatesAutoresizingMaskIntoConstraints = false
+        ItemBodyLeftPurchasedView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add UIImageView to ItemBodyLeftImageView - as wide as container, height scales proportionally
+        itemImageView.contentMode = .scaleAspectFit
+        itemImageView.clipsToBounds = true
+        itemImageView.backgroundColor = .systemGray6
+        ItemBodyLeftImageView.addSubview(itemImageView)
+        itemImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add purchase button to ItemBodyLeftPurchasedView - 80x36, centered vert and horiz
+        purchaseButton.setTitle("Purchase", for: .normal)
+        Buttons.styleNotSelectedButton(purchaseButton, width: 80, height: 36)
+        purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
+        ItemBodyLeftPurchasedView.addSubview(purchaseButton)
 
         NSLayoutConstraint.activate([
             ItemBodyLeftView.leadingAnchor.constraint(equalTo: ItemBodyView.leadingAnchor),
             ItemBodyLeftView.topAnchor.constraint(equalTo: ItemBodyView.topAnchor),
             ItemBodyLeftView.bottomAnchor.constraint(equalTo: ItemBodyView.bottomAnchor),
-            ItemBodyLeftView.widthAnchor.constraint(equalToConstant: 200),
+            ItemBodyLeftView.widthAnchor.constraint(equalToConstant: 180),
             ItemBodyLeftView.heightAnchor.constraint(greaterThanOrEqualToConstant: 220),
 
+            ItemBodyLeftImageView.topAnchor.constraint(equalTo: ItemBodyLeftView.topAnchor),
+            ItemBodyLeftImageView.leadingAnchor.constraint(equalTo: ItemBodyLeftView.leadingAnchor),
+            ItemBodyLeftImageView.trailingAnchor.constraint(equalTo: ItemBodyLeftView.trailingAnchor),
+            ItemBodyLeftImageView.bottomAnchor.constraint(equalTo: itemImageView.bottomAnchor),
+
+            itemImageView.topAnchor.constraint(equalTo: ItemBodyLeftImageView.topAnchor),
+            itemImageView.leadingAnchor.constraint(equalTo: ItemBodyLeftImageView.leadingAnchor),
+            itemImageView.trailingAnchor.constraint(equalTo: ItemBodyLeftImageView.trailingAnchor),
+
+            ItemBodyLeftPurchasedView.topAnchor.constraint(equalTo: itemImageView.bottomAnchor),
+            ItemBodyLeftPurchasedView.leadingAnchor.constraint(equalTo: ItemBodyLeftView.leadingAnchor),
+            ItemBodyLeftPurchasedView.trailingAnchor.constraint(equalTo: ItemBodyLeftView.trailingAnchor),
+            ItemBodyLeftPurchasedView.bottomAnchor.constraint(equalTo: ItemBodyLeftView.bottomAnchor),
+            ItemBodyLeftPurchasedView.heightAnchor.constraint(equalToConstant: 60),
+
+            purchaseButton.centerXAnchor.constraint(equalTo: ItemBodyLeftPurchasedView.centerXAnchor),
+            purchaseButton.centerYAnchor.constraint(equalTo: ItemBodyLeftPurchasedView.centerYAnchor)
+        ])
+        updateImageAspectRatioConstraint(for: nil)
+    }
+    
+    private func setupItemBodyRightView () {
+        // Move correct code from setupBodyViews() here
+        //TO DO: Replace with Style colors for production
+        ItemBodyRightView.backgroundColor = .systemTeal
+        ItemBodyView.addSubview(ItemBodyRightView)
+        ItemBodyRightView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Name: 2 lines, tail truncation
+        itemNameLabel.text = "Item Name"
+        itemNameLabel.font = Style.itemNameFont
+        itemNameLabel.textColor = .label
+        itemNameLabel.numberOfLines = 2
+        itemNameLabel.lineBreakMode = .byTruncatingTail
+
+        // Price: 1 line, tail truncation
+        itemPriceLabel.text = "$0.00"
+        itemPriceLabel.font = Style.itemPriceFont
+        itemPriceLabel.textColor = .secondaryLabel
+        itemPriceLabel.numberOfLines = 1
+        itemPriceLabel.lineBreakMode = .byTruncatingTail
+
+        // Description: 5 lines, tail truncation, text shrinks down to ~75% (min ~10.5pt)
+        itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."
+        itemDescriptionLabel.font = Style.itemDescriptionFont
+        itemDescriptionLabel.textColor = .secondaryLabel
+        itemDescriptionLabel.numberOfLines = 5
+        itemDescriptionLabel.lineBreakMode = .byTruncatingTail
+        itemDescriptionLabel.adjustsFontSizeToFitWidth = true
+        itemDescriptionLabel.minimumScaleFactor = 0.75
+        itemDescriptionLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
+        // Link: 1 line, middle truncation
+        itemLinkLabel.text = "www.example.com"
+        itemLinkLabel.font = Style.itemLinkFont
+        itemLinkLabel.textColor = .systemBlue
+        itemLinkLabel.numberOfLines = 1
+        itemLinkLabel.lineBreakMode = .byTruncatingMiddle
+
+        ItemBodyRightView.addSubview(itemNameLabel)
+        ItemBodyRightView.addSubview(itemPriceLabel)
+        ItemBodyRightView.addSubview(itemDescriptionLabel)
+        ItemBodyRightView.addSubview(itemLinkLabel)
+        itemNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        itemPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        itemDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        itemLinkLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
             ItemBodyRightView.leadingAnchor.constraint(equalTo: ItemBodyLeftView.trailingAnchor),
             ItemBodyRightView.trailingAnchor.constraint(equalTo: ItemBodyView.trailingAnchor),
             ItemBodyRightView.topAnchor.constraint(equalTo: ItemBodyView.topAnchor),
             ItemBodyRightView.bottomAnchor.constraint(equalTo: ItemBodyView.bottomAnchor),
-            ItemBodyRightView.heightAnchor.constraint(greaterThanOrEqualToConstant: 220)
+            ItemBodyRightView.heightAnchor.constraint(greaterThanOrEqualToConstant: 220),
+
+            itemNameLabel.topAnchor.constraint(equalTo: ItemBodyRightView.topAnchor, constant: 12),
+            itemNameLabel.leadingAnchor.constraint(equalTo: ItemBodyRightView.leadingAnchor, constant: 12),
+            itemNameLabel.trailingAnchor.constraint(equalTo: ItemBodyRightView.trailingAnchor, constant: -12),
+
+            itemPriceLabel.topAnchor.constraint(equalTo: itemNameLabel.bottomAnchor, constant: 4),
+            itemPriceLabel.leadingAnchor.constraint(equalTo: ItemBodyRightView.leadingAnchor, constant: 12),
+            itemPriceLabel.trailingAnchor.constraint(equalTo: ItemBodyRightView.trailingAnchor, constant: -12),
+
+            itemDescriptionLabel.topAnchor.constraint(equalTo: itemPriceLabel.bottomAnchor, constant: 8),
+            itemDescriptionLabel.leadingAnchor.constraint(equalTo: ItemBodyRightView.leadingAnchor, constant: 12),
+            itemDescriptionLabel.trailingAnchor.constraint(equalTo: ItemBodyRightView.trailingAnchor, constant: -12),
+
+            itemLinkLabel.topAnchor.constraint(equalTo: itemDescriptionLabel.bottomAnchor, constant: 8),
+            itemLinkLabel.leadingAnchor.constraint(equalTo: ItemBodyRightView.leadingAnchor, constant: 12),
+            itemLinkLabel.trailingAnchor.constraint(equalTo: ItemBodyRightView.trailingAnchor, constant: -12),
+            itemLinkLabel.bottomAnchor.constraint(lessThanOrEqualTo: ItemBodyRightView.bottomAnchor, constant: -12)
         ])
-        
-        
-        //BUTTON
-        var config = UIButton.Configuration.filled()
-        config.title = "Purchase"
-        config.baseBackgroundColor = .systemBlue
-        config.baseForegroundColor = .white
-        config.cornerStyle = .medium
-
-        purchaseButton.configuration = config
-        purchaseButton.translatesAutoresizingMaskIntoConstraints = false
-        purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
-
-        // ⚠️ handler MUST come AFTER configuration is set
-        purchaseButton.configurationUpdateHandler = { button in
-            guard var config = button.configuration else { return }
-
-            if button.state.contains(.highlighted) {
-                config.baseBackgroundColor = .systemBlue.withAlphaComponent(0.6)
-            } else {
-                config.baseBackgroundColor = .systemBlue
-            }
-
-            button.configuration = config
-        }
-
-        ItemBodyLeftView.addSubview(purchaseButton)
-
-        NSLayoutConstraint.activate([
-            purchaseButton.centerXAnchor.constraint(equalTo: ItemBodyLeftView.centerXAnchor),
-            purchaseButton.centerYAnchor.constraint(equalTo: ItemBodyLeftView.centerYAnchor),
-            purchaseButton.widthAnchor.constraint(equalToConstant: 80),
-            purchaseButton.heightAnchor.constraint(equalToConstant: 40)
-        ])
-
-
-
     }
 
-    //LAYOUT: Footer
+    //Layout: Footer
     private func setupFooterViews() {
+        //TO DO: Replace with Style colors for production
         ItemFooterView.backgroundColor = .systemPurple
         ItemFooterView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(ItemFooterView)
@@ -135,10 +233,59 @@ final class ItemCellLayout: UIView {
         ItemFooterView.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
 
-    func apply(image: UIImage?) {}
-    
+    //ACTIONS
     @objc private func purchaseTapped() {
-        print("purchase")
+        isPurchased.toggle()
+        if isPurchased {
+            purchaseButton.setTitle("Purchased", for: .normal)
+            purchaseButton.setTitleColor(UIColor(hex: "#008300"), for: .normal)
+            purchaseButton.layer.borderColor = UIColor(hex: "#008300").cgColor
+        } else {
+            purchaseButton.setTitle("Purchase", for: .normal)
+            purchaseButton.setTitleColor(UIColor(hex: "#343434"), for: .normal)
+            purchaseButton.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+        }
+    }
+
+    //FUNCTIONS
+    func apply(image: UIImage?) {
+        itemImageView.image = image
+        updateImageAspectRatioConstraint(for: image)
+    }
+
+    private func updateImageAspectRatioConstraint(for image: UIImage?) {
+        imageAspectRatioConstraint?.isActive = false
+        imageHeightConstraint?.isActive = false
+
+        if let image = image {
+            let aspectRatio = image.size.height / image.size.width
+            imageAspectRatioConstraint = itemImageView.heightAnchor.constraint(
+                equalTo: itemImageView.widthAnchor,
+                multiplier: aspectRatio
+            )
+            imageAspectRatioConstraint?.priority = .defaultHigh
+            imageAspectRatioConstraint?.isActive = true
+        } else {
+            imageHeightConstraint = itemImageView.heightAnchor.constraint(equalToConstant: 0)
+            imageHeightConstraint?.isActive = true
+        }
+    }
+    
+    func resetImageLayout() {
+        imageAspectRatioConstraint?.isActive = false
+        imageHeightConstraint?.isActive = false
+        imageAspectRatioConstraint = nil
+        imageHeightConstraint = nil
+        itemImageView.image = nil
+        updateImageAspectRatioConstraint(for: nil)
+        isPurchased = false
+        purchaseButton.setTitle("Purchase", for: .normal)
+        purchaseButton.setTitleColor(UIColor(hex: "#343434"), for: .normal)
+        purchaseButton.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+        itemNameLabel.text = "Item Name"
+        itemPriceLabel.text = "$0.00"
+        itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."
+        itemLinkLabel.text = "www.example.com"
     }
 
 }

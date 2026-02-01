@@ -32,8 +32,7 @@ final class PostCell: UITableViewCell {
             layout.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
 
-        layout.purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
-
+   
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handlePostUpdated),
@@ -44,6 +43,12 @@ final class PostCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        postID = nil
+        layout.resetImageLayout()
     }
 
     deinit {
