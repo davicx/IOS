@@ -74,6 +74,8 @@
 		D710E7FB2E7E168B008C11BA /* Groups.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7FA2E7E168B008C11BA /* Groups.storyboard */; };
 		D710E7FD2E7E1691008C11BA /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7FC2E7E1691008C11BA /* Discover.storyboard */; };
 		D710E7FF2E7E19CB008C11BA /* Post.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7FE2E7E19CB008C11BA /* Post.storyboard */; };
+		D716D8462F301B08009766D6 /* PostCaptionTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D716D8452F301B08009766D6 /* PostCaptionTemplate.swift */; };
+		D716D84A2F302913009766D6 /* DatabaseSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D716D8492F302913009766D6 /* DatabaseSchema.swift */; };
 		D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71809462DBC37F5003BC46D /* CommentCell.swift */; };
 		D71809492DBC3C52003BC46D /* IndividualPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71809482DBC3C52003BC46D /* IndividualPostCell.swift */; };
 		D720DB382DE136C000F137AD /* CommentLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = D720DB372DE136C000F137AD /* CommentLike.swift */; };
@@ -281,6 +283,8 @@
 		D710E7FA2E7E168B008C11BA /* Groups.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Groups.storyboard; sourceTree = "<group>"; };
 		D710E7FC2E7E1691008C11BA /* Discover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
 		D710E7FE2E7E19CB008C11BA /* Post.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Post.storyboard; sourceTree = "<group>"; };
+		D716D8452F301B08009766D6 /* PostCaptionTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCaptionTemplate.swift; sourceTree = "<group>"; };
+		D716D8492F302913009766D6 /* DatabaseSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSchema.swift; sourceTree = "<group>"; };
 		D71809462DBC37F5003BC46D /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		D71809482DBC3C52003BC46D /* IndividualPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostCell.swift; sourceTree = "<group>"; };
 		D720DB372DE136C000F137AD /* CommentLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLike.swift; sourceTree = "<group>"; };
@@ -528,6 +532,7 @@
 		51C69B162D0E550100C46759 /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				D716D8482F302907009766D6 /* Docs */,
 				D792ED902F073F4400E0A469 /* Posts */,
 				D78047872DF507AC00702C01 /* Controllers */,
 				51C69B172D0E550900C46759 /* Classes */,
@@ -842,6 +847,14 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
+		D716D8482F302907009766D6 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				D716D8492F302913009766D6 /* DatabaseSchema.swift */,
+			);
+			path = Docs;
+			sourceTree = "<group>";
+		};
 		D71828782D839ED00084F071 /* layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -973,6 +986,7 @@
 			children = (
 				D7DBC7342EC94726002DD687 /* CommentTemplate.swift */,
 				D78D50AC2F2C327A00B86D04 /* PostTemplate.swift */,
+				D716D8452F301B08009766D6 /* PostCaptionTemplate.swift */,
 			);
 			path = Templates;
 			sourceTree = "<group>";
@@ -1366,6 +1380,7 @@
 				D76DA68B2E4D55A1002D65D5 /* ItemCell.swift in Sources */,
 				D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */,
 				D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */,
+				D716D8462F301B08009766D6 /* PostCaptionTemplate.swift in Sources */,
 				D78BE98D2E271CEE0082ABC4 /* PostCellBackup.swift in Sources */,
 				51C69B422D0E585900C46759 /* UnlikePostResponseModel.swift in Sources */,
 				51CA9DC52D0FA711008C36F0 /* RegistrationViewController.swift in Sources */,
@@ -1405,6 +1420,7 @@
 				D7E703802DDD44EE00BF4AE5 /* FriendListResponseModel.swift in Sources */,
 				D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */,
 				D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */,
+				D716D84A2F302913009766D6 /* DatabaseSchema.swift in Sources */,
 				D78EBDD82E305A4E0008F3FE /* HomeViewControllerQA.swift in Sources */,
 				D78C15A52E74DC7B00FB6959 /* User.swift in Sources */,
 				D798D97D2DED16B800C1960E /* CancelFriendRequestModel.swift in Sources */,

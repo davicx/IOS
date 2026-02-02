@@ -33,7 +33,7 @@ final class ItemCellLayout: UIView {
     let itemLinkLabel = UILabel()
     
     //Footer
-    //TO DO: Add footer subviews (purchase button, like button, etc.)
+    let postCaptionTemplate = PostCaptionTemplate()
     
 
     //LOGIC
@@ -74,7 +74,7 @@ final class ItemCellLayout: UIView {
     //Layout: Body
     private func setupBodyViews() {
         //TO DO: Replace with Style colors for production
-        ItemBodyView.backgroundColor = .systemGray6
+        ItemBodyView.backgroundColor = .clear
         ItemBodyView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(ItemBodyView)
 
@@ -95,8 +95,8 @@ final class ItemCellLayout: UIView {
         ItemBodyLeftView.translatesAutoresizingMaskIntoConstraints = false
 
         // Create these with different colors
-        ItemBodyLeftImageView.backgroundColor = .systemBlue
-        ItemBodyLeftPurchasedView.backgroundColor = .systemOrange
+        ItemBodyLeftImageView.backgroundColor = .clear
+        ItemBodyLeftPurchasedView.backgroundColor = .clear
         ItemBodyLeftView.addSubview(ItemBodyLeftImageView)
         ItemBodyLeftView.addSubview(ItemBodyLeftPurchasedView)
         ItemBodyLeftImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ final class ItemCellLayout: UIView {
         // Add UIImageView to ItemBodyLeftImageView - as wide as container, height scales proportionally
         itemImageView.contentMode = .scaleAspectFit
         itemImageView.clipsToBounds = true
-        itemImageView.backgroundColor = .systemGray6
+        itemImageView.backgroundColor = .clear
         ItemBodyLeftImageView.addSubview(itemImageView)
         itemImageView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -146,7 +146,7 @@ final class ItemCellLayout: UIView {
     private func setupItemBodyRightView () {
         // Move correct code from setupBodyViews() here
         //TO DO: Replace with Style colors for production
-        ItemBodyRightView.backgroundColor = .systemTeal
+        ItemBodyRightView.backgroundColor = .clear
         ItemBodyView.addSubview(ItemBodyRightView)
         ItemBodyRightView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -200,18 +200,26 @@ final class ItemCellLayout: UIView {
     //Layout: Footer
     private func setupFooterViews() {
         //TO DO: Replace with Style colors for production
-        ItemFooterView.backgroundColor = .systemPurple
+        ItemFooterView.backgroundColor = .clear
         ItemFooterView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(ItemFooterView)
+
+        ItemFooterView.addSubview(postCaptionTemplate)
+        postCaptionTemplate.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             ItemFooterView.topAnchor.constraint(equalTo: ItemBodyView.bottomAnchor),
             ItemFooterView.leadingAnchor.constraint(equalTo: leadingAnchor),
             ItemFooterView.trailingAnchor.constraint(equalTo: trailingAnchor),
             ItemFooterView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            ItemFooterView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
+            ItemFooterView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56),
+
+            postCaptionTemplate.topAnchor.constraint(equalTo: ItemFooterView.topAnchor),
+            postCaptionTemplate.leadingAnchor.constraint(equalTo: ItemFooterView.leadingAnchor),
+            postCaptionTemplate.trailingAnchor.constraint(equalTo: ItemFooterView.trailingAnchor),
+            postCaptionTemplate.bottomAnchor.constraint(equalTo: ItemFooterView.bottomAnchor)
         ])
-        ItemFooterView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        ItemFooterView.setContentHuggingPriority(.defaultLow, for: .vertical)
     }
 
     //ACTIONS
@@ -237,6 +245,8 @@ final class ItemCellLayout: UIView {
         itemPriceLabel.text = formatPrice(post.itemPrice)
         itemDescriptionLabel.text = post.itemDescription?.isEmpty == false ? post.itemDescription : "add a description here"
         itemLinkLabel.text = post.itemLink?.isEmpty == false ? post.itemLink : "www.example.com"
+
+        postCaptionTemplate.apply(post: post)
 
         isPurchased = (post.purchased ?? 0) != 0
         if isPurchased {
@@ -283,6 +293,7 @@ final class ItemCellLayout: UIView {
         itemPriceLabel.text = "$0.00"
         itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."
         itemLinkLabel.text = "www.example.com"
+        postCaptionTemplate.setPlaceholder()
     }
 
 }

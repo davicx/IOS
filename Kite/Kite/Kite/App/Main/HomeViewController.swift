@@ -44,6 +44,12 @@ class HomeViewController: UIViewController {
             name: .postsFetched,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostsFetched),
+            name: .itemsFetched,
+            object: nil
+        )
 
         //LISTENER: Post Updated
         NotificationCenter.default.addObserver(

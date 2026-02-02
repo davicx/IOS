@@ -144,6 +144,8 @@ class IndividualGroupViewController: UIViewController {
                 // Print post IDs and captions and reload table
                 DispatchQueue.main.async {
                     let posts = self.postDataController.getPostsForGroup(groupID: groupID)
+                    
+                    /*
                     print("________________________")
                     print("IndividualGroupViewController: Posts for groupID \(groupID)")
                     print("Total posts: \(posts.count)")
@@ -151,6 +153,7 @@ class IndividualGroupViewController: UIViewController {
                         print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
                     }
                     print("________________________")
+                     */
                     
                     // Reload table view after data is fetched
                     self.tableView.reloadData()
