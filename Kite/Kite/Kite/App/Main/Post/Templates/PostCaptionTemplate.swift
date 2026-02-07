@@ -26,7 +26,7 @@ final class PostCaptionTemplate: UIView {
     let userCaptionLabel = UILabel()
 
     //Right Components
-    let menuIconView = UIImageView()
+    let editCaptionIconView = UIImageView()
 
     //LOGIC
     private let postDataController = PostDataController.shared
@@ -152,14 +152,14 @@ final class PostCaptionTemplate: UIView {
         postCaptionRightArea.backgroundColor = .clear
         postCaptionRightArea.contentMode = .scaleAspectFit
 
-        menuIconView.image = UIImage(named: "menu-horizontal")
-        menuIconView.contentMode = .scaleAspectFit
-        menuIconView.tintColor = .label
+        editCaptionIconView.image = UIImage(named: "menu-horizontal")
+        editCaptionIconView.contentMode = .scaleAspectFit
+        editCaptionIconView.tintColor = .label
 
         addSubview(postCaptionRightArea)
-        postCaptionRightArea.addSubview(menuIconView)
+        postCaptionRightArea.addSubview(editCaptionIconView)
         postCaptionRightArea.translatesAutoresizingMaskIntoConstraints = false
-        menuIconView.translatesAutoresizingMaskIntoConstraints = false
+        editCaptionIconView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             postCaptionRightArea.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -167,10 +167,10 @@ final class PostCaptionTemplate: UIView {
             postCaptionRightArea.bottomAnchor.constraint(equalTo: bottomAnchor),
             postCaptionRightArea.widthAnchor.constraint(equalToConstant: 26),
 
-            menuIconView.centerXAnchor.constraint(equalTo: postCaptionRightArea.centerXAnchor),
-            menuIconView.topAnchor.constraint(equalTo: postCaptionRightArea.topAnchor, constant: 4),
-            menuIconView.widthAnchor.constraint(equalToConstant: 20),
-            menuIconView.heightAnchor.constraint(equalToConstant: 20)
+            editCaptionIconView.centerXAnchor.constraint(equalTo: postCaptionRightArea.centerXAnchor),
+            editCaptionIconView.topAnchor.constraint(equalTo: postCaptionRightArea.topAnchor, constant: 4),
+            editCaptionIconView.widthAnchor.constraint(equalToConstant: 20),
+            editCaptionIconView.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
 
