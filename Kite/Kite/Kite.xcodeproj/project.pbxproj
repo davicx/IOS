@@ -190,7 +190,6 @@
 		D7F591062F298AB40005BE63 /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F591052F298AB40005BE63 /* ItemCellLayout.swift */; };
 		D7FB876B2D6FE0090054CDF7 /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */; };
 		D7FC55582E57E89F00D0AA27 /* ItemResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC55572E57E89F00D0AA27 /* ItemResponseModel.swift */; };
-		D7FC55592E57E89F00D0AA27 /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC55562E57E89F00D0AA27 /* ItemModel.swift */; };
 		D7FC555B2E57E8B700D0AA27 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC555A2E57E8B700D0AA27 /* Item.swift */; };
 /* End PBXBuildFile section */
 
@@ -398,7 +397,6 @@
 		D7F2CFC32EAD91B400A8E249 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D7F591052F298AB40005BE63 /* ItemCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellLayout.swift; sourceTree = "<group>"; };
 		D7FB876A2D6FE0090054CDF7 /* HomePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostCell.swift; sourceTree = "<group>"; };
-		D7FC55562E57E89F00D0AA27 /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
 		D7FC55572E57E89F00D0AA27 /* ItemResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemResponseModel.swift; sourceTree = "<group>"; };
 		D7FC555A2E57E8B700D0AA27 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -609,7 +607,6 @@
 				51C69B3D2D0E584B00C46759 /* PostModel.swift */,
 				51C69B3F2D0E585100C46759 /* PostResponseModel.swift */,
 				51C69B412D0E585900C46759 /* UnlikePostResponseModel.swift */,
-				D7FC55562E57E89F00D0AA27 /* ItemModel.swift */,
 				D7FC55572E57E89F00D0AA27 /* ItemResponseModel.swift */,
 			);
 			path = Posts;
@@ -1467,7 +1464,6 @@
 				D74C9F052D5981AB00947ECE /* KeyChainManager.swift in Sources */,
 				D75D6C3F2DEE6DCA0080751C /* AcceptFriendResponseModel.swift in Sources */,
 				D7FC55582E57E89F00D0AA27 /* ItemResponseModel.swift in Sources */,
-				D7FC55592E57E89F00D0AA27 /* ItemModel.swift in Sources */,
 				D773A57C2DF3A62600074C88 /* FriendListViewController.swift in Sources */,
 				51ED44632D2E09A60036DB4B /* ProfileAPI.swift in Sources */,
 				51C69AE32D0E549100C46759 /* SceneDelegate.swift in Sources */,
