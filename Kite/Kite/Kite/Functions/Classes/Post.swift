@@ -53,6 +53,7 @@ class Post {
     var itemLink: String?
     var purchased: Int?
     var purchasedBy: String?
+    var purchasedViewers: [String]?
     var store: String?
     var multipleStores: Int?
     

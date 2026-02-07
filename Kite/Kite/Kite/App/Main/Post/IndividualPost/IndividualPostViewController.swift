@@ -44,6 +44,11 @@ class IndividualPostViewController: UIViewController {
             print(post.postCaption)
             print(post.itemDescription)
             print(post.itemPrice)
+            if let viewers = post.purchasedViewers {
+                print("purchased_viewers:", viewers.isEmpty ? "[]" : viewers)
+            } else {
+                print("purchased_viewers: (nil - item block never ran for this post)")
+            }
             printPostLikes(post: post)
         } else {
             print("POST NOT FOUND")

@@ -50,7 +50,9 @@ final class PostLogic {
         // Step 2: Update data controller (which posts notification)
         postDataController.unlikePost(postID: post.postID, likeModel: likeModel)
     }
-
+    
+    
+    //WISHLIST
     func createItemPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int,
         listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String) async -> Bool {
         
@@ -85,5 +87,8 @@ final class PostLogic {
             return false
         }
     }
+    
+    //KITE
+    //Add Kite Later
 }
 

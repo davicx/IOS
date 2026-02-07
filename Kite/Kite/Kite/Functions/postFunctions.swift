@@ -66,6 +66,7 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
             currentPost.itemLink = item.item_link
             currentPost.purchased = item.purchased
             currentPost.purchasedBy = item.purchased_by
+            currentPost.purchasedViewers = item.purchased_viewers
             currentPost.store = item.store
             currentPost.multipleStores = item.multiple_stores
         }
@@ -404,6 +405,7 @@ func createItemsArray(postsResponseModel: PostResponseModel) async throws -> [Po
             currentPost.itemLink = item.item_link
             currentPost.purchased = item.purchased
             currentPost.purchasedBy = item.purchased_by
+            currentPost.purchasedViewers = item.purchased_viewers
             currentPost.store = item.store
             currentPost.multipleStores = item.multiple_stores
         }
