@@ -38,6 +38,8 @@ class PostDataController {
 
     //FUNCTIONS A: Post Related
     //Function A1: Fetch posts from API
+    //KITE: uses getPostsAPI, replace groupPosts for this group
+    /*
     func fetchPosts(groupID: Int) async {
         do {
             let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
@@ -46,7 +48,6 @@ class PostDataController {
             let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
             let fetchedPosts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
             
-            // Store posts per groupID
             groupPosts[groupID] = fetchedPosts
 
             DispatchQueue.main.async {
@@ -59,8 +60,45 @@ class PostDataController {
             print("PostDataController: Failed to fetch posts - \(error)")
         }
     }
+    */
+
+    //WISHLIST: uses getItemsAPI, converts items to posts and merges into groupPosts
+    func fetchPosts(groupID: Int) async {
+        do {
+            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+            let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
+            let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
+            let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
+            let fetchedPosts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
+            
+            var existingPosts = groupPosts[groupID] ?? []
+            for post in fetchedPosts {
+                if let index = existingPosts.firstIndex(where: { $0.postID == post.postID }) {
+                    existingPosts[index] = post
+                } else {
+                    existingPosts.append(post)
+                }
+            }
+            groupPosts[groupID] = existingPosts
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .postsFetched,
+                    object: nil
+                )
+                NotificationCenter.default.post(
+                    name: .itemsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch posts - \(error)")
+        }
+    }
 
     
+    //KITE/WISHLIST: use fetchPosts(groupID:) above; fetchItems removed in favor of single fetchPosts
+    /*
     func fetchItems(groupID: Int) async {
         do {
             let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
@@ -94,6 +132,7 @@ class PostDataController {
             print("PostDataController: Failed to fetch items - \(error)")
         }
     }
+    */
     
     //Function A6: Add new post to groupPosts (called after creating a post via API)
     func addPost(postModel: PostModel, groupID: Int) async {

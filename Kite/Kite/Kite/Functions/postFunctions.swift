@@ -11,7 +11,8 @@ import UIKit
 let imageFunctions = ImageFunctions()
 
 
-//Function A1: Create Posts from API this converts the Post Reponse into an array of Posts
+//Function A1: Create Posts from API — converts PostResponseModel into [Post]
+//KITE: getPostsAPI response; WISHLIST: getItemsAPI response (items as posts with item payload; item block below fills Post)
 func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Post]{
     let postsTemp = postsResponseModel.data
     var postsArray = [Post]()
@@ -56,7 +57,7 @@ func createPostsArray(postsResponseModel: PostResponseModel) async throws -> [Po
         currentPost.postLikesArray = post.postLikesArray
         currentPost.simpleLikesArray = post.simpleLikesArray
 
-        // Add Item-specific data (if item field exists) - same as createItemsArray
+        // Add Item-specific data (if item field exists) — WISHLIST: getItemsAPI always has item payload
         if let item = post.item {
             currentPost.itemID = item.item_id
             currentPost.itemName = item.item_name
@@ -109,7 +110,7 @@ func convertToCommentClass(from model: CommentModel) -> Comment {
 
     
 
-//Function A4: Add Image to Post
+//Function A4: Add Image to Post — KITE/WISHLIST: same implementation
 func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
     
@@ -147,7 +148,7 @@ func addPostImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
 */
 
 
-//Function A5: Add Group Image to Post
+//Function A5: Add Group Image to Post — KITE/WISHLIST: same implementation
 func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 
@@ -189,7 +190,7 @@ func addGroupImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
 */
 
 
-//Function A6: Add Post From Image to Posts
+//Function A6: Add Post From Image to Posts — KITE/WISHLIST: same implementation
 func addPostFromImageToPostsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
 
@@ -351,9 +352,9 @@ func printPostLikes(post: Post) {
     }
 }
 
-//ITEMS HELPER FUNCTIONS
-
-//Function I1: Create Posts from API this converts the Post Response into an array of Posts (for items/wishlist)
+//ITEMS HELPER FUNCTIONS — WISHLIST: use createPostsArray above (same logic); this block kept for reference
+/*
+//WISHLIST: alternate name; same as createPostsArray when API is getItemsAPI
 func createItemsArray(postsResponseModel: PostResponseModel) async throws -> [Post]{
     let postsTemp = postsResponseModel.data
     var postsArray = [Post]()
@@ -417,8 +418,9 @@ func createItemsArray(postsResponseModel: PostResponseModel) async throws -> [Po
     
     return postsArray
 }
+*/
 
-//Function I2: Add Image to Posts (for items/wishlist)
+//Function I2: Add Image to Posts — KITE/WISHLIST: same implementation; addPostImageToPostsArray used by both
 func addPostImageToItemsArray(postsArray: [Post]) async throws -> [Post] {
     var updatedPosts = postsArray
     

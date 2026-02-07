@@ -107,7 +107,7 @@ class HomeViewController: UIViewController {
             //await postDataController.fetchPosts(groupID: 72)
             
             //APP: Evently
-            await postDataController.fetchItems(groupID: 72)
+            await postDataController.fetchPosts(groupID: 72)
         }
     }
     

@@ -139,8 +139,9 @@ class IndividualGroupViewController: UIViewController {
         // Fetch items for this group (Wishlist shows items; items API returns full item payload including purchased_viewers)
         if let groupID = groupID {
             Task {
-                await GroupLogic.shared.fetchGroupItems(groupID: groupID)
-                // await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
+                //WISHLIST: fetchPosts in PostDataController uses getItemsAPI
+                await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
+                // await GroupLogic.shared.fetchGroupItems(groupID: groupID)
                 
                 // Print post IDs and captions and reload table
                 DispatchQueue.main.async {
