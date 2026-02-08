@@ -21,6 +21,13 @@ class PostDataController {
         return userDefaultManager.getLoggedInUser()
     }
     
+    
+    
+    //FUNCTIONS
+    //Functions A:
+    
+    
+    //SORT
     // Get posts for a specific group
     func getPostsForGroup(groupID: Int) -> [Post] {
         return groupPosts[groupID] ?? []
@@ -38,7 +45,7 @@ class PostDataController {
 
     //FUNCTIONS A: Post Related
     //Function A1: Fetch posts from API
-    //KITE: uses getPostsAPI, replace groupPosts for this group
+    //KITE:
     /*
     func fetchPosts(groupID: Int) async {
         do {
@@ -96,43 +103,6 @@ class PostDataController {
         }
     }
 
-    
-    //KITE/WISHLIST: use fetchPosts(groupID:) above; fetchItems removed in favor of single fetchPosts
-    /*
-    func fetchItems(groupID: Int) async {
-        do {
-            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
-            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
-            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
-            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
-            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
-            
-            // Get existing posts for this group (or empty array)
-            var existingPosts = groupPosts[groupID] ?? []
-            
-            // Merge items into existing posts (items are just posts with postType == "item")
-            for item in itemsWithImages {
-                if let index = existingPosts.firstIndex(where: { $0.postID == item.postID }) {
-                    existingPosts[index] = item
-                } else {
-                    existingPosts.append(item)
-                }
-            }
-            
-            // Store updated posts for this group
-            groupPosts[groupID] = existingPosts
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .itemsFetched,
-                    object: nil
-                )
-            }
-        } catch {
-            print("PostDataController: Failed to fetch items - \(error)")
-        }
-    }
-    */
     
     //Function A6: Add new post to groupPosts (called after creating a post via API)
     func addPost(postModel: PostModel, groupID: Int) async {
@@ -385,3 +355,42 @@ extension Notification.Name {
     static let itemsFetched = Notification.Name("itemsFetched")
     static let itemUpdated = Notification.Name("itemUpdated")
 }
+
+
+
+//KITE/WISHLIST: use fetchPosts(groupID:) above; fetchItems removed in favor of single fetchPosts
+/*
+func fetchItems(groupID: Int) async {
+    do {
+        let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
+        let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
+        let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
+        let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
+        let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
+        
+        // Get existing posts for this group (or empty array)
+        var existingPosts = groupPosts[groupID] ?? []
+        
+        // Merge items into existing posts (items are just posts with postType == "item")
+        for item in itemsWithImages {
+            if let index = existingPosts.firstIndex(where: { $0.postID == item.postID }) {
+                existingPosts[index] = item
+            } else {
+                existingPosts.append(item)
+            }
+        }
+        
+        // Store updated posts for this group
+        groupPosts[groupID] = existingPosts
+
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: .itemsFetched,
+                object: nil
+            )
+        }
+    } catch {
+        print("PostDataController: Failed to fetch items - \(error)")
+    }
+}
+*/
