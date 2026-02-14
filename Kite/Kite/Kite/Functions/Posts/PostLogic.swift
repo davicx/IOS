@@ -115,7 +115,7 @@ final class PostLogic {
     func purchaseItem(post: Post, groupID: Int) async {
         guard let itemID = post.itemID else { return }
         let currentUser = postDataController.currentUser
-        let showPurchased = post.purchasedViewers ?? ["frodo", "bilbo"]
+        let showPurchased = ["frodo", "bilbo"]
         
         do {
             let response = try await PostsAPI().purchaseItemAPI(

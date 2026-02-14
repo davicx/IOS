@@ -40,6 +40,11 @@ final class ItemCellLayout: UIView {
     private var imageAspectRatioConstraint: NSLayoutConstraint?
     private var imageHeightConstraint: NSLayoutConstraint?
     private var isPurchased = false
+    private var postID: Int?
+    private var isPurchaseInProgress = false
+    private let spinnerHelper = SpinnerHelper()
+
+    private var postDataController: PostDataController { PostDataController.shared }
 
 
     //MANAGE VIEWS
@@ -224,20 +229,34 @@ final class ItemCellLayout: UIView {
 
     //ACTIONS
     @objc private func purchaseTapped() {
-        isPurchased.toggle()
-        if isPurchased {
-            purchaseButton.setTitle("Purchased", for: .normal)
-            purchaseButton.setTitleColor(UIColor(hex: "#008300"), for: .normal)
-            purchaseButton.layer.borderColor = UIColor(hex: "#008300").cgColor
-        } else {
-            purchaseButton.setTitle("Purchase", for: .normal)
-            purchaseButton.setTitleColor(UIColor(hex: "#343434"), for: .normal)
-            purchaseButton.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+        guard let postID = postID else { return }
+        guard let post = postDataController.getPostByID(postID: postID) else { return }
+        guard !isPurchaseInProgress else { return }
+
+        isPurchaseInProgress = true
+        purchaseButton.isUserInteractionEnabled = false
+        spinnerHelper.show(in: self, delay: 0)
+
+        Task {
+            let groupID = post.groupID ?? 0
+            // State 1: Already purchased → remove purchase
+            if (post.purchased ?? 0) != 0 {
+                await PostLogic.shared.removeItem(post: post, groupID: groupID)
+            } else {
+                // State 2: Not purchased → add purchase
+                await PostLogic.shared.purchaseItem(post: post, groupID: groupID)
+            }
+            DispatchQueue.main.async { [weak self] in
+                self?.spinnerHelper.hide()
+                self?.purchaseButton.isUserInteractionEnabled = true
+                self?.isPurchaseInProgress = false
+            }
         }
     }
 
     //FUNCTIONS
     func apply(post: Post) {
+        self.postID = post.postID
         itemImageView.image = post.postImageData
         updateImageAspectRatioConstraint(for: post.postImageData)
 
@@ -248,7 +267,12 @@ final class ItemCellLayout: UIView {
 
         postCaptionTemplate.apply(post: post)
 
-        isPurchased = (post.purchased ?? 0) != 0
+        let purchased = (post.purchased ?? 0) != 0
+        updatePurchaseButton(isPurchased: purchased)
+    }
+
+    private func updatePurchaseButton(isPurchased: Bool) {
+        self.isPurchased = isPurchased
         if isPurchased {
             purchaseButton.setTitle("Purchased", for: .normal)
             purchaseButton.setTitleColor(UIColor(hex: "#008300"), for: .normal)
@@ -285,10 +309,9 @@ final class ItemCellLayout: UIView {
         imageHeightConstraint = nil
         itemImageView.image = nil
         updateImageAspectRatioConstraint(for: nil)
-        isPurchased = false
-        purchaseButton.setTitle("Purchase", for: .normal)
-        purchaseButton.setTitleColor(UIColor(hex: "#343434"), for: .normal)
-        purchaseButton.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+        postID = nil
+        isPurchaseInProgress = false
+        updatePurchaseButton(isPurchased: false)
         itemNameLabel.text = "Item Name"
         itemPriceLabel.text = "$0.00"
         itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."

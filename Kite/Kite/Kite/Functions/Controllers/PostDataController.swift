@@ -59,7 +59,6 @@ class PostDataController {
     func getPostsForGroup(groupID: Int) -> [Post] {
         return groupPosts[groupID] ?? []
     }
-
     
     //Function A3: Fetch posts for group (WISHLIST: uses getItemsAPI, converts items to posts and merges into groupPosts)
     func fetchPosts(groupID: Int) async {
@@ -127,7 +126,6 @@ class PostDataController {
 
     
     //FUNCTIONS B: All Functions Related to Adding Posts
-
     //Function B1: Add new post to groupPosts (called after creating a post via API)
     func addPost(postModel: PostModel, groupID: Int) async {
         // Convert PostModel to Post (similar to createItemsArray logic)
@@ -212,10 +210,7 @@ class PostDataController {
     }
     
 
-
-
     //FUNCTIONS C: All Functions Related to Post Actions
-
     //Function C1: Like a Post
     func likePost(postID: Int, likeModel: LikeModel) {
         // APP DATA: Step 1 – Find post in source of truth (search across all groups)
