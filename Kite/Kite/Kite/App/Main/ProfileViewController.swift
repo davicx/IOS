@@ -24,6 +24,7 @@ class ProfileViewController: UIViewController {
     var friends: [User] = []
     
     //UI ELEMENTS
+    //HEADER: User Image Full Name, Username and User Info (posts, groups and friends)
     //Profile Image
     private let userProfileImageView = UIView()
     private let profileImageView = UIImageView()
@@ -44,7 +45,7 @@ class ProfileViewController: UIViewController {
     private let userInfoRightDivider = UIView()
     private let userRightLeftView = UIView()
     
-    // User Info Labels
+    // User Information Labels for Post Count, Group Count and Friend Count
     private let userPostCountLabel = UILabel()
     private let userPostsLabel = UILabel()
     private let userGroupCountLabel = UILabel()
@@ -52,7 +53,7 @@ class ProfileViewController: UIViewController {
     private let userFriendsCountLabel = UILabel()
     private let userFriendsLabel = UILabel()
     
-    //User Biography 
+    //BODY
     private let userSelectInfoView = UIView()
     private let userBiographyView = UIView()
     private let userBiographyLabel = UILabel()
@@ -249,6 +250,9 @@ class ProfileViewController: UIViewController {
         userInfoRightDivider.translatesAutoresizingMaskIntoConstraints = false
         userRightLeftView.translatesAutoresizingMaskIntoConstraints = false
         
+        userInfoLeftView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.25)
+        userMiddleLeftView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.25)
+        userRightLeftView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.25)
         userInfoLeftDivider.backgroundColor = .systemGray4
         userInfoRightDivider.backgroundColor = .systemGray4
         
@@ -280,6 +284,10 @@ class ProfileViewController: UIViewController {
             userRightLeftView.topAnchor.constraint(equalTo: userInfoView.topAnchor),
             userRightLeftView.bottomAnchor.constraint(equalTo: userInfoView.bottomAnchor)
         ])
+        
+        userRightLeftView.isUserInteractionEnabled = true
+        let friendsTap = UITapGestureRecognizer(target: self, action: #selector(friendsCountTapped))
+        userRightLeftView.addGestureRecognizer(friendsTap)
         
         setupUserInfoLabels()
     }
@@ -433,6 +441,12 @@ class ProfileViewController: UIViewController {
     //ACTIONS
     @objc private func openProfile() {
         print("Profile tapped")
+    }
+    
+    @objc private func friendsCountTapped() {
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        guard let friendsVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as? FriendsViewController else { return }
+        navigationController?.pushViewController(friendsVC, animated: true)
     }
     
     @objc private func editProfileButton() {

@@ -347,7 +347,6 @@ class PostDataController {
     
     
     //FUNCTIONS E: All Functions Related to Items
-    
     //Function E1: Mark item purchased
     func markItemPurchased(postID: Int, purchasedBy: String, purchasedViewers: [String]) {
         for (groupID, posts) in groupPosts {
@@ -369,7 +368,6 @@ class PostDataController {
             }
         }
     }
-    
     
     //Function E2: Mark item unpurchased
     func markItemUnpurchased(postID: Int) {
@@ -396,6 +394,7 @@ class PostDataController {
 
 }
 
+
 //NOTIFICATIONS
 extension Notification.Name {
     static let postUpdated = Notification.Name("postUpdated")
@@ -406,6 +405,4 @@ extension Notification.Name {
     static let itemsFetched = Notification.Name("itemsFetched")
     static let itemUpdated = Notification.Name("itemUpdated")
 }
-
-
 

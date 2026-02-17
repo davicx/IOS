@@ -34,7 +34,10 @@ final class ItemCellLayout: UIView {
     
     //Footer
     let postCaptionTemplate = PostCaptionTemplate()
-    
+
+    //TEMPORARY: Permission debug (current user, purchased, who can see)
+    private let purchasedPermissionDebugView = UIView()
+    private let purchasedPermissionDebugLabel = UILabel()
 
     //LOGIC
     private var imageAspectRatioConstraint: NSLayoutConstraint?
@@ -53,6 +56,7 @@ final class ItemCellLayout: UIView {
         setupHeaderViews()
         setupBodyViews()
         setupFooterViews()
+        setupPurchasedPermissionDebugView()
     }
 
 
@@ -216,7 +220,6 @@ final class ItemCellLayout: UIView {
             ItemFooterView.topAnchor.constraint(equalTo: ItemBodyView.bottomAnchor),
             ItemFooterView.leadingAnchor.constraint(equalTo: leadingAnchor),
             ItemFooterView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            ItemFooterView.bottomAnchor.constraint(equalTo: bottomAnchor),
             ItemFooterView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56),
 
             postCaptionTemplate.topAnchor.constraint(equalTo: ItemFooterView.topAnchor),
@@ -227,31 +230,69 @@ final class ItemCellLayout: UIView {
         ItemFooterView.setContentHuggingPriority(.defaultLow, for: .vertical)
     }
 
+    //TEMPORARY: Permission debug view
+    private func setupPurchasedPermissionDebugView() {
+        purchasedPermissionDebugView.backgroundColor = UIColor.systemGray5
+        purchasedPermissionDebugView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(purchasedPermissionDebugView)
+
+        purchasedPermissionDebugLabel.numberOfLines = 0
+        purchasedPermissionDebugLabel.font = .systemFont(ofSize: 11)
+        purchasedPermissionDebugLabel.textColor = .secondaryLabel
+        purchasedPermissionDebugLabel.translatesAutoresizingMaskIntoConstraints = false
+        purchasedPermissionDebugView.addSubview(purchasedPermissionDebugLabel)
+
+        NSLayoutConstraint.activate([
+            purchasedPermissionDebugView.topAnchor.constraint(equalTo: ItemFooterView.bottomAnchor),
+            purchasedPermissionDebugView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            purchasedPermissionDebugView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            purchasedPermissionDebugView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            purchasedPermissionDebugLabel.topAnchor.constraint(equalTo: purchasedPermissionDebugView.topAnchor, constant: 6),
+            purchasedPermissionDebugLabel.leadingAnchor.constraint(equalTo: purchasedPermissionDebugView.leadingAnchor, constant: 12),
+            purchasedPermissionDebugLabel.trailingAnchor.constraint(equalTo: purchasedPermissionDebugView.trailingAnchor, constant: -12),
+            purchasedPermissionDebugLabel.bottomAnchor.constraint(lessThanOrEqualTo: purchasedPermissionDebugView.bottomAnchor, constant: -6)
+        ])
+    }
+
     //ACTIONS
     @objc private func purchaseTapped() {
-        guard let postID = postID else { return }
-        guard let post = postDataController.getPostByID(postID: postID) else { return }
+        guard let post = postDataController.getPostByID(postID: postID ?? 0) else { return }
         guard !isPurchaseInProgress else { return }
 
-        isPurchaseInProgress = true
-        purchaseButton.isUserInteractionEnabled = false
-        spinnerHelper.show(in: self, delay: 0)
-
-        Task {
-            let groupID = post.groupID ?? 0
-            // State 1: Already purchased → remove purchase
-            if (post.purchased ?? 0) != 0 {
+        let isPurchased = (post.purchased ?? 0) != 0
+        if isPurchased {
+            // State 1: Already purchased → remove purchase (existing flow)
+            isPurchaseInProgress = true
+            purchaseButton.isUserInteractionEnabled = false
+            spinnerHelper.show(in: self, delay: 0)
+            Task {
+                let groupID = post.groupID ?? 0
                 await PostLogic.shared.removeItem(post: post, groupID: groupID)
-            } else {
-                // State 2: Not purchased → add purchase
-                await PostLogic.shared.purchaseItem(post: post, groupID: groupID)
+                DispatchQueue.main.async { [weak self] in
+                    self?.spinnerHelper.hide()
+                    self?.purchaseButton.isUserInteractionEnabled = true
+                    self?.isPurchaseInProgress = false
+                }
             }
-            DispatchQueue.main.async { [weak self] in
-                self?.spinnerHelper.hide()
-                self?.purchaseButton.isUserInteractionEnabled = true
-                self?.isPurchaseInProgress = false
-            }
+            return
         }
+
+        // State 2: Not purchased → present who-can-see sheet
+        guard let presentingVC = findViewController() else { return }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let itemPurchaseVC = storyboard.instantiateViewController(withIdentifier: "ItemPurchaseViewControllerID") as? ItemPurchaseViewController else { return }
+        itemPurchaseVC.modalPresentationStyle = .pageSheet
+        presentingVC.present(itemPurchaseVC, animated: true)
+    }
+
+    private func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while responder != nil {
+            responder = responder?.next
+            if let vc = responder as? UIViewController { return vc }
+        }
+        return nil
     }
 
     //FUNCTIONS
@@ -269,6 +310,13 @@ final class ItemCellLayout: UIView {
 
         let purchased = (post.purchased ?? 0) != 0
         updatePurchaseButton(isPurchased: purchased)
+
+        //TEMPORARY: Populate permission debug text
+        let currentUser = postDataController.currentUser
+        let purchasedText = purchased ? "Yes" : "No"
+        let viewersList = post.purchasedViewers ?? []
+        let viewersText = viewersList.isEmpty ? "[]" : viewersList.joined(separator: ", ")
+        purchasedPermissionDebugLabel.text = "Current user: \(currentUser)\nPurchased: \(purchasedText)\nWho can see: \(viewersText)"
     }
 
     private func updatePurchaseButton(isPurchased: Bool) {
