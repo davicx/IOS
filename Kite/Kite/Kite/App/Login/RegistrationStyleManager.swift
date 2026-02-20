@@ -192,7 +192,7 @@ class RegistrationStyleManager {
 
     func setupLogoImage() {
         let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "background_14")
+        logoImageView.image = UIImage(named: "background_17")
         logoImageView.contentMode = .scaleAspectFill
         logoImageView.clipsToBounds = true
         logoImageView.translatesAutoresizingMaskIntoConstraints = false

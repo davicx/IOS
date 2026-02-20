@@ -280,7 +280,7 @@ final class ItemCellLayout: UIView {
 
         // State 2: Not purchased → present who-can-see sheet
         guard let presentingVC = findViewController() else { return }
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
         guard let itemPurchaseVC = storyboard.instantiateViewController(withIdentifier: "ItemPurchaseViewControllerID") as? ItemPurchaseViewController else { return }
         itemPurchaseVC.groupID = post.groupID
         itemPurchaseVC.modalPresentationStyle = .pageSheet

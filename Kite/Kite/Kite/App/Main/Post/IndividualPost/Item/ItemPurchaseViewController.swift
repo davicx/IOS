@@ -67,7 +67,7 @@ class ItemPurchaseViewController: UIViewController {
     @objc private func cancelTapped() {
         dismiss(animated: true)
     }
-
+    
     @objc private func purchaseTapped() {
         print("ItemPurchaseViewController: selected users = \(Array(selectedUsernames).sorted())")
         dismiss(animated: true)
