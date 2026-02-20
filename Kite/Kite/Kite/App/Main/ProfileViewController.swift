@@ -76,6 +76,7 @@ class ProfileViewController: UIViewController {
         setupUserInfoView()
         setupUserSelectInfoView()
         setupUserBiographyView()
+        setupTempLogoutButton()
         
         // Observe user updates to refresh profile image when it loads
         NotificationCenter.default.addObserver(
@@ -377,8 +378,7 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             userBiographyView.topAnchor.constraint(equalTo: userSelectInfoView.bottomAnchor),
             userBiographyView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            userBiographyView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            userBiographyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            userBiographyView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
         // Add labels and text areas
@@ -437,7 +437,22 @@ class ProfileViewController: UIViewController {
             userClothingTextArea.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ])
     }
-    
+
+    //TEMP: Logout button at bottom
+    private func setupTempLogoutButton() {
+        logoutButton.setTitle("Temp Logout", for: .normal)
+        logoutButton.addTarget(self, action: #selector(tempLogoutTapped), for: .touchUpInside)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoutButton)
+        NSLayoutConstraint.activate([
+            userBiographyView.bottomAnchor.constraint(equalTo: logoutButton.topAnchor, constant: -16),
+            logoutButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
+            logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            logoutButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+
     //ACTIONS
     @objc private func openProfile() {
         print("Profile tapped")
@@ -451,6 +466,10 @@ class ProfileViewController: UIViewController {
     
     @objc private func editProfileButton() {
         print("Edit Profile")
+    }
+
+    @objc private func tempLogoutTapped() {
+        LoginManager.shared.logoutCurrentUser()
     }
     
     @objc private func handleUsersUpdated() {

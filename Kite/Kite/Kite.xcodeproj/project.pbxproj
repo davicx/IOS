@@ -100,6 +100,7 @@
 		D74471192D88EAE6009677B9 /* DividerWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74471182D88EAE6009677B9 /* DividerWithLabel.swift */; };
 		D7454AB52F147AD400D76F3B /* GroupLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7454AB42F147AD400D76F3B /* GroupLogic.swift */; };
 		D7468DD92E875A6E005FFD59 /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */; };
+		D746A4E32F453FD200800DB8 /* ItemPurchaseUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D746A4E22F453FD200800DB8 /* ItemPurchaseUserCell.swift */; };
 		D747F7B92D824CFB00A08602 /* UserProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */; };
 		D747F7BB2D824D0800A08602 /* UserNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7BA2D824D0800A08602 /* UserNameView.swift */; };
 		D747F7BD2D824D3200A08602 /* UserProfileSocialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747F7BC2D824D3200A08602 /* UserProfileSocialsView.swift */; };
@@ -185,6 +186,7 @@
 		D7D9923C2DFCE66200D6B48A /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D9923B2DFCE66200D6B48A /* GroupCell.swift */; };
 		D7DB60A42F09F8F300C43BE8 /* Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DB60A32F09F8F300C43BE8 /* Elements.swift */; };
 		D7DBC7352EC94726002DD687 /* CommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DBC7342EC94726002DD687 /* CommentTemplate.swift */; };
+		D7DFEDC62F468E48005E474D /* RegistrationStyleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DFEDC52F468E48005E474D /* RegistrationStyleManager.swift */; };
 		D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */; };
 		D7E2A61E2F171D0B00197572 /* ComparingGroupVCs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2A61D2F171D0B00197572 /* ComparingGroupVCs.swift */; };
 		D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */; };
@@ -310,6 +312,7 @@
 		D74471182D88EAE6009677B9 /* DividerWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerWithLabel.swift; sourceTree = "<group>"; };
 		D7454AB42F147AD400D76F3B /* GroupLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupLogic.swift; sourceTree = "<group>"; };
 		D7468DD82E875A6E005FFD59 /* MakePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewController.swift; sourceTree = "<group>"; };
+		D746A4E22F453FD200800DB8 /* ItemPurchaseUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPurchaseUserCell.swift; sourceTree = "<group>"; };
 		D747F7B82D824CFB00A08602 /* UserProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileImageView.swift; sourceTree = "<group>"; };
 		D747F7BA2D824D0800A08602 /* UserNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameView.swift; sourceTree = "<group>"; };
 		D747F7BC2D824D3200A08602 /* UserProfileSocialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileSocialsView.swift; sourceTree = "<group>"; };
@@ -395,6 +398,7 @@
 		D7D9923B2DFCE66200D6B48A /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		D7DB60A32F09F8F300C43BE8 /* Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elements.swift; sourceTree = "<group>"; };
 		D7DBC7342EC94726002DD687 /* CommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplate.swift; sourceTree = "<group>"; };
+		D7DFEDC52F468E48005E474D /* RegistrationStyleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationStyleManager.swift; sourceTree = "<group>"; };
 		D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemViewController.swift; sourceTree = "<group>"; };
 		D7E2A61D2F171D0B00197572 /* ComparingGroupVCs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparingGroupVCs.swift; sourceTree = "<group>"; };
 		D7E7037D2DDD443800BF4AE5 /* FriendProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewController.swift; sourceTree = "<group>"; };
@@ -622,6 +626,7 @@
 				51CA9DC42D0FA711008C36F0 /* RegistrationViewController.swift */,
 				D74471182D88EAE6009677B9 /* DividerWithLabel.swift */,
 				D7400EA02D8CC45800646E94 /* LoginLayoutManager.swift */,
+				D7DFEDC52F468E48005E474D /* RegistrationStyleManager.swift */,
 				D79743F62DFB980A00DC97D5 /* LoginDoc.swift */,
 			);
 			path = Login;
@@ -888,6 +893,14 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		D746A4E42F4540A300800DB8 /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				D746A4E22F453FD200800DB8 /* ItemPurchaseUserCell.swift */,
+			);
+			path = cells;
+			sourceTree = "<group>";
+		};
 		D747F7B72D824CCF00A08602 /* original */ = {
 			isa = PBXGroup;
 			children = (
@@ -1115,6 +1128,7 @@
 		D79C02A12F41322E00F81DF8 /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				D746A4E42F4540A300800DB8 /* cells */,
 				D79C02A22F41324100F81DF8 /* ItemPurchaseViewController.swift */,
 			);
 			path = Item;
@@ -1409,6 +1423,7 @@
 				D7D9923C2DFCE66200D6B48A /* GroupCell.swift in Sources */,
 				D7D793162EECE469004046AC /* ProflieDoc.swift in Sources */,
 				519B24D92D18CFAF00159385 /* PresenterManager.swift in Sources */,
+				D7DFEDC62F468E48005E474D /* RegistrationStyleManager.swift in Sources */,
 				D73A1B682E8213940085E4F1 /* FriendSearchResponseModel.swift in Sources */,
 				51C69B492D0E595700C46759 /* RegistrationModel.swift in Sources */,
 				D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */,
@@ -1440,6 +1455,7 @@
 				D7E703802DDD44EE00BF4AE5 /* FriendListResponseModel.swift in Sources */,
 				D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */,
 				D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */,
+				D746A4E32F453FD200800DB8 /* ItemPurchaseUserCell.swift in Sources */,
 				D716D84A2F302913009766D6 /* DatabaseSchema.swift in Sources */,
 				D78EBDD82E305A4E0008F3FE /* HomeViewControllerQA.swift in Sources */,
 				D78C15A52E74DC7B00FB6959 /* User.swift in Sources */,

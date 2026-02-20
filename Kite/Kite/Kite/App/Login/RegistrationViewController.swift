@@ -7,191 +7,113 @@
 
 import UIKit
 
-class RegistrationViewController: UIViewController {
+class RegistrationViewController: UIViewController, RegistrationStyleManagerDelegate {
 
+    let styleManager = RegistrationStyleManager()
     let loginAPI = LoginAPI()
-    
     var activityIndicator = UIActivityIndicatorView()
-    var errrorMessage = ""
 
-    
-    @IBOutlet weak var userNameLabel: UITextField!
-    @IBOutlet weak var fullNameLabel: UITextField!
-    @IBOutlet weak var emailLabel: UITextField!
-    @IBOutlet weak var passwordLabel: UITextField!
-    
-    @IBOutlet weak var registerButtonStyle: UIButton!
-    @IBOutlet weak var messageLabel: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("RegistrationViewController")
-        
+
+        styleManager.delegate = self
+        styleManager.setupViews(in: view)
+        styleManager.setupConstraints(in: view)
+        styleManager.setupTextFields()
+        styleManager.setupButtons(in: view)
+        // Temporary: pre-fill for testing (remove before release)
+        styleManager.userNameTextField.text = "sam3"
+        styleManager.fullNameTextField.text = "Sam Gamgee"
+        styleManager.emailTextField.text = "sam3@gmail.com"
+        styleManager.passwordTextField.text = "password"
         setupElements()
-
     }
-    
+
     func setupElements() {
-        
-        //Error Label
-        messageLabel.alpha = 0
-        
-        //Style Buttons and Fields
-        //Temp.styleTextField(userNameTextField)
-        //Temp.styleTextField(passwordTextField)
-        
-        //Set Up Spinner
-        activityIndicator.center = self.view.center
+        activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = UIActivityIndicatorView.Style.medium
-        self.view.addSubview(activityIndicator)
-
+        activityIndicator.style = .medium
+        view.addSubview(activityIndicator)
     }
-    
-    @IBAction func registerButton(_ sender: UIButton) {
-        
-        //STEP 1: Get Register Information
-        let userName = userNameLabel.text ?? ""
-        let fullName = fullNameLabel.text ?? ""
-        let email = emailLabel.text ?? ""
-        let password = passwordLabel.text ?? ""
-   
-        //STEP 2: Validate Local Register Information
+
+    func didTapRegisterButton() {
+        styleManager.hideError()
+        styleManager.hideSuccess()
+
+        let userName = styleManager.userNameTextField.text ?? ""
+        let fullName = styleManager.fullNameTextField.text ?? ""
+        let email = styleManager.emailTextField.text ?? ""
+        let password = styleManager.passwordTextField.text ?? ""
+
+        // 1) Swift App – validationFunctions
         let validUsername = validateUserName(userName: userName)
-        let validateFullName = validateFullName(fullName: fullName)
+        let validFullName = validateFullName(fullName: fullName)
         let validEmail = validateEmail(email: email)
         let validPassword = validatePassword(password: password)
 
-        if(validUsername == true && validPassword == true) {
-            print("Good info!! ")
-
-             //STEP 3: Register User
-             Task{
-
-                 do{
-                     //API
-                     activityIndicator.startAnimating()
-                     view.isUserInteractionEnabled = false
-                 
-                     let registerResponseModel = try await loginAPI.registerNewUser(username: userName, fullName: fullName, email: email, password: password)
-                     
-                     activityIndicator.stopAnimating()
-                     self.view.isUserInteractionEnabled = true
-                  
-                     //STEP 4: Handle Register User Information Response good username, etc)
-                     if(registerResponseModel.success == true) {
-                         
-                         let alert = UIAlertController(title: "Register Message", message: "You sucesfully Registered", preferredStyle: .alert)
-                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                             switch action.style{
-                                 case .default:
-                                 print("default")
-                                 
-                                 case .cancel:
-                                 print("cancel")
-                                 
-                                 case .destructive:
-                                 print("destructive")
-                                 
-                             }
-                         }))
-                         self.present(alert, animated: true, completion: nil)
-
-       
-                     //STEP 4: Handle Register User Information Response with a need like a different username, etc
-                     } else {
-                         messageLabel.alpha = 1
-                         messageLabel.text = registerResponseModel.message //NEED TO FIX
-                         print("Username or Password was wrong!")
-                     }
-                     
-                     
-                 } catch{
-                     print("yo man error!")
-                     print(error)
-                 }
-             }
-             
-            
-        } else {
-            errrorMessage = getRegisterMessage(validUsername: validUsername, validFullName: validateFullName, validEmail: validEmail, validPassword: validPassword)
-            print(errrorMessage)
+        if !validUsername || !validFullName || !validEmail || !validPassword {
+            let message = getRegisterMessage(
+                validUsername: validUsername,
+                validFullName: validFullName,
+                validEmail: validEmail,
+                validPassword: validPassword
+            )
+            styleManager.showError(message)
+            return
         }
-        
-    
-    
-    }
-    
-    
-/*
-    //STEP 1: Get Login Information
-    let logInUser = userNameTextField.text ?? ""
-    let logInPassword = passwordTextField.text ?? ""
 
-    
-    //STEP 2: Validate Login Information
-    let validUsername = validateUserName(userName: logInUser)
-    let validPassword = validatePassword(password: logInPassword)
-    
-    //STEP 3: Login User
-    if(validUsername == true && validPassword == true) {
+        // 2) API – call register; show data.message or validation messages on failure
+        activityIndicator.startAnimating()
+        view.isUserInteractionEnabled = false
 
-        Task{
-            do{
-                //Get Posts from the API
-                activityIndicator.startAnimating()
-                view.isUserInteractionEnabled = false
-                let loginResponseModel = try await loginAPI.loginUser(username: logInUser, password: logInPassword)
-                
-                activityIndicator.stopAnimating()
-                self.view.isUserInteractionEnabled = true
-                
-                
-                //API
-                if(loginResponseModel.data.loginSuccess == true) {
-                    
-                    //Local Storage
-                    let loginOutcome = userDefaultManager.logUserIn(userName: logInUser)
-                    
-                    if(loginOutcome) {
-                        print("You just logged \(logInUser) in")
-                        print("API \(loginResponseModel.data.loggedInUser) \(loginResponseModel.data.loginSuccess)")
-                        
-                        PresenterManager.shared.showMainApp()
-                        
-                    } else {
-                        print("Was an error logging in!")
-                    }
-                } else {
-                    loginMessageLabel.alpha = 1
-                    loginMessageLabel.text = "Username or Password was wrong!"
-                    print("Username or Password was wrong!")
+        Task {
+            defer {
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                    self.view.isUserInteractionEnabled = true
                 }
-            } catch{
-                print("yo man error!")
-                print(error)
+            }
+            do {
+                let response = try await loginAPI.registerNewUser(
+                    username: userName,
+                    fullName: fullName,
+                    email: email,
+                    password: password
+                )
+                await MainActor.run {
+                    if response.success {
+                        styleManager.hideError()
+                        styleManager.showSuccess(response.message)
+                    } else {
+                        styleManager.hideSuccess()
+                        let message = Self.errorMessage(from: response)
+                        styleManager.showError(message)
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    styleManager.hideSuccess()
+                    styleManager.showError("Something went wrong. Please try again.")
+                }
             }
         }
-        
-    //STEP 3: The user did not enter information
-    } else {
-        if(validUsername == false && validPassword == true) {
-            errrorMessage = "STEP 2: Please enter a Valid username"
-            print("STEP 2: Please enter a Valid username")
-        } else if(validPassword == false && validUsername == true) {
-            errrorMessage = "STEP 2: Please enter a Valid password"
-            print("STEP 2: Please enter a Valid password")
-        } else if (validPassword == false && validUsername == false){
-            errrorMessage = "STEP 2: Please enter a Valid username and password"
-            print("STEP 2:  Please enter a Valid username and password")
-        }
-        
-        loginMessageLabel.alpha = 1
-        loginMessageLabel.text = errrorMessage
-    
-        
     }
 
-   */
-    
+    /// Build user-facing error from API response: top-level message or first failing validation message from data.registrationValidation.
+    private static func errorMessage(from response: RegistrationResponseModel) -> String {
+        if !response.message.isEmpty {
+            return response.message
+        }
+        let v = response.data.registrationValidation
+        if v.usernameStatus != 1, !v.usernameMessage.isEmpty { return v.usernameMessage }
+        if v.emailStatus != 1, !v.emailMessage.isEmpty { return v.emailMessage }
+        if v.passwordStatus != 1, !v.passwordMessage.isEmpty { return v.passwordMessage }
+        if v.usernameAvailableStatus != 1, !v.usernameAvailableMessage.isEmpty { return v.usernameAvailableMessage }
+        return "Registration failed."
+    }
+
+    func didTapLoginButton() {
+        navigationController?.popViewController(animated: true)
+    }
 }
