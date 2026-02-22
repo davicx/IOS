@@ -47,8 +47,9 @@ class PostDataController {
     var currentUser: String {
         return userDefaultManager.getLoggedInUser()
     }
-    
-    
+
+    var currentUserOwnsGroupForDisplay: Bool = true
+
     //FUNCTIONS A: All Functions Related to Getting Posts
     //Function A1: Get home feed posts (for now, returns posts from group 72)
     func getHomeFeedPosts() -> [Post] {

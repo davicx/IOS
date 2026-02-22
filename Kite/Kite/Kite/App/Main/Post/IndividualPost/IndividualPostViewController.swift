@@ -20,6 +20,8 @@ class IndividualPostViewController: UIViewController {
     
     let currentUser = userDefaultManager.getLoggedInUser()
     var postID: Int!
+    /// When true, current user created this list (hide purchase UI). Set by caller when pushing. Default true.
+    var currentUserOwnsGroup: Bool = true
 
     let individualPostTableView = UITableView()
     
@@ -68,6 +70,11 @@ class IndividualPostViewController: UIViewController {
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        postDataController.currentUserOwnsGroupForDisplay = currentUserOwnsGroup
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         printPageInfo(vcName: "IndividualPostViewController")
     }

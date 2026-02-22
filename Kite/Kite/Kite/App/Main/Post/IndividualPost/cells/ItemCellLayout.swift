@@ -46,6 +46,8 @@ final class ItemCellLayout: UIView {
     private var postID: Int?
     private var isPurchaseInProgress = false
     private let spinnerHelper = SpinnerHelper()
+    /// When true, current user created this list: hide purchase button and purchase info. Default true (safe).
+    var currentUserOwnsGroup: Bool = true
 
     private var postDataController: PostDataController { PostDataController.shared }
 
@@ -312,6 +314,7 @@ final class ItemCellLayout: UIView {
 
         let purchased = (post.purchased ?? 0) != 0
         updatePurchaseButton(isPurchased: purchased)
+        purchaseButton.isHidden = postDataController.currentUserOwnsGroupForDisplay
 
         //TEMPORARY: Populate permission debug text
         let currentUser = postDataController.currentUser
@@ -319,6 +322,28 @@ final class ItemCellLayout: UIView {
         let viewersList = post.purchasedViewers ?? []
         let viewersText = viewersList.isEmpty ? "[]" : viewersList.joined(separator: ", ")
         purchasedPermissionDebugLabel.text = "Current user: \(currentUser)\nPurchased: \(purchasedText)\nWho can see: \(viewersText)"
+
+        printPurchaseState(post: post, currentUser: currentUser)
+    }
+
+    private func printPurchaseState(post: Post, currentUser: String) {
+        let currentUserOwnsGroup = postDataController.currentUserOwnsGroupForDisplay
+        if currentUserOwnsGroup {
+            print("current user created this list so dont show Purchase info or button")
+            return
+        }
+        let purchased = (post.purchased ?? 0) != 0
+        if !purchased {
+            print("current user did not create this list and item is not purchased (they can purchase)")
+            return
+        }
+        let viewers = post.purchasedViewers ?? []
+        let canViewPurchaseInfo = viewers.contains(currentUser)
+        if canViewPurchaseInfo {
+            print("current user did not create this list and item is purchased and they are allowed to view purchase information")
+        } else {
+            print("current user did not create this list and item is purchased but they are not allowed to view purchase information")
+        }
     }
 
     private func updatePurchaseButton(isPurchased: Bool) {
@@ -362,6 +387,7 @@ final class ItemCellLayout: UIView {
         postID = nil
         isPurchaseInProgress = false
         updatePurchaseButton(isPurchased: false)
+        purchaseButton.isHidden = true
         itemNameLabel.text = "Item Name"
         itemPriceLabel.text = "$0.00"
         itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."

@@ -193,6 +193,7 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
             postViewController.postID = post.postID
+            postViewController.currentUserOwnsGroup = currentUserOwnsGroup
             navigationController?.pushViewController(postViewController, animated: true)
         }
     }
