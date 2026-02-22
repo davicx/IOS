@@ -112,11 +112,10 @@ final class PostLogic {
     
     //FUNCTIONS C: All Functions Related to Items (purchase)
     //Function C1: Purchase Item
-    func purchaseItem(post: Post, groupID: Int) async {
+    func purchaseItem(post: Post, groupID: Int, showPurchased: [String]) async {
         guard let itemID = post.itemID else { return }
         let currentUser = postDataController.currentUser
-        let showPurchased = ["frodo", "bilbo"]
-        
+
         do {
             let response = try await PostsAPI().purchaseItemAPI(
                 currentUser: currentUser,

@@ -18,6 +18,7 @@ import UIKit
 class ItemPurchaseViewController: UIViewController {
 
     //LOGIC
+    var post: Post?
     var groupID: Int?
     private var groupMembers: [User] = []
     private var selectedUsernames: Set<String> = []
@@ -69,8 +70,16 @@ class ItemPurchaseViewController: UIViewController {
     }
     
     @objc private func purchaseTapped() {
-        print("ItemPurchaseViewController: selected users = \(Array(selectedUsernames).sorted())")
-        dismiss(animated: true)
+        guard let post = post, let groupID = groupID else { return }
+        let showPurchased = Array(selectedUsernames).sorted()
+        purchaseButton.isUserInteractionEnabled = false
+        Task {
+            await PostLogic.shared.purchaseItem(post: post, groupID: groupID, showPurchased: showPurchased)
+            await MainActor.run {
+                self.purchaseButton.isUserInteractionEnabled = true
+                self.dismiss(animated: true)
+            }
+        }
     }
     
     //FUNCTIONS

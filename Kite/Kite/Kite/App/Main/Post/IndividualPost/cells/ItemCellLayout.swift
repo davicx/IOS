@@ -282,6 +282,7 @@ final class ItemCellLayout: UIView {
         guard let presentingVC = findViewController() else { return }
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         guard let itemPurchaseVC = storyboard.instantiateViewController(withIdentifier: "ItemPurchaseViewControllerID") as? ItemPurchaseViewController else { return }
+        itemPurchaseVC.post = post
         itemPurchaseVC.groupID = post.groupID
         itemPurchaseVC.modalPresentationStyle = .pageSheet
         presentingVC.present(itemPurchaseVC, animated: true)
