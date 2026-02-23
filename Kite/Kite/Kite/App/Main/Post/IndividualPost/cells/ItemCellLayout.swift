@@ -19,7 +19,6 @@ final class ItemCellLayout: UIView {
     //Header
     //TO DO: Add header subviews (group image, group name, user, etc.)
     
-    
     //Body
     let ItemBodyLeftView = UIView()
     let ItemBodyRightView = UIView()

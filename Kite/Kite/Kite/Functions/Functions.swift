@@ -68,9 +68,7 @@ func printPageInfo(vcName: String, listType: String = "LISTS: Wishlist") {
 
 
 func printCellInfo(cellName: String, listType: String = "LISTS: Wishlist") {
-    print("________________________")
     print(cellName)
-    print("________________________")
 }
 
 

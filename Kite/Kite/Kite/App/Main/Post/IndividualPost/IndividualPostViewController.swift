@@ -42,16 +42,16 @@ class IndividualPostViewController: UIViewController {
         print("postID =", postID ?? -1)
 
         if let post = post {
-            print("FOUND POST:", post.postID ?? -1)
-            print(post.postCaption)
-            print(post.itemDescription)
-            print(post.itemPrice)
+            //print("FOUND POST:", post.postID ?? -1)
+            //print(post.postCaption)
+            //print(post.itemDescription)
+            //print(post.itemPrice)
             if let viewers = post.purchasedViewers {
                 print("purchased_viewers:", viewers.isEmpty ? "[]" : viewers)
             } else {
                 print("purchased_viewers: (nil - item block never ran for this post)")
             }
-            printPostLikes(post: post)
+            //printPostLikes(post: post)
         } else {
             print("POST NOT FOUND")
         }
