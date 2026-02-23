@@ -249,15 +249,26 @@ class GroupsAPI {
         
         do {
             let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
             let groupUsersResponseModel = try decoder.decode(GroupUsersResponseModel.self, from: data)
-
             return groupUsersResponseModel
-            
         } catch {
-            let groupUsersResponseModel = GroupUsersResponseModel()
-            print("Error decoding data")
-            return groupUsersResponseModel
-            
+            print("Error decoding group users data:", error)
+            if let decodingError = error as? DecodingError {
+                switch decodingError {
+                case .keyNotFound(let key, let context):
+                    print("Key '\(key.stringValue)' not found:", context.debugDescription)
+                case .typeMismatch(let type, let context):
+                    print("Type mismatch for \(type):", context.debugDescription)
+                case .valueNotFound(let type, let context):
+                    print("Value not found for \(type):", context.debugDescription)
+                case .dataCorrupted(let context):
+                    print("Data corrupted:", context.debugDescription)
+                @unknown default:
+                    break
+                }
+            }
+            return GroupUsersResponseModel()
         }
     }
 

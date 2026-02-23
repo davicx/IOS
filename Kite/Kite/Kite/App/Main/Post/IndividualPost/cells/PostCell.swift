@@ -17,6 +17,10 @@ final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
     private let layout = ItemCellLayout()
+    //Post will include
+    //Socials
+    //Caption
+    //Comments will not be here but will be pulled in
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

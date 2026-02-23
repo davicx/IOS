@@ -8,6 +8,33 @@
 import UIKit
 
 
+/*
+FUNCTIONS A: All Functions Related to Getting Posts
+    1) Function A1: Get home feed posts
+    2) Function A2: Get posts for a specific group
+    3) Function A3: Fetch posts for group
+    4) Function A4: Get all posts from all groups
+    5) Function A5: Get a Post (searches across all groups)
+    6) Function A6: Get an Item (searches across all groups)
+ 
+FUNCTIONS B: All Functions Related to Adding Posts
+    1) Function B1: Add new post to groupPosts (called after creating a post via API)
+ 
+FUNCTIONS C: All Functions Related to Post Actions
+    1) Function C1: Like a Post
+    2) Function C2: Unlike a Post
+ 
+FUNCTIONS D: All Functions Related to Comments
+    1) Function D1: Like a Comment
+    2) Function D2: Unlike a Comment
+ 
+FUNCTIONS E: All Functions Related to Items
+    1) Function E1: Mark item purchased
+    2) Function E2: Mark item unpurchased
+ 
+*/
+
+
 class PostDataController {
 
     static let shared = PostDataController()
@@ -20,49 +47,21 @@ class PostDataController {
     var currentUser: String {
         return userDefaultManager.getLoggedInUser()
     }
-    
-    // Get posts for a specific group
-    func getPostsForGroup(groupID: Int) -> [Post] {
-        return groupPosts[groupID] ?? []
-    }
-    
-    //Get home feed posts (for now, returns posts from group 72)
+
+    var currentUserOwnsGroupForDisplay: Bool = true
+
+    //FUNCTIONS A: All Functions Related to Getting Posts
+    //Function A1: Get home feed posts (for now, returns posts from group 72)
     func getHomeFeedPosts() -> [Post] {
         return getPostsForGroup(groupID: 72)
     }
     
-    //Get all posts from all groups (for home feed)
-    var allPosts: [Post] {
-        return Array(groupPosts.values).flatMap { $0 }
+    //Function A2: Get posts for a specific group
+    func getPostsForGroup(groupID: Int) -> [Post] {
+        return groupPosts[groupID] ?? []
     }
-
-    //FUNCTIONS A: Post Related
-    //Function A1: Fetch posts from API
-    //KITE: uses getPostsAPI, replace groupPosts for this group
-    /*
-    func fetchPosts(groupID: Int) async {
-        do {
-            let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
-            let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
-            let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
-            let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
-            let fetchedPosts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
-            
-            groupPosts[groupID] = fetchedPosts
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .postsFetched,
-                    object: nil
-                )
-            }
-        } catch {
-            print("PostDataController: Failed to fetch posts - \(error)")
-        }
-    }
-    */
-
-    //WISHLIST: uses getItemsAPI, converts items to posts and merges into groupPosts
+    
+    //Function A3: Fetch posts for group (WISHLIST: uses getItemsAPI, converts items to posts and merges into groupPosts)
     func fetchPosts(groupID: Int) async {
         do {
             let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
@@ -95,46 +94,40 @@ class PostDataController {
             print("PostDataController: Failed to fetch posts - \(error)")
         }
     }
-
     
-    //KITE/WISHLIST: use fetchPosts(groupID:) above; fetchItems removed in favor of single fetchPosts
+    //KITE
     /*
-    func fetchItems(groupID: Int) async {
-        do {
-            let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
-            let noImagePosts = try await createItemsArray(postsResponseModel: postsResponseModel)
-            let postsWithImages = try await addPostImageToItemsArray(postsArray: noImagePosts)
-            let postsWithGroupImages = try await addGroupImageToItemsArray(postsArray: postsWithImages)
-            let itemsWithImages = try await addPostFromImageToItemsArray(postsArray: postsWithGroupImages)
-            
-            // Get existing posts for this group (or empty array)
-            var existingPosts = groupPosts[groupID] ?? []
-            
-            // Merge items into existing posts (items are just posts with postType == "item")
-            for item in itemsWithImages {
-                if let index = existingPosts.firstIndex(where: { $0.postID == item.postID }) {
-                    existingPosts[index] = item
-                } else {
-                    existingPosts.append(item)
-                }
-            }
-            
-            // Store updated posts for this group
-            groupPosts[groupID] = existingPosts
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .itemsFetched,
-                    object: nil
-                )
-            }
-        } catch {
-            print("PostDataController: Failed to fetch items - \(error)")
-        }
-    }
-    */
+     func fetchPosts(groupID: Int) async {
+       
+     }
+     */
     
-    //Function A6: Add new post to groupPosts (called after creating a post via API)
+    
+    //Function A4: Get all posts from all groups (for home feed)
+    var allPosts: [Post] {
+        return Array(groupPosts.values).flatMap { $0 }
+    }
+
+    //Function A5: Get a Post (searches across all groups)
+    func getPostByID(postID: Int) -> Post? {
+        // Search across all groups
+        for posts in groupPosts.values {
+            if let post = posts.first(where: { $0.postID == postID }) {
+                return post
+            }
+        }
+        return nil
+    }
+    
+    //Function A6: Get an Item (searches across all groups)
+    func getItemByID(postID: Int) -> Post? {
+        return getPostByID(postID: postID)
+    }
+  
+
+    
+    //FUNCTIONS B: All Functions Related to Adding Posts
+    //Function B1: Add new post to groupPosts (called after creating a post via API)
     func addPost(postModel: PostModel, groupID: Int) async {
         // Convert PostModel to Post (similar to createItemsArray logic)
         let newPost = Post(postID: postModel.postID)
@@ -218,24 +211,8 @@ class PostDataController {
     }
     
 
-
-    //Function A2: Get a Post (searches across all groups)
-    func getPostByID(postID: Int) -> Post? {
-        // Search across all groups
-        for posts in groupPosts.values {
-            if let post = posts.first(where: { $0.postID == postID }) {
-                return post
-            }
-        }
-        return nil
-    }
-    
-    //Function A3: Get an Item (searches across all groups)
-    func getItemByID(postID: Int) -> Post? {
-        return getPostByID(postID: postID)
-    }
-
-    //Function A4: Like a Post
+    //FUNCTIONS C: All Functions Related to Post Actions
+    //Function C1: Like a Post
     func likePost(postID: Int, likeModel: LikeModel) {
         // APP DATA: Step 1 – Find post in source of truth (search across all groups)
         for (groupID, posts) in groupPosts {
@@ -272,9 +249,7 @@ class PostDataController {
         }
     }
     
-
-
-    //Function A5: Unlike a Post
+    //Function C2: Unlike a Post
     func unlikePost(postID: Int, likeModel: LikeModel) {
         // APP DATA: Step 1 – Find post (search across all groups)
         for (groupID, posts) in groupPosts {
@@ -311,10 +286,10 @@ class PostDataController {
             }
         }
     }
-    
-
-    //FUNCTIONS B: Comment Related
-    //Function B1: Like a Comment
+ 
+ 
+    //FUNCTIONS D: All Functions Related to Comments
+    //Function D1: Like a Comment
     func likeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
         // APP DATA: Step 1 – Locate post + comment (search across all groups)
         for (groupID, posts) in groupPosts {
@@ -343,7 +318,7 @@ class PostDataController {
     }
 
 
-    //Function B2: Unlike a Comment
+    //Function D2: Unlike a Comment
     func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
         // Search across all groups
         for (groupID, posts) in groupPosts {
@@ -370,10 +345,56 @@ class PostDataController {
             }
         }
     }
-
+    
+    
+    //FUNCTIONS E: All Functions Related to Items
+    //Function E1: Mark item purchased
+    func markItemPurchased(postID: Int, purchasedBy: String, purchasedViewers: [String]) {
+        for (groupID, posts) in groupPosts {
+            if let index = posts.firstIndex(where: { $0.postID == postID }) {
+                var post = posts[index]
+                post.purchased = 1
+                post.purchasedBy = purchasedBy
+                post.purchasedViewers = purchasedViewers
+                var updatedPosts = posts
+                updatedPosts[index] = post
+                groupPosts[groupID] = updatedPosts
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .postUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
+    
+    //Function E2: Mark item unpurchased
+    func markItemUnpurchased(postID: Int) {
+        for (groupID, posts) in groupPosts {
+            if let index = posts.firstIndex(where: { $0.postID == postID }) {
+                var post = posts[index]
+                post.purchased = 0
+                post.purchasedBy = ""
+                post.purchasedViewers = []
+                var updatedPosts = posts
+                updatedPosts[index] = post
+                groupPosts[groupID] = updatedPosts
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .postUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
 
 
 }
+
 
 //NOTIFICATIONS
 extension Notification.Name {
@@ -385,3 +406,4 @@ extension Notification.Name {
     static let itemsFetched = Notification.Name("itemsFetched")
     static let itemUpdated = Notification.Name("itemUpdated")
 }
+

@@ -20,6 +20,8 @@ class IndividualPostViewController: UIViewController {
     
     let currentUser = userDefaultManager.getLoggedInUser()
     var postID: Int!
+    /// When true, current user created this list (hide purchase UI). Set by caller when pushing. Default true.
+    var currentUserOwnsGroup: Bool = true
 
     let individualPostTableView = UITableView()
     
@@ -40,16 +42,16 @@ class IndividualPostViewController: UIViewController {
         print("postID =", postID ?? -1)
 
         if let post = post {
-            print("FOUND POST:", post.postID ?? -1)
-            print(post.postCaption)
-            print(post.itemDescription)
-            print(post.itemPrice)
+            //print("FOUND POST:", post.postID ?? -1)
+            //print(post.postCaption)
+            //print(post.itemDescription)
+            //print(post.itemPrice)
             if let viewers = post.purchasedViewers {
                 print("purchased_viewers:", viewers.isEmpty ? "[]" : viewers)
             } else {
                 print("purchased_viewers: (nil - item block never ran for this post)")
             }
-            printPostLikes(post: post)
+            //printPostLikes(post: post)
         } else {
             print("POST NOT FOUND")
         }
@@ -68,6 +70,11 @@ class IndividualPostViewController: UIViewController {
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        postDataController.currentUserOwnsGroupForDisplay = currentUserOwnsGroup
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         printPageInfo(vcName: "IndividualPostViewController")
     }

@@ -81,6 +81,5 @@ class LoginViewController: UIViewController, LoginLayoutManagerDelegate {
         }
     }
 
-
 }
 

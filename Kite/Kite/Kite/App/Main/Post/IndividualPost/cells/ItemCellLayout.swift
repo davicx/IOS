@@ -19,7 +19,6 @@ final class ItemCellLayout: UIView {
     //Header
     //TO DO: Add header subviews (group image, group name, user, etc.)
     
-    
     //Body
     let ItemBodyLeftView = UIView()
     let ItemBodyRightView = UIView()
@@ -34,12 +33,22 @@ final class ItemCellLayout: UIView {
     
     //Footer
     let postCaptionTemplate = PostCaptionTemplate()
-    
+
+    //TEMPORARY: Permission debug (current user, purchased, who can see)
+    private let purchasedPermissionDebugView = UIView()
+    private let purchasedPermissionDebugLabel = UILabel()
 
     //LOGIC
     private var imageAspectRatioConstraint: NSLayoutConstraint?
     private var imageHeightConstraint: NSLayoutConstraint?
     private var isPurchased = false
+    private var postID: Int?
+    private var isPurchaseInProgress = false
+    private let spinnerHelper = SpinnerHelper()
+    /// When true, current user created this list: hide purchase button and purchase info. Default true (safe).
+    var currentUserOwnsGroup: Bool = true
+
+    private var postDataController: PostDataController { PostDataController.shared }
 
 
     //MANAGE VIEWS
@@ -48,6 +57,7 @@ final class ItemCellLayout: UIView {
         setupHeaderViews()
         setupBodyViews()
         setupFooterViews()
+        setupPurchasedPermissionDebugView()
     }
 
 
@@ -211,7 +221,6 @@ final class ItemCellLayout: UIView {
             ItemFooterView.topAnchor.constraint(equalTo: ItemBodyView.bottomAnchor),
             ItemFooterView.leadingAnchor.constraint(equalTo: leadingAnchor),
             ItemFooterView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            ItemFooterView.bottomAnchor.constraint(equalTo: bottomAnchor),
             ItemFooterView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56),
 
             postCaptionTemplate.topAnchor.constraint(equalTo: ItemFooterView.topAnchor),
@@ -222,22 +231,76 @@ final class ItemCellLayout: UIView {
         ItemFooterView.setContentHuggingPriority(.defaultLow, for: .vertical)
     }
 
+    //TEMPORARY: Permission debug view
+    private func setupPurchasedPermissionDebugView() {
+        purchasedPermissionDebugView.backgroundColor = UIColor.systemGray5
+        purchasedPermissionDebugView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(purchasedPermissionDebugView)
+
+        purchasedPermissionDebugLabel.numberOfLines = 0
+        purchasedPermissionDebugLabel.font = .systemFont(ofSize: 11)
+        purchasedPermissionDebugLabel.textColor = .secondaryLabel
+        purchasedPermissionDebugLabel.translatesAutoresizingMaskIntoConstraints = false
+        purchasedPermissionDebugView.addSubview(purchasedPermissionDebugLabel)
+
+        NSLayoutConstraint.activate([
+            purchasedPermissionDebugView.topAnchor.constraint(equalTo: ItemFooterView.bottomAnchor),
+            purchasedPermissionDebugView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            purchasedPermissionDebugView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            purchasedPermissionDebugView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            purchasedPermissionDebugLabel.topAnchor.constraint(equalTo: purchasedPermissionDebugView.topAnchor, constant: 6),
+            purchasedPermissionDebugLabel.leadingAnchor.constraint(equalTo: purchasedPermissionDebugView.leadingAnchor, constant: 12),
+            purchasedPermissionDebugLabel.trailingAnchor.constraint(equalTo: purchasedPermissionDebugView.trailingAnchor, constant: -12),
+            purchasedPermissionDebugLabel.bottomAnchor.constraint(lessThanOrEqualTo: purchasedPermissionDebugView.bottomAnchor, constant: -6)
+        ])
+    }
+
     //ACTIONS
     @objc private func purchaseTapped() {
-        isPurchased.toggle()
+        guard let post = postDataController.getPostByID(postID: postID ?? 0) else { return }
+        guard !isPurchaseInProgress else { return }
+
+        let isPurchased = (post.purchased ?? 0) != 0
         if isPurchased {
-            purchaseButton.setTitle("Purchased", for: .normal)
-            purchaseButton.setTitleColor(UIColor(hex: "#008300"), for: .normal)
-            purchaseButton.layer.borderColor = UIColor(hex: "#008300").cgColor
-        } else {
-            purchaseButton.setTitle("Purchase", for: .normal)
-            purchaseButton.setTitleColor(UIColor(hex: "#343434"), for: .normal)
-            purchaseButton.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+            // State 1: Already purchased → remove purchase (existing flow)
+            isPurchaseInProgress = true
+            purchaseButton.isUserInteractionEnabled = false
+            spinnerHelper.show(in: self, delay: 0)
+            Task {
+                let groupID = post.groupID ?? 0
+                await PostLogic.shared.removeItem(post: post, groupID: groupID)
+                DispatchQueue.main.async { [weak self] in
+                    self?.spinnerHelper.hide()
+                    self?.purchaseButton.isUserInteractionEnabled = true
+                    self?.isPurchaseInProgress = false
+                }
+            }
+            return
         }
+
+        // State 2: Not purchased → present who-can-see sheet
+        guard let presentingVC = findViewController() else { return }
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        guard let itemPurchaseVC = storyboard.instantiateViewController(withIdentifier: "ItemPurchaseViewControllerID") as? ItemPurchaseViewController else { return }
+        itemPurchaseVC.post = post
+        itemPurchaseVC.groupID = post.groupID
+        itemPurchaseVC.modalPresentationStyle = .pageSheet
+        presentingVC.present(itemPurchaseVC, animated: true)
+    }
+
+    private func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while responder != nil {
+            responder = responder?.next
+            if let vc = responder as? UIViewController { return vc }
+        }
+        return nil
     }
 
     //FUNCTIONS
     func apply(post: Post) {
+        self.postID = post.postID
         itemImageView.image = post.postImageData
         updateImageAspectRatioConstraint(for: post.postImageData)
 
@@ -248,7 +311,42 @@ final class ItemCellLayout: UIView {
 
         postCaptionTemplate.apply(post: post)
 
-        isPurchased = (post.purchased ?? 0) != 0
+        let purchased = (post.purchased ?? 0) != 0
+        updatePurchaseButton(isPurchased: purchased)
+        purchaseButton.isHidden = postDataController.currentUserOwnsGroupForDisplay
+
+        //TEMPORARY: Populate permission debug text
+        let currentUser = postDataController.currentUser
+        let purchasedText = purchased ? "Yes" : "No"
+        let viewersList = post.purchasedViewers ?? []
+        let viewersText = viewersList.isEmpty ? "[]" : viewersList.joined(separator: ", ")
+        purchasedPermissionDebugLabel.text = "Current user: \(currentUser)\nPurchased: \(purchasedText)\nWho can see: \(viewersText)"
+
+        printPurchaseState(post: post, currentUser: currentUser)
+    }
+
+    private func printPurchaseState(post: Post, currentUser: String) {
+        let currentUserOwnsGroup = postDataController.currentUserOwnsGroupForDisplay
+        if currentUserOwnsGroup {
+            print("current user created this list so dont show Purchase info or button")
+            return
+        }
+        let purchased = (post.purchased ?? 0) != 0
+        if !purchased {
+            print("current user did not create this list and item is not purchased (they can purchase)")
+            return
+        }
+        let viewers = post.purchasedViewers ?? []
+        let canViewPurchaseInfo = viewers.contains(currentUser)
+        if canViewPurchaseInfo {
+            print("current user did not create this list and item is purchased and they are allowed to view purchase information")
+        } else {
+            print("current user did not create this list and item is purchased but they are not allowed to view purchase information")
+        }
+    }
+
+    private func updatePurchaseButton(isPurchased: Bool) {
+        self.isPurchased = isPurchased
         if isPurchased {
             purchaseButton.setTitle("Purchased", for: .normal)
             purchaseButton.setTitleColor(UIColor(hex: "#008300"), for: .normal)
@@ -285,10 +383,10 @@ final class ItemCellLayout: UIView {
         imageHeightConstraint = nil
         itemImageView.image = nil
         updateImageAspectRatioConstraint(for: nil)
-        isPurchased = false
-        purchaseButton.setTitle("Purchase", for: .normal)
-        purchaseButton.setTitleColor(UIColor(hex: "#343434"), for: .normal)
-        purchaseButton.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+        postID = nil
+        isPurchaseInProgress = false
+        updatePurchaseButton(isPurchased: false)
+        purchaseButton.isHidden = true
         itemNameLabel.text = "Item Name"
         itemPriceLabel.text = "$0.00"
         itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."

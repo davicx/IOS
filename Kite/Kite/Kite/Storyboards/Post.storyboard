@@ -115,6 +115,21 @@
             </objects>
             <point key="canvasLocation" x="2931" y="181"/>
         </scene>
+        <!--Edit Item View Controller-->
+        <scene sceneID="Qxv-e3-fgN">
+            <objects>
+                <viewController id="eZR-pr-Wdm" customClass="EditItemViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hgB-g6-mIw">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="4RT-1q-QWH"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5BE-kd-B7C" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3810" y="181"/>
+        </scene>
         <!--Individual Post View Controller-->
         <scene sceneID="uuc-jP-Ndc">
             <objects>
@@ -159,6 +174,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NIR-Lc-FSB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5166" y="-508"/>
+        </scene>
+        <!--Item Purchase View Controller-->
+        <scene sceneID="bMe-Tk-Hea">
+            <objects>
+                <viewController storyboardIdentifier="ItemPurchaseViewControllerID" id="Mzu-RO-pmv" customClass="ItemPurchaseViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jSV-67-9l5">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="LGB-rE-YU8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VBs-uq-j77" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4724" y="181"/>
         </scene>
     </scenes>
     <resources>
