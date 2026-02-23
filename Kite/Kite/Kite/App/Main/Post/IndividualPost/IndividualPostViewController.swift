@@ -83,7 +83,7 @@ class IndividualPostViewController: UIViewController {
         individualPostTableView.dataSource = self
         individualPostTableView.delegate = self
         individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
-        individualPostTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+        individualPostTableView.register(PostContentCell.self, forCellReuseIdentifier: "PostCell")
         individualPostTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
 
         //Enable automatic dimension for dynamic cell heights
@@ -128,7 +128,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostContentCell
             postCell.configurePostCell(postID: postID)
             return postCell
         } else {
