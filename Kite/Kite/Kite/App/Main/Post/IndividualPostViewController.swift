@@ -83,10 +83,9 @@ class IndividualPostViewController: UIViewController {
         individualPostTableView.dataSource = self
         individualPostTableView.delegate = self
         individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
-        individualPostTableView.register(PostContentCell.self, forCellReuseIdentifier: "PostCell")
+        individualPostTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
         individualPostTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
 
-        //Enable automatic dimension for dynamic cell heights
         individualPostTableView.rowHeight = UITableView.automaticDimension
         
         view.addSubview(individualPostTableView)
@@ -128,9 +127,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostContentCell
-            postCell.configurePostCell(postID: postID)
-            return postCell
+            return tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
         } else {
             let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
             let comment = comments[indexPath.row - 1]
@@ -139,11 +136,18 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         }
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 400
+        }
+        return 200
+    }
+
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 450
+            return 400
         }
-        return 60
+        return 200
     }
 }
 
