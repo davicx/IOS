@@ -394,6 +394,7 @@ class HomePostCell: UITableViewCell {
             object: nil
         )
         //print("HomePostCell")
+        printCellInfo(cellName: "HomePostCell")
     }
 
 

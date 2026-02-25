@@ -9,6 +9,9 @@
 import UIKit
 
 
+//tableView.delaysContentTouches = false
+//cell.selectionStyle = .none
+
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
     
@@ -17,11 +20,17 @@ class IndividualPostViewController: UIViewController {
     
     let currentUser = userDefaultManager.getLoggedInUser()
     var postID: Int!
+    /// When true, current user created this list (hide purchase UI). Set by caller when pushing. Default true.
+    var currentUserOwnsGroup: Bool = true
 
     let individualPostTableView = UITableView()
     
     private var post: Post? {
         return postDataController.getPostByID(postID: postID)
+    }
+    
+    private var comments: [Comment] {
+        return post?.commentsArray ?? []
     }
 
 
@@ -33,15 +42,39 @@ class IndividualPostViewController: UIViewController {
         print("postID =", postID ?? -1)
 
         if let post = post {
-            print("FOUND POST:", post.postID ?? -1)
-            print(post.postCaption)
-            printPostLikes()
+            //print("FOUND POST:", post.postID ?? -1)
+            //print(post.postCaption)
+            //print(post.itemDescription)
+            //print(post.itemPrice)
+            if let viewers = post.purchasedViewers {
+                print("purchased_viewers:", viewers.isEmpty ? "[]" : viewers)
+            } else {
+                print("purchased_viewers: (nil - item block never ran for this post)")
+            }
+            //printPostLikes(post: post)
         } else {
             print("POST NOT FOUND")
         }
+        
+        // Observe comment updates
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCommentUpdated),
+            name: .commentUpdated,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        postDataController.currentUserOwnsGroupForDisplay = currentUserOwnsGroup
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         printPageInfo(vcName: "IndividualPostViewController")
     }
@@ -51,8 +84,8 @@ class IndividualPostViewController: UIViewController {
         individualPostTableView.delegate = self
         individualPostTableView.translatesAutoresizingMaskIntoConstraints = false
         individualPostTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
+        individualPostTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
 
-        //Enable automatic dimension for dynamic cell heights
         individualPostTableView.rowHeight = UITableView.automaticDimension
         
         view.addSubview(individualPostTableView)
@@ -72,27 +105,50 @@ class IndividualPostViewController: UIViewController {
             present(newPostVC, animated: true)
         }
     }
+    
+    //ACTIONS
+    @objc private func handleCommentUpdated(_ notification: Notification) {
+        guard let updatedPostID = notification.object as? Int else { return }
+        
+        // Only reload if this notification is for our post
+        guard updatedPostID == postID else { return }
+        
+        // Reload table to show updated comment data
+        DispatchQueue.main.async { [weak self] in
+            self?.individualPostTableView.reloadData()
+        }
+    }
 }
 
 extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 1 + comments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let postCell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-        postCell.configurePostCell(postID: postID)
-        
-        return postCell
+        if indexPath.row == 0 {
+            return tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+        } else {
+            let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+            let comment = comments[indexPath.row - 1]
+            commentCell.configure(with: comment)
+            return commentCell
+        }
+    }
 
-    }
-    
-    /*
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        if indexPath.row == 0 {
+            return 400
+        }
+        return 200
     }
-    */
-   
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 400
+        }
+        return 200
+    }
 }
 
 

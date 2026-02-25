@@ -1,9 +1,15 @@
 # Cursor Rules for Kite iOS Project
 
+## CARDINAL RULE: Never Touch Commented Code
+When editing any file, **only change active (uncommented) code**. Never modify, delete, or replace commented-out code. If a change would require touching a comment block, add new code elsewhere or ask the user—do not edit the comments. This rule overrides all other instructions.
+
+---
+
 ## CRITICAL: Code Modification Rules
 
 ### NEVER Modify Commented Code
-- **NEVER** modify, delete, or change any code that is between `/*` and `*/` comment blocks
+- **NEVER** modify, delete, or change any code that is between `/*` and `*/` comment blocks, or line comments (`//`) that comment out code
+- **NEVER** replace an entire file if it contains commented sections—edit only the active (uncommented) parts
 - If a requested change would require modifying commented code, **STOP** and inform the user - do NOT make the change
 - Commented code is preserved for reference and should remain untouched
 - This rule takes precedence over all other instructions

@@ -23,11 +23,9 @@ struct Constants {
         static let main = "Main"
         static let mainTabBarController = "MainTabBarController"
         static let onboardingViewController = "MainOnboardingViewController"
-        //static let friendProfileViewControllerID = "FriendProfileViewControllerID"
         static let individualGroupViewControllerID = "individualGroupViewControllerID"
         static let individualGroupUserViewControllerID = "individualGroupUserViewControllerID"
         static let individualPostViewControllerID = "IndividualPostViewControllerID"
-        //static let individualListViewControllerID = "individualListViewControllerID"
     }
     
     //HomeViewController GroupsViewController DiscoverViewController ProfileViewController
@@ -47,20 +45,32 @@ struct Constants {
         static let postStoryboard = "Post"
     }
     
+    
+    //TABLE VIEW CELLS
+    struct TableViewCellIdentifier {
+        
+        //KITE
+        /*
+        static let postCell = "PostCell"
+        static let homePostCell = "HomePostCell"
+        static let commentCell = "CommentCell"
+        static let friendCell = "friendCell"
+        */
+        
+        //WISHLIST
+        static let postCell = "PostCell"
+        static let homePostCell = "HomePostCell"
+        static let commentCell = "CommentCell"
+        static let friendCell = "friendCell"
+    }
+    
     //Image Constants
     struct Image {
         static let liked = "liked"
         static let unliked = "like"
         static let fallbackPostImage = "background_10"
     }
-    
-    struct TableViewCellIdentifier {
-        static let post = "PostCell"
-        static let homePostCell = "HomePostCell"
-        static let comment = "CommentCell"
-        static let friendCell = "friendCell"
 
-    }
     
     static let cornerRadius: CGFloat = 8.0
 

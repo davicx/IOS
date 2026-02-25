@@ -14,6 +14,7 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
+//TABLE VIEW: Home Post Cell 
 class IndividualGroupViewController: UIViewController {
 
     //LOGIC
@@ -135,14 +136,18 @@ class IndividualGroupViewController: UIViewController {
     
     //FUNCTIONS
     func getGroupPosts() {
-        // Fetch posts for this group
+        // Fetch items for this group (Wishlist shows items; items API returns full item payload including purchased_viewers)
         if let groupID = groupID {
             Task {
+                //WISHLIST: fetchPosts in PostDataController uses getItemsAPI
                 await GroupLogic.shared.fetchGroupPosts(groupID: groupID)
+                // await GroupLogic.shared.fetchGroupItems(groupID: groupID)
                 
                 // Print post IDs and captions and reload table
                 DispatchQueue.main.async {
                     let posts = self.postDataController.getPostsForGroup(groupID: groupID)
+                    
+                    /*
                     print("________________________")
                     print("IndividualGroupViewController: Posts for groupID \(groupID)")
                     print("Total posts: \(posts.count)")
@@ -150,6 +155,7 @@ class IndividualGroupViewController: UIViewController {
                         print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
                     }
                     print("________________________")
+                     */
                     
                     // Reload table view after data is fetched
                     self.tableView.reloadData()
@@ -187,6 +193,7 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
         if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
             postViewController.postID = post.postID
+            postViewController.currentUserOwnsGroup = currentUserOwnsGroup
             navigationController?.pushViewController(postViewController, animated: true)
         }
     }

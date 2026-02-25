@@ -34,6 +34,41 @@ class Buttons {
         button.layer.cornerRadius = 5 // Rounded corners
     }
     
+    //BUTTON
+    //Purchase Button
+    static func styleSelectedGreenButton(_ button: UIButton, width: CGFloat, height: CGFloat) {
+        //Border: 008300
+        //Font: 008300
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor(hex: "#008300").cgColor
+        button.layer.cornerRadius = 10
+        button.setTitleColor(UIColor(hex: "#008300"), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: width),
+            button.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
+    
+    static func styleNotSelectedButton(_ button: UIButton, width: CGFloat, height: CGFloat) {
+        //Try to match image
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor(hex: "#C7C7C7").cgColor
+        button.layer.cornerRadius = 10
+        button.setTitleColor(UIColor(hex: "#343434"), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: width),
+            button.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
+    
+    
+    //ADD FRIENDS
     static func styleFriendsButton(_ button: UIButton) {
         button.setTitle("Friends", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -43,6 +78,8 @@ class Buttons {
         button.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    
+    //ORGANIZE BELOW
     static func styleTwitterButton(_ button:UIButton) {
         button.backgroundColor = UIColor(hex: "#1DA1F2")
         button.layer.cornerRadius = 12.0

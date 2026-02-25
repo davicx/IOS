@@ -8,15 +8,47 @@
 import UIKit
 
 
+//FILES
+/*
+ DesignSystem
+ ├── Colors
+ │   ├── AppColors.swift
+ │   └── SemanticColors.swift
+ │
+ ├── Fonts
+ │   └── AppFonts.swift
+ │
+ ├── Style
+ │   └── AppStyle.swift
+ │
+ └── Components
+     ├── PrimaryButton.swift
+     ├── SecondaryButton.swift
+     └── StyledLabel.swift
+
+ */
+/*
+STYLE
+ - Fonts
+UI ELEMEMENS
+BUTTONS
+COLORS
+
+ 
+*/
+
 class Style {
+    
+    
+    
+    
+    //CLEAN BELOW
     
     //FONT
     static let blackFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
     static let grayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     static let mainDarkFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .bold)
     static let mainGrayFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
-    
-   
     
     static let timeFont: UIFont = UIFont.systemFont(ofSize: 12, weight: .regular)
     static let timeFontColor: UIColor = .gray
@@ -27,13 +59,14 @@ class Style {
     static let mainTextFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .regular)
     static let mainTextFontColor: UIColor = .label
     
-    
+    //ITEM FONT
+    static let itemNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let itemPriceFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .medium)
+    static let itemDescriptionFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+    static let itemLinkFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
 
-    //CLEAN BELOW
+
     let iconBackgroundColor = "#687684"
-    
-    
-
     
     
     static let userNameFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -85,6 +118,38 @@ class Style {
     static func styleMainText(_ label: UILabel) {
         label.font = mainTextFont
         label.textColor = mainTextFontColor
+    }
+    
+    //ITEM LABELS
+    static func styleItemNameLabel(_ label: UILabel) {
+        label.font = itemNameFont
+        label.textColor = .label
+        label.numberOfLines = 2
+        label.lineBreakMode = .byTruncatingTail
+    }
+    
+    static func styleItemPriceLabel(_ label: UILabel) {
+        label.font = itemPriceFont
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+    }
+    
+    static func styleItemDescriptionLabel(_ label: UILabel) {
+        label.font = itemDescriptionFont
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 5
+        label.lineBreakMode = .byTruncatingTail
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
+        label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    }
+    
+    static func styleItemLinkLabel(_ label: UILabel) {
+        label.font = itemLinkFont
+        label.textColor = .systemBlue
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingMiddle
     }
     
     //IMAGES

@@ -24,6 +24,7 @@ class ProfileViewController: UIViewController {
     var friends: [User] = []
     
     //UI ELEMENTS
+    //HEADER: User Image Full Name, Username and User Info (posts, groups and friends)
     //Profile Image
     private let userProfileImageView = UIView()
     private let profileImageView = UIImageView()
@@ -44,7 +45,7 @@ class ProfileViewController: UIViewController {
     private let userInfoRightDivider = UIView()
     private let userRightLeftView = UIView()
     
-    // User Info Labels
+    // User Information Labels for Post Count, Group Count and Friend Count
     private let userPostCountLabel = UILabel()
     private let userPostsLabel = UILabel()
     private let userGroupCountLabel = UILabel()
@@ -52,7 +53,7 @@ class ProfileViewController: UIViewController {
     private let userFriendsCountLabel = UILabel()
     private let userFriendsLabel = UILabel()
     
-    //User Biography 
+    //BODY
     private let userSelectInfoView = UIView()
     private let userBiographyView = UIView()
     private let userBiographyLabel = UILabel()
@@ -75,12 +76,25 @@ class ProfileViewController: UIViewController {
         setupUserInfoView()
         setupUserSelectInfoView()
         setupUserBiographyView()
+        setupTempLogoutButton()
+        
+        // Observe user updates to refresh profile image when it loads
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleUsersUpdated),
+            name: .usersUpdated,
+            object: nil
+        )
         
         Task {
             await getUserInfo()
             await getUserFriends()
             await fetchUserCounts()
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -237,6 +251,9 @@ class ProfileViewController: UIViewController {
         userInfoRightDivider.translatesAutoresizingMaskIntoConstraints = false
         userRightLeftView.translatesAutoresizingMaskIntoConstraints = false
         
+        userInfoLeftView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.25)
+        userMiddleLeftView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.25)
+        userRightLeftView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.25)
         userInfoLeftDivider.backgroundColor = .systemGray4
         userInfoRightDivider.backgroundColor = .systemGray4
         
@@ -268,6 +285,10 @@ class ProfileViewController: UIViewController {
             userRightLeftView.topAnchor.constraint(equalTo: userInfoView.topAnchor),
             userRightLeftView.bottomAnchor.constraint(equalTo: userInfoView.bottomAnchor)
         ])
+        
+        userRightLeftView.isUserInteractionEnabled = true
+        let friendsTap = UITapGestureRecognizer(target: self, action: #selector(friendsCountTapped))
+        userRightLeftView.addGestureRecognizer(friendsTap)
         
         setupUserInfoLabels()
     }
@@ -357,8 +378,7 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             userBiographyView.topAnchor.constraint(equalTo: userSelectInfoView.bottomAnchor),
             userBiographyView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            userBiographyView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            userBiographyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            userBiographyView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
         // Add labels and text areas
@@ -417,14 +437,57 @@ class ProfileViewController: UIViewController {
             userClothingTextArea.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ])
     }
-    
+
+    //TEMP: Logout button at bottom
+    private func setupTempLogoutButton() {
+        logoutButton.setTitle("Temp Logout", for: .normal)
+        logoutButton.addTarget(self, action: #selector(tempLogoutTapped), for: .touchUpInside)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoutButton)
+        NSLayoutConstraint.activate([
+            userBiographyView.bottomAnchor.constraint(equalTo: logoutButton.topAnchor, constant: -16),
+            logoutButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
+            logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            logoutButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+
     //ACTIONS
     @objc private func openProfile() {
         print("Profile tapped")
     }
     
+    @objc private func friendsCountTapped() {
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        guard let friendsVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as? FriendsViewController else { return }
+        navigationController?.pushViewController(friendsVC, animated: true)
+    }
+    
     @objc private func editProfileButton() {
         print("Edit Profile")
+    }
+
+    @objc private func tempLogoutTapped() {
+        LoginManager.shared.logoutCurrentUser()
+    }
+    
+    @objc private func handleUsersUpdated() {
+        // Refresh current user from cache to get updated profile image
+        let currentUsername = userDefaultManager.getLoggedInUser()
+        if let updatedUser = UsersDataController.shared.getUser(username: currentUsername) {
+            // Update local reference
+            self.currentUser = updatedUser
+            
+            // Update profile image if it's now available
+            if let profileImage = updatedUser.profileImage {
+                let circularImage = imageFunctions.makeCircularImage(
+                    image: profileImage,
+                    size: CGSize(width: 80, height: 80)
+                )
+                profileImageView.image = circularImage
+            }
+        }
     }
     
     
@@ -508,16 +571,23 @@ class ProfileViewController: UIViewController {
             )
             profileImageView.image = circularImage
         } else {
-            // If image not loaded yet, fetch it
+            // If image not loaded yet, try fetching it
+            // Note: UsersDataController may also be fetching it in background,
+            // so we'll get notified via .usersUpdated when it's ready
             Task {
                 await user.fetchProfileImage()
                 DispatchQueue.main.async {
-                    if let profileImage = user.profileImage {
+                    // Refresh from cache to get the latest user data
+                    let currentUsername = self.userDefaultManager.getLoggedInUser()
+                    if let updatedUser = UsersDataController.shared.getUser(username: currentUsername),
+                       let profileImage = updatedUser.profileImage {
                         let circularImage = self.imageFunctions.makeCircularImage(
                             image: profileImage,
                             size: CGSize(width: 80, height: 80)
                         )
                         self.profileImageView.image = circularImage
+                        // Update local reference
+                        self.currentUser = updatedUser
                     } else {
                         // Fallback to placeholder
                         if let placeholderImage = UIImage(named: "user") {

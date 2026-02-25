@@ -8,20 +8,123 @@
 import UIKit
 
 
+
+final class PostContentCell: UITableViewCell {
+
+    /*
+    //LOGIC
+    private let postDataController = PostDataController.shared
+    private var postID: Int?
+
+    //UI COMPONENTS
+    private let layout = ItemCellLayout()
+    //Post will include
+    //Socials
+    //Caption
+    //Comments will not be here but will be pulled in
+
+    //MANAGE VIEWS
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(layout)
+        layout.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            layout.topAnchor.constraint(equalTo: contentView.topAnchor),
+            layout.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            layout.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            layout.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+
+   
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        postID = nil
+        layout.resetImageLayout()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    //ACTIONS
+    func configurePostCell(postID: Int) {
+        self.postID = postID
+        refreshPostCellUI()
+    }
+
+    //FUNCTIONS
+    @objc private func purchaseTapped() {
+        print("purchase")
+    }
+
+    @objc private func likeTapped() {
+        guard
+            let postID,
+            let post = postDataController.getPostByID(postID: postID)
+        else { return }
+
+        let groupID = post.groupID ?? 0
+        Task { await PostLogic.shared.toggleLike(post: post, groupID: groupID) }
+    }
+
+    private func refreshPostCellUI() {
+        guard
+            let postID,
+            let post = postDataController.getPostByID(postID: postID)
+        else { return }
+
+        layout.apply(post: post)
+    }
+
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        guard
+            let updatedPostID = notification.object as? Int,
+            updatedPostID == postID
+        else { return }
+
+        refreshPostCellUI()
+    }
+    
+    */
+}
+
+
+/*
+
 class PostCell: UITableViewCell {
 
     private let postDataController = PostDataController.shared
     private var postID: Int?
     
     //UI Elements
+    private let postImageView = UIImageView()
     private let captionLabel = UILabel()
     private let likeCountLabel = UILabel()
     private let likeButton = UIButton(type: .system)
+    
+    // Constraints for dynamic image height
+    private var imageHeightConstraint: NSLayoutConstraint?
+    private var imageAspectRatioConstraint: NSLayoutConstraint?
 
     //Cell Setup
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        print("YO DODE PostCell")
         setupViews()
         setupLayout()
 
@@ -50,6 +153,11 @@ class PostCell: UITableViewCell {
     
     //LAYOUT
     private func setupViews() {
+        // Post Image View
+        postImageView.contentMode = .scaleAspectFit
+        postImageView.clipsToBounds = true
+        postImageView.backgroundColor = .systemGray6
+        
         captionLabel.numberOfLines = 0
         captionLabel.font = .systemFont(ofSize: 16)
 
@@ -59,19 +167,26 @@ class PostCell: UITableViewCell {
         likeButton.setTitle("Like", for: .normal)
         likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
 
+        contentView.addSubview(postImageView)
         contentView.addSubview(captionLabel)
         contentView.addSubview(likeCountLabel)
         contentView.addSubview(likeButton)
     }
 
     private func setupLayout() {
+        postImageView.translatesAutoresizingMaskIntoConstraints = false
         captionLabel.translatesAutoresizingMaskIntoConstraints = false
         likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
         likeButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            // Caption
-            captionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            // Post Image - full width, aspect ratio maintained
+            postImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            // Caption - below image
+            captionLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 12),
             captionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             captionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
@@ -130,6 +245,18 @@ class PostCell: UITableViewCell {
         let currentPost = fetchedPost!
 
         //STEP 2: Update the Post Cell UI
+        
+        // Set post image with aspect ratio constraint
+        if let postImage = currentPost.postImageData {
+            postImageView.image = postImage
+            updateImageAspectRatioConstraint(for: postImage)
+        } else {
+            // Hide image view or show placeholder if no image
+            postImageView.image = nil
+            // Set a zero height constraint when there's no image
+            updateImageAspectRatioConstraint(for: nil)
+        }
+        
         captionLabel.text = currentPost.postCaption
 
         let likeCount = currentPost.postLikesArray?.count ?? 0
@@ -139,6 +266,27 @@ class PostCell: UITableViewCell {
             likeButton.setTitle("Liked", for: .normal)
         } else {
             likeButton.setTitle("Like me", for: .normal)
+        }
+    }
+    
+    private func updateImageAspectRatioConstraint(for image: UIImage?) {
+        // Remove existing constraints
+        imageAspectRatioConstraint?.isActive = false
+        imageHeightConstraint?.isActive = false
+        
+        if let image = image {
+            // Calculate aspect ratio: height / width
+            let aspectRatio = image.size.height / image.size.width
+            // Create aspect ratio constraint: image.height = image.width * aspectRatio
+            imageAspectRatioConstraint = postImageView.heightAnchor.constraint(
+                equalTo: postImageView.widthAnchor,
+                multiplier: aspectRatio
+            )
+            imageAspectRatioConstraint?.isActive = true
+        } else {
+            // No image - set height to 0
+            imageHeightConstraint = postImageView.heightAnchor.constraint(equalToConstant: 0)
+            imageHeightConstraint?.isActive = true
         }
     }
     
@@ -155,6 +303,8 @@ class PostCell: UITableViewCell {
         refreshPostCellUI()
     }
 }
+
+*/
 
 /*
 @objc private func handlePostUpdated(_ notification: Notification) {
@@ -257,25 +407,8 @@ private func refreshUI() {
 }
 */
 
-/*
- class PostCell: UITableViewCell {
 
-
-
-
-
-
-
-     // MARK: - Notifications
-
-
-
-     // MARK: - Actions
-
-
- }
-
- */
+ 
 //WORKING AND DESIGN LOOKS OK
 /*
 class PostCell: UITableViewCell {

@@ -54,7 +54,22 @@ struct ItemDetails: Codable {
     let purchased_by: String
     let store: String
     let multiple_stores: Int
-    
+    let purchased_viewers: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case item_id
+        case item_name
+        case item_price
+        case item_description
+        case item_category
+        case item_link
+        case purchased
+        case purchased_by
+        case store
+        case multiple_stores
+        case purchased_viewers
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -79,6 +94,7 @@ struct ItemDetails: Codable {
         purchased_by = try container.decode(String.self, forKey: .purchased_by)
         store = try container.decode(String.self, forKey: .store)
         multiple_stores = try container.decode(Int.self, forKey: .multiple_stores)
+        purchased_viewers = try container.decodeIfPresent([String].self, forKey: .purchased_viewers) ?? []
     }
 }
 

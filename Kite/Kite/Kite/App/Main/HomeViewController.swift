@@ -44,6 +44,12 @@ class HomeViewController: UIViewController {
             name: .postsFetched,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostsFetched),
+            name: .itemsFetched,
+            object: nil
+        )
 
         //LISTENER: Post Updated
         NotificationCenter.default.addObserver(
@@ -97,6 +103,10 @@ class HomeViewController: UIViewController {
     //FUNCTIONS
     func fetchPosts() {
         Task {
+            //APP: Kite
+            //await postDataController.fetchPosts(groupID: 72)
+            
+            //APP: Evently
             await postDataController.fetchPosts(groupID: 72)
         }
     }

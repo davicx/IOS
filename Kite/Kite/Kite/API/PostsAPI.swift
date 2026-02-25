@@ -29,6 +29,11 @@ FUNCTIONS C: All Functions Related to Post Actions
     4) Function C4: Select all Likes for a Post
     5) Function C5: Delete a Post
     6) Function C5: Edit a Post
+ 
+ FUNCTIONS D: All Functions Related to Items
+     1) Function D1: Purchase an Item
+     2) Function D2: Remove a Purchase for an Item
+
 
 */
 
@@ -547,6 +552,94 @@ class PostsAPI {
             print("Error decoding data")
             return postResponseModel
             
+        }
+    }
+    
+    
+    //FUNCTIONS D: All Functions Related to Items
+    //Function D1: Purchase an Item
+    func purchaseItemAPI(currentUser: String, postID: Int, itemID: Int, showPurchased: [String]) async throws -> PurchaseItemResponseModel {
+        let endpoint = "http://localhost:3003/items/purchase/add"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        let parameters: [String: Any] = [
+            "currentUser": currentUser,
+            "postID": postID,
+            "itemID": itemID,
+            "showPurchased": showPurchased
+        ]
+        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            let responseModel = PurchaseItemResponseModel()
+            print("Error setting JSON")
+            return responseModel
+        }
+        
+        request.httpBody = httpBody
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            let responseModel = try decoder.decode(PurchaseItemResponseModel.self, from: data)
+            return responseModel
+        } catch {
+            let responseModel = PurchaseItemResponseModel()
+            print("Error decoding data")
+            return responseModel
+        }
+    }
+    
+    
+    //Function D2: Remove a Purchase for an Item
+    func removeItemPurchaseAPI(currentUser: String, postID: Int, itemID: Int) async throws -> PurchaseItemResponseModel {
+        let endpoint = "http://localhost:3003/items/purchase/remove"
+        
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        let parameters: [String: Any] = [
+            "currentUser": currentUser,
+            "postID": postID,
+            "itemID": itemID
+        ]
+        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            let responseModel = PurchaseItemResponseModel()
+            print("Error setting JSON")
+            return responseModel
+        }
+        
+        request.httpBody = httpBody
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            let responseModel = try decoder.decode(PurchaseItemResponseModel.self, from: data)
+            return responseModel
+        } catch {
+            let responseModel = PurchaseItemResponseModel()
+            print("Error decoding data")
+            return responseModel
         }
     }
     

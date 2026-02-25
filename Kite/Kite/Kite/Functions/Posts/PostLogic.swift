@@ -8,14 +8,30 @@
 import UIKit
 
 
+/*
+FUNCTIONS A: All Functions Related to Post Likes
+    1) Function A1: Toggle like (like or unlike)
+    2) Function A2: Like a Post
+    3) Function A3: Unlike a Post
+ 
+FUNCTIONS B: All Functions Related to Creating Posts
+    1) Function B1: Create item post (WISHLIST)
+ 
+FUNCTIONS C: All Functions Related to Items (purchase)
+    1) Function C1: Purchase Item
+    2) Function C2: Remove Item
+ 
+*/
+
+
 final class PostLogic {
     static let shared = PostLogic()
     private init() {}
     
     private let postDataController = PostDataController.shared
-    
-    // MARK: - Likes
-    
+
+    //FUNCTIONS A: All Functions Related to Post Likes
+    //Function A1: Toggle like (like or unlike)
     func toggleLike(post: Post, groupID: Int) async {
         if post.isLikedByCurrentUser == true {
             await unlike(post: post, groupID: groupID)
@@ -25,13 +41,8 @@ final class PostLogic {
     }
     
 
+    //Function A2: Like a Post
     func like(post: Post, groupID: Int) async {
-        
-        // STEP 5: PostLogic performs API request
-        // STEP 6: API responds with updated post data
-        // STEP 7: PostDataController updates its stored post
-        // STEP 8: PostDataController posts NotificationCenter event
-        
         // Step 1: API call via postLikeFunctions (lazy reference to avoid circular dependency)
         let likeFunctions = postLikeFunctions.shared
         guard let likeModel = await likeFunctions.likePost(post: post, groupID: groupID) else {
@@ -42,6 +53,7 @@ final class PostLogic {
         postDataController.likePost(postID: post.postID, likeModel: likeModel)
     }
     
+    //Function A3: Unlike a Post
     func unlike(post: Post, groupID: Int) async {
         // Step 1: API call via postLikeFunctions (lazy reference to avoid circular dependency)
         let likeFunctions = postLikeFunctions.shared
@@ -53,22 +65,15 @@ final class PostLogic {
         postDataController.unlikePost(postID: post.postID, likeModel: likeModel)
     }
     
-    // MARK: - Create Post
     
-    func createItemPost(
-        postImage: UIImage,
-        postFrom: String,
-        postTo: String,
-        postCaption: String,
-        groupID: Int,
-        listID: Int,
-        itemName: String,
-        itemPrice: String,
-        itemDescription: String,
-        itemLink: String
-    ) async -> Bool {
+    //FUNCTIONS B: All Functions Related to Creating Posts
+    //Function B1: Create item post (WISHLIST)
+    func createItemPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int,
+        listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String) async -> Bool {
+        
         // Step 1: API call via PostsAPI
         let postsAPI = PostsAPI()
+        
         do {
             let responseModel = try await postsAPI.makeItemPost(
                 postImage: postImage,
@@ -95,6 +100,62 @@ final class PostLogic {
         } catch {
             print("PostLogic: Error creating item post: \(error)")
             return false
+        }
+    }
+    
+    //KITE
+    //Add Kite Later
+    /*
+     
+     */
+    
+    
+    //FUNCTIONS C: All Functions Related to Items (purchase)
+    //Function C1: Purchase Item
+    func purchaseItem(post: Post, groupID: Int, showPurchased: [String]) async {
+        guard let itemID = post.itemID else { return }
+        let currentUser = postDataController.currentUser
+
+        do {
+            let response = try await PostsAPI().purchaseItemAPI(
+                currentUser: currentUser,
+                postID: post.postID,
+                itemID: itemID,
+                showPurchased: showPurchased
+            )
+            guard response.success else {
+                print("PostLogic: Failed to purchase item: \(response.message)")
+                return
+            }
+            postDataController.markItemPurchased(
+                postID: post.postID,
+                purchasedBy: response.data.purchasedBy,
+                purchasedViewers: showPurchased
+            )
+        } catch {
+            print("PostLogic: Error purchasing item: \(error)")
+        }
+    }
+    
+    
+    //Function C2: Remove Item
+    func removeItem(post: Post, groupID: Int) async {
+        guard let itemID = post.itemID else { return }
+        let currentUser = postDataController.currentUser
+        
+        do {
+            let response = try await PostsAPI().removeItemPurchaseAPI(
+                currentUser: currentUser,
+                postID: post.postID,
+                itemID: itemID
+            )
+            guard response.success else {
+                print("PostLogic: Failed to remove item purchase: \(response.message)")
+                return
+            }
+            postDataController.markItemUnpurchased(postID: post.postID)
+        } catch {
+            print("PostLogic: Error removing item purchase: \(error)")
         }
     }
 }

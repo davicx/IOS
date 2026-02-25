@@ -7,6 +7,19 @@
 
 import Foundation
 
+/*
+FUNCTIONS A: All Functions Related to Getting Groups
+    1) Function A1: Get all Group Posts
+ 
+FUNCTIONS B: All Functions Related to Group Actions
+    1) Function B1:
+ 
+ 
+FUNCTIONS C: All Functions Related to Group Item Actions
+    1) Function B1:
+ 
+ 
+*/
 
 final class GroupLogic {
     static let shared = GroupLogic()
@@ -14,15 +27,19 @@ final class GroupLogic {
     
     private let postDataController = PostDataController.shared
     
-    // MARK: - Fetch Posts/Items for Group
-    
-    /// Fetch posts for a group (posts are stored in PostDataController.posts)
+
+    //Function A1: Get all Group Posts
     func fetchGroupPosts(groupID: Int) async {
         await postDataController.fetchPosts(groupID: groupID)
     }
     
-    /// Fetch items for a group (items are posts with postType == "item", stored in PostDataController.posts)
+    /*
+    //KITE: same as fetchGroupPosts — both call fetchPosts
+    //WISHLIST: use fetchGroupPosts; items are loaded via fetchPosts in PostDataController
     func fetchGroupItems(groupID: Int) async {
         await postDataController.fetchItems(groupID: groupID)
     }
+    */
+    
+    
 }

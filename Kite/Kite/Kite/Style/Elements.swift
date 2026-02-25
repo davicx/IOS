@@ -13,7 +13,7 @@ enum Elements {
 
     //UI ELEMENTS
 
-    //Generay
+    //General
     
     //Layout
     

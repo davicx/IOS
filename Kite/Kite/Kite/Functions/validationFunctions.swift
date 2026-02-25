@@ -31,7 +31,6 @@ func validateFullName(fullName: String) -> Bool {
 
 }
 
-
 func validatePassword(password: String) -> Bool {
     guard password.count >= 5, password.count <= 20 else {
         return false

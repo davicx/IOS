@@ -5,11 +5,184 @@
 //  Created by David Vasquez on 12/11/24.
 //
 
-import UIKit
-
 
 import UIKit
 
+
+struct StoreItem {
+    let name: String
+    let price: String
+}
+
+class ViewController: UIViewController {
+
+    // MARK: - Data
+    private var stores: [StoreItem] = [
+        StoreItem(name: "Amazon", price: "$20"),
+        StoreItem(name: "Target", price: "$18")
+    ]
+
+    // MARK: - UI
+    private let tableView = UITableView()
+    private let addButton = UIButton(type: .system)
+
+    private let addContainerView = UIView()
+    private let storeTextField = UITextField()
+    private let priceTextField = UITextField()
+    private let submitButton = UIButton(type: .system)
+    private let cancelButton = UIButton(type: .system)
+
+    private var addContainerHeightConstraint: NSLayoutConstraint!
+
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+
+        setupTableView()
+        setupAddButton()
+        setupAddContainer()
+        setupConstraints()
+    }
+
+    // MARK: - Setup
+    private func setupTableView() {
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.dataSource = self
+        tableView.separatorStyle = .singleLine
+        view.addSubview(tableView)
+    }
+
+    private func setupAddButton() {
+        addButton.setTitle("+ New Store", for: .normal)
+        addButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        addButton.addTarget(self, action: #selector(didTapAdd), for: .touchUpInside)
+        view.addSubview(addButton)
+    }
+
+    private func setupAddContainer() {
+        addContainerView.backgroundColor = .secondarySystemBackground
+        addContainerView.layer.cornerRadius = 12
+        addContainerView.clipsToBounds = true
+        view.addSubview(addContainerView)
+
+        storeTextField.placeholder = "Store name"
+        storeTextField.borderStyle = .roundedRect
+
+        priceTextField.placeholder = "Price"
+        priceTextField.borderStyle = .roundedRect
+
+        submitButton.setTitle("Submit", for: .normal)
+        submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
+
+        cancelButton.setTitle("Cancel", for: .normal)
+        cancelButton.setTitleColor(.systemRed, for: .normal)
+        cancelButton.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
+
+        [storeTextField, priceTextField, submitButton, cancelButton].forEach {
+            addContainerView.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
+
+    private func setupConstraints() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addContainerView.translatesAutoresizingMaskIntoConstraints = false
+
+        addContainerHeightConstraint = addContainerView.heightAnchor.constraint(equalToConstant: 0)
+
+        NSLayoutConstraint.activate([
+            // Add button
+            addButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            // Table
+            tableView.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 12),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: addContainerView.topAnchor, constant: -8),
+
+            // Add container
+            addContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            addContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            addContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            addContainerHeightConstraint,
+
+            // Store field
+            storeTextField.topAnchor.constraint(equalTo: addContainerView.topAnchor, constant: 12),
+            storeTextField.leadingAnchor.constraint(equalTo: addContainerView.leadingAnchor, constant: 12),
+            storeTextField.trailingAnchor.constraint(equalTo: addContainerView.trailingAnchor, constant: -12),
+
+            // Price field
+            priceTextField.topAnchor.constraint(equalTo: storeTextField.bottomAnchor, constant: 8),
+            priceTextField.leadingAnchor.constraint(equalTo: storeTextField.leadingAnchor),
+            priceTextField.trailingAnchor.constraint(equalTo: storeTextField.trailingAnchor),
+
+            // Buttons
+            submitButton.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 12),
+            submitButton.leadingAnchor.constraint(equalTo: addContainerView.leadingAnchor, constant: 12),
+            submitButton.bottomAnchor.constraint(equalTo: addContainerView.bottomAnchor, constant: -12),
+
+            cancelButton.centerYAnchor.constraint(equalTo: submitButton.centerYAnchor),
+            cancelButton.trailingAnchor.constraint(equalTo: addContainerView.trailingAnchor, constant: -12)
+        ])
+    }
+
+    // MARK: - Actions
+    @objc private func didTapAdd() {
+        showAddArea(true)
+    }
+
+    @objc private func didTapCancel() {
+        showAddArea(false)
+        clearInputs()
+    }
+
+    @objc private func didTapSubmit() {
+        guard
+            let name = storeTextField.text, !name.isEmpty,
+            let price = priceTextField.text, !price.isEmpty
+        else { return }
+
+        stores.append(StoreItem(name: name, price: price))
+        tableView.reloadData()
+
+        clearInputs()
+        showAddArea(false)
+    }
+
+    private func showAddArea(_ show: Bool) {
+        addContainerHeightConstraint.constant = show ? 160 : 0
+
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    private func clearInputs() {
+        storeTextField.text = nil
+        priceTextField.text = nil
+    }
+}
+
+// MARK: - Table DataSource
+extension ViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        stores.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let item = stores[indexPath.row]
+        cell.textLabel?.text = "\(item.name) \(item.price)"
+        return cell
+    }
+}
+
+
+/*
 final class ViewController: UIViewController {
 
     // MARK: - UI
@@ -219,7 +392,7 @@ final class ViewController: UIViewController {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
-
+*/
 
 /*
 class ViewController: UIViewController {
