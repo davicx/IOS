@@ -8,7 +8,41 @@
 import UIKit
 
 
+//FILES
+/*
+ DesignSystem
+ ├── Colors
+ │   ├── AppColors.swift
+ │   └── SemanticColors.swift
+ │
+ ├── Fonts
+ │   └── AppFonts.swift
+ │
+ ├── Style
+ │   └── AppStyle.swift
+ │
+ └── Components
+     ├── PrimaryButton.swift
+     ├── SecondaryButton.swift
+     └── StyledLabel.swift
+
+ */
+/*
+STYLE
+ - Fonts
+UI ELEMEMENS
+BUTTONS
+COLORS
+
+ 
+*/
+
 class Style {
+    
+    
+    
+    
+    //CLEAN BELOW
     
     //FONT
     static let blackFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
@@ -31,7 +65,7 @@ class Style {
     static let itemDescriptionFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
     static let itemLinkFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
 
-    //CLEAN BELOW
+
     let iconBackgroundColor = "#687684"
     
     

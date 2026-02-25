@@ -14,25 +14,17 @@ final class CommentCell: UITableViewCell {
     //UI COMPONENTS
     //Comment
 
-    
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "CommentCell"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.textColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let postComment = PostComment()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.25)
-        contentView.addSubview(titleLabel)
+        postComment.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(postComment)
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 16)
+            postComment.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postComment.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postComment.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postComment.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 

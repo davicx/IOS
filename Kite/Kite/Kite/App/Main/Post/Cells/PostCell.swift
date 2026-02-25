@@ -7,39 +7,48 @@
 
 import UIKit
 
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT and UI
+//ACTIONS
+//FUNCTIONS
 
 final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
-    //PostContent
-    //PostSocials
-    //PostCaption
-    //Comments will not be here but will be pulled in
+    private let postContent = PostContent()
+    private let postCaption = PostCaption()
+    private let postSocials = PostSocials()
 
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "PostCell"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.textColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
+    //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.25)
-        contentView.addSubview(titleLabel)
+        [postContent, postCaption, postSocials].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 16)
+            postContent.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postCaption.topAnchor.constraint(equalTo: postContent.bottomAnchor),
+            postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
+            postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postSocials.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //LAYOUT
+    
+
 }
 
 /*

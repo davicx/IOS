@@ -68,8 +68,6 @@ class Buttons {
     }
     
     
-
-    
     //ADD FRIENDS
     static func styleFriendsButton(_ button: UIButton) {
         button.setTitle("Friends", for: .normal)
