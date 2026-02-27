@@ -9,6 +9,29 @@ import Foundation
 
 /*
  Style
+ ├── Elements
+ │   └── AppElements.swift
+ │
+ ├── Text and Fonts
+ │   └── AppText.swift
+ │
+ ├── Style
+ │   └── AppStyle.swift
+ │
+ └── Buttons
+ │   └── AppButtons.swift
+ │
+ ├── Colors
+ │   └── AppColors.swift
+ 
+ 
+ Elements
+ Buttons
+ Text
+ Colors
+ Fonts
+ 
+ Style
  ├── Colors
  │   ├── AppColors.swift (more generic like appGray)
  │   └── SemanticColors.swift (Specific FriendBorderRed)
@@ -23,12 +46,6 @@ import Foundation
      ├── AppButtons.swift
      ├── AppElements.swift (buttons, labels, dividers)
  
- 
- Elements
- Buttons
- Text
- Colors
- Fonts
  
  */
 

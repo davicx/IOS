@@ -115,6 +115,10 @@
 		D768C1B32E78D3B500350D37 /* GroupMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D768C1B22E78D3B500350D37 /* GroupMembersViewController.swift */; };
 		D768C1B52E78DB1900350D37 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D768C1B42E78DB1900350D37 /* SearchVC.swift */; };
 		D7697A862F512061004FD264 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A852F512061004FD264 /* AppColors.swift */; };
+		D7697A882F512394004FD264 /* AppElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A872F512394004FD264 /* AppElements.swift */; };
+		D7697A8A2F51239D004FD264 /* AppText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A892F51239D004FD264 /* AppText.swift */; };
+		D7697A8C2F5123AA004FD264 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A8B2F5123AA004FD264 /* AppStyle.swift */; };
+		D7697A8E2F5123B2004FD264 /* AppButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A8D2F5123B2004FD264 /* AppButtons.swift */; };
 		D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */; };
 		D76DA68B2E4D55A1002D65D5 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */; };
 		D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */; };
@@ -334,6 +338,10 @@
 		D768C1B22E78D3B500350D37 /* GroupMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembersViewController.swift; sourceTree = "<group>"; };
 		D768C1B42E78DB1900350D37 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		D7697A852F512061004FD264 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		D7697A872F512394004FD264 /* AppElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppElements.swift; sourceTree = "<group>"; };
+		D7697A892F51239D004FD264 /* AppText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppText.swift; path = Sort/AppText.swift; sourceTree = "<group>"; };
+		D7697A8B2F5123AA004FD264 /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
+		D7697A8D2F5123B2004FD264 /* AppButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButtons.swift; sourceTree = "<group>"; };
 		D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineFriendResponseModel.swift; sourceTree = "<group>"; };
 		D76DA68A2E4D55A1002D65D5 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsDoc.swift; sourceTree = "<group>"; };
@@ -454,6 +462,9 @@
 				D7AC97EA2F4FCE7A00E383D6 /* Sort */,
 				D7AC97E82F4FCE6300E383D6 /* StyleGuide.swift */,
 				D7697A852F512061004FD264 /* AppColors.swift */,
+				D7697A892F51239D004FD264 /* AppText.swift */,
+				D7697A8B2F5123AA004FD264 /* AppStyle.swift */,
+				D7697A8D2F5123B2004FD264 /* AppButtons.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -1164,6 +1175,7 @@
 				D74304032DF6593400D7775A /* StyleConstants.swift */,
 				D7F2CFC32EAD91B400A8E249 /* Colors.swift */,
 				D7DB60A32F09F8F300C43BE8 /* Elements.swift */,
+				D7697A872F512394004FD264 /* AppElements.swift */,
 			);
 			path = Sort;
 			sourceTree = "<group>";
@@ -1443,6 +1455,7 @@
 				51C58F2E2D1B6D3500942386 /* LogoutResponseModel.swift in Sources */,
 				D7468DD92E875A6E005FFD59 /* MakePostViewController.swift in Sources */,
 				51C69B2E2D0E57BF00C46759 /* Functions.swift in Sources */,
+				D7697A882F512394004FD264 /* AppElements.swift in Sources */,
 				D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */,
 				51ED44682D2E0B460036DB4B /* UserModel.swift in Sources */,
 				D798D97F2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift in Sources */,
@@ -1551,10 +1564,12 @@
 				5139A6312D28B5980029024E /* Buttons.swift in Sources */,
 				51C69AE12D0E549100C46759 /* AppDelegate.swift in Sources */,
 				D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */,
+				D7697A8E2F5123B2004FD264 /* AppButtons.swift in Sources */,
 				D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */,
 				51EC39182D3495850001B6E7 /* EditProfileViewController.swift in Sources */,
 				D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */,
 				D77FB6722E2B0DB2003E1020 /* groupFunctions.swift in Sources */,
+				D7697A8C2F5123AA004FD264 /* AppStyle.swift in Sources */,
 				D78CEF7D2E2F08DD002E3712 /* PostContentCell.swift in Sources */,
 				D7AF47AE2E21D94200617D69 /* sizeFunctions.swift in Sources */,
 				51C69B1A2D0E552500C46759 /* Enums.swift in Sources */,
@@ -1568,6 +1583,7 @@
 				51C69AE32D0E549100C46759 /* SceneDelegate.swift in Sources */,
 				D78047892DF507B500702C01 /* PlantDataController.swift in Sources */,
 				D7DB60A42F09F8F300C43BE8 /* Elements.swift in Sources */,
+				D7697A8A2F51239D004FD264 /* AppText.swift in Sources */,
 				D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */,
 				D710E7F32E7E1338008C11BA /* DiscoverViewController.swift in Sources */,
 				D7A3C11C2D80F51E000B4EB7 /* SimpleBottomStackView.swift in Sources */,
