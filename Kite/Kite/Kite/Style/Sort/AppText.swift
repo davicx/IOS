@@ -5,7 +5,35 @@
 //  Created by David Vasquez on 2/26/26.
 //
 
-import Foundation
+import UIKit
+
+// MARK: - Main text style (Instagram-like body)
+
+private let mainTextFont = UIFont.systemFont(ofSize: 15, weight: .regular)
+
+enum AppText {
+    static func mainTextStyle(_ label: UILabel) {
+        label.font = mainTextFont
+        label.textColor = UIColor.textBlack
+        label.numberOfLines = 0
+    }
+}
+
+
+
+
+extension UILabel {
+    func mainTextStyle() {
+        AppText.mainTextStyle(self)
+    }
+}
+
+/*
+ Usage:
+ let label = UILabel()
+ label.mainTextStyle()
+
+ */
 
 //TEXT A: Generic Site Wide Text
 

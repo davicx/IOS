@@ -115,6 +115,8 @@ class Style {
         label.textColor = usernameFontColor
     }
     
+    
+    
     static func styleMainText(_ label: UILabel) {
         label.font = mainTextFont
         label.textColor = mainTextFontColor
@@ -144,6 +146,8 @@ class Style {
         label.minimumScaleFactor = 0.75
         label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     }
+    
+    
     
     static func styleItemLinkLabel(_ label: UILabel) {
         label.font = itemLinkFont
