@@ -115,7 +115,6 @@
 		D768C1B32E78D3B500350D37 /* GroupMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D768C1B22E78D3B500350D37 /* GroupMembersViewController.swift */; };
 		D768C1B52E78DB1900350D37 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D768C1B42E78DB1900350D37 /* SearchVC.swift */; };
 		D7697A862F512061004FD264 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A852F512061004FD264 /* AppColors.swift */; };
-		D7697A882F512394004FD264 /* AppElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A872F512394004FD264 /* AppElements.swift */; };
 		D7697A8A2F51239D004FD264 /* AppText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A892F51239D004FD264 /* AppText.swift */; };
 		D7697A8C2F5123AA004FD264 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A8B2F5123AA004FD264 /* AppStyle.swift */; };
 		D7697A8E2F5123B2004FD264 /* AppButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7697A8D2F5123B2004FD264 /* AppButtons.swift */; };
@@ -178,6 +177,7 @@
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
 		D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */; };
 		D7BD62C12E5546030008F6E1 /* PostDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD62C02E5546030008F6E1 /* PostDoc.swift */; };
+		D7CADAB32F53C1F500DD74DC /* AppElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CADAB22F53C1F500DD74DC /* AppElements.swift */; };
 		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
 		D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */; };
 		D7D3DD322D518D8F00B9DAA7 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */; };
@@ -337,7 +337,6 @@
 		D768C1B22E78D3B500350D37 /* GroupMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembersViewController.swift; sourceTree = "<group>"; };
 		D768C1B42E78DB1900350D37 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		D7697A852F512061004FD264 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
-		D7697A872F512394004FD264 /* AppElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppElements.swift; sourceTree = "<group>"; };
 		D7697A892F51239D004FD264 /* AppText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppText.swift; path = Sort/AppText.swift; sourceTree = "<group>"; };
 		D7697A8B2F5123AA004FD264 /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
 		D7697A8D2F5123B2004FD264 /* AppButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButtons.swift; sourceTree = "<group>"; };
@@ -400,6 +399,7 @@
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
 		D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDataController.swift; sourceTree = "<group>"; };
 		D7BD62C02E5546030008F6E1 /* PostDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDoc.swift; sourceTree = "<group>"; };
+		D7CADAB22F53C1F500DD74DC /* AppElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppElements.swift; sourceTree = "<group>"; };
 		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
 		D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
 		D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
@@ -463,6 +463,7 @@
 				D7697A892F51239D004FD264 /* AppText.swift */,
 				D7697A8B2F5123AA004FD264 /* AppStyle.swift */,
 				D7697A8D2F5123B2004FD264 /* AppButtons.swift */,
+				D7CADAB22F53C1F500DD74DC /* AppElements.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -1172,7 +1173,6 @@
 				5139A6302D28B5980029024E /* Buttons.swift */,
 				D74304032DF6593400D7775A /* StyleConstants.swift */,
 				D7DB60A32F09F8F300C43BE8 /* Elements.swift */,
-				D7697A872F512394004FD264 /* AppElements.swift */,
 			);
 			path = Sort;
 			sourceTree = "<group>";
@@ -1452,7 +1452,6 @@
 				51C58F2E2D1B6D3500942386 /* LogoutResponseModel.swift in Sources */,
 				D7468DD92E875A6E005FFD59 /* MakePostViewController.swift in Sources */,
 				51C69B2E2D0E57BF00C46759 /* Functions.swift in Sources */,
-				D7697A882F512394004FD264 /* AppElements.swift in Sources */,
 				D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */,
 				51ED44682D2E0B460036DB4B /* UserModel.swift in Sources */,
 				D798D97F2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift in Sources */,
@@ -1608,6 +1607,7 @@
 				D720DB382DE136C000F137AD /* CommentLike.swift in Sources */,
 				D78EBE5B2E1C93F90087FB56 /* IndividualPostTableViewCell.swift in Sources */,
 				51C69B1C2D0E553C00C46759 /* Extensions.swift in Sources */,
+				D7CADAB32F53C1F500DD74DC /* AppElements.swift in Sources */,
 				51CA9DC82D0FAA54008C36F0 /* HomeViewController.swift in Sources */,
 				51C69B382D0E583500C46759 /* LikeModel.swift in Sources */,
 				51C69B242D0E574B00C46759 /* Comment.swift in Sources */,

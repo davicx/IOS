@@ -7,8 +7,8 @@
 
 import UIKit
 
-// MARK: - Main text style (Instagram-like body)
-
+//FONTS:
+//Font 1: Main Site Font black like instagram
 private let mainTextFont = UIFont.systemFont(ofSize: 15, weight: .regular)
 
 enum AppText {
@@ -20,8 +20,7 @@ enum AppText {
 }
 
 
-
-
+//EXTENSIONS
 extension UILabel {
     func mainTextStyle() {
         AppText.mainTextStyle(self)
