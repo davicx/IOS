@@ -9,6 +9,7 @@ import UIKit
 
 final class PostSocials: UIView {
 
+
     //UI COMPONENTS
     let postLikesView = UIView()
     let postCommentView = UIView()
@@ -31,15 +32,15 @@ final class PostSocials: UIView {
     }
 
     private func setupViews() {
-        backgroundColor = UIColor.systemPurple.withAlphaComponent(0.3)
+        // backgroundColor = UIColor.systemPurple.withAlphaComponent(0.3)
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
         ])
 
-        postLikesView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.4)
-        postCommentView.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.4)
-        postSharesView.backgroundColor = UIColor.systemIndigo.withAlphaComponent(0.4)
+        // postLikesView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.4)
+        // postCommentView.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.4)
+        // postSharesView.backgroundColor = UIColor.systemIndigo.withAlphaComponent(0.4)
 
         stackView.axis = .horizontal
         stackView.spacing = 8
@@ -68,11 +69,11 @@ final class PostSocials: UIView {
         likesIconView.image = UIImage(systemName: "heart")
         likesIconView.contentMode = .scaleAspectFit
         likesIconView.tintColor = .label
-        likesIconView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.5)
+        // likesIconView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.5)
         Style.styleSocialCountText(likesCountLabel)
         likesCountLabel.text = "1,815"
         likesCountLabel.lineBreakMode = .byTruncatingTail
-        likesCountLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+        // likesCountLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
 
         [postLikesView, likesIconView, likesCountLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         postLikesView.addSubview(likesIconView)
@@ -94,14 +95,14 @@ final class PostSocials: UIView {
     }
 
     private func setupPostCommentViews() {
-        commentIconView.image = UIImage(systemName: "bubble.left.and.bubble.right")
+        commentIconView.image = UIImage(named: "comment") ?? UIImage(systemName: "text.bubble")
         commentIconView.contentMode = .scaleAspectFit
         commentIconView.tintColor = .label
-        commentIconView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.5)
+        // commentIconView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.5)
         Style.styleSocialCountText(commentCountLabel)
         commentCountLabel.text = "15"
         commentCountLabel.lineBreakMode = .byTruncatingTail
-        commentCountLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+        // commentCountLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
 
         [postCommentView, commentIconView, commentCountLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         postCommentView.addSubview(commentIconView)
@@ -123,14 +124,14 @@ final class PostSocials: UIView {
     }
 
     private func setupPostSharesViews() {
-        sharesIconView.image = UIImage(systemName: "arrow.2.squarepath")
+        sharesIconView.image = UIImage(named: "messenger") ?? UIImage(systemName: "message")
         sharesIconView.contentMode = .scaleAspectFit
         sharesIconView.tintColor = .label
-        sharesIconView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.5)
+        // sharesIconView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.5)
         Style.styleSocialCountText(sharesCountLabel)
         sharesCountLabel.text = "5"
         sharesCountLabel.lineBreakMode = .byTruncatingTail
-        sharesCountLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+        // sharesCountLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
 
         [postSharesView, sharesIconView, sharesCountLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         postSharesView.addSubview(sharesIconView)
@@ -158,6 +159,11 @@ final class PostSocials: UIView {
 
 
 /*
+ // Saved background colors (commented out in setupViews / setup*):
+ // self: systemPurple 0.3 | postLikesView: systemTeal 0.4 | postCommentView: systemOrange 0.4 | postSharesView: systemIndigo 0.4
+ // icon views: systemRed 0.5 | count labels: systemGreen 0.5
+
+ 
  group_messages
  group_message_id
  message
