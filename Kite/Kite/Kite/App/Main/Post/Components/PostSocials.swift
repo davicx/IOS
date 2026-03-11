@@ -85,18 +85,18 @@ final class PostSocials: UIView {
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
 
         setupPostLikeViews()
         setupPostCommentViews()
-        setupPostSharesViews()
+        // setupPostSharesViews()
 
         stackView.addArrangedSubview(postLikesView)
         stackView.addArrangedSubview(postCommentView)
-        stackView.addArrangedSubview(postSharesView)
+        // stackView.addArrangedSubview(postSharesView)
     }
 
     private func setupPostLikeViews() {
@@ -169,6 +169,7 @@ final class PostSocials: UIView {
         ])
     }
 
+    /*
     private func setupPostSharesViews() {
         sharesIconBackground.backgroundColor = UIColor.tertiarySystemFill
         sharesIconBackground.layer.cornerRadius = iconBackgroundSize / 2
@@ -203,6 +204,7 @@ final class PostSocials: UIView {
             sharesCountLabel.widthAnchor.constraint(lessThanOrEqualToConstant: countMaxWidth)
         ])
     }
+    */
     
     //ACTIONS
     @objc private func handlePostUpdated(_ notification: Notification) {
