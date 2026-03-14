@@ -45,6 +45,7 @@ final class PostSocials: UIView {
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
+        print("POST SOCIALS")
         super.init(frame: frame)
         setupViews()
         NotificationCenter.default.addObserver(
@@ -104,7 +105,7 @@ final class PostSocials: UIView {
         likesIconBackground.layer.cornerRadius = iconBackgroundSize / 2
         likesIconBackground.clipsToBounds = true
 
-        likesIconView.image = UIImage(systemName: "heart")
+        likesIconView.image = UIImage(named: "liked") ?? UIImage(systemName: "heart") 
         likesIconView.contentMode = .scaleAspectFit
         likesIconView.tintColor = .label
 
@@ -210,22 +211,34 @@ final class PostSocials: UIView {
     @objc private func handlePostUpdated(_ notification: Notification) {
         guard let updatedPostID = notification.object as? Int,
               updatedPostID == postID else { return }
-        refreshLikeCount()
+        refreshLikes()
     }
 
     
     //FUNCTIONS
-    //Configure with post so like count (and later like action) use live data. For now only prints like count.
+    //Configure with post so like area (icon + count) and later like action use live data.
     func configure(postID: Int) {
         self.postID = postID
-        refreshLikeCount()
+        refreshLikes()
     }
     
-    private func refreshLikeCount() {
-        guard let postID,
-              let post = postDataController.getPostByID(postID: postID) else { return }
+    //Updates the like area: icon (like vs liked) and count label from PostDataController.
+    private func refreshLikes() {
+        guard let postID else {
+            print("PostSocials: postID is nil, skipping refresh")
+            return
+        }
+        guard let post = postDataController.getPostByID(postID: postID) else {
+            print("PostSocials: post not found in PostDataController for postID \(postID)")
+            return
+        }
         let count = post.simpleLikesArray?.count ?? 0
-        print("Post like count: \(count)")
+        let isLiked = post.isLikedByCurrentUser ?? false
+
+        likesIconView.image = isLiked
+            ? (UIImage(named: "liked") ?? UIImage(systemName: "heart.fill"))
+            : (UIImage(named: "like") ?? UIImage(systemName: "heart"))
+        likesCountLabel.text = "\(count)"
     }
 
 
