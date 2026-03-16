@@ -101,6 +101,11 @@ final class PostSocials: UIView {
     }
 
     private func setupPostLikeViews() {
+        postLikesView.backgroundColor = .red
+        postLikesView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleLikeTapped))
+        postLikesView.addGestureRecognizer(tap)
+
         likesIconBackground.backgroundColor = UIColor.tertiarySystemFill
         likesIconBackground.layer.cornerRadius = iconBackgroundSize / 2
         likesIconBackground.clipsToBounds = true
@@ -208,12 +213,20 @@ final class PostSocials: UIView {
     */
     
     //ACTIONS
+    @objc private func handleLikeTapped() {
+        guard let postID,
+              let post = postDataController.getPostByID(postID: postID) else { return }
+        let groupID = post.groupID ?? 0
+        Task { await PostLogic.shared.toggleLike(post: post, groupID: groupID) }
+    }
+
     @objc private func handlePostUpdated(_ notification: Notification) {
         guard let updatedPostID = notification.object as? Int,
               updatedPostID == postID else { return }
         refreshLikes()
     }
 
+    
     
     //FUNCTIONS
     //Configure with post so like area (icon + count) and later like action use live data.
