@@ -14,6 +14,14 @@ final class SpinnerHelper {
     private var backgroundView: UIView?
     private var workItem: DispatchWorkItem?
 
+    /// Key window for centering spinner on screen. Use with `show(in: Self.keyWindow ?? fallbackView, delay: 0)`.
+    static var keyWindow: UIWindow? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .first { $0.isKeyWindow }
+    }
+
     func show(in view: UIView, delay: TimeInterval = 0.5) {
         hide() // Clear any existing spinner or pending show
 

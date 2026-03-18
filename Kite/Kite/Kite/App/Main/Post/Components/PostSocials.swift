@@ -21,6 +21,7 @@ final class PostSocials: UIView {
     
     //LOGIC
     private let postDataController = PostDataController.shared
+    private let spinnerHelper = SpinnerHelper()
     private var postID: Int?
 
     //UI COMPONENTS
@@ -52,6 +53,12 @@ final class PostSocials: UIView {
             self,
             selector: #selector(handlePostUpdated(_:)),
             name: .postUpdated,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated(_:)),
+            name: .commentUpdated,
             object: nil
         )
     }
@@ -101,7 +108,6 @@ final class PostSocials: UIView {
     }
 
     private func setupPostLikeViews() {
-        postLikesView.backgroundColor = .red
         postLikesView.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleLikeTapped))
         postLikesView.addGestureRecognizer(tap)
@@ -174,50 +180,23 @@ final class PostSocials: UIView {
             commentCountLabel.widthAnchor.constraint(lessThanOrEqualToConstant: countMaxWidth)
         ])
     }
-
-    /*
-    private func setupPostSharesViews() {
-        sharesIconBackground.backgroundColor = UIColor.tertiarySystemFill
-        sharesIconBackground.layer.cornerRadius = iconBackgroundSize / 2
-        sharesIconBackground.clipsToBounds = true
-
-        sharesIconView.image = UIImage(named: "messenger") ?? UIImage(systemName: "message")
-        sharesIconView.contentMode = .scaleAspectFit
-        sharesIconView.tintColor = .label
-
-        Style.styleSocialCountText(sharesCountLabel)
-        sharesCountLabel.text = "5"
-        sharesCountLabel.lineBreakMode = .byTruncatingTail
-
-        [postSharesView, sharesIconBackground, sharesIconView, sharesCountLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        postSharesView.addSubview(sharesIconBackground)
-        sharesIconBackground.addSubview(sharesIconView)
-        postSharesView.addSubview(sharesCountLabel)
-
-        NSLayoutConstraint.activate([
-            postSharesView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
-            sharesIconBackground.leadingAnchor.constraint(equalTo: postSharesView.leadingAnchor),
-            sharesIconBackground.centerYAnchor.constraint(equalTo: postSharesView.centerYAnchor),
-            sharesIconBackground.widthAnchor.constraint(equalToConstant: iconBackgroundSize),
-            sharesIconBackground.heightAnchor.constraint(equalToConstant: iconBackgroundSize),
-            sharesIconView.centerXAnchor.constraint(equalTo: sharesIconBackground.centerXAnchor),
-            sharesIconView.centerYAnchor.constraint(equalTo: sharesIconBackground.centerYAnchor),
-            sharesIconView.widthAnchor.constraint(equalToConstant: iconSize),
-            sharesIconView.heightAnchor.constraint(equalToConstant: iconSize),
-            sharesCountLabel.leadingAnchor.constraint(equalTo: sharesIconBackground.trailingAnchor, constant: 4),
-            sharesCountLabel.centerYAnchor.constraint(equalTo: postSharesView.centerYAnchor),
-            sharesCountLabel.trailingAnchor.constraint(equalTo: postSharesView.trailingAnchor),
-            sharesCountLabel.widthAnchor.constraint(lessThanOrEqualToConstant: countMaxWidth)
-        ])
-    }
-    */
     
     //ACTIONS
     @objc private func handleLikeTapped() {
         guard let postID,
               let post = postDataController.getPostByID(postID: postID) else { return }
         let groupID = post.groupID ?? 0
-        Task { await PostLogic.shared.toggleLike(post: post, groupID: groupID) }
+
+        postLikesView.isUserInteractionEnabled = false
+        spinnerHelper.show(in: SpinnerHelper.keyWindow ?? self, delay: 0)
+
+        Task {
+            await PostLogic.shared.toggleLike(post: post, groupID: groupID)
+            await MainActor.run {
+                spinnerHelper.hide()
+                postLikesView.isUserInteractionEnabled = true
+            }
+        }
     }
 
     @objc private func handlePostUpdated(_ notification: Notification) {
@@ -235,7 +214,7 @@ final class PostSocials: UIView {
         refreshLikes()
     }
     
-    //Updates the like area: icon (like vs liked) and count label from PostDataController.
+    //Updates the like area and comment count from PostDataController.
     private func refreshLikes() {
         guard let postID else {
             print("PostSocials: postID is nil, skipping refresh")
@@ -245,13 +224,17 @@ final class PostSocials: UIView {
             print("PostSocials: post not found in PostDataController for postID \(postID)")
             return
         }
-        let count = post.simpleLikesArray?.count ?? 0
+        let likeCount = post.simpleLikesArray?.count ?? 0
         let isLiked = post.isLikedByCurrentUser ?? false
+        let commentCount = post.commentsArray?.count ?? 0
 
         likesIconView.image = isLiked
             ? (UIImage(named: "liked") ?? UIImage(systemName: "heart.fill"))
             : (UIImage(named: "like") ?? UIImage(systemName: "heart"))
-        likesCountLabel.text = "\(count)"
+        likesCountLabel.text = "\(likeCount)"
+        commentCountLabel.text = "\(commentCount)"
+
+        print("PostSocials: comment count = \(commentCount)")
     }
 
 
@@ -281,3 +264,41 @@ final class PostSocials: UIView {
  phone
 
  */
+
+
+/*
+private func setupPostSharesViews() {
+    sharesIconBackground.backgroundColor = UIColor.tertiarySystemFill
+    sharesIconBackground.layer.cornerRadius = iconBackgroundSize / 2
+    sharesIconBackground.clipsToBounds = true
+
+    sharesIconView.image = UIImage(named: "messenger") ?? UIImage(systemName: "message")
+    sharesIconView.contentMode = .scaleAspectFit
+    sharesIconView.tintColor = .label
+
+    Style.styleSocialCountText(sharesCountLabel)
+    sharesCountLabel.text = "5"
+    sharesCountLabel.lineBreakMode = .byTruncatingTail
+
+    [postSharesView, sharesIconBackground, sharesIconView, sharesCountLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+    postSharesView.addSubview(sharesIconBackground)
+    sharesIconBackground.addSubview(sharesIconView)
+    postSharesView.addSubview(sharesCountLabel)
+
+    NSLayoutConstraint.activate([
+        postSharesView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+        sharesIconBackground.leadingAnchor.constraint(equalTo: postSharesView.leadingAnchor),
+        sharesIconBackground.centerYAnchor.constraint(equalTo: postSharesView.centerYAnchor),
+        sharesIconBackground.widthAnchor.constraint(equalToConstant: iconBackgroundSize),
+        sharesIconBackground.heightAnchor.constraint(equalToConstant: iconBackgroundSize),
+        sharesIconView.centerXAnchor.constraint(equalTo: sharesIconBackground.centerXAnchor),
+        sharesIconView.centerYAnchor.constraint(equalTo: sharesIconBackground.centerYAnchor),
+        sharesIconView.widthAnchor.constraint(equalToConstant: iconSize),
+        sharesIconView.heightAnchor.constraint(equalToConstant: iconSize),
+        sharesCountLabel.leadingAnchor.constraint(equalTo: sharesIconBackground.trailingAnchor, constant: 4),
+        sharesCountLabel.centerYAnchor.constraint(equalTo: postSharesView.centerYAnchor),
+        sharesCountLabel.trailingAnchor.constraint(equalTo: postSharesView.trailingAnchor),
+        sharesCountLabel.widthAnchor.constraint(lessThanOrEqualToConstant: countMaxWidth)
+    ])
+}
+*/
