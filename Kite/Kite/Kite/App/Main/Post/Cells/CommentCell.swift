@@ -9,6 +9,14 @@
 import UIKit
 
 
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT and UI
+//ACTIONS
+//FUNCTIONS
+
+
 final class CommentCell: UITableViewCell {
 
     //UI COMPONENTS

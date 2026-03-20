@@ -9,18 +9,29 @@
 import UIKit
 
 
-//tableView.delaysContentTouches = false
-//cell.selectionStyle = .none
+//INDIVIDUAL POST
+/*
+Post Cell (Just one)
+-> PostContent (Can be post or item)
+-> PostCaption
+-> PostSocials
+ 
+Comment Cell (many)
+->
+ 
+ */
 
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
+
     
     let postAPI = PostsAPI()
     let postDataController = PostDataController.shared
     
     let currentUser = userDefaultManager.getLoggedInUser()
     var postID: Int!
-    /// When true, current user created this list (hide purchase UI). Set by caller when pushing. Default true.
+    
+    //When true, current user created this list (hide purchase UI). Set by caller when pushing. Default true.
     var currentUserOwnsGroup: Bool = true
 
     let individualPostTableView = UITableView()
@@ -38,23 +49,27 @@ class IndividualPostViewController: UIViewController {
         super.viewDidLoad()
         setupIndividualPostTableView()
         
-        print("IndividualPostViewController loaded")
-        print("postID =", postID ?? -1)
+        //print("IndividualPostViewController loaded")
+        //print("postID =", postID ?? -1)
 
+        /*
         if let post = post {
-            //print("FOUND POST:", post.postID ?? -1)
+            print("FOUND POST:", post.postID ?? -1)
             //print(post.postCaption)
             //print(post.itemDescription)
             //print(post.itemPrice)
+            
             if let viewers = post.purchasedViewers {
                 print("purchased_viewers:", viewers.isEmpty ? "[]" : viewers)
             } else {
                 print("purchased_viewers: (nil - item block never ran for this post)")
             }
+             
             //printPostLikes(post: post)
         } else {
             print("POST NOT FOUND")
         }
+         */
         
         // Observe comment updates
         NotificationCenter.default.addObserver(
@@ -77,6 +92,7 @@ class IndividualPostViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         printPageInfo(vcName: "IndividualPostViewController")
+        print("Post ID: \(postID ?? -1)")
     }
 
     func setupIndividualPostTableView() {
