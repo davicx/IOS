@@ -17,6 +17,8 @@ Post Cell (Just one)
 -> PostSocials
  
 Comment Cell (many)
+ 
+NEED: Make Comment pinned at bottom
 ->
  
  */
@@ -149,7 +151,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         } else {
             let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
             let comment = comments[indexPath.row - 1]
-            commentCell.configure(with: comment)
+            commentCell.configureCommentCell(with: comment)
             return commentCell
         }
     }
@@ -158,14 +160,14 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         if indexPath.row == 0 {
             return 400
         }
-        return 200
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 400
         }
-        return 200
+        return 180
     }
 }
 
