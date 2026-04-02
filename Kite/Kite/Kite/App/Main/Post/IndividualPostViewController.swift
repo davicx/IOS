@@ -18,7 +18,7 @@ Post Cell (Just one)
  
 Comment Cell (many)
  
-NEED: Make Comment pinned at bottom
+Make Comment (placeholder bar; text field + send next)
 ->
  
  */
@@ -26,7 +26,7 @@ NEED: Make Comment pinned at bottom
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
 
-    
+    //LOGIC
     let postAPI = PostsAPI()
     let postDataController = PostDataController.shared
     
@@ -35,8 +35,6 @@ class IndividualPostViewController: UIViewController {
     
     //When true, current user created this list (hide purchase UI). Set by caller when pushing. Default true.
     var currentUserOwnsGroup: Bool = true
-
-    let individualPostTableView = UITableView()
     
     private var post: Post? {
         return postDataController.getPostByID(postID: postID)
@@ -46,9 +44,19 @@ class IndividualPostViewController: UIViewController {
         return post?.commentsArray ?? []
     }
 
+    //UI COMPONENTS
+    let individualPostTableView = UITableView()
+    private let makeComment = MakeComment()
+
+    //MANAGE VIEWS
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        hidesBottomBarWhenPushed = true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNewComment()
         setupIndividualPostTableView()
         
         //print("IndividualPostViewController loaded")
@@ -82,19 +90,33 @@ class IndividualPostViewController: UIViewController {
         )
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         postDataController.currentUserOwnsGroupForDisplay = currentUserOwnsGroup
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         printPageInfo(vcName: "IndividualPostViewController")
         print("Post ID: \(postID ?? -1)")
+        #if !targetEnvironment(simulator)
+        makeComment.focusCommentInput()
+        #endif
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    //LAYOUT and UI
+    private func setupNewComment() {
+        view.addSubview(makeComment)
+
+        NSLayoutConstraint.activate([
+            makeComment.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            makeComment.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            makeComment.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 
     func setupIndividualPostTableView() {
@@ -112,16 +134,10 @@ class IndividualPostViewController: UIViewController {
             individualPostTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             individualPostTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             individualPostTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            individualPostTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            individualPostTableView.bottomAnchor.constraint(equalTo: makeComment.topAnchor)
         ])
-    }
-    
-    @objc private func newGroupPostButton() {
-        let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
-            newPostVC.modalPresentationStyle = .fullScreen
-            present(newPostVC, animated: true)
-        }
+        
+        view.bringSubviewToFront(makeComment)
     }
     
     //ACTIONS
@@ -134,6 +150,15 @@ class IndividualPostViewController: UIViewController {
         // Reload table to show updated comment data
         DispatchQueue.main.async { [weak self] in
             self?.individualPostTableView.reloadData()
+        }
+    }
+    
+    //FUNCTIONS
+    @objc private func newGroupPostButton() {
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen
+            present(newPostVC, animated: true)
         }
     }
 }
