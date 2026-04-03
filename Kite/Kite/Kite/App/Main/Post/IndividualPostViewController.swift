@@ -99,6 +99,7 @@ class IndividualPostViewController: UIViewController {
         super.viewDidAppear(animated)
         printPageInfo(vcName: "IndividualPostViewController")
         print("Post ID: \(postID ?? -1)")
+        printDebugAllCommentsForPost()
         #if !targetEnvironment(simulator)
         makeComment.focusCommentInput()
         #endif
@@ -112,11 +113,31 @@ class IndividualPostViewController: UIViewController {
     private func setupNewComment() {
         view.addSubview(makeComment)
 
+        makeComment.onSendTapped = { [weak self] caption in
+            self?.submitComment(caption: caption)
+        }
+
         NSLayoutConstraint.activate([
             makeComment.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             makeComment.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             makeComment.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+
+    private func submitComment(caption: String) {
+        guard let post = post else {
+            print("POST NEW COMMENT: skipped — no post in PostDataController for postID \(postID ?? -1)")
+            return
+        }
+        Task { [weak self] in
+            guard let self else { return }
+            let ok = await PostLogic.shared.makeComment(post: post, commentCaption: caption)
+            await MainActor.run {
+                if ok {
+                    self.makeComment.clearCommentText()
+                }
+            }
+        }
     }
 
     func setupIndividualPostTableView() {
@@ -150,7 +171,38 @@ class IndividualPostViewController: UIViewController {
         // Reload table to show updated comment data
         DispatchQueue.main.async { [weak self] in
             self?.individualPostTableView.reloadData()
+            self?.printDebugAllCommentsForPost()
         }
+    }
+
+    /// TEMP: print full `Comment` payload for each row (debug comment / imageName).
+    private func printDebugAllCommentsForPost() {
+        let list = comments
+        print("---------- IndividualPostViewController: comments for post \(postID ?? -1) (\(list.count) total) ----------")
+        for (index, c) in list.enumerated() {
+            print("[comment \(index + 1) / \(list.count)]")
+            print("  commentID: \(String(describing: c.commentID))")
+            print("  postID: \(String(describing: c.postID))")
+            print("  groupID: \(String(describing: c.groupID))")
+            print("  listID: \(String(describing: c.listID))")
+            print("  commentCaption: \(String(describing: c.commentCaption))")
+            print("  commentFrom: \(String(describing: c.commentFrom))")
+            print("  commentType: \(String(describing: c.commentType))")
+            print("  userName: \(String(describing: c.userName))")
+            print("  imageName: \(String(describing: c.imageName))")
+            print("  firstName: \(String(describing: c.firstName))")
+            print("  lastName: \(String(describing: c.lastName))")
+            print("  commentDate: \(String(describing: c.commentDate))")
+            print("  commentTime: \(String(describing: c.commentTime))")
+            print("  timeMessage: \(String(describing: c.timeMessage))")
+            print("  created: \(String(describing: c.created))")
+            print("  friendshipStatus: \(String(describing: c.friendshipStatus))")
+            print("  commentLikeCount: \(String(describing: c.commentLikeCount))")
+            print("  commentLikedByCurrentUser: \(String(describing: c.commentLikedByCurrentUser))")
+            print("  commentLikes: \(String(describing: c.commentLikes))")
+            print("  ---")
+        }
+        print("---------- end comments ----------")
     }
     
     //FUNCTIONS

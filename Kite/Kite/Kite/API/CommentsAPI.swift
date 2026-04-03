@@ -27,7 +27,7 @@ class CommentsAPI {
         let notificationType = "new_post_comment"
         let notificationLink = "http://localhost:3003/posts/group/\(groupID)"
         
-        let endpoint = "http://localhost:3003/comment/create"
+        let endpoint = "http://localhost:3003/comment"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

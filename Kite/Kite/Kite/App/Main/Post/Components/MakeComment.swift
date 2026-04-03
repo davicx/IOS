@@ -30,6 +30,15 @@ final class MakeComment: UIView {
 
     private var lastTextViewWidth: CGFloat = 0
 
+    /// Called with trimmed comment text when Send succeeds basic validation.
+    var onSendTapped: ((String) -> Void)?
+
+    func clearCommentText() {
+        textView.text = ""
+        updatePlaceholderVisibility()
+        updateTextViewHeight()
+    }
+
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -161,7 +170,12 @@ final class MakeComment: UIView {
     }
 
     @objc private func sendButtonTapped() {
-        print("(Send)")
+        let trimmed = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            print("POST NEW COMMENT: skipped — empty caption")
+            return
+        }
+        onSendTapped?(trimmed)
     }
 }
 
