@@ -234,15 +234,13 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 400
-        }
+        // Row 0 must not use a fixed height smaller than ItemContent (min ~328: 8 + 280 + 40) + PostCaption + PostSocials or the cell compresses ItemContent and hides the footer (itemCaptionView).
         return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 400
+            return 700
         }
         return 180
     }

@@ -17,7 +17,8 @@ import UIKit
 final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
-    private let postContent = PostContent()
+    //Wishlist
+    private let postContent = ItemContent()
     private let postCaption = PostCaption()
     private let postSocials = PostSocials()
 

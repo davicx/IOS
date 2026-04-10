@@ -30,7 +30,7 @@ final class MakeComment: UIView {
 
     private var lastTextViewWidth: CGFloat = 0
 
-    /// Called with trimmed comment text when Send succeeds basic validation.
+    //Called with trimmed comment text when Send succeeds basic validation.
     var onSendTapped: ((String) -> Void)?
 
     func clearCommentText() {
