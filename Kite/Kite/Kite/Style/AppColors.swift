@@ -1,26 +1,40 @@
 //
-//  Colors.swift
+//  AppColors.swift
 //  Kite
 //
-//  Created by David Vasquez on 10/25/25.
+//  Created by David Vasquez on 2/26/26.
 //
 
 import UIKit
 
-
 extension UIColor {
+    
+    //APP
+    
+    //POSTS
+    //App Text A1: Main Text for all posts 
+    static let textBlack = UIColor(hex: "#262626")
+    
+    
+    
+    //GROUPS
+    
+    //ITEMS
     static let itemBackgroundColor = UIColor(hex: "#F7F8F9")
-    //static let accentColor = UIColor(hex: "#FF6B00")
-    //static let textPrimaryColor = UIColor(hex: "#333333")
+
+
+
 }
 
 /*
  itemInfoView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.15)
  itemImageHolderView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.3)
  itemNamePriceDescriptionHolderView.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
- 
+ //static let accentColor = UIColor(hex: "#FF6B00")
+ //static let textPrimaryColor = UIColor(hex: "#333333")
  */
-//STYLE
+
+
 extension UIColor {
     convenience init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -36,4 +50,3 @@ extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
 }
-

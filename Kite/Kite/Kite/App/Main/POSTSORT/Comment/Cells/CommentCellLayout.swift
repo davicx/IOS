@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 final class CommentCellLayout: UIView {
 
     //LOGIC
@@ -43,8 +42,7 @@ final class CommentCellLayout: UIView {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        //CHAT: If you ever use storyboard/xib, you’d call the setup methods here too.
-        //CHAT: /**/
+     
     }
 
     //LAYOUT

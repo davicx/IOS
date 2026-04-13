@@ -45,17 +45,3 @@ class UserNameView: UIView {
         nameLabel.text = name
     }
 }
-
-/*
-class UserNameView: UIView {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .blue
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-}
-*/

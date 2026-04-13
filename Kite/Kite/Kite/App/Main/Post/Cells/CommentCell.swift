@@ -9,33 +9,163 @@
 import UIKit
 
 
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT and UI
+//ACTIONS
+//FUNCTIONS
+
+
 final class CommentCell: UITableViewCell {
 
     //UI COMPONENTS
-    //Comment
+    //Main Holders
+    private let commentHeader = UIView()
+    private let commentBody = UIView()
+    private let commentFooter = UIView()
+    private let userImageArea = UIView()
 
-    private let postComment = PostComment()
+    //Child Holders
+    private let commentBodyLabel = UILabel()
+    private let rightColumnStack = UIStackView()
+    
+    //UI Elements
+    private let userImageView = UIImageView()
 
+    
+    //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        postComment.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(postComment)
-        NSLayoutConstraint.activate([
-            postComment.topAnchor.constraint(equalTo: contentView.topAnchor),
-            postComment.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postComment.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postComment.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        
+        selectionStyle = .none
+        separatorInset = .zero
+        layoutMargins = .zero
+        preservesSuperviewLayoutMargins = false
+
+        setupCommentViews()
+    }
+    /*
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+        setupCommentViews()
     }
 
+    */
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with comment: Comment) {
-        // Placeholder for when you add comment content back
+    //LAYOUT and UI
+    private func setupCommentViews() {
+        setupCommentUserImageArea()
+        setupCommentHeader()
+        setupCommentBody()
+        setupCommentFooter()
+
+        rightColumnStack.axis = .vertical
+        rightColumnStack.alignment = .fill
+        rightColumnStack.distribution = .fill
+        rightColumnStack.spacing = 0
+        rightColumnStack.translatesAutoresizingMaskIntoConstraints = false
+        rightColumnStack.addArrangedSubview(commentHeader)
+        rightColumnStack.addArrangedSubview(commentBody)
+        rightColumnStack.addArrangedSubview(commentFooter)
+
+        contentView.addSubview(rightColumnStack)
+        NSLayoutConstraint.activate([
+            rightColumnStack.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
+            rightColumnStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            rightColumnStack.topAnchor.constraint(equalTo: contentView.topAnchor),
+            rightColumnStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+    
+    private func setupCommentUserImageArea() {
+        // 1) userImageArea — 120 wide, full height, white
+        userImageArea.translatesAutoresizingMaskIntoConstraints = false
+        userImageArea.backgroundColor = .white
+        contentView.addSubview(userImageArea)
+        NSLayoutConstraint.activate([
+            userImageArea.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            userImageArea.topAnchor.constraint(equalTo: contentView.topAnchor),
+            userImageArea.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            userImageArea.widthAnchor.constraint(equalToConstant: 80)
+        ])
+        
+        // Image setup
+        userImageView.translatesAutoresizingMaskIntoConstraints = false
+        userImageView.image = UIImage(named: "user")
+        userImageView.contentMode = .scaleAspectFill
+        userImageView.clipsToBounds = true
+        userImageView.layer.cornerRadius = 30 // makes it circular (60/2)
+
+        userImageArea.addSubview(userImageView)
+
+        NSLayoutConstraint.activate([
+            userImageView.topAnchor.constraint(equalTo: userImageArea.topAnchor, constant: 20),
+            userImageView.leadingAnchor.constraint(equalTo: userImageArea.leadingAnchor, constant: 10),
+            userImageView.trailingAnchor.constraint(equalTo: userImageArea.trailingAnchor, constant: -10),
+            userImageView.widthAnchor.constraint(equalToConstant: 60),
+            userImageView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+
+    private func setupCommentHeader() {
+        // 2) commentHeader — 60 tall, salmon
+        commentHeader.translatesAutoresizingMaskIntoConstraints = false
+        commentHeader.backgroundColor = UIColor(red: 1.0, green: 0.82, blue: 0.80, alpha: 1.0)
+        commentHeader.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+
+    private func setupCommentBody() {
+        // 3) commentBody — min 60, expanding text, lavender
+        commentBody.translatesAutoresizingMaskIntoConstraints = false
+        commentBody.backgroundColor = UIColor(red: 0.86, green: 0.82, blue: 0.96, alpha: 1.0)
+
+        commentBodyLabel.font = UIFont.systemFont(ofSize: 15)
+        commentBodyLabel.textColor = .label
+        commentBodyLabel.numberOfLines = 0
+        commentBodyLabel.text = "Comment body — expanding text"
+        commentBodyLabel.translatesAutoresizingMaskIntoConstraints = false
+        commentBody.addSubview(commentBodyLabel)
+
+        NSLayoutConstraint.activate([
+            commentBodyLabel.topAnchor.constraint(equalTo: commentBody.topAnchor, constant: 8),
+            commentBodyLabel.leadingAnchor.constraint(equalTo: commentBody.leadingAnchor, constant: 8),
+            commentBodyLabel.trailingAnchor.constraint(equalTo: commentBody.trailingAnchor, constant: -8),
+            commentBodyLabel.bottomAnchor.constraint(equalTo: commentBody.bottomAnchor, constant: -8),
+            commentBody.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
+        ])
+    }
+
+    private func setupCommentFooter() {
+        // 4) commentFooter — 40 tall, light gray
+        commentFooter.translatesAutoresizingMaskIntoConstraints = false
+        commentFooter.backgroundColor = UIColor.systemGray5
+        commentFooter.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+
+
+
+    //ACTIONS
+
+    //FUNCTIONS
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        commentBodyLabel.text = "Comment body — expanding text"
+    }
+
+    func configureCommentCell(with comment: Comment) {
+        if let caption = comment.commentCaption, !caption.isEmpty {
+            commentBodyLabel.text = caption
+        }
     }
 }
+
+
+
 
 /*
 //LOGIC

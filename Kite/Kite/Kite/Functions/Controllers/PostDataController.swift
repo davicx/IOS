@@ -27,6 +27,7 @@ FUNCTIONS C: All Functions Related to Post Actions
 FUNCTIONS D: All Functions Related to Comments
     1) Function D1: Like a Comment
     2) Function D2: Unlike a Comment
+    3) Function D3: Append new comment (after POST /comment)
  
 FUNCTIONS E: All Functions Related to Items
     1) Function E1: Mark item purchased
@@ -317,6 +318,30 @@ class PostDataController {
         }
     }
 
+
+    //Function D3: Append new comment after POST /comment succeeds
+    func addCommentFromAPI(postID: Int, commentModel: CommentModel) {
+        let comment = convertToCommentClass(from: commentModel)
+        for (groupID, posts) in groupPosts {
+            if let postIndex = posts.firstIndex(where: { $0.postID == postID }) {
+                var updatedPosts = posts
+                var post = updatedPosts[postIndex]
+                if post.commentsArray == nil {
+                    post.commentsArray = []
+                }
+                post.commentsArray?.append(comment)
+                updatedPosts[postIndex] = post
+                groupPosts[groupID] = updatedPosts
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .commentUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
 
     //Function D2: Unlike a Comment
     func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {

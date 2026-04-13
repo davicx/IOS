@@ -5,10 +5,244 @@
 //  Created by David Vasquez on 12/11/24.
 //
 
-
 import UIKit
 
 
+final class ViewController: UIViewController {
+
+    // MARK: - UI COMPONENTS
+
+    private let containerView = UIView()
+
+    private let imageView = UIImageView()
+    private let holderView = UIView()
+
+    // MARK: - LIFECYCLE
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+        layoutViews()
+        showHolder()
+
+        simulateLoading()
+    }
+
+    // MARK: - SETUP
+
+    private func setupViews() {
+        view.backgroundColor = .systemBackground
+
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 12
+
+        holderView.translatesAutoresizingMaskIntoConstraints = false
+        holderView.backgroundColor = UIColor(
+            red: 0.92,   // Instagram-like gray
+            green: 0.92,
+            blue: 0.92,
+            alpha: 1.0
+        )
+        holderView.layer.cornerRadius = 12
+        holderView.clipsToBounds = true
+
+        view.addSubview(containerView)
+        containerView.addSubview(imageView)
+        containerView.addSubview(holderView)
+    }
+
+    // MARK: - LAYOUT
+
+    private func layoutViews() {
+        NSLayoutConstraint.activate([
+            // 20pt margins
+            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+
+            // Fill container
+            imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+
+            // Gray overlay
+            holderView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            holderView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            holderView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            holderView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+        ])
+    }
+
+    // MARK: - STATE
+
+    private func showHolder() {
+        holderView.isHidden = false
+        imageView.isHidden = true
+    }
+
+    private func showImage() {
+        holderView.isHidden = true
+        imageView.isHidden = false
+    }
+
+    // MARK: - SIMULATION (3 second delay)
+
+    private func simulateLoading() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.loadImage()
+        }
+    }
+
+    private func loadImage() {
+        imageView.image = UIImage(named: "background_1")
+        showImage()
+    }
+}
+
+
+/*
+import UIKit
+import ObjectiveC
+
+
+private var placeholderKey: UInt8 = 0
+
+// MARK: - ViewController (Storyboard)
+
+final class ViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .systemBackground
+
+        // Show skeleton immediately
+        view.showLoadingPlaceholder()
+
+        // Simulate loading (3 seconds)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.view.hideLoadingPlaceholder()
+        }
+    }
+}
+
+// MARK: - Loading Placeholder View (Shimmer)
+
+final class LoadingPlaceholderView: UIView {
+
+    private let gradientLayer = CAGradientLayer()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+
+    private func setup() {
+        isUserInteractionEnabled = false
+
+        // Instagram-style gray
+        backgroundColor = UIColor(
+            red: 0.92,
+            green: 0.92,
+            blue: 0.92,
+            alpha: 1.0
+        )
+
+        gradientLayer.colors = [
+            UIColor(white: 0.85, alpha: 1.0).cgColor,
+            UIColor(white: 0.95, alpha: 1.0).cgColor,
+            UIColor(white: 0.85, alpha: 1.0).cgColor
+        ]
+
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        gradientLayer.locations = [0.0, 0.5, 1.0]
+
+        layer.addSublayer(gradientLayer)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.frame = bounds
+    }
+
+    func startShimmer() {
+        let animation = CABasicAnimation(keyPath: "locations")
+        animation.fromValue = [-1.0, -0.5, 0.0]
+        animation.toValue = [1.0, 1.5, 2.0]
+        animation.duration = 1.2
+        animation.repeatCount = .infinity
+
+        gradientLayer.add(animation, forKey: "shimmer")
+    }
+
+    func stopShimmer() {
+        gradientLayer.removeAnimation(forKey: "shimmer")
+    }
+}
+
+// MARK: - UIView Extension
+
+extension UIView {
+
+    private var loadingPlaceholder: LoadingPlaceholderView? {
+        get {
+            return objc_getAssociatedObject(self, &placeholderKey) as? LoadingPlaceholderView
+        }
+        set {
+            objc_setAssociatedObject(self, &placeholderKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+    func showLoadingPlaceholder(cornerRadius: CGFloat = 12) {
+        if loadingPlaceholder != nil { return }
+
+        let placeholder = LoadingPlaceholderView()
+        placeholder.translatesAutoresizingMaskIntoConstraints = false
+        placeholder.layer.cornerRadius = cornerRadius
+        placeholder.clipsToBounds = true
+
+        addSubview(placeholder)
+
+        NSLayoutConstraint.activate([
+            placeholder.topAnchor.constraint(equalTo: topAnchor),
+            placeholder.leadingAnchor.constraint(equalTo: leadingAnchor),
+            placeholder.trailingAnchor.constraint(equalTo: trailingAnchor),
+            placeholder.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+
+        bringSubviewToFront(placeholder)
+
+        placeholder.startShimmer()
+
+        loadingPlaceholder = placeholder
+    }
+
+    func hideLoadingPlaceholder() {
+        loadingPlaceholder?.stopShimmer()
+        loadingPlaceholder?.removeFromSuperview()
+        loadingPlaceholder = nil
+    }
+}
+
+*/
+
+/*
+
+
+*/
+/*
 struct StoreItem {
     let name: String
     let price: String
@@ -180,6 +414,8 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
 }
+
+*/
 
 
 /*

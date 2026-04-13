@@ -20,9 +20,11 @@ FUNCTIONS B: All Functions Related to Creating Posts
 FUNCTIONS C: All Functions Related to Items (purchase)
     1) Function C1: Purchase Item
     2) Function C2: Remove Item
+
+FUNCTIONS D: Comments
+    1) Function D1: Create comment (POST /comment)
  
 */
-
 
 final class PostLogic {
     static let shared = PostLogic()
@@ -103,6 +105,43 @@ final class PostLogic {
         }
     }
     
+    //FUNCTIONS D: Comments
+    //Function D1: Create comment — API uses JSON numbers for groupID, postTo, postID, listID.
+    /// `postTo` in the request body is the recipient user id (Int). Your POST /comment sample uses the same value as `postID`; `Post.postTo` is a String in the client and can be wrong (e.g. "72"), so we send `post.postID` for `postTo` to match that contract.
+    func makeComment(post: Post, commentCaption: String) async -> Bool {
+        let trimmed = commentCaption.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return false }
+        guard let groupID = post.groupID else {
+            print("PostLogic: makeComment skipped — missing groupID")
+            return false
+        }
+        let listID = post.listID ?? 0
+        let postToInt = post.postID
+
+        do {
+            let response = try await CommentsAPI.shared.makeComment(
+                commentCaption: trimmed,
+                commentFrom: postDataController.currentUser,
+                commentType: "post",
+                groupID: groupID,
+                postTo: postToInt,
+                postID: post.postID,
+                listID: listID
+            )
+            guard response.success else {
+                print("PostLogic: makeComment failed: \(response.message)")
+                return false
+            }
+            await MainActor.run {
+                postDataController.addCommentFromAPI(postID: post.postID, commentModel: response.data)
+            }
+            return true
+        } catch {
+            print("PostLogic: makeComment error: \(error)")
+            return false
+        }
+    }
+
     //KITE
     //Add Kite Later
     /*

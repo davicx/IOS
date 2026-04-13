@@ -17,7 +17,8 @@ import UIKit
 final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
-    private let postContent = PostContent()
+    //Wishlist
+    private let postContent = ItemContent()
     private let postCaption = PostCaption()
     private let postSocials = PostSocials()
 
@@ -45,10 +46,19 @@ final class PostCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //LAYOUT
-    
 
+    /// Configure socials with post so like count (and later like action) use live data.
+    func configure(postID: Int) {
+        postSocials.configure(postID: postID)
+    }
+
+    func updatePost(with post: Post) {
+        postSocials.configure(postID: post.postID)
+    }
+
+    func updateItem(with post: Post) {
+        postSocials.configure(postID: post.postID)
+    }
 }
 
 /*
