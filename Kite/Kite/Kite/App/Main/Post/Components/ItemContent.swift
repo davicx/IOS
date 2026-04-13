@@ -18,21 +18,31 @@ import UIKit
 
 final class ItemContent: UIView {
 
-    //UI COMPONENTS — regions
+    //UI COMPONENTS
+    //UI COMPONENTS: Main Containers
     private let itemHeader = UIView()
     private let itemBody = UIView()
     private let itemFooter = UIView()
 
-    //UI COMPONENTS — body
+    //UI COMPONENTS: Header
+    
+    //UI COMPONENTS: Body
     private let itemImageView = UIView()
     private let itemImageContentView = UIImageView()
     private let itemInfoView = UIView()
     private let itemPurchasedView = UIView()
+    
+    //Body: Item Info Labels
+    private let infoStackView = UIStackView()
+    private let itemNameLabel = UILabel()
+    private let itemPriceLabel = UILabel()
+    private let itemDescriptionTextView = UITextView()
+    private let itemLinkLabel = UILabel()
 
-    //UI COMPONENTS — footer
+    //UI COMPONENTS: Footer
     private let itemCaptionView = UIView()
     
-    //Sizing
+    //UI COMPONENTS: Size
     private let imageWellCornerRadius: CGFloat = 6
 
     //Inset image rect uses a slightly smaller radius so the clip stays concentric with the outer well.
@@ -103,7 +113,7 @@ final class ItemContent: UIView {
     private func setupBody() {
         itemBody.translatesAutoresizingMaskIntoConstraints = false
         itemBody.clipsToBounds = true
-        itemBody.backgroundColor = .orange // temp
+        itemBody.backgroundColor = .clear
         addSubview(itemBody)
 
         NSLayoutConstraint.activate([
@@ -164,7 +174,7 @@ final class ItemContent: UIView {
     private func setupItemInfoView() {
         itemInfoView.translatesAutoresizingMaskIntoConstraints = false
         itemInfoView.clipsToBounds = true
-        itemInfoView.backgroundColor = .green // temp
+        itemInfoView.backgroundColor = .clear
         itemBody.addSubview(itemInfoView)
 
         NSLayoutConstraint.activate([
@@ -173,6 +183,81 @@ final class ItemContent: UIView {
             itemInfoView.topAnchor.constraint(equalTo: itemBody.topAnchor),
             itemInfoView.heightAnchor.constraint(equalToConstant: topRowHeight)
         ])
+
+        setupInfoStack()
+    }
+    
+    private func setupInfoStack() {
+        infoStackView.axis = .vertical
+        infoStackView.spacing = 6
+        infoStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        itemInfoView.addSubview(infoStackView)
+
+        NSLayoutConstraint.activate([
+            infoStackView.leadingAnchor.constraint(equalTo: itemInfoView.leadingAnchor, constant: 8),
+            infoStackView.trailingAnchor.constraint(equalTo: itemInfoView.trailingAnchor, constant: -8),
+            infoStackView.topAnchor.constraint(equalTo: itemInfoView.topAnchor, constant: 8),
+            infoStackView.bottomAnchor.constraint(lessThanOrEqualTo: itemInfoView.bottomAnchor, constant: -8)
+        ])
+
+        setupInfoFields()
+    }
+    
+    private func setupInfoFields() {
+
+        // Item Name
+        itemNameLabel.text = "Item Name"
+        itemNameLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        itemNameLabel.numberOfLines = 0
+        itemNameLabel.isUserInteractionEnabled = true
+        itemNameLabel.backgroundColor = .secondarySystemGroupedBackground
+        itemNameLabel.layer.cornerRadius = 4
+        itemNameLabel.clipsToBounds = true
+        itemNameLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 36).isActive = true
+
+        // Item Price (UILabel is never editable — wrong placeholder + touch passthrough made it feel like the text view)
+        itemPriceLabel.text = "$0.00"
+        itemPriceLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+        itemPriceLabel.numberOfLines = 0
+        itemPriceLabel.isUserInteractionEnabled = true
+        itemPriceLabel.backgroundColor = .tertiarySystemGroupedBackground
+        itemPriceLabel.layer.cornerRadius = 4
+        itemPriceLabel.clipsToBounds = true
+        itemPriceLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 36).isActive = true
+
+  
+        // Description
+        itemDescriptionTextView.text = "Item description goes here."
+        itemDescriptionTextView.font = .systemFont(ofSize: 15)
+        itemDescriptionTextView.isEditable = false
+        itemDescriptionTextView.isSelectable = true
+        itemDescriptionTextView.isScrollEnabled = false
+        itemDescriptionTextView.backgroundColor = .secondarySystemGroupedBackground
+        itemDescriptionTextView.layer.cornerRadius = 4
+        itemDescriptionTextView.layer.borderWidth = 1
+        itemDescriptionTextView.layer.borderColor = UIColor.systemOrange.cgColor
+        itemDescriptionTextView.clipsToBounds = true
+        itemDescriptionTextView.textContainerInset = UIEdgeInsets(top: 6, left: 4, bottom: 6, right: 4)
+        itemDescriptionTextView.textContainer.lineFragmentPadding = 0
+        itemDescriptionTextView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        itemDescriptionTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 72).isActive = true
+        itemDescriptionTextView.heightAnchor.constraint(lessThanOrEqualToConstant: 120).isActive = true
+        
+        // Link
+        itemLinkLabel.text = "https://target.com"
+        itemLinkLabel.numberOfLines = 0
+        itemLinkLabel.textColor = .systemBlue
+        itemLinkLabel.isUserInteractionEnabled = true
+        itemLinkLabel.backgroundColor = .tertiarySystemGroupedBackground
+        itemLinkLabel.layer.cornerRadius = 4
+        itemLinkLabel.clipsToBounds = true
+        itemLinkLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 36).isActive = true
+
+        infoStackView.addArrangedSubview(itemNameLabel)
+        infoStackView.addArrangedSubview(itemPriceLabel)
+        infoStackView.addArrangedSubview(itemDescriptionTextView)
+        infoStackView.addArrangedSubview(itemLinkLabel)
     }
     
     //Body: Setup the purchased bar full width on bottom with purchased button and status
@@ -223,5 +308,55 @@ final class ItemContent: UIView {
             itemCaptionView.trailingAnchor.constraint(equalTo: itemFooter.trailingAnchor),
             itemCaptionView.bottomAnchor.constraint(equalTo: itemFooter.bottomAnchor)
         ])
+    }
+}
+
+
+//TEMP
+final class PlaceholderTextView: UITextView {
+
+    var placeholder: String = "" {
+        didSet { updatePlaceholder() }
+    }
+
+    private let placeholderLabel = UILabel()
+
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        setupPlaceholder()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupPlaceholder() {
+        placeholderLabel.textColor = .secondaryLabel
+        placeholderLabel.numberOfLines = 0
+        placeholderLabel.font = font
+        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(placeholderLabel)
+
+        NSLayoutConstraint.activate([
+            placeholderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            placeholderLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            placeholderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5)
+        ])
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(textDidChange),
+            name: UITextView.textDidChangeNotification,
+            object: self
+        )
+    }
+
+    private func updatePlaceholder() {
+        placeholderLabel.text = placeholder
+    }
+
+    @objc private func textDidChange() {
+        placeholderLabel.isHidden = !text.isEmpty
     }
 }
