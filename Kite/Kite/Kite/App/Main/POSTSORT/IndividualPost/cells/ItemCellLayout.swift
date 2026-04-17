@@ -160,16 +160,16 @@ final class ItemCellLayout: UIView {
         ItemBodyView.addSubview(ItemBodyRightView)
         ItemBodyRightView.translatesAutoresizingMaskIntoConstraints = false
 
-        Style.styleItemNameLabel(itemNameLabel)
+        StyleOld.styleItemNameLabel(itemNameLabel)
         itemNameLabel.text = "Item Name"
 
-        Style.styleItemPriceLabel(itemPriceLabel)
+        StyleOld.styleItemPriceLabel(itemPriceLabel)
         itemPriceLabel.text = "$0.00"
 
-        Style.styleItemDescriptionLabel(itemDescriptionLabel)
+        StyleOld.styleItemDescriptionLabel(itemDescriptionLabel)
         itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."
 
-        Style.styleItemLinkLabel(itemLinkLabel)
+        StyleOld.styleItemLinkLabel(itemLinkLabel)
         itemLinkLabel.text = "www.example.com"
 
         ItemBodyRightView.addSubview(itemNameLabel)

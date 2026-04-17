@@ -110,8 +110,8 @@ final class CommentCellLayout: UIView {
 
         // Setup username label
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
-        usernameLabel.font = Style.usernameFont
-        usernameLabel.textColor = Style.usernameFontColor
+        usernameLabel.font = StyleOld.usernameFont
+        usernameLabel.textColor = StyleOld.usernameFontColor
         usernameLabel.textAlignment = .left
         usernameLabel.text = "Username"
         usernameLabel.numberOfLines = 1
@@ -122,8 +122,8 @@ final class CommentCellLayout: UIView {
 
         // Setup time label
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeLabel.font = Style.timeFont
-        timeLabel.textColor = Style.timeFontColor
+        timeLabel.font = StyleOld.timeFont
+        timeLabel.textColor = StyleOld.timeFontColor
         timeLabel.textAlignment = .left
         timeLabel.text = "2h"
         timeLabel.numberOfLines = 1
@@ -192,8 +192,8 @@ final class CommentCellLayout: UIView {
 
         // Setup comment label
         commentLabel.translatesAutoresizingMaskIntoConstraints = false
-        commentLabel.font = Style.mainTextFont
-        commentLabel.textColor = Style.mainTextFontColor
+        commentLabel.font = StyleOld.mainTextFont
+        commentLabel.textColor = StyleOld.mainTextFontColor
         commentLabel.numberOfLines = 0
         commentLabel.text = "This is a sample comment text that will be replaced with actual comment data."
 

@@ -171,7 +171,7 @@ class ProfileViewController: UIViewController {
         userNameView.backgroundColor = .clear
         userNameView.translatesAutoresizingMaskIntoConstraints = false
         
-        userNameLabel.font = Style.blackFont
+        userNameLabel.font = StyleOld.blackFont
         userNameLabel.textAlignment = .center
         userNameLabel.textColor = .black
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -195,9 +195,9 @@ class ProfileViewController: UIViewController {
         fullNameView.backgroundColor = .clear
         fullNameView.translatesAutoresizingMaskIntoConstraints = false
         
-        fullNameLabel.font = Style.grayFont
+        fullNameLabel.font = StyleOld.grayFont
         fullNameLabel.textAlignment = .center
-        fullNameLabel.textColor = Style.textDarkGray
+        fullNameLabel.textColor = StyleOld.textDarkGray
         fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
         fullNameView.addSubview(fullNameLabel)
         
@@ -296,7 +296,7 @@ class ProfileViewController: UIViewController {
     private func setupUserInfoLabels() {
         // Configure count labels (top, bold, dark)
         [userPostCountLabel, userGroupCountLabel, userFriendsCountLabel].forEach { label in
-            label.font = Style.mainDarkFont
+            label.font = StyleOld.mainDarkFont
             label.textColor = .black
             label.textAlignment = .center
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -304,7 +304,7 @@ class ProfileViewController: UIViewController {
         
         // Configure text labels (bottom, regular, gray)
         [userPostsLabel, userGroupLabel, userFriendsLabel].forEach { label in
-            label.font = Style.mainGrayFont
+            label.font = StyleOld.mainGrayFont
             label.textColor = .gray
             label.textAlignment = .center
             label.translatesAutoresizingMaskIntoConstraints = false

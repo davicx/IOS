@@ -86,10 +86,10 @@ class RegistrationStyleManager {
         passwordTextField.placeholder = "Password"
         passwordTextField.isSecureTextEntry = true
 
-        Style.styleLoginTextField(userNameTextField)
-        Style.styleLoginTextField(fullNameTextField)
-        Style.styleLoginTextField(emailTextField)
-        Style.styleLoginTextField(passwordTextField)
+        StyleOld.styleLoginTextField(userNameTextField)
+        StyleOld.styleLoginTextField(fullNameTextField)
+        StyleOld.styleLoginTextField(emailTextField)
+        StyleOld.styleLoginTextField(passwordTextField)
 
         [userNameTextField, fullNameTextField, emailTextField, passwordTextField].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false

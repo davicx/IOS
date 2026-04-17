@@ -2,8 +2,9 @@
 //  Style.swift
 //  Kite
 //
-//  Created by David Vasquez on 1/2/25.
+//  Created by David Vasquez on 4/14/26.
 //
+
 
 
 /*
@@ -16,7 +17,7 @@
  │   └── AppFonts.swift
  │       └── PostHeaderFont
  │       └── PostBodyFont
- │       └── PostUserNameFont (maybe same PostTimeFont) 
+ │       └── PostUserNameFont (maybe same PostTimeFont)
  │       └── PostTimeFont
  │
  ├── Style
@@ -66,7 +67,7 @@ BUTTONS
 COLORS
 
  
-*/
+/*
 
 class StyleOld {
     
@@ -229,6 +230,6 @@ class StyleOld {
     
 
 }
-
+*/
 
 

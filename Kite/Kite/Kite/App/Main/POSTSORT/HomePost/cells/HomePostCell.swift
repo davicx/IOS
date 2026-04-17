@@ -53,13 +53,13 @@ class HomePostCell: UITableViewCell {
         headerGroupMenuIcon.translatesAutoresizingMaskIntoConstraints = false
         
         // Setup group image
-        Style.styleGroupImage(headerGroupImage)
+        StyleOld.styleGroupImage(headerGroupImage)
         
         // Use Style class for group name label styling
-        Style.styleUserNameLabel(headerGroupNameLabel)
+        StyleOld.styleUserNameLabel(headerGroupNameLabel)
         
         // Use Style class for group info label styling
-        Style.styleGroupInfoLabel(headerGroupInfoLabel)
+        StyleOld.styleGroupInfoLabel(headerGroupInfoLabel)
         
         // Setup menu icon
         headerGroupMenuIcon.image = UIImage(named: "menu-horizontal")
@@ -173,7 +173,7 @@ class HomePostCell: UITableViewCell {
         //Username
         postCaptionUserNameView.translatesAutoresizingMaskIntoConstraints = false
         postCaptionUsernameLabel.translatesAutoresizingMaskIntoConstraints = false
-        Style.styleUserNameText(postCaptionUsernameLabel)
+        StyleOld.styleUserNameText(postCaptionUsernameLabel)
         
         //Post Caption
         postCaptionTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -268,7 +268,7 @@ class HomePostCell: UITableViewCell {
         
         postSocialLikesCount.translatesAutoresizingMaskIntoConstraints = false
         postSocialLikesCount.text = formatCount(0)
-        Style.styleSocialCountText(postSocialLikesCount)
+        StyleOld.styleSocialCountText(postSocialLikesCount)
         
         //COMMENTS: Setup comments icon and count
         postSocialCommentsIcon.translatesAutoresizingMaskIntoConstraints = false
@@ -277,7 +277,7 @@ class HomePostCell: UITableViewCell {
         
         postSocialCommentsCount.translatesAutoresizingMaskIntoConstraints = false
         postSocialCommentsCount.text = formatCount(0)
-        Style.styleSocialCountText(postSocialCommentsCount)
+        StyleOld.styleSocialCountText(postSocialCommentsCount)
         
         //BOOKMARK: Setup bookmark icon
         let postSocialBookMarkIcon = UIImageView()
