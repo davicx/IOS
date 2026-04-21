@@ -39,6 +39,7 @@ class Fonts {
     //MAIN FONTS
     static let PostHeaderFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
     static let PostBodyFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
+    static let userNameFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
 
 }
 
