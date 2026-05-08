@@ -121,7 +121,7 @@ final class ItemCellLayout: UIView {
 
         // Add purchase button to ItemBodyLeftPurchasedView - 80x36, centered vert and horiz
         purchaseButton.setTitle("Purchase", for: .normal)
-        Buttons.styleNotSelectedButton(purchaseButton, width: 80, height: 36)
+        ButtonsOld.styleNotSelectedButton(purchaseButton, width: 80, height: 36)
         purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
         ItemBodyLeftPurchasedView.addSubview(purchaseButton)
 

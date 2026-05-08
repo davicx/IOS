@@ -8,7 +8,7 @@
 import UIKit
 
 
-class Buttons {
+class ButtonsOld {
 
     //LOGIN BUTTON
     static func styleLoginFilledButton(_ button:UIButton) {

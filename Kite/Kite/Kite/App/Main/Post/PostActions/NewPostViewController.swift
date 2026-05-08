@@ -24,7 +24,7 @@ class NewPostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Buttons.styleTikTokButton(newPostButtonStyle)
+        ButtonsOld.styleTikTokButton(newPostButtonStyle)
         newPostButtonStyle.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
 
         //newPostImageView.isUserInteractionEnabled = true
