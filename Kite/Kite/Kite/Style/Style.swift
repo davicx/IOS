@@ -7,6 +7,29 @@
 
 
 
+
+import UIKit
+
+
+
+//Instagram Background Gray F3F5F7
+
+//FILES
+/*
+ DesignSystem
+ ├── Style (All the main style components)
+ │   ├── Elements (Style text field, etc)
+ │   ├── Text (combo of text and color
+ │   ├── Colors
+ │   ├── Fonts
+ ├── Buttons
+ │   └── AppStyle.swift
+
+ */
+
+
+
+
 /*
  DesignSystem
  ├── Colors
@@ -29,36 +52,12 @@
      └── StyledLabel.swift
 
  */
-import UIKit
 
 
 
 
 
 
-
-
-
-
-//FILES
-/*
- DesignSystem
- ├── Colors
- │   ├── AppColors.swift
- │   └── SemanticColors.swift
- │
- ├── Fonts
- │   └── AppFonts.swift
- │
- ├── Style
- │   └── AppStyle.swift
- │
- └── Components
-     ├── PrimaryButton.swift
-     ├── SecondaryButton.swift
-     └── StyledLabel.swift
-
- */
 
 /*
 STYLE
