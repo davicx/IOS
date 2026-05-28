@@ -8,6 +8,113 @@
 import UIKit
 
 
+class ViewController: UIViewController {
+
+    let titleLabel = UILabel()
+    let profileContainerView = UIView()
+    let dividerView = UIView()
+    let actionButton = UIButton(type: .system)
+    let usernameTextField = UITextField()
+    let colorView = UIView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        print("HelloStyleWorldViewController")
+
+        setupViews()
+        setupConstraints()
+    }
+
+    func setupViews() {
+
+        view.backgroundColor = .white
+
+        //Text
+        titleLabel.text = "Hello Style World"
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        //Using Style
+        Text.postBodyText(label: titleLabel)
+        view.addSubview(titleLabel)
+
+        //Element
+        profileContainerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileContainerView)
+
+        //Divider
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        Elements.postDivider(view: dividerView)
+        view.addSubview(dividerView)
+
+        //Button
+        actionButton.setTitle("Accept", for: .normal)
+
+        //style
+        Buttons.acceptFriendButton(button: actionButton)
+        
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(actionButton)
+
+        //Input Field
+        usernameTextField.placeholder = "Username"
+        usernameTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(usernameTextField)
+
+        //Color View
+        colorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(colorView)
+    }
+
+    func setupConstraints() {
+
+        NSLayoutConstraint.activate([
+
+            //Text
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            //Element
+            profileContainerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            profileContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            profileContainerView.widthAnchor.constraint(equalToConstant: 140),
+            profileContainerView.heightAnchor.constraint(equalToConstant: 200),
+
+            //Divider
+            dividerView.topAnchor.constraint(equalTo: profileContainerView.bottomAnchor, constant: 30),
+            dividerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            dividerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+
+            //Button
+            actionButton.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: 30),
+            actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            actionButton.widthAnchor.constraint(equalToConstant: 220),
+            actionButton.heightAnchor.constraint(equalToConstant: 44),
+
+            //Input Field
+            usernameTextField.topAnchor.constraint(equalTo: actionButton.bottomAnchor, constant: 30),
+            usernameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            usernameTextField.widthAnchor.constraint(equalToConstant: 260),
+            usernameTextField.heightAnchor.constraint(equalToConstant: 44),
+
+            //Color View
+            colorView.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 30),
+            colorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            colorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            colorView.heightAnchor.constraint(equalToConstant: 40)
+
+        ])
+    }
+
+}
+
+
+
+
+
+
+/*
 final class ViewController: UIViewController {
 
     // MARK: - UI COMPONENTS
@@ -104,7 +211,7 @@ final class ViewController: UIViewController {
         showImage()
     }
 }
-
+*/
 
 /*
 import UIKit
