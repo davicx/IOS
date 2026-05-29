@@ -161,6 +161,9 @@
 		D798D97F2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798D97E2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift */; };
 		D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79BE4D92E189112004D13B4 /* NewGroupFriendTableViewCell.swift */; };
 		D79C02A32F41324100F81DF8 /* ItemPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79C02A22F41324100F81DF8 /* ItemPurchaseViewController.swift */; };
+		D79D10BA2FC90D4F009AA5F0 /* StyleDesignExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D10B92FC90D4F009AA5F0 /* StyleDesignExample.swift */; };
+		D79D10BC2FC90DAE009AA5F0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D10BB2FC90DAE009AA5F0 /* Colors.swift */; };
+		D79D10BE2FC90F06009AA5F0 /* StyleMigrationPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D10BD2FC90F06009AA5F0 /* StyleMigrationPlan.swift */; };
 		D79E03802E53EF9700D94B19 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79E037F2E53EF9700D94B19 /* ListTableViewCell.swift */; };
 		D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */; };
 		D7A0BB332D7FACEB007EB34C /* UserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A0BB322D7FACEB007EB34C /* UserInformation.swift */; };
@@ -390,6 +393,9 @@
 		D798D97E2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelFriendRequestReponseModel.swift; sourceTree = "<group>"; };
 		D79BE4D92E189112004D13B4 /* NewGroupFriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupFriendTableViewCell.swift; sourceTree = "<group>"; };
 		D79C02A22F41324100F81DF8 /* ItemPurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPurchaseViewController.swift; sourceTree = "<group>"; };
+		D79D10B92FC90D4F009AA5F0 /* StyleDesignExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleDesignExample.swift; sourceTree = "<group>"; };
+		D79D10BB2FC90DAE009AA5F0 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		D79D10BD2FC90F06009AA5F0 /* StyleMigrationPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleMigrationPlan.swift; sourceTree = "<group>"; };
 		D79E037F2E53EF9700D94B19 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		D7A0BB302D7FACC2007EB34C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		D7A0BB322D7FACEB007EB34C /* UserInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformation.swift; sourceTree = "<group>"; };
@@ -473,8 +479,11 @@
 			children = (
 				D7AC97EA2F4FCE7A00E383D6 /* Sort */,
 				D773B5282F8F0DBC00DD937F /* Style.swift */,
+				D79D10BB2FC90DAE009AA5F0 /* Colors.swift */,
 				D773B52A2F8F0E0100DD937F /* Fonts.swift */,
 				D78AC8C32FAE9A7B000CC5E5 /* Buttons.swift */,
+				D79D10B92FC90D4F009AA5F0 /* StyleDesignExample.swift */,
+				D79D10BD2FC90F06009AA5F0 /* StyleMigrationPlan.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -1589,6 +1598,7 @@
 				D7697A8E2F5123B2004FD264 /* AppButtons.swift in Sources */,
 				D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */,
 				51EC39182D3495850001B6E7 /* EditProfileViewController.swift in Sources */,
+				D79D10BE2FC90F06009AA5F0 /* StyleMigrationPlan.swift in Sources */,
 				D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */,
 				D77FB6722E2B0DB2003E1020 /* groupFunctions.swift in Sources */,
 				D7697A8C2F5123AA004FD264 /* AppStyle.swift in Sources */,
@@ -1605,6 +1615,7 @@
 				51C69AE32D0E549100C46759 /* SceneDelegate.swift in Sources */,
 				D78047892DF507B500702C01 /* PlantDataController.swift in Sources */,
 				D7DB60A42F09F8F300C43BE8 /* Elements.swift in Sources */,
+				D79D10BA2FC90D4F009AA5F0 /* StyleDesignExample.swift in Sources */,
 				D7697A8A2F51239D004FD264 /* AppText.swift in Sources */,
 				D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */,
 				D710E7F32E7E1338008C11BA /* DiscoverViewController.swift in Sources */,
@@ -1643,6 +1654,7 @@
 				51C69B1E2D0E554A00C46759 /* Constants.swift in Sources */,
 				D7A3C1222D810097000B4EB7 /* UserProfileLayout.swift in Sources */,
 				D77ED6A52D90DB9800FA4F71 /* PollingManager.swift in Sources */,
+				D79D10BC2FC90DAE009AA5F0 /* Colors.swift in Sources */,
 				D7400EA12D8CC45800646E94 /* LoginLayoutManager.swift in Sources */,
 				D7D3DD362D51940700B9DAA7 /* AccessTokenModel.swift in Sources */,
 				D7AF4E322E762B1F00EBD732 /* userFunctions.swift in Sources */,

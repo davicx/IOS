@@ -12,6 +12,9 @@ import UIKit
 
 
 
+
+
+//ALL OLD BELOW DONT TOUCH BUT CAN PULL FROM 
 //Instagram Background Gray F3F5F7
 
 //FILES
