@@ -9,8 +9,8 @@ import UIKit
 
 class Buttons: UIViewController {
 
-    //LOGIN BUTTONS
-
+    
+    //BUTTONS: Login Buttons
     static func loginButtonStyle(button: UIButton) {
         button.backgroundColor = UIColor(hex: "#3797EF")
         button.setTitleColor(.white, for: .normal)
@@ -18,6 +18,8 @@ class Buttons: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
     }
 
+    
+    //LINK BUTTONS: Login Forgot Password Link
     static func loginLinkButtonStyle(button: UIButton) {
         button.setTitleColor(UIColor(hex: "#3797EF"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)

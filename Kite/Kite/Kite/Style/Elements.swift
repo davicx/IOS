@@ -10,7 +10,7 @@ import UIKit
 
 class Elements {
 
-    //LOGIN TEXT FIELDS
+    //ELEMENTS: Login Style Element with Gray background
     static func loginTextFieldStyle(textField: UITextField) {
         textField.backgroundColor = UIColor(hex: "#FAFAFA")
         textField.layer.cornerRadius = 5.0

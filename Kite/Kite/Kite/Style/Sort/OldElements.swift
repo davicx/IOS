@@ -1,5 +1,5 @@
 //
-//  Elements.swift
+//  OldElements.swift
 //  Kite
 //
 //  Created by David Vasquez on 1/3/26.
@@ -8,10 +8,8 @@
 
 import UIKit
 
-//OLD DONT TOUCH
-/*
 
-enum Elements {
+enum OldElements {
 
     //UI ELEMENTS
 
@@ -33,4 +31,4 @@ enum Elements {
     
 }
 
-*/
+

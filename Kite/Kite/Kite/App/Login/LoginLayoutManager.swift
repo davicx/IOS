@@ -88,8 +88,10 @@ class LoginLayoutManager {
         usernameTextField.text = "davey"
         passwordTextField.text = "password"
         
-        StyleOld.styleLoginTextField(usernameTextField)
-        StyleOld.styleLoginTextField(passwordTextField)
+        Elements.loginTextFieldStyle(textField: usernameTextField)
+        Elements.loginTextFieldStyle(textField: passwordTextField)
+        //StyleOld.styleLoginTextField(usernameTextField)
+        //StyleOld.styleLoginTextField(passwordTextField)
         
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false

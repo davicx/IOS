@@ -205,7 +205,7 @@
 		D7D9942F2F4BD92F0002261E /* PostSocials.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D9942E2F4BD92F0002261E /* PostSocials.swift */; };
 		D7D994312F4BD9350002261E /* PostCaption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D994302F4BD9350002261E /* PostCaption.swift */; };
 		D7D994332F4BD9640002261E /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D994322F4BD9640002261E /* PostCell.swift */; };
-		D7DB60A42F09F8F300C43BE8 /* Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DB60A32F09F8F300C43BE8 /* Elements.swift */; };
+		D7DB60A42F09F8F300C43BE8 /* OldElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DB60A32F09F8F300C43BE8 /* OldElements.swift */; };
 		D7DBC7352EC94726002DD687 /* CommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DBC7342EC94726002DD687 /* CommentTemplate.swift */; };
 		D7DFEDC62F468E48005E474D /* RegistrationStyleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DFEDC52F468E48005E474D /* RegistrationStyleManager.swift */; };
 		D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */; };
@@ -439,7 +439,7 @@
 		D7D9942E2F4BD92F0002261E /* PostSocials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSocials.swift; sourceTree = "<group>"; };
 		D7D994302F4BD9350002261E /* PostCaption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCaption.swift; sourceTree = "<group>"; };
 		D7D994322F4BD9640002261E /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
-		D7DB60A32F09F8F300C43BE8 /* Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elements.swift; sourceTree = "<group>"; };
+		D7DB60A32F09F8F300C43BE8 /* OldElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldElements.swift; sourceTree = "<group>"; };
 		D7DBC7342EC94726002DD687 /* CommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplate.swift; sourceTree = "<group>"; };
 		D7DFEDC52F468E48005E474D /* RegistrationStyleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationStyleManager.swift; sourceTree = "<group>"; };
 		D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemViewController.swift; sourceTree = "<group>"; };
@@ -1205,7 +1205,7 @@
 				51B109BB2D276754006E4CCF /* StyleOld.swift */,
 				5139A6302D28B5980029024E /* ButtonsOld.swift */,
 				D74304032DF6593400D7775A /* StyleConstants.swift */,
-				D7DB60A32F09F8F300C43BE8 /* Elements.swift */,
+				D7DB60A32F09F8F300C43BE8 /* OldElements.swift */,
 			);
 			path = Sort;
 			sourceTree = "<group>";
@@ -1620,7 +1620,7 @@
 				51ED44632D2E09A60036DB4B /* ProfileAPI.swift in Sources */,
 				51C69AE32D0E549100C46759 /* SceneDelegate.swift in Sources */,
 				D78047892DF507B500702C01 /* PlantDataController.swift in Sources */,
-				D7DB60A42F09F8F300C43BE8 /* Elements.swift in Sources */,
+				D7DB60A42F09F8F300C43BE8 /* OldElements.swift in Sources */,
 				D79D10BA2FC90D4F009AA5F0 /* StyleDesignExample.swift in Sources */,
 				D7697A8A2F51239D004FD264 /* AppText.swift in Sources */,
 				D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */,
