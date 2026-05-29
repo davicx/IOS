@@ -187,6 +187,8 @@
 		D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */; };
 		D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */; };
 		D7BD62C12E5546030008F6E1 /* PostDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD62C02E5546030008F6E1 /* PostDoc.swift */; };
+		D7C59BE32FCA494300661186 /* ImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C59BE22FCA494300661186 /* ImageStyle.swift */; };
+		D7C59BE52FCA4BB100661186 /* Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C59BE42FCA4BB100661186 /* Elements.swift */; };
 		D7CADAB32F53C1F500DD74DC /* AppElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CADAB22F53C1F500DD74DC /* AppElements.swift */; };
 		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
 		D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */; };
@@ -419,6 +421,8 @@
 		D7B7EF9C2D7BBC03001BACF4 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
 		D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDataController.swift; sourceTree = "<group>"; };
 		D7BD62C02E5546030008F6E1 /* PostDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDoc.swift; sourceTree = "<group>"; };
+		D7C59BE22FCA494300661186 /* ImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStyle.swift; sourceTree = "<group>"; };
+		D7C59BE42FCA4BB100661186 /* Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elements.swift; sourceTree = "<group>"; };
 		D7CADAB22F53C1F500DD74DC /* AppElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppElements.swift; path = ../AppElements.swift; sourceTree = "<group>"; };
 		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
 		D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
@@ -482,6 +486,8 @@
 				D79D10BB2FC90DAE009AA5F0 /* Colors.swift */,
 				D773B52A2F8F0E0100DD937F /* Fonts.swift */,
 				D78AC8C32FAE9A7B000CC5E5 /* Buttons.swift */,
+				D7C59BE42FCA4BB100661186 /* Elements.swift */,
+				D7C59BE22FCA494300661186 /* ImageStyle.swift */,
 				D79D10B92FC90D4F009AA5F0 /* StyleDesignExample.swift */,
 				D79D10BD2FC90F06009AA5F0 /* StyleMigrationPlan.swift */,
 			);
@@ -1621,6 +1627,7 @@
 				D710E7F32E7E1338008C11BA /* DiscoverViewController.swift in Sources */,
 				D7A3C11C2D80F51E000B4EB7 /* SimpleBottomStackView.swift in Sources */,
 				D78D50AD2F2C327A00B86D04 /* PostTemplate.swift in Sources */,
+				D7C59BE32FCA494300661186 /* ImageStyle.swift in Sources */,
 				D7DBC7352EC94726002DD687 /* CommentTemplate.swift in Sources */,
 				D74470372E723BA500EF2D2D /* GroupUsersResponseModel.swift in Sources */,
 				51CA9DC32D0FA707008C36F0 /* LoginViewController.swift in Sources */,
@@ -1641,6 +1648,7 @@
 				D78C16652EA85F0200EEDD91 /* LoadingPlaceholderView.swift in Sources */,
 				D74C9F092D59820400947ECE /* KeychainHelper.swift in Sources */,
 				51C69B2C2D0E57AD00C46759 /* validationFunctions.swift in Sources */,
+				D7C59BE52FCA4BB100661186 /* Elements.swift in Sources */,
 				51C69B202D0E556600C46759 /* Post.swift in Sources */,
 				D700069D2F3808180009CE1C /* PurchaseItemResponseModel.swift in Sources */,
 				D720DB382DE136C000F137AD /* CommentLike.swift in Sources */,

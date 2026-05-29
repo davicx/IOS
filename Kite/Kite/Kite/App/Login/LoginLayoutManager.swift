@@ -113,10 +113,8 @@ class LoginLayoutManager {
     func setupLogoImage() {
         let logoImageView = UIImageView()
         logoImageView.image = UIImage(named: "background_14")
-        logoImageView.contentMode = .scaleAspectFill
-        logoImageView.clipsToBounds = true
+        ImageStyle.loginBackgroundImage(imageView: logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.layer.contentsRect = CGRect(x: 0.25, y: 0, width: 0.5, height: 1)
         
         logoView.addSubview(logoImageView)
         

@@ -8,6 +8,8 @@
 
 import UIKit
 
+//OLD DONT TOUCH
+/*
 
 enum Elements {
 
@@ -31,3 +33,4 @@ enum Elements {
     
 }
 
+*/
