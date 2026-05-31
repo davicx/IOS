@@ -26,3 +26,24 @@ class Buttons: UIViewController {
     }
 
 }
+
+//NEW
+/*
+ class Buttons: UIViewController {
+
+     static func loginButtonStyle(button: UIButton) {
+
+         button.backgroundColor = Colors.loginButtonBackground
+
+         button.setTitleColor(.white, for: .normal)
+         button.layer.cornerRadius = 5
+         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+     }
+
+     static func loginLinkButtonStyle(button: UIButton) {
+
+         button.setTitleColor(Colors.loginLinkText, for: .normal)
+         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+     }
+ }
+ */
