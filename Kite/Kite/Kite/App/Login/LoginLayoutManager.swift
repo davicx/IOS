@@ -132,8 +132,7 @@ class LoginLayoutManager {
         // Create Forgot Password Button
         let forgotPasswordButton = UIButton(type: .system)
         forgotPasswordButton.setTitle("Forgot password?", for: .normal)
-        forgotPasswordButton.setTitleColor(UIColor(hex: "#3797EF"), for: .normal)
-        forgotPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        Buttons.loginLinkButtonStyle(button: forgotPasswordButton)
         forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
         forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
         loginView.addSubview(forgotPasswordButton)
@@ -141,10 +140,7 @@ class LoginLayoutManager {
         // Create Login Button
         let loginButton = UIButton(type: .system)
         loginButton.setTitle("Log In", for: .normal)
-        loginButton.backgroundColor = UIColor(hex: "#3797EF")
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.layer.cornerRadius = 5
-        loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        Buttons.loginButtonStyle(button: loginButton)
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginView.addSubview(loginButton)
