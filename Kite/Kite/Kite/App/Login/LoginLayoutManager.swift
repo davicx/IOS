@@ -132,7 +132,10 @@ class LoginLayoutManager {
         // Create Forgot Password Button
         let forgotPasswordButton = UIButton(type: .system)
         forgotPasswordButton.setTitle("Forgot password?", for: .normal)
-        Buttons.loginLinkButtonStyle(button: forgotPasswordButton)
+        
+        //Style
+        Buttons.linkButtonStyle(button: forgotPasswordButton)
+        
         forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
         forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
         loginView.addSubview(forgotPasswordButton)
@@ -140,7 +143,10 @@ class LoginLayoutManager {
         // Create Login Button
         let loginButton = UIButton(type: .system)
         loginButton.setTitle("Log In", for: .normal)
+
+        //Style
         Buttons.loginButtonStyle(button: loginButton)
+        
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginView.addSubview(loginButton)
@@ -179,12 +185,13 @@ class LoginLayoutManager {
         let registerLabel = UILabel()
         registerLabel.text = "Don’t have an account?"
         registerLabel.textColor = .black
-        registerLabel.font = UIFont.systemFont(ofSize: 14)
+        registerLabel.font = Fonts.body
 
         let signUpButton = UIButton(type: .system)
         signUpButton.setTitle("Sign Up", for: .normal)
-        signUpButton.setTitleColor(UIColor(hex: "#3797EF"), for: .normal)
-        signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        
+        //Style
+        Buttons.linkButtonBoldStyle(button: signUpButton)
         signUpButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
 
         registerLabel.translatesAutoresizingMaskIntoConstraints = false
