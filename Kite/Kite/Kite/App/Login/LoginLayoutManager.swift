@@ -90,9 +90,7 @@ class LoginLayoutManager {
         
         Elements.loginTextFieldStyle(textField: usernameTextField)
         Elements.loginTextFieldStyle(textField: passwordTextField)
-        //StyleOld.styleLoginTextField(usernameTextField)
-        //StyleOld.styleLoginTextField(passwordTextField)
-        
+ 
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -129,6 +127,7 @@ class LoginLayoutManager {
     }
     
     func setupButtons(in view: UIView) {
+        
         // Create Forgot Password Button
         let forgotPasswordButton = UIButton(type: .system)
         forgotPasswordButton.setTitle("Forgot password?", for: .normal)

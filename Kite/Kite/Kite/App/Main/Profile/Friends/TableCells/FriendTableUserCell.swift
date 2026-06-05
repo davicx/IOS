@@ -57,8 +57,7 @@ class YourFriendsTableViewCell: UITableViewCell {
         fullNameLabel.font = UIFont.systemFont(ofSize: 14)
         fullNameLabel.textColor = .gray
 
-        [cancelFriendInviteButton, removeFriendButton,
-         acceptButton, declineButton].forEach {
+        [removeFriendButton, acceptButton, declineButton].forEach {
             $0.layer.cornerRadius = 6
             $0.clipsToBounds = true
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
@@ -66,8 +65,9 @@ class YourFriendsTableViewCell: UITableViewCell {
         }
 
         cancelFriendInviteButton.setTitle("Cancel", for: .normal)
-        cancelFriendInviteButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0)
-        cancelFriendInviteButton.setTitleColor(.white, for: .normal)
+        Buttons.cancelFriendInviteButtonStyle(button: cancelFriendInviteButton)
+        //cancelFriendInviteButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0)
+        //cancelFriendInviteButton.setTitleColor(.white, for: .normal)
 
         removeFriendButton.setTitle("Friends", for: .normal)
         removeFriendButton.backgroundColor = .white
