@@ -210,7 +210,7 @@ class IndividualGroupUserViewController: UIViewController {
 
         Task {
             // Fetch items (items are posts with additional item-specific data)
-            await postDataController.fetchPosts(groupID: groupID)
+            await postDataController.fetchWishlistItems(groupID: groupID)
             
             // Print out item names to verify it's working
             DispatchQueue.main.async {

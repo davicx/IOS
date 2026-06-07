@@ -12,10 +12,11 @@ import UIKit
 FUNCTIONS A: All Functions Related to Getting Posts
     1) Function A1: Get home feed posts
     2) Function A2: Get posts for a specific group
-    3) Function A3: Fetch posts for group
-    4) Function A4: Get all posts from all groups
-    5) Function A5: Get a Post (searches across all groups)
-    6) Function A6: Get an Item (searches across all groups)
+    3) Function A3: Fetch Kite posts for group (getPostsAPI)
+    4) Function A4: Fetch Wishlist items for group (getItemsAPI)
+    5) Function A5: Get all posts from all groups
+    6) Function A6: Get a Post (searches across all groups)
+    7) Function A7: Get an Item (searches across all groups)
  
 FUNCTIONS B: All Functions Related to Adding Posts
     1) Function B1: Add new post to groupPosts (called after creating a post via API)
@@ -52,34 +53,40 @@ class PostDataController {
     var currentUserOwnsGroupForDisplay: Bool = true
 
     //FUNCTIONS A: All Functions Related to Getting Posts
-    //Function A1: Get home feed posts (for now, returns posts from group 72)
+    //Function A1: Get home feed posts (Kite — group 70 for now)
     func getHomeFeedPosts() -> [Post] {
-        return getPostsForGroup(groupID: 72)
+        return getPostsForGroup(groupID: 70)
     }
     
     //Function A2: Get posts for a specific group
     func getPostsForGroup(groupID: Int) -> [Post] {
         return groupPosts[groupID] ?? []
     }
-    
-    //Function A3: Fetch posts for group (WISHLIST: uses getItemsAPI, converts items to posts and merges into groupPosts)
-    func fetchPosts(groupID: Int) async {
+
+    //Function A3: Fetch Kite posts for group
+    func fetchKitePosts(groupID: Int) async {
+        do {
+            let postsResponseModel = try await postsAPI.getPostsAPI(groupID: groupID)
+            let fetchedPosts = try await loadPostsWithImages(from: postsResponseModel)
+            mergeFetchedPosts(fetchedPosts, intoGroupID: groupID)
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .postsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch Kite posts - \(error)")
+        }
+    }
+
+    //Function A4: Fetch Wishlist items for group
+    func fetchWishlistItems(groupID: Int) async {
         do {
             let postsResponseModel = try await postsAPI.getItemsAPI(groupID: groupID)
-            let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
-            let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
-            let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
-            let fetchedPosts = try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
-            
-            var existingPosts = groupPosts[groupID] ?? []
-            for post in fetchedPosts {
-                if let index = existingPosts.firstIndex(where: { $0.postID == post.postID }) {
-                    existingPosts[index] = post
-                } else {
-                    existingPosts.append(post)
-                }
-            }
-            groupPosts[groupID] = existingPosts
+            let fetchedPosts = try await loadPostsWithImages(from: postsResponseModel)
+            mergeFetchedPosts(fetchedPosts, intoGroupID: groupID)
 
             DispatchQueue.main.async {
                 NotificationCenter.default.post(
@@ -92,24 +99,36 @@ class PostDataController {
                 )
             }
         } catch {
-            print("PostDataController: Failed to fetch posts - \(error)")
+            print("PostDataController: Failed to fetch Wishlist items - \(error)")
         }
     }
+
+    private func loadPostsWithImages(from postsResponseModel: PostResponseModel) async throws -> [Post] {
+        let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
+        let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)
+        let postsWithGroupImages = try await addGroupImageToPostsArray(postsArray: postsWithImages)
+        return try await addPostFromImageToPostsArray(postsArray: postsWithGroupImages)
+    }
+
+    private func mergeFetchedPosts(_ fetchedPosts: [Post], intoGroupID groupID: Int) {
+        var existingPosts = groupPosts[groupID] ?? []
+        for post in fetchedPosts {
+            if let index = existingPosts.firstIndex(where: { $0.postID == post.postID }) {
+                existingPosts[index] = post
+            } else {
+                existingPosts.append(post)
+            }
+        }
+        groupPosts[groupID] = existingPosts
+    }
     
-    //KITE
-    /*
-     func fetchPosts(groupID: Int) async {
-       
-     }
-     */
     
-    
-    //Function A4: Get all posts from all groups (for home feed)
+    //Function A5: Get all posts from all groups (for home feed)
     var allPosts: [Post] {
         return Array(groupPosts.values).flatMap { $0 }
     }
 
-    //Function A5: Get a Post (searches across all groups)
+    //Function A6: Get a Post (searches across all groups)
     func getPostByID(postID: Int) -> Post? {
         // Search across all groups
         for posts in groupPosts.values {
@@ -120,7 +139,7 @@ class PostDataController {
         return nil
     }
     
-    //Function A6: Get an Item (searches across all groups)
+    //Function A7: Get an Item (searches across all groups)
     func getItemByID(postID: Int) -> Post? {
         return getPostByID(postID: postID)
     }

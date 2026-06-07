@@ -28,18 +28,15 @@ final class GroupLogic {
     private let postDataController = PostDataController.shared
     
 
-    //Function A1: Get all Group Posts
-    func fetchGroupPosts(groupID: Int) async {
-        await postDataController.fetchPosts(groupID: groupID)
+    //Function A1: Get all Group Posts (Kite)
+    func fetchGroupKitePosts(groupID: Int) async {
+        await postDataController.fetchKitePosts(groupID: groupID)
     }
-    
-    /*
-    //KITE: same as fetchGroupPosts — both call fetchPosts
-    //WISHLIST: use fetchGroupPosts; items are loaded via fetchPosts in PostDataController
-    func fetchGroupItems(groupID: Int) async {
-        await postDataController.fetchItems(groupID: groupID)
+
+    //Function A2: Get all Group Items (Wishlist)
+    func fetchGroupWishlistItems(groupID: Int) async {
+        await postDataController.fetchWishlistItems(groupID: groupID)
     }
-    */
     
     
 }

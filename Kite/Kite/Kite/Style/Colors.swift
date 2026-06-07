@@ -27,8 +27,3 @@ class Colors {
     static let buttonPrimaryPinkBackground = primaryPink
 }
 
-removeFriendButton.setTitle("Friends", for: .normal)
-removeFriendButton.backgroundColor = .white
-removeFriendButton.setTitleColor(.black, for: .normal)
-removeFriendButton.layer.borderWidth = 1
-removeFriendButton.layer.borderColor = UIColor.lightGray.cgColor

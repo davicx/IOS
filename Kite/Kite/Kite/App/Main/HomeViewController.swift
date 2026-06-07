@@ -103,11 +103,11 @@ class HomeViewController: UIViewController {
     //FUNCTIONS
     func fetchPosts() {
         Task {
-            //APP: Kite
-            //await postDataController.fetchPosts(groupID: 72)
-            
-            //APP: Evently
-            await postDataController.fetchPosts(groupID: 72)
+            //Kite
+            await postDataController.fetchKitePosts(groupID: 70)
+
+            //Wishlist
+            //await postDataController.fetchWishlistItems(groupID: 72)
         }
     }
     

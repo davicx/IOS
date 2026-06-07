@@ -175,9 +175,21 @@ class IndividualPostViewController: UIViewController {
         }
     }
 
-    /// TEMP: print full `Comment` payload for each row (debug comment / imageName).
+    
+    //FUNCTIONS
+    @objc private func newGroupPostButton() {
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
+            newPostVC.modalPresentationStyle = .fullScreen
+            present(newPostVC, animated: true)
+        }
+    }
+    
+    
+    //TEMP: print full `Comment` payload for each row (debug comment / imageName).
     private func printDebugAllCommentsForPost() {
         let list = comments
+        
         print("---------- IndividualPostViewController: comments for post \(postID ?? -1) (\(list.count) total) ----------")
         for (index, c) in list.enumerated() {
             print("[comment \(index + 1) / \(list.count)]")
@@ -203,15 +215,6 @@ class IndividualPostViewController: UIViewController {
             print("  ---")
         }
         print("---------- end comments ----------")
-    }
-    
-    //FUNCTIONS
-    @objc private func newGroupPostButton() {
-        let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
-            newPostVC.modalPresentationStyle = .fullScreen
-            present(newPostVC, animated: true)
-        }
     }
 }
 
