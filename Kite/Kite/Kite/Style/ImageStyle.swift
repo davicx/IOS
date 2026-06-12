@@ -20,4 +20,10 @@ class ImageStyle {
             height: 1
         )
     }
+
+    static func userProfileImage(imageView: UIImageView, diameter: CGFloat) {
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = diameter / 2
+    }
 }

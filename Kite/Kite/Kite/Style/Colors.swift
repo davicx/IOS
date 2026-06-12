@@ -17,8 +17,9 @@ class Colors {
 
     // Text
     static let primaryText = UIColor.black
-    static let secondaryText = UIColor.darkGray
-
+    static let secondaryText = UIColor(hex: "#737373")
+    static let postedAtText = UIColor(hex: "#5A5A5A")
+    
     // Backgrounds
     static let screenBackground = UIColor.white
 
