@@ -88,6 +88,16 @@ class UsersDataController {
     func getOrFetchCurrentUser() async -> User? {
         return await getOrFetchUser(username: currentUser)
     }
+
+    // Get or fetch user and load profile image (cache → API → ImageCacheManager)
+    func getOrFetchUserWithImage(username: String) async -> User? {
+        guard let user = await getOrFetchUser(username: username) else {
+            return nil
+        }
+
+        await user.fetchProfileImage()
+        return user
+    }
     
     // MARK: - User Fetching
     

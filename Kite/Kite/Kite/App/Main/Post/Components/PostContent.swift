@@ -15,51 +15,12 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
-/*
- TODO — Instagram-style post header (reference: 44 / 14 / 12 / 56)
-
- HEADER SHELL
- - Raise headerView height to 56pt (fixed, not dynamic).
- - Add 12pt leading inset: left column starts inset from screen edge (restore horizontal padding).
- - Add 12pt trailing inset on right column (ellipsis area).
- - Do not add a separator under the header — body image is the visual break.
-
- USER PROFILE IMAGE (leftView / userProfileImageView)
- - Bump avatar to 44×44 inside leftView; keep ~4pt inset or resize leftView to fit.
- - Keep ImageStyle.userProfileImage(imageView:diameter:) — pass diameter 44 (or 36 if keeping inset math).
- - Asset stays dynamic later via configure(post:); placeholder user_12 is fine for now.
-
- MIDDLE TEXT BLOCK (middleView — replace green/yellow placeholders)
- - Swap userNameView + postTimeView for userNameLabel + locationLabel (UILabel).
- - Vertically center the label stack against the profile image, not the full header.
- - Stack: username on top, location below with constant 1–2pt only (not 4–8).
-
- USERNAME LABEL
- - Text: e.g. "miyan_1980" (from post model later).
- - Style: 14pt semibold, #000000 — add Fonts.postUsername + Colors token or Text.postUsernameStyle(label:).
- - lineBreakMode = .byTruncatingTail, numberOfLines = 1.
-
- LOCATION LABEL
- - Text: e.g. "Koiwa, Tokyo Japan" (post location / time string later).
- - Style: 12pt regular, #737373 — Fonts.postLocation + Colors.secondaryText or dedicated gray token.
- - numberOfLines = 1; lower hierarchy than username (smaller size + gray, not bold).
-
- RIGHT MENU (rightView — replace indigo placeholder)
- - UIButton with UIImage(systemName: "ellipsis"), ~17–18pt, tint black / primaryText.
- - Keep width modest (~44–60pt); center icon in rightView.
- - Wire tap later under ACTIONS (edit / more menu delegate).
-
- STYLE FOLDER (one-time tokens — reuse across post headers)
- - Fonts: postUsername (14 semibold), postLocation (12 regular).
- - Colors: postUsernameText (#000000), postLocationText (#737373) if not reusing secondaryText.
- - Optional Text enum helpers: postUsernameStyle(label:), postLocationStyle(label:).
-
- LOGIC (when placeholders become real UI)
- - configure(with post:) sets username, location, userProfileImageView.image.
- - Hide location label when string is empty.
- */
 
 final class PostContent: UIView {
+
+    //LOGIC
+    private var usersDataController: UsersDataController { UsersDataController.shared }
+    private var loadUserName: String?
 
     //UI COMPONENTS
     //MAIN
@@ -67,16 +28,18 @@ final class PostContent: UIView {
     let bodyView = UIView()
     let footerView = UIView()
 
-    //HEADER
+    //Left View: User Image
     let leftView = UIView()
     let userProfileImageView = UIImageView()
+
+    //Middle View: User Name and Post Info
     let middleView = UIView()
-    let rightView = UIView()
-    
-    //Header: User text
     let userNameLabel = UILabel()
     let postedAtLabel = UILabel()
     
+    //Right View: Menu
+    let rightView = UIView()
+    let menuImageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,12 +52,14 @@ final class PostContent: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MANAGE VIEWS
     private func setupViews() {
         setupHeaderView()
         setupBodyView()
         setupFooterView()
     }
 
+    //HEADER: Post Info
     private func setupHeaderView() {
         headerView.backgroundColor = Colors.screenBackground
 
@@ -108,34 +73,34 @@ final class PostContent: UIView {
             headerView.heightAnchor.constraint(equalToConstant: 52)
         ])
 
-        //HEADER:
-        //Header Left: profile image holder — 58pt wide (8 + 42 + 8), full header height
+        //HEADER
+        //HEADER Left View: User Image
         leftView.backgroundColor = .clear
-        userProfileImageView.image = UIImage(named: "user_12")
+        userProfileImageView.image = UIImage(named: "background_1")
         ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 42)
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
         leftView.addSubview(userProfileImageView)
 
-        //Header Middle: Username and posted at
+        //HEADER Middle View: User Name and Post Info
         middleView.backgroundColor = .clear
 
-        userNameLabel.text = "davey"
         userNameLabel.font = Fonts.userName
         userNameLabel.textColor = Colors.primaryText
         userNameLabel.numberOfLines = 1
         userNameLabel.lineBreakMode = .byTruncatingTail
 
-        postedAtLabel.text = "Posted today at 1pm in Sunriver Oregon"
         postedAtLabel.font = Fonts.postedAt
-        //postedAtLabel.textColor = Colors.secondaryText
         postedAtLabel.textColor = Colors.postedAtText
         postedAtLabel.numberOfLines = 1
         postedAtLabel.lineBreakMode = .byTruncatingTail
 
-        //Header Right: Post edit placeholder
-        rightView.backgroundColor = UIColor.systemIndigo.withAlphaComponent(0.5)
+        //HEADER Right View: Menu
+        rightView.backgroundColor = .clear
 
-        [leftView, middleView, rightView, userNameLabel, postedAtLabel].forEach {
+        menuImageView.image = UIImage(named: "menu-horizontal")
+        menuImageView.contentMode = .scaleAspectFit
+
+        [leftView, middleView, rightView, userNameLabel, postedAtLabel, menuImageView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
@@ -144,9 +109,11 @@ final class PostContent: UIView {
         headerView.addSubview(rightView)
         middleView.addSubview(userNameLabel)
         middleView.addSubview(postedAtLabel)
+        rightView.addSubview(menuImageView)
 
         NSLayoutConstraint.activate([
-            // Left — profile image holder (58×52: 8 + 42pt image + 8)
+            
+            //LEFT — profile image holder (58×52: 8 + 42pt image + 8)
             leftView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             leftView.topAnchor.constraint(equalTo: headerView.topAnchor),
             leftView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
@@ -158,13 +125,18 @@ final class PostContent: UIView {
             userProfileImageView.topAnchor.constraint(equalTo: leftView.topAnchor, constant: 5),
             userProfileImageView.bottomAnchor.constraint(equalTo: leftView.bottomAnchor, constant: -5),
 
-            // Right — post edit
+            //RIGHT — menu
             rightView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             rightView.topAnchor.constraint(equalTo: headerView.topAnchor),
             rightView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            rightView.widthAnchor.constraint(equalToConstant: 60),
+            rightView.widthAnchor.constraint(equalToConstant: 36),
 
-            // Middle — fills space between left and right, full header height
+            menuImageView.centerYAnchor.constraint(equalTo: rightView.centerYAnchor),
+            menuImageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -12),
+            menuImageView.widthAnchor.constraint(equalToConstant: 24),
+            menuImageView.heightAnchor.constraint(equalToConstant: 24),
+
+            //MIDDLE — fills space between left and right, full header height
             middleView.leadingAnchor.constraint(equalTo: leftView.trailingAnchor),
             middleView.trailingAnchor.constraint(equalTo: rightView.leadingAnchor),
             middleView.topAnchor.constraint(equalTo: headerView.topAnchor),
@@ -181,8 +153,9 @@ final class PostContent: UIView {
         ])
     }
 
+    //HEADER: Post Image
     private func setupBodyView() {
-        bodyView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.3)
+        bodyView.backgroundColor = .clear
 
         addSubview(bodyView)
         bodyView.translatesAutoresizingMaskIntoConstraints = false
@@ -197,8 +170,9 @@ final class PostContent: UIView {
         ])
     }
 
+    //HEADER: Post Footer (Caption is its own component) 
     private func setupFooterView() {
-        footerView.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.3)
+        footerView.backgroundColor = .clear
 
         addSubview(footerView)
         footerView.translatesAutoresizingMaskIntoConstraints = false
@@ -213,46 +187,44 @@ final class PostContent: UIView {
             footerView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-    
-    /*
-    func setupViews() {
-        backgroundColor = .clear
 
-        headerView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.3)
-        bodyView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.3)
-        footerView.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.3)
+    //FUNCTIONS
+    func configure(with post: Post) {
+        postedAtLabel.text = post.timeMessage ?? ""
 
-        addPlaceholderLabel("Header", to: headerView)
-        addPlaceholderLabel("Body", to: bodyView)
-        addPlaceholderLabel("Footer", to: footerView)
-    }
-
-    func setupConstraints() {
-        [headerView, bodyView, footerView].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            addSubview($0)
+        guard let username = post.postFrom, !username.isEmpty else {
+            userNameLabel.text = ""
+            print("PostContent: missing postFrom for postID \(post.postID)")
+            return
         }
 
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 40),
-
-            bodyView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            bodyView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            bodyView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            bodyView.heightAnchor.constraint(equalToConstant: 100),
-
-            footerView.topAnchor.constraint(equalTo: bodyView.bottomAnchor),
-            footerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 20),
-            footerView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
+        userNameLabel.text = username
+        loadUserProfile(username: username)
     }
-     */
-    
+
+    private func loadUserProfile(username: String) {
+        loadUserName = username
+
+        Task {
+            guard let user = await usersDataController.getOrFetchUserWithImage(username: username) else {
+                print("PostContent: failed to load user \(username)")
+                return
+            }
+
+            guard loadUserName == username else { return }
+
+            print("PostContent: userName=\(user.userName) userImage=\(user.userImage)")
+
+            await MainActor.run {
+                guard self.loadUserName == username else { return }
+                self.userNameLabel.text = user.userName
+                if let image = user.profileImage {
+                    self.userProfileImageView.image = image
+                }
+            }
+        }
+    }
+
     
     //TEMP
     private func addPlaceholderLabel(_ text: String, to view: UIView) {
@@ -270,3 +242,4 @@ final class PostContent: UIView {
     }
 
 }
+
