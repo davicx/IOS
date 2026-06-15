@@ -41,6 +41,7 @@ final class PostContent: UIView {
     let rightView = UIView()
     let menuImageView = UIImageView()
     
+    //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -52,7 +53,6 @@ final class PostContent: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //MANAGE VIEWS
     private func setupViews() {
         setupHeaderView()
         setupBodyView()
@@ -73,15 +73,14 @@ final class PostContent: UIView {
             headerView.heightAnchor.constraint(equalToConstant: 52)
         ])
 
-        //HEADER
-        //HEADER Left View: User Image
+        //Header Left View: User Image
         leftView.backgroundColor = .clear
         userProfileImageView.image = UIImage(named: "background_1")
         ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 42)
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
         leftView.addSubview(userProfileImageView)
 
-        //HEADER Middle View: User Name and Post Info
+        //Header Middle View: User Name and Post Info
         middleView.backgroundColor = .clear
 
         userNameLabel.font = Fonts.userName
@@ -94,9 +93,9 @@ final class PostContent: UIView {
         postedAtLabel.numberOfLines = 1
         postedAtLabel.lineBreakMode = .byTruncatingTail
 
-        //HEADER Right View: Menu
+        //Header Right View: Menu
         rightView.backgroundColor = .clear
-
+        
         menuImageView.image = UIImage(named: "menu-horizontal")
         menuImageView.contentMode = .scaleAspectFit
 
@@ -131,10 +130,10 @@ final class PostContent: UIView {
             rightView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
             rightView.widthAnchor.constraint(equalToConstant: 36),
 
-            menuImageView.centerYAnchor.constraint(equalTo: rightView.centerYAnchor),
+            menuImageView.centerYAnchor.constraint(equalTo: rightView.centerYAnchor, constant: -2),
             menuImageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -12),
-            menuImageView.widthAnchor.constraint(equalToConstant: 24),
-            menuImageView.heightAnchor.constraint(equalToConstant: 24),
+            menuImageView.widthAnchor.constraint(equalToConstant: 22),
+            menuImageView.heightAnchor.constraint(equalToConstant: 22),
 
             //MIDDLE — fills space between left and right, full header height
             middleView.leadingAnchor.constraint(equalTo: leftView.trailingAnchor),
