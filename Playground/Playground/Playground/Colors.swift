@@ -1,6 +1,6 @@
 //
 //  Colors.swift
-//  Kite
+//  Playground
 //
 //  Created by David Vasquez on 5/28/26.
 //
@@ -22,10 +22,8 @@ class Colors {
     
     // Backgrounds
     static let screenBackground = UIColor.white
-    static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
 
     // Buttons
     static let buttonPrimaryBlueBackground = primaryBlue
     static let buttonPrimaryPinkBackground = primaryPink
 }
-

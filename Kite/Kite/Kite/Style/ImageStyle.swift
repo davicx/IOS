@@ -26,4 +26,10 @@ class ImageStyle {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = diameter / 2
     }
+
+    static func postImage(imageView: UIImageView) {
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = Colors.screenBackground
+    }
 }

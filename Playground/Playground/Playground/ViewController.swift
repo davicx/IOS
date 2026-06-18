@@ -8,6 +8,76 @@
 import UIKit
 
 
+//PRE LOAD Background place holders
+class ViewController: UIViewController {
+
+
+    private let skeletonBar = UIView()
+    private let contentLabel = UILabel()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = Colors.screenBackground
+
+        setupSkeleton()
+        setupContentLabel()
+        startLoadingDemo()
+    }
+
+    private func setupSkeleton() {
+        styleSkeletonBar(skeletonBar, width: 120, height: 14)
+        skeletonBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(skeletonBar)
+
+        NSLayoutConstraint.activate([
+            skeletonBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            skeletonBar.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+
+    private func setupContentLabel() {
+        contentLabel.text = "davidvasquez"
+        contentLabel.font = Fonts.userName
+        contentLabel.textColor = Colors.primaryText
+        contentLabel.textAlignment = .center
+        contentLabel.alpha = 0
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentLabel)
+
+        NSLayoutConstraint.activate([
+            contentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            contentLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+
+    private func styleSkeletonBar(_ bar: UIView, width: CGFloat, height: CGFloat) {
+        bar.backgroundColor = UIColor(hex: "#E5E5E5")
+        bar.layer.cornerRadius = height / 2
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            bar.widthAnchor.constraint(equalToConstant: width),
+            bar.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
+
+    private func startLoadingDemo() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            guard let self else { return }
+
+            UIView.animate(withDuration: 0.25) {
+                self.skeletonBar.alpha = 0
+                self.contentLabel.alpha = 1
+            } completion: { _ in
+                self.skeletonBar.isHidden = true
+            }
+        }
+    }
+}
+
+
+
+//STYLE
+/*
 class ViewController: UIViewController {
 
     let titleLabel = UILabel()
@@ -108,7 +178,7 @@ class ViewController: UIViewController {
     }
 
 }
-
+*/
 
 
 

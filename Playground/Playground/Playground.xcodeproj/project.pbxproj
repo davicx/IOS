@@ -20,6 +20,9 @@
 		D74D19752EC55F690046E357 /* UserCommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74D19742EC55F690046E357 /* UserCommentTemplate.swift */; };
 		D766492D2E820B0800D50CEE /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = D766492C2E820B0800D50CEE /* FSCalendar */; };
 		D79D10B82FC90871009AA5F0 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D10B72FC90871009AA5F0 /* Style.swift */; };
+		D79D10B92FC90871009AA5F1 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D10BC2FC90871009AA5F4 /* Colors.swift */; };
+		D79D10BA2FC90871009AA5F2 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D10BD2FC90871009AA5F5 /* Fonts.swift */; };
+		D79D10BB2FC90871009AA5F3 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D10BE2FC90871009AA5F6 /* AppColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +59,9 @@
 		D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageViewController.swift; sourceTree = "<group>"; };
 		D74D19742EC55F690046E357 /* UserCommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCommentTemplate.swift; sourceTree = "<group>"; };
 		D79D10B72FC90871009AA5F0 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		D79D10BC2FC90871009AA5F4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		D79D10BD2FC90871009AA5F5 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		D79D10BE2FC90871009AA5F6 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +117,9 @@
 				51EF8A552D0A6B560083740C /* SceneDelegate.swift */,
 				51EF8A572D0A6B560083740C /* ViewController.swift */,
 				D79D10B72FC90871009AA5F0 /* Style.swift */,
+				D79D10BC2FC90871009AA5F4 /* Colors.swift */,
+				D79D10BD2FC90871009AA5F5 /* Fonts.swift */,
+				D79D10BE2FC90871009AA5F6 /* AppColors.swift */,
 				D74D19742EC55F690046E357 /* UserCommentTemplate.swift */,
 				D736FEE42D95F3D100AA108D /* BackgroundImageViewController.swift */,
 				51EF8A592D0A6B560083740C /* Main.storyboard */,
@@ -275,6 +284,9 @@
 			files = (
 				D736FEE52D95F3D100AA108D /* BackgroundImageViewController.swift in Sources */,
 				D79D10B82FC90871009AA5F0 /* Style.swift in Sources */,
+				D79D10B92FC90871009AA5F1 /* Colors.swift in Sources */,
+				D79D10BA2FC90871009AA5F2 /* Fonts.swift in Sources */,
+				D79D10BB2FC90871009AA5F3 /* AppColors.swift in Sources */,
 				51EF8A582D0A6B560083740C /* ViewController.swift in Sources */,
 				51EF8A542D0A6B560083740C /* AppDelegate.swift in Sources */,
 				51EF8A562D0A6B560083740C /* SceneDelegate.swift in Sources */,

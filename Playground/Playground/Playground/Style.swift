@@ -28,21 +28,11 @@ import UIKit
 enum Text {
 
     static func postBodyText(label: UILabel) {
-        label.font = Fonts.regular14
+        label.font = Fonts.body
         label.textColor = .postBodyTextColor
         label.numberOfLines = 0
 
     }
-
-}
-
-//FONTS
-enum Fonts {
-    static let regular14 = UIFont.systemFont(ofSize: 14, weight: .regular)
-    static let semiBold16 = UIFont.systemFont(
-        ofSize: 16,
-        weight: .semibold
-    )
 
 }
 
@@ -72,7 +62,7 @@ enum Buttons {
             for: .normal
         )
 
-        button.titleLabel?.font = Fonts.semiBold16
+        button.titleLabel?.font = Fonts.button
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
     }
@@ -104,43 +94,3 @@ extension UIColor {
 
 
 
-
-
-
-
-
-
-
-extension UIColor {
-
-    convenience init(hex: String) {
-
-        var hexSanitized = hex.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
-
-        hexSanitized = hexSanitized.replacingOccurrences(
-            of: "#",
-            with: ""
-        )
-
-        var rgb: UInt64 = 0
-
-        Scanner(string: hexSanitized).scanHexInt64(&rgb)
-
-        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
-
-        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
-
-        let blue = CGFloat(rgb & 0x0000FF) / 255.0
-
-        self.init(
-            red: red,
-            green: green,
-            blue: blue,
-            alpha: 1.0
-        )
-
-    }
-
-}
