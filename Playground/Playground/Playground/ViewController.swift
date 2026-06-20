@@ -11,7 +11,6 @@ import UIKit
 //PRE LOAD Background place holders
 class ViewController: UIViewController {
 
-
     private let skeletonBar = UIView()
     private let contentLabel = UILabel()
 

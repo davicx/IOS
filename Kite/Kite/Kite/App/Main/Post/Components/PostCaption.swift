@@ -18,9 +18,14 @@ import UIKit
 
 final class PostCaption: UIView {
 
+    //LOGIC
+    private var usersDataController: UsersDataController { UsersDataController.shared }
+    private var loadUserName: String?
+
     //UI COMPONENTS
     //Left: User Image
     let userImageArea = UIView()
+    let userProfileImageView = UIImageView()
 
     //Right Column
     let commentHeaderView = UIView()
@@ -51,20 +56,28 @@ final class PostCaption: UIView {
     private func setupUserImageArea() {
         userImageArea.backgroundColor = Colors.screenBackground
 
+        userProfileImageView.image = UIImage(named: "background_1")
+        ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 48)
+        userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
+
         addSubview(userImageArea)
         userImageArea.translatesAutoresizingMaskIntoConstraints = false
-
-        addTempLabel(
-            "userImageArea\n120 wide\nAs tall as full comment",
-            to: userImageArea
-        )
+        userImageArea.addSubview(userProfileImageView)
 
         NSLayoutConstraint.activate([
             userImageArea.leadingAnchor.constraint(equalTo: leadingAnchor),
             userImageArea.topAnchor.constraint(equalTo: topAnchor),
             userImageArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-            userImageArea.widthAnchor.constraint(equalToConstant: 120)
+            userImageArea.widthAnchor.constraint(equalToConstant: 56),
+
+            userProfileImageView.topAnchor.constraint(equalTo: userImageArea.topAnchor, constant: 8),
+            userProfileImageView.leadingAnchor.constraint(equalTo: userImageArea.leadingAnchor, constant: 4),
+            userProfileImageView.trailingAnchor.constraint(equalTo: userImageArea.trailingAnchor, constant: -4),
+            userProfileImageView.widthAnchor.constraint(equalToConstant: 48),
+            userProfileImageView.heightAnchor.constraint(equalToConstant: 48)
         ])
+
+        loadCurrentUserProfile()
     }
 
     //RIGHT: Comment Header
@@ -83,7 +96,7 @@ final class PostCaption: UIView {
             commentHeaderView.topAnchor.constraint(equalTo: topAnchor),
             commentHeaderView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
             commentHeaderView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            commentHeaderView.heightAnchor.constraint(equalToConstant: 40)
+            commentHeaderView.heightAnchor.constraint(equalToConstant: 22)
         ])
     }
 
@@ -139,6 +152,32 @@ final class PostCaption: UIView {
     func configure(with comment: Comment) {
         if let caption = comment.commentCaption, !caption.isEmpty {
             commentBodyLabel.text = caption
+        }
+    }
+
+    private func loadCurrentUserProfile() {
+        let username = usersDataController.currentUser
+        guard !username.isEmpty else {
+            print("PostCaption: missing current user")
+            return
+        }
+
+        loadUserName = username
+
+        Task {
+            guard let user = await usersDataController.getOrFetchUserWithImage(username: username) else {
+                print("PostCaption: failed to load user \(username)")
+                return
+            }
+
+            guard loadUserName == username else { return }
+
+            await MainActor.run {
+                guard self.loadUserName == username else { return }
+                if let image = user.profileImage {
+                    self.userProfileImageView.image = image
+                }
+            }
         }
     }
 
