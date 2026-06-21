@@ -56,17 +56,20 @@ final class PostCell: UITableViewCell {
 
         if let post = PostDataController.shared.getPostByID(postID: postID) {
             postContent.configure(with: post)
+            postCaption.configure(with: post)
         }
     }
 
     func updatePost(with post: Post) {
         postSocials.configure(postID: post.postID)
         postContent.configure(with: post)
+        postCaption.configure(with: post)
     }
 
     func updateItem(with post: Post) {
         postSocials.configure(postID: post.postID)
         postContent.configure(with: post)
+        postCaption.configure(with: post)
     }
 }
 

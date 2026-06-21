@@ -16,6 +16,10 @@ import UIKit
 //FUNCTIONS
 
 
+// PostCaption is a UI renderer. It displays post caption info. It does NOT decide when or how the table refreshes.
+// The ViewController reacts to data changes via NotificationCenter.
+
+
 final class PostCaption: UIView {
 
     //LOGIC
@@ -57,7 +61,7 @@ final class PostCaption: UIView {
         userImageArea.backgroundColor = Colors.screenBackground
 
         userProfileImageView.image = UIImage(named: "background_1")
-        ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 48)
+        ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 40)
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(userImageArea)
@@ -68,16 +72,14 @@ final class PostCaption: UIView {
             userImageArea.leadingAnchor.constraint(equalTo: leadingAnchor),
             userImageArea.topAnchor.constraint(equalTo: topAnchor),
             userImageArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-            userImageArea.widthAnchor.constraint(equalToConstant: 56),
+            userImageArea.widthAnchor.constraint(equalToConstant: 48),
 
             userProfileImageView.topAnchor.constraint(equalTo: userImageArea.topAnchor, constant: 8),
             userProfileImageView.leadingAnchor.constraint(equalTo: userImageArea.leadingAnchor, constant: 4),
             userProfileImageView.trailingAnchor.constraint(equalTo: userImageArea.trailingAnchor, constant: -4),
-            userProfileImageView.widthAnchor.constraint(equalToConstant: 48),
-            userProfileImageView.heightAnchor.constraint(equalToConstant: 48)
+            userProfileImageView.widthAnchor.constraint(equalToConstant: 40),
+            userProfileImageView.heightAnchor.constraint(equalToConstant: 40)
         ])
-
-        loadCurrentUserProfile()
     }
 
     //RIGHT: Comment Header
@@ -87,10 +89,7 @@ final class PostCaption: UIView {
         addSubview(commentHeaderView)
         commentHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
-        addTempLabel(
-            "commentHeaderView\nComment Header\n40 tall · fill remaining width",
-            to: commentHeaderView
-        )
+        addTempLabel("header", to: commentHeaderView)
 
         NSLayoutConstraint.activate([
             commentHeaderView.topAnchor.constraint(equalTo: topAnchor),
@@ -107,7 +106,7 @@ final class PostCaption: UIView {
         commentBodyLabel.font = UIFont.systemFont(ofSize: 14)
         commentBodyLabel.textColor = Colors.primaryText
         commentBodyLabel.numberOfLines = 0
-        commentBodyLabel.text = "commentBodyView — height expands with text. 60pt min height · fill remaining width."
+        commentBodyLabel.text = "body"
 
         addSubview(commentBodyView)
         commentBodyView.translatesAutoresizingMaskIntoConstraints = false
@@ -134,10 +133,7 @@ final class PostCaption: UIView {
         addSubview(commentFooterView)
         commentFooterView.translatesAutoresizingMaskIntoConstraints = false
 
-        addTempLabel(
-            "commentFooterView\n40 tall · fill remaining width",
-            to: commentFooterView
-        )
+        addTempLabel("footer", to: commentFooterView)
 
         NSLayoutConstraint.activate([
             commentFooterView.topAnchor.constraint(equalTo: commentBodyView.bottomAnchor),
@@ -149,19 +145,24 @@ final class PostCaption: UIView {
     }
 
     //FUNCTIONS
-    func configure(with comment: Comment) {
-        if let caption = comment.commentCaption, !caption.isEmpty {
-            commentBodyLabel.text = caption
-        }
-    }
+    func configure(with post: Post) {
+        let postID = post.postID
+        let postCaption = post.postCaption ?? "no caption"
 
-    private func loadCurrentUserProfile() {
-        let username = usersDataController.currentUser
-        guard !username.isEmpty else {
-            print("PostCaption: missing current user")
+        print("PostCaption: postID=\(postID) caption=\(postCaption)")
+
+        commentBodyLabel.text = postCaption
+
+        guard let username = post.postFrom, !username.isEmpty else {
+            print("PostCaption: missing postFrom for postID \(postID)")
             return
         }
 
+        print("PostCaption: userName=\(username)")
+        loadUserProfile(username: username)
+    }
+
+    private func loadUserProfile(username: String) {
         loadUserName = username
 
         Task {
@@ -171,6 +172,8 @@ final class PostCaption: UIView {
             }
 
             guard loadUserName == username else { return }
+
+            print("PostCaption: userName=\(user.userName) userImage=\(user.userImage)")
 
             await MainActor.run {
                 guard self.loadUserName == username else { return }
