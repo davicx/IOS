@@ -97,7 +97,7 @@ class IndividualPostViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        printPageInfo(vcName: "IndividualPostViewController")
+        printPageInfo(vcName: "IndividualPostViewController \(postID)")
         //print("Post ID: \(postID ?? -1)")
         //printDebugAllCommentsForPost()
         #if !targetEnvironment(simulator)

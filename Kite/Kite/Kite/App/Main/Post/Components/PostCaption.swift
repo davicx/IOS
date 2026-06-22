@@ -33,6 +33,8 @@ final class PostCaption: UIView {
 
     //Right Column
     let commentHeaderView = UIView()
+    let userNameLabel = UILabel()
+    let postedAtLabel = UILabel()
     let commentBodyView = UIView()
     let commentFooterView = UIView()
 
@@ -61,7 +63,7 @@ final class PostCaption: UIView {
         userImageArea.backgroundColor = Colors.screenBackground
 
         userProfileImageView.image = UIImage(named: "background_1")
-        ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 40)
+        ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 38)
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(userImageArea)
@@ -72,41 +74,70 @@ final class PostCaption: UIView {
             userImageArea.leadingAnchor.constraint(equalTo: leadingAnchor),
             userImageArea.topAnchor.constraint(equalTo: topAnchor),
             userImageArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-            userImageArea.widthAnchor.constraint(equalToConstant: 48),
+            userImageArea.widthAnchor.constraint(equalToConstant: 46),
 
-            userProfileImageView.topAnchor.constraint(equalTo: userImageArea.topAnchor, constant: 8),
+            userProfileImageView.topAnchor.constraint(equalTo: userImageArea.topAnchor, constant: 6),
             userProfileImageView.leadingAnchor.constraint(equalTo: userImageArea.leadingAnchor, constant: 4),
             userProfileImageView.trailingAnchor.constraint(equalTo: userImageArea.trailingAnchor, constant: -4),
-            userProfileImageView.widthAnchor.constraint(equalToConstant: 40),
-            userProfileImageView.heightAnchor.constraint(equalToConstant: 40)
+            userProfileImageView.widthAnchor.constraint(equalToConstant: 38),
+            userProfileImageView.heightAnchor.constraint(equalToConstant: 38)
         ])
     }
 
-    //RIGHT: Comment Header
+    //RIGHT: Comment Header — [username] [time ago] on one row, left aligned (Instagram-style)
     private func setupCommentHeaderView() {
         commentHeaderView.backgroundColor = UIColor(red: 1.0, green: 0.82, blue: 0.80, alpha: 1.0)
 
+        userNameLabel.font = Fonts.userName
+        userNameLabel.textColor = Colors.primaryText
+        userNameLabel.numberOfLines = 1
+        userNameLabel.lineBreakMode = .byTruncatingTail
+
+        postedAtLabel.font = Fonts.postedAt
+        postedAtLabel.textColor = Colors.postedAtText
+        postedAtLabel.numberOfLines = 1
+        postedAtLabel.lineBreakMode = .byTruncatingTail
+
+        userNameLabel.setContentHuggingPriority(.required, for: .horizontal)
+        userNameLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+
+        postedAtLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        postedAtLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
         addSubview(commentHeaderView)
         commentHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        postedAtLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        addTempLabel("header", to: commentHeaderView)
+        commentHeaderView.addSubview(userNameLabel)
+        commentHeaderView.addSubview(postedAtLabel)
 
         NSLayoutConstraint.activate([
             commentHeaderView.topAnchor.constraint(equalTo: topAnchor),
             commentHeaderView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
             commentHeaderView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            commentHeaderView.heightAnchor.constraint(equalToConstant: 22)
+            commentHeaderView.heightAnchor.constraint(equalToConstant: 22),
+
+            userNameLabel.leadingAnchor.constraint(equalTo: commentHeaderView.leadingAnchor),
+            userNameLabel.centerYAnchor.constraint(equalTo: commentHeaderView.centerYAnchor),
+
+            postedAtLabel.leadingAnchor.constraint(equalTo: userNameLabel.trailingAnchor, constant: 4),
+            postedAtLabel.centerYAnchor.constraint(equalTo: commentHeaderView.centerYAnchor, constant: 1),
+            postedAtLabel.trailingAnchor.constraint(lessThanOrEqualTo: commentHeaderView.trailingAnchor)
         ])
     }
 
-    //RIGHT: Comment Body
+    //RIGHT: Comment Body — height hugs post caption (dynamic, no min height)
     private func setupCommentBodyView() {
         commentBodyView.backgroundColor = UIColor(red: 0.86, green: 0.82, blue: 0.96, alpha: 1.0)
 
-        commentBodyLabel.font = UIFont.systemFont(ofSize: 14)
+        commentBodyLabel.font = Fonts.postCaptionFont
         commentBodyLabel.textColor = Colors.primaryText
         commentBodyLabel.numberOfLines = 0
         commentBodyLabel.text = "body"
+
+        commentBodyLabel.setContentHuggingPriority(.required, for: .vertical)
+        commentBodyLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         addSubview(commentBodyView)
         commentBodyView.translatesAutoresizingMaskIntoConstraints = false
@@ -117,12 +148,11 @@ final class PostCaption: UIView {
             commentBodyView.topAnchor.constraint(equalTo: commentHeaderView.bottomAnchor),
             commentBodyView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
             commentBodyView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            commentBodyView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
 
-            commentBodyLabel.topAnchor.constraint(equalTo: commentBodyView.topAnchor, constant: 8),
-            commentBodyLabel.leadingAnchor.constraint(equalTo: commentBodyView.leadingAnchor, constant: 8),
-            commentBodyLabel.trailingAnchor.constraint(equalTo: commentBodyView.trailingAnchor, constant: -8),
-            commentBodyLabel.bottomAnchor.constraint(equalTo: commentBodyView.bottomAnchor, constant: -8)
+            commentBodyLabel.topAnchor.constraint(equalTo: commentBodyView.topAnchor),
+            commentBodyLabel.leadingAnchor.constraint(equalTo: commentBodyView.leadingAnchor),
+            commentBodyLabel.trailingAnchor.constraint(equalTo: commentBodyView.trailingAnchor),
+            commentBodyLabel.bottomAnchor.constraint(equalTo: commentBodyView.bottomAnchor)
         ])
     }
 
@@ -133,13 +163,11 @@ final class PostCaption: UIView {
         addSubview(commentFooterView)
         commentFooterView.translatesAutoresizingMaskIntoConstraints = false
 
-        addTempLabel("footer", to: commentFooterView)
-
         NSLayoutConstraint.activate([
             commentFooterView.topAnchor.constraint(equalTo: commentBodyView.bottomAnchor),
             commentFooterView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
             commentFooterView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            commentFooterView.heightAnchor.constraint(equalToConstant: 40),
+            commentFooterView.heightAnchor.constraint(equalToConstant: 2),
             commentFooterView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
@@ -152,12 +180,15 @@ final class PostCaption: UIView {
         print("PostCaption: postID=\(postID) caption=\(postCaption)")
 
         commentBodyLabel.text = postCaption
+        postedAtLabel.text = post.timeMessage ?? "now"
 
         guard let username = post.postFrom, !username.isEmpty else {
+            userNameLabel.text = nil
             print("PostCaption: missing postFrom for postID \(postID)")
             return
         }
 
+        userNameLabel.text = username
         print("PostCaption: userName=\(username)")
         loadUserProfile(username: username)
     }

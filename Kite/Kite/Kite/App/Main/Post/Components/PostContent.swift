@@ -31,13 +31,13 @@ final class PostContent: UIView {
     let leftView = UIView()
     let userProfileImageView = UIImageView()
 
-    //Middle View: User Name and Post Info
+    //Middle View: Event Info
     let middleView = UIView()
-    let userNameLabel = UILabel()
-    let postedAtLabel = UILabel()
+    let eventTitleLabel = UILabel()
+    let eventDetailsLabel = UILabel()
     
-    private let userNamePlaceholder = PlaceholderView(width: 120, height: 14)
-    private let postedAtPlaceholder = PlaceholderView(width: 72, height: 12)
+    private let eventTitlePlaceholder = PlaceholderView(width: 120, height: 14)
+    private let eventDetailsPlaceholder = PlaceholderView(width: 72, height: 12)
     
     //Right View: Menu
     let rightView = UIView()
@@ -87,18 +87,20 @@ final class PostContent: UIView {
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
         leftView.addSubview(userProfileImageView)
 
-        //Header Middle View: User Name and Post Info
+        //Header Middle View: Event title and details
         middleView.backgroundColor = .clear
 
-        userNameLabel.font = Fonts.userName
-        userNameLabel.textColor = Colors.primaryText
-        userNameLabel.numberOfLines = 1
-        userNameLabel.lineBreakMode = .byTruncatingTail
+        eventTitleLabel.font = Fonts.eventTitle
+        eventTitleLabel.textColor = Colors.primaryText
+        eventTitleLabel.numberOfLines = 1
+        eventTitleLabel.lineBreakMode = .byTruncatingTail
+        eventTitleLabel.text = "Garden Party!"
 
-        postedAtLabel.font = Fonts.postedAt
-        postedAtLabel.textColor = Colors.postedAtText
-        postedAtLabel.numberOfLines = 1
-        postedAtLabel.lineBreakMode = .byTruncatingTail
+        eventDetailsLabel.font = Fonts.eventDetails
+        eventDetailsLabel.textColor = Colors.postedAtText
+        eventDetailsLabel.numberOfLines = 1
+        eventDetailsLabel.lineBreakMode = .byTruncatingTail
+        eventDetailsLabel.text = "12 Friends and 42 Posts"
 
         //Header Right View: Menu
         rightView.backgroundColor = .clear
@@ -106,17 +108,17 @@ final class PostContent: UIView {
         menuImageView.image = UIImage(named: "menu-horizontal")
         menuImageView.contentMode = .scaleAspectFit
 
-        [leftView, middleView, rightView, userNameLabel, postedAtLabel, menuImageView].forEach {
+        [leftView, middleView, rightView, eventTitleLabel, eventDetailsLabel, menuImageView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
         headerView.addSubview(leftView)
         headerView.addSubview(middleView)
         headerView.addSubview(rightView)
-        middleView.addSubview(userNameLabel)
-        middleView.addSubview(postedAtLabel)
-        middleView.addSubview(userNamePlaceholder)
-        middleView.addSubview(postedAtPlaceholder)
+        middleView.addSubview(eventTitleLabel)
+        middleView.addSubview(eventDetailsLabel)
+        middleView.addSubview(eventTitlePlaceholder)
+        middleView.addSubview(eventDetailsPlaceholder)
         rightView.addSubview(menuImageView)
 
         NSLayoutConstraint.activate([
@@ -150,20 +152,20 @@ final class PostContent: UIView {
             middleView.topAnchor.constraint(equalTo: headerView.topAnchor),
             middleView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
 
-            // Username + posted at — vertically centered as a tight stack (Instagram-style)
-            postedAtLabel.topAnchor.constraint(equalTo: middleView.centerYAnchor, constant: 1),
-            postedAtLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor),
-            postedAtLabel.trailingAnchor.constraint(equalTo: middleView.trailingAnchor),
+            // Event title + details — vertically centered as a tight stack
+            eventDetailsLabel.topAnchor.constraint(equalTo: middleView.centerYAnchor, constant: 1),
+            eventDetailsLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor),
+            eventDetailsLabel.trailingAnchor.constraint(equalTo: middleView.trailingAnchor),
 
-            userNameLabel.bottomAnchor.constraint(equalTo: postedAtLabel.topAnchor, constant: -2),
-            userNameLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor),
-            userNameLabel.trailingAnchor.constraint(equalTo: middleView.trailingAnchor),
+            eventTitleLabel.bottomAnchor.constraint(equalTo: eventDetailsLabel.topAnchor, constant: -2),
+            eventTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor),
+            eventTitleLabel.trailingAnchor.constraint(equalTo: middleView.trailingAnchor),
 
-            userNamePlaceholder.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
-            userNamePlaceholder.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor),
+            eventTitlePlaceholder.leadingAnchor.constraint(equalTo: eventTitleLabel.leadingAnchor),
+            eventTitlePlaceholder.centerYAnchor.constraint(equalTo: eventTitleLabel.centerYAnchor),
 
-            postedAtPlaceholder.leadingAnchor.constraint(equalTo: postedAtLabel.leadingAnchor),
-            postedAtPlaceholder.centerYAnchor.constraint(equalTo: postedAtLabel.centerYAnchor)
+            eventDetailsPlaceholder.leadingAnchor.constraint(equalTo: eventDetailsLabel.leadingAnchor),
+            eventDetailsPlaceholder.centerYAnchor.constraint(equalTo: eventDetailsLabel.centerYAnchor)
         ])
     }
 
@@ -209,38 +211,35 @@ final class PostContent: UIView {
 
     //FUNCTIONS
     func configure(with post: Post) {
-        postedAtLabel.text = post.timeMessage ?? ""
         updatePostImage(post.postImageData)
         showHeaderPlaceholders()
 
         guard let username = post.postFrom, !username.isEmpty else {
-            userNameLabel.text = ""
             print("PostContent: missing postFrom for postID \(post.postID)")
             revealHeaderContent()
             return
         }
 
-        userNameLabel.text = username
         loadUserProfile(username: username)
         revealHeaderContent()
     }
 
     private func showHeaderPlaceholders() {
-        userNameLabel.alpha = 0
-        postedAtLabel.alpha = 0
-        userNamePlaceholder.show()
-        postedAtPlaceholder.show()
-        middleView.bringSubviewToFront(userNamePlaceholder)
-        middleView.bringSubviewToFront(postedAtPlaceholder)
+        eventTitleLabel.alpha = 0
+        eventDetailsLabel.alpha = 0
+        eventTitlePlaceholder.show()
+        eventDetailsPlaceholder.show()
+        middleView.bringSubviewToFront(eventTitlePlaceholder)
+        middleView.bringSubviewToFront(eventDetailsPlaceholder)
     }
 
     private func revealHeaderContent() {
-        userNamePlaceholder.hide(animated: true)
-        postedAtPlaceholder.hide(animated: true)
+        eventTitlePlaceholder.hide(animated: true)
+        eventDetailsPlaceholder.hide(animated: true)
 
         UIView.animate(withDuration: 0.25) {
-            self.userNameLabel.alpha = 1
-            self.postedAtLabel.alpha = 1
+            self.eventTitleLabel.alpha = 1
+            self.eventDetailsLabel.alpha = 1
         }
     }
 
@@ -279,7 +278,6 @@ final class PostContent: UIView {
 
             await MainActor.run {
                 guard self.loadUserName == username else { return }
-                self.userNameLabel.text = user.userName
                 if let image = user.profileImage {
                     self.userProfileImageView.image = image
                 }

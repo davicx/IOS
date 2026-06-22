@@ -48,9 +48,17 @@ class Fonts {
     
     //KITE
     //Kite: Post Header
-    static let userName = UIFont.systemFont(ofSize: 14, weight: .semibold)
-    static let postedAt = UIFont.systemFont(ofSize: 13, weight: .regular)
+    static let eventTitle = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let eventDetails = UIFont.systemFont(ofSize: 14, weight: .regular)
+  
+    //Kite: Post Caption
+    static let userName = UIFont.systemFont(ofSize: 15, weight: .semibold)
+    static let postedAt = UIFont.systemFont(ofSize: 12, weight: .regular)
+    static let postCaptionFont = UIFont.systemFont(ofSize: 14, weight: .regular)
 
+
+    
+    
     
     //MAYBE DONT NEED
     //POST FONTS
