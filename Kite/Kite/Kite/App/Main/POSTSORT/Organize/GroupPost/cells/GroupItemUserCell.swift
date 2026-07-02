@@ -72,7 +72,7 @@ class GroupItemUserCell: UITableViewCell {
         contentView.backgroundColor = .white
         contentView.addSubview(itemView)
         itemView.translatesAutoresizingMaskIntoConstraints = false
-        itemView.backgroundColor = UIColor.itemBackgroundColor
+        itemView.backgroundColor = Colors.itemBackgroundColor
         itemView.layer.borderColor = UIColor.white.cgColor
         itemView.layer.borderWidth = 4
         itemView.layer.cornerRadius = 12

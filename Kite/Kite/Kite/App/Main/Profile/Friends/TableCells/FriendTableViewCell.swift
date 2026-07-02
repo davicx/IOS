@@ -7,6 +7,8 @@
 
 import UIKit
 
+//FriendTableViewCell -> Class:: YourFriendsTableViewCell
+//FriendTableViewCell -> Class:: FriendTableViewCell
 
 //IndividualGroupMembersVC FriendTableViewCell
 
@@ -15,27 +17,54 @@ class FriendTableViewCell: UITableViewCell {
     let profileImageView = UIImageView()
     let usernameLabel = UILabel()
     let fullNameLabel = UILabel()
-    let friendActionButton = UIButton(type: .system)
-    private let loadingSpinner = UIActivityIndicatorView(style: .medium)
 
-    // Callback to your VC
-    var friendActionTapped: (() -> Void)?
-    
-    // Track loading state
+    let addFriendButton = UIButton(type: .system)
+    let cancelFriendInviteButton = UIButton(type: .system)
+    let removeFriendButton = UIButton(type: .system)
+    let acceptButton = UIButton(type: .system)
+    let declineButton = UIButton(type: .system)
+
+    private let loadingSpinner = UIActivityIndicatorView(style: .medium)
+    private var loadingTargetButton: UIButton?
+
+    // Callbacks to your VC
+    var addFriendTapped: (() -> Void)?
+    var cancelFriendInviteTapped: (() -> Void)?
+    var removeFriendTapped: (() -> Void)?
+    var acceptFriendInviteTapped: (() -> Void)?
+    var declineFriendInviteTapped: (() -> Void)?
+
     private(set) var isLoading = false
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
-        friendActionButton.addTarget(self, action: #selector(handleFriendActionTapped), for: .touchUpInside)
+
+        addFriendButton.addTarget(self, action: #selector(handleAddFriendTapped), for: .touchUpInside)
+        cancelFriendInviteButton.addTarget(self, action: #selector(handleCancelTapped), for: .touchUpInside)
+        removeFriendButton.addTarget(self, action: #selector(handleRemoveTapped), for: .touchUpInside)
+        acceptButton.addTarget(self, action: #selector(handleAcceptTapped), for: .touchUpInside)
+        declineButton.addTarget(self, action: #selector(handleDeclineTapped), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        addFriendTapped = nil
+        cancelFriendInviteTapped = nil
+        removeFriendTapped = nil
+        acceptFriendInviteTapped = nil
+        declineFriendInviteTapped = nil
+        setLoading(false)
+    }
+
     private func setupViews() {
-        [profileImageView, usernameLabel, fullNameLabel, friendActionButton, loadingSpinner].forEach {
+        [profileImageView, usernameLabel, fullNameLabel,
+         addFriendButton, cancelFriendInviteButton, removeFriendButton,
+         acceptButton, declineButton, loadingSpinner].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -48,11 +77,21 @@ class FriendTableViewCell: UITableViewCell {
         fullNameLabel.font = UIFont.systemFont(ofSize: 14)
         fullNameLabel.textColor = .gray
 
-        friendActionButton.layer.cornerRadius = 6
-        friendActionButton.clipsToBounds = true
-        friendActionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        friendActionButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        
+        addFriendButton.setTitle("Add Friend", for: .normal)
+        Buttons.addFriendButtonStyle(button: addFriendButton)
+
+        cancelFriendInviteButton.setTitle("Cancel", for: .normal)
+        Buttons.cancelFriendInviteButtonStyle(button: cancelFriendInviteButton)
+
+        removeFriendButton.setTitle("Friends", for: .normal)
+        Buttons.removeFriendButtonStyle(button: removeFriendButton)
+
+        acceptButton.setTitle("Accept", for: .normal)
+        Buttons.acceptFriendRequestButtonStyle(button: acceptButton)
+
+        declineButton.setTitle("Decline", for: .normal)
+        Buttons.declineFriendRequestButtonStyle(button: declineButton)
+
         loadingSpinner.hidesWhenStopped = true
         loadingSpinner.color = .white
 
@@ -69,78 +108,115 @@ class FriendTableViewCell: UITableViewCell {
             fullNameLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
             fullNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
 
-            friendActionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            friendActionButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            friendActionButton.widthAnchor.constraint(equalToConstant: 100),
-            
-            loadingSpinner.centerXAnchor.constraint(equalTo: friendActionButton.centerXAnchor),
-            loadingSpinner.centerYAnchor.constraint(equalTo: friendActionButton.centerYAnchor)
+            addFriendButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            addFriendButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            addFriendButton.widthAnchor.constraint(equalToConstant: 100),
+
+            cancelFriendInviteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            cancelFriendInviteButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            cancelFriendInviteButton.widthAnchor.constraint(equalToConstant: 100),
+
+            removeFriendButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            removeFriendButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            removeFriendButton.widthAnchor.constraint(equalToConstant: 100),
+
+            acceptButton.trailingAnchor.constraint(equalTo: declineButton.leadingAnchor, constant: -8),
+            acceptButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            acceptButton.widthAnchor.constraint(equalToConstant: 80),
+
+            declineButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            declineButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            declineButton.widthAnchor.constraint(equalToConstant: 80),
+
+            loadingSpinner.centerXAnchor.constraint(equalTo: removeFriendButton.centerXAnchor),
+            loadingSpinner.centerYAnchor.constraint(equalTo: removeFriendButton.centerYAnchor)
         ])
     }
 
-    func configure(with user: User) {
+    func configure(with user: User, parentViewController: String? = nil) {
+        if let parentViewController {
+            printCellLoadInfo(cellName: "FriendTableViewCell", parentVC: parentViewController)
+        }
+
         usernameLabel.text = "@\(user.userName)"
         fullNameLabel.text = user.displayName
         profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")
 
-        friendActionButton.isUserInteractionEnabled = true
-        friendActionButton.isEnabled = true
-        friendActionButton.setTitleColor(.white, for: .normal)
-        friendActionButton.backgroundColor = .systemBlue
-        friendActionButton.layer.borderWidth = 0
-        friendActionButton.isHidden = false
+        addFriendButton.isHidden = true
+        cancelFriendInviteButton.isHidden = true
+        removeFriendButton.isHidden = true
+        acceptButton.isHidden = true
+        declineButton.isHidden = true
+        loadingTargetButton = nil
 
         switch user.friendshipStatus {
         case .friends:
-            friendActionButton.setTitle("Friends", for: .normal)
-            friendActionButton.backgroundColor = .white
-            friendActionButton.setTitleColor(.black, for: .normal)
-            friendActionButton.layer.borderWidth = 1
-            friendActionButton.layer.borderColor = UIColor.lightGray.cgColor
-            friendActionButton.isEnabled = true
+            removeFriendButton.isHidden = false
+            loadingTargetButton = removeFriendButton
 
         case .invitePendingSentByYou:
-            friendActionButton.setTitle("Cancel", for: .normal)
-            friendActionButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0)
-            friendActionButton.setTitleColor(.white, for: .normal)
-            friendActionButton.isEnabled = true
-            friendActionButton.isUserInteractionEnabled = true
+            cancelFriendInviteButton.isHidden = false
+            loadingTargetButton = cancelFriendInviteButton
 
         case .requestPendingSentByThem:
-            friendActionButton.setTitle("Accept", for: .normal)
-            friendActionButton.backgroundColor = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
-            friendActionButton.setTitleColor(.white, for: .normal)
-            friendActionButton.isEnabled = true
-
-        case .you:
-            friendActionButton.isHidden = true
+            acceptButton.isHidden = false
+            declineButton.isHidden = false
+            loadingTargetButton = acceptButton
 
         case .notFriends, .unknown:
-            friendActionButton.setTitle("Add Friend", for: .normal)
-            friendActionButton.backgroundColor = .systemBlue
-            friendActionButton.setTitleColor(.white, for: .normal)
-            friendActionButton.isEnabled = true
+            addFriendButton.isHidden = false
+            loadingTargetButton = addFriendButton
+
+        case .you:
+            break
         }
-        
-        // Reset loading state
+
         setLoading(false)
     }
-    
+
     func setLoading(_ loading: Bool) {
         isLoading = loading
-        friendActionButton.isEnabled = !loading
-        friendActionButton.alpha = loading ? 0.6 : 1.0
-        
+
+        [addFriendButton, cancelFriendInviteButton, removeFriendButton, acceptButton, declineButton].forEach {
+            $0.isEnabled = !loading
+        }
+
+        loadingTargetButton?.alpha = loading ? 0.6 : 1.0
+
         if loading {
-            friendActionButton.setTitle("", for: .normal)
+            loadingTargetButton?.setTitle("", for: .normal)
             loadingSpinner.startAnimating()
         } else {
             loadingSpinner.stopAnimating()
+            restoreButtonTitles()
         }
     }
 
-    
-    @objc private func handleFriendActionTapped() {
-        friendActionTapped?()
+    private func restoreButtonTitles() {
+        addFriendButton.setTitle("Add Friend", for: .normal)
+        cancelFriendInviteButton.setTitle("Cancel", for: .normal)
+        removeFriendButton.setTitle("Friends", for: .normal)
+        acceptButton.setTitle("Accept", for: .normal)
+        declineButton.setTitle("Decline", for: .normal)
+    }
+
+    @objc private func handleAddFriendTapped() {
+        addFriendTapped?()
+    }
+
+    @objc private func handleCancelTapped() {
+        cancelFriendInviteTapped?()
+    }
+
+    @objc private func handleRemoveTapped() {
+        removeFriendTapped?()
+    }
+
+    @objc private func handleAcceptTapped() {
+        acceptFriendInviteTapped?()
+    }
+
+    @objc private func handleDeclineTapped() {
+        declineFriendInviteTapped?()
     }
 }

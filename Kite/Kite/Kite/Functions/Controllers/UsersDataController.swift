@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 extension Notification.Name {
     static let usersUpdated = Notification.Name("usersUpdated")
     static let friendsUpdated = Notification.Name("friendsUpdated")

@@ -85,6 +85,16 @@ Generated from codebase review. Grouped by area.
 
 ---
 
+## 7. Friend actions — cache-driven UI refresh
+
+Full checklist: **`Kite/Docs/to_do.md`**
+
+- [ ] **Phase 1:** `GroupMembersViewController` — observe `.friendsUpdated`, `syncMembersFromCache()`, stop manual row patching
+- [ ] **Phase 2:** `FriendListViewController` — same pattern (add friend only today)
+- [ ] **Phase 3:** Review `FriendsViewController` for consistency (reference impl; may keep API `fetchFriends()`)
+
+---
+
 ## Summary (priority order)
 
 1. **Item purchase end-to-end:** Pass post + selected users into ItemPurchaseViewController → PostLogic with `purchasedViewers` → remove hardcoded list.

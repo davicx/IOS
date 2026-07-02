@@ -10,6 +10,7 @@ import UIKit
 
 class Temp {
     
+    /*
     static func styleTextField(_ textfield:UITextField) {
         
         // Create the bottom line
@@ -50,4 +51,5 @@ class Temp {
         return passwordTest.evaluate(with: password)
     }
     
+    */
 }

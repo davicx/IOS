@@ -8,6 +8,7 @@
 import UIKit
 
 //FONTS:
+/*
 //Font 1: Main Site Font black like instagram
 private let mainTextFont = UIFont.systemFont(ofSize: 15, weight: .regular)
 
@@ -26,7 +27,7 @@ extension UILabel {
         AppText.mainTextStyle(self)
     }
 }
-
+*/
 /*
  Usage:
  let label = UILabel()

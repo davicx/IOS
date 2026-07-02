@@ -58,7 +58,7 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let user = users[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.friendCell, for: indexPath) as! YourFriendsTableViewCell
-        cell.configure(with: user)
+        cell.configure(with: user, parentViewController: "FollowingViewController")
         return cell
     }
     

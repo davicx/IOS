@@ -65,7 +65,7 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let friend = friendListArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as! FriendTableViewCell
-        cell.configure(with: friend)
+        cell.configure(with: friend, parentViewController: "FriendListViewController")
         
         // Set loading state if this user is currently loading
         if loadingUsernames.contains(friend.userName) {
@@ -73,7 +73,7 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         // Action for "Add Friend" button
-        cell.friendActionTapped = { [weak self] in
+        cell.addFriendTapped = { [weak self] in
             guard let self = self else { return }
             
             // Prevent multiple simultaneous requests for the same user

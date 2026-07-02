@@ -57,32 +57,18 @@ class YourFriendsTableViewCell: UITableViewCell {
         fullNameLabel.font = UIFont.systemFont(ofSize: 14)
         fullNameLabel.textColor = .gray
 
-        [removeFriendButton, acceptButton, declineButton].forEach {
-            $0.layer.cornerRadius = 6
-            $0.clipsToBounds = true
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-            $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        }
-
         cancelFriendInviteButton.setTitle("Cancel", for: .normal)
         Buttons.cancelFriendInviteButtonStyle(button: cancelFriendInviteButton)
-        //cancelFriendInviteButton.backgroundColor = UIColor(red: 1.0, green: 0.18, blue: 0.48, alpha: 1.0)
-        //cancelFriendInviteButton.setTitleColor(.white, for: .normal)
 
         removeFriendButton.setTitle("Friends", for: .normal)
-        removeFriendButton.backgroundColor = .white
-        removeFriendButton.setTitleColor(.black, for: .normal)
-        removeFriendButton.layer.borderWidth = 1
-        removeFriendButton.layer.borderColor = UIColor.lightGray.cgColor
-
+        Buttons.removeFriendButtonStyle(button: removeFriendButton)
+   
         acceptButton.setTitle("Accept", for: .normal)
-        acceptButton.backgroundColor = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
-        acceptButton.setTitleColor(.white, for: .normal)
+        Buttons.acceptFriendRequestButtonStyle(button: acceptButton)
 
         declineButton.setTitle("Decline", for: .normal)
-        declineButton.backgroundColor = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
-        declineButton.setTitleColor(.white, for: .normal)
-
+        Buttons.declineFriendRequestButtonStyle(button: declineButton)
+ 
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -115,7 +101,11 @@ class YourFriendsTableViewCell: UITableViewCell {
     }
     
 
-    func configure(with user: User) {
+    func configure(with user: User, parentViewController: String? = nil) {
+        if let parentViewController {
+            printCellLoadInfo(cellName: "YourFriendsTableViewCell", parentVC: parentViewController)
+        }
+
         usernameLabel.text = "@\(user.userName)"
         fullNameLabel.text = user.displayName
         profileImageView.image = user.profileImage ?? UIImage(named: "placeholder_profile")

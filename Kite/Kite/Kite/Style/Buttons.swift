@@ -10,8 +10,9 @@ import UIKit
 
 enum Buttons {
 
-    //BUTTONS
-    //Login Buttons
+
+    //LOGIN BUTTONS
+    //Login Button (Blue) 
     static func loginButtonStyle(button: UIButton) {
         button.backgroundColor = Colors.buttonPrimaryBlueBackground
         button.setTitleColor(.white, for: .normal)
@@ -20,7 +21,52 @@ enum Buttons {
 
     }
     
-    //Cancel Friend Request Button
+    //FRIEND BUTTONS
+    //Remove Friend Button (White) -> Current Friends: Clicking will Remove that friend
+    static func removeFriendButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.screenBackground
+        button.setTitleColor(Colors.primaryText, for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.cornerRadius = 6
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.body
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+    
+    //Accept Friend Request Button (Green) -> Someone invited you to be their friend: Accept
+    static func acceptFriendRequestButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonAcceptFriendBackground
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 6
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.body
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+
+    //Add Friend Button (Blue) -> Not friends yet
+    static func addFriendButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonPrimaryBlueBackground
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 6
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.body
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+
+    //Decline Friend Request Button (Red) -> Someone invited you to be their friend: Decline
+    static func declineFriendRequestButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonDeclineFriendBackground
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 6
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.body
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+    
+
+    //Friend Invite Button (Pink) -> You invited someone to be your friend
+    //RE NAME TO friendInviteButtonStyle
     static func cancelFriendInviteButtonStyle(button: UIButton) {
         button.backgroundColor = Colors.buttonPrimaryPinkBackground
         button.setTitleColor(.white, for: .normal)
@@ -29,8 +75,6 @@ enum Buttons {
         button.titleLabel?.font = Fonts.body
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
-    
-    //Friend Button (Clicking will Remove that friend)
     
 
     //LINK BUTTONS
@@ -45,6 +89,27 @@ enum Buttons {
         button.setTitleColor(Colors.primaryBlue, for: .normal)
         button.titleLabel?.font = Fonts.bodySemibold
         button.backgroundColor = .clear
+    }
+    
+    
+    //EXTERNAL
+    static func styleTwitterButton(_ button:UIButton) {
+        button.backgroundColor = UIColor(hex: "#1DA1F2")
+        button.layer.cornerRadius = 12.0
+        button.tintColor = UIColor.white
+
+        // Set the font to Helvetica Neue, size 18, bold
+        button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+    }
+    
+    static func styleTikTokButton(_ button: UIButton) {
+        button.backgroundColor = .clear // Clear background
+        button.layer.cornerRadius = 4.0
+        button.layer.borderWidth = 1.0 // Thin 1-point border
+        button.layer.borderColor = UIColor(hex: "#E3E3E4").cgColor // Border color
+        
+        button.setTitleColor(UIColor(hex: "#000000"), for: .normal) // Set text color
+        button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
     }
     
     
