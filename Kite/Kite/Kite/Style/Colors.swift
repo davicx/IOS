@@ -10,7 +10,7 @@ import UIKit
 
 class Colors {
 
-
+    //APP MAIN
     // Kite Main Colors
     static let primaryBlue = UIColor(hex: "#3797EF")
     static let primaryPink = UIColor(hex: "#FF2E7A")
@@ -19,7 +19,7 @@ class Colors {
     static let primaryText = UIColor.black
     static let secondaryText = UIColor(hex: "#737373")
     static let postedAtText = UIColor(hex: "#5A5A5A")
-    
+
     // Backgrounds
     static let screenBackground = UIColor.white
     static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
@@ -30,6 +30,11 @@ class Colors {
     static let buttonPrimaryPinkBackground = primaryPink
     static let buttonAcceptFriendBackground = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
     static let buttonDeclineFriendBackground = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
+    
+
+    //Post Font Colors
+    static let postCaptionFontColor = primaryText
+    
     
 
 }

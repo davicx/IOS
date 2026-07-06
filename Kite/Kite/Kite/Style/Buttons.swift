@@ -17,11 +17,21 @@ enum Buttons {
         button.backgroundColor = Colors.buttonPrimaryBlueBackground
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = Fonts.button
+        button.titleLabel?.font = Fonts.buttonLargeFont
 
     }
     
     //FRIEND BUTTONS
+    //Current Friends Button (Blue) -> Already friends (e.g. profile "Friends")
+    static func currentFriendsButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonPrimaryBlueBackground
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 6
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.buttonRegularFont
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+
     //Remove Friend Button (White) -> Current Friends: Clicking will Remove that friend
     static func removeFriendButtonStyle(button: UIButton) {
         button.backgroundColor = Colors.screenBackground
@@ -30,7 +40,7 @@ enum Buttons {
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
-        button.titleLabel?.font = Fonts.body
+        button.titleLabel?.font = Fonts.buttonRegularFont
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
     
@@ -40,7 +50,7 @@ enum Buttons {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
-        button.titleLabel?.font = Fonts.body
+        button.titleLabel?.font = Fonts.buttonRegularFont
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
@@ -50,7 +60,7 @@ enum Buttons {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
-        button.titleLabel?.font = Fonts.body
+        button.titleLabel?.font = Fonts.buttonRegularFont
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
@@ -60,7 +70,7 @@ enum Buttons {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
-        button.titleLabel?.font = Fonts.body
+        button.titleLabel?.font = Fonts.buttonRegularFont
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
     
@@ -72,7 +82,7 @@ enum Buttons {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
-        button.titleLabel?.font = Fonts.body
+        button.titleLabel?.font = Fonts.buttonRegularFont
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
     
@@ -80,14 +90,14 @@ enum Buttons {
     //LINK BUTTONS
     static func linkButtonStyle(button: UIButton) {
         button.setTitleColor(Colors.primaryBlue, for: .normal)
-        button.titleLabel?.font = Fonts.body
+        button.titleLabel?.font = Fonts.buttonRegularFont
         button.backgroundColor = .clear
 
     }
 
     static func linkButtonBoldStyle(button: UIButton) {
         button.setTitleColor(Colors.primaryBlue, for: .normal)
-        button.titleLabel?.font = Fonts.bodySemibold
+        button.titleLabel?.font = Fonts.buttonSemiboldFont
         button.backgroundColor = .clear
     }
     

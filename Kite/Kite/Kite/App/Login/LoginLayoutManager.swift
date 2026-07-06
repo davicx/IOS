@@ -88,8 +88,8 @@ class LoginLayoutManager {
         usernameTextField.text = "davey"
         passwordTextField.text = "password"
         
-        Elements.loginTextFieldStyle(textField: usernameTextField)
-        Elements.loginTextFieldStyle(textField: passwordTextField)
+        TextFieldStyle.login(usernameTextField)
+        TextFieldStyle.login(passwordTextField)
  
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -184,7 +184,7 @@ class LoginLayoutManager {
         let registerLabel = UILabel()
         registerLabel.text = "Don’t have an account?"
         registerLabel.textColor = .black
-        registerLabel.font = Fonts.body
+        registerLabel.font = Fonts.buttonRegularFont
 
         let signUpButton = UIButton(type: .system)
         signUpButton.setTitle("Sign Up", for: .normal)

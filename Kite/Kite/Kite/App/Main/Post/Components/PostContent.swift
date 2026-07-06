@@ -90,13 +90,13 @@ final class PostContent: UIView {
         //Header Middle View: Event title and details
         middleView.backgroundColor = .clear
 
-        eventTitleLabel.font = Fonts.eventTitle
+        eventTitleLabel.font = Fonts.postEventTitleFont
         eventTitleLabel.textColor = Colors.primaryText
         eventTitleLabel.numberOfLines = 1
         eventTitleLabel.lineBreakMode = .byTruncatingTail
         eventTitleLabel.text = "Garden Party!"
 
-        eventDetailsLabel.font = Fonts.eventDetails
+        eventDetailsLabel.font = Fonts.postEventDetailsFont
         eventDetailsLabel.textColor = Colors.postedAtText
         eventDetailsLabel.numberOfLines = 1
         eventDetailsLabel.lineBreakMode = .byTruncatingTail

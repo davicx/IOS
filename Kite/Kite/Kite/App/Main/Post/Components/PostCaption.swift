@@ -88,12 +88,12 @@ final class PostCaption: UIView {
     private func setupCommentHeaderView() {
         commentHeaderView.backgroundColor = UIColor(red: 1.0, green: 0.82, blue: 0.80, alpha: 1.0)
 
-        userNameLabel.font = Fonts.userName
+        userNameLabel.font = Fonts.postUsernameFont
         userNameLabel.textColor = Colors.primaryText
         userNameLabel.numberOfLines = 1
         userNameLabel.lineBreakMode = .byTruncatingTail
 
-        postedAtLabel.font = Fonts.postedAt
+        postedAtLabel.font = Fonts.postedAtFont
         postedAtLabel.textColor = Colors.postedAtText
         postedAtLabel.numberOfLines = 1
         postedAtLabel.lineBreakMode = .byTruncatingTail
@@ -132,7 +132,7 @@ final class PostCaption: UIView {
         commentBodyView.backgroundColor = UIColor(red: 0.86, green: 0.82, blue: 0.96, alpha: 1.0)
 
         commentBodyLabel.font = Fonts.postCaptionFont
-        commentBodyLabel.textColor = Colors.primaryText
+        commentBodyLabel.textColor = Colors.postCaptionFontColor
         commentBodyLabel.numberOfLines = 0
         commentBodyLabel.text = "body"
 

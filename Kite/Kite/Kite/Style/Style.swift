@@ -11,6 +11,93 @@
 import UIKit
 
 
+
+//LABELS
+enum LabelStyle {
+
+    //POST
+    
+    //ITEM
+    static func itemName(_ label: UILabel) {
+        label.font = Fonts.itemNameFont
+        label.textColor = .label
+        label.numberOfLines = 2
+        label.lineBreakMode = .byTruncatingTail
+    }
+
+    static func itemPrice(_ label: UILabel) {
+        label.font = Fonts.itemPriceFont
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+    }
+
+    static func itemDescription(_ label: UILabel) {
+        label.font = Fonts.itemDescriptionFont
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 5
+        label.lineBreakMode = .byTruncatingTail
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
+        label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    }
+
+    static func itemLink(_ label: UILabel) {
+        label.font = Fonts.itemLinkFont
+        label.textColor = .systemBlue
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingMiddle
+    }
+
+}
+
+// TEXT VIEWS (Single Line of text)
+enum TextViewStyle {
+    
+}
+
+// VIEWS
+enum ViewStyle {
+    
+}
+
+
+// TEXT FIELDS
+enum TextFieldStyle {
+    
+    //LOGIN
+    static func login(_ textField: UITextField) {
+        textField.backgroundColor = UIColor(hex: "#FAFAFA")
+        textField.layer.cornerRadius = 5.0
+        textField.layer.borderWidth = 0.5
+        textField.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
+        textField.textColor = UIColor.black.withAlphaComponent(0.8)
+        textField.font = UIFont(name: "SFProText-Regular", size: 14)
+        textField.layer.masksToBounds = true
+
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: 40))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+    }
+
+}
+
+
+
+
+
+
+
+
+
+//POSSIBLY REMOVE LATER
+struct StyleConstants {
+    static let postHeader: CGFloat = 40
+    static let postSocials: CGFloat = 40
+    static let postDivider: CGFloat = 5
+}
+
+//APPENDIX
 /*
  Style
  ├── Elements
@@ -68,11 +155,7 @@ import UIKit
 
 
 
-struct StyleConstants {
-    static let postHeader: CGFloat = 40
-    static let postSocials: CGFloat = 40
-    static let postDivider: CGFloat = 5
-}
+
 
 
 

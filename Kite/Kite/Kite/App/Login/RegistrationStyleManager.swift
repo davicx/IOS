@@ -84,10 +84,10 @@ class RegistrationStyleManager {
         passwordTextField.placeholder = "Password"
         passwordTextField.isSecureTextEntry = true
 
-        Elements.loginTextFieldStyle(textField: userNameTextField)
-        Elements.loginTextFieldStyle(textField: fullNameTextField)
-        Elements.loginTextFieldStyle(textField: emailTextField)
-        Elements.loginTextFieldStyle(textField: passwordTextField)
+        TextFieldStyle.login(userNameTextField)
+        TextFieldStyle.login(fullNameTextField)
+        TextFieldStyle.login(emailTextField)
+        TextFieldStyle.login(passwordTextField)
         //StyleOld.styleLoginTextField(userNameTextField)
         //StyleOld.styleLoginTextField(fullNameTextField)
         //StyleOld.styleLoginTextField(emailTextField)
