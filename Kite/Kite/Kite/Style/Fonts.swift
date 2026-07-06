@@ -39,15 +39,17 @@ class Fonts {
     static let buttonSemiboldFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
 
 
-    
-    //MAYBE DONT NEED
-    //POST FONTS
-    //static let PostHeaderFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
-    //static let PostBodyFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
-    
-    //USER FONTS
-    //static let userNameFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
 
 }
+
+
+//MAYBE DONT NEED
+//POST FONTS
+//static let PostHeaderFont: UIFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
+//static let PostBodyFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
+
+//USER FONTS
+//static let userNameFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
+
 
 

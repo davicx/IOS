@@ -11,31 +11,39 @@ import UIKit
 class Colors {
 
     //APP MAIN
-    // Kite Main Colors
+    //Kite Main Colors
     static let primaryBlue = UIColor(hex: "#3797EF")
     static let primaryPink = UIColor(hex: "#FF2E7A")
 
-    // Text
+    //Text
     static let primaryText = UIColor.black
     static let secondaryText = UIColor(hex: "#737373")
-    static let postedAtText = UIColor(hex: "#5A5A5A")
+    static let tertiaryText = UIColor(hex: "#5A5A5A")
 
-    // Backgrounds
+    //Status
+    static let successGreen = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
+    static let dangerRed = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
+    
+    //Backgrounds
     static let screenBackground = UIColor.white
     static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
     static let itemBackgroundColor = UIColor(hex: "#F7F8F9")
 
-    // Buttons
+    
+    //IN APP USE
+    //Posts
+    static let postCaptionFontColor = primaryText
+    static let postedAtText = tertiaryText
+
+    //Buttons
     static let buttonPrimaryBlueBackground = primaryBlue
     static let buttonPrimaryPinkBackground = primaryPink
-    static let buttonAcceptFriendBackground = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
-    static let buttonDeclineFriendBackground = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
-    
+    static let buttonAcceptFriendBackground = successGreen
+    static let buttonDeclineFriendBackground = dangerRed
 
-    //Post Font Colors
-    static let postCaptionFontColor = primaryText
-    
-    
+    //static let buttonAcceptFriendBackground = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
+    //static let buttonDeclineFriendBackground = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
+
 
 }
 
