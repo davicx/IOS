@@ -14,7 +14,7 @@ enum Buttons {
     //LOGIN BUTTONS
     //Login Button (Blue) 
     static func loginButtonStyle(button: UIButton) {
-        button.backgroundColor = Colors.buttonPrimaryBlueBackground
+        button.backgroundColor = Colors.buttonLoginBackground
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
         button.titleLabel?.font = Fonts.buttonLargeFont
@@ -24,7 +24,7 @@ enum Buttons {
     //FRIEND BUTTONS
     //Current Friends Button (Blue) -> Already friends (e.g. profile "Friends")
     static func currentFriendsButtonStyle(button: UIButton) {
-        button.backgroundColor = Colors.buttonPrimaryBlueBackground
+        button.backgroundColor = Colors.buttonCurrentFriendsBackground
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
@@ -34,7 +34,7 @@ enum Buttons {
 
     //Remove Friend Button (White) -> Current Friends: Clicking will Remove that friend
     static func removeFriendButtonStyle(button: UIButton) {
-        button.backgroundColor = Colors.screenBackground
+        button.backgroundColor = Colors.buttonRemoveFriendBackground
         button.setTitleColor(Colors.primaryText, for: .normal)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.lightGray.cgColor
@@ -56,7 +56,7 @@ enum Buttons {
 
     //Add Friend Button (Blue) -> Not friends yet
     static func addFriendButtonStyle(button: UIButton) {
-        button.backgroundColor = Colors.buttonPrimaryBlueBackground
+        button.backgroundColor = Colors.buttonAddFriendBackground
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
@@ -64,7 +64,7 @@ enum Buttons {
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
-    //Decline Friend Request Button (Red) -> Someone invited you to be their friend: Decline
+    //Decline Friend Request Button (Pink) -> Someone invited you to be their friend: Decline
     static func declineFriendRequestButtonStyle(button: UIButton) {
         button.backgroundColor = Colors.buttonDeclineFriendBackground
         button.setTitleColor(.white, for: .normal)
@@ -76,9 +76,8 @@ enum Buttons {
     
 
     //Friend Invite Button (Pink) -> You invited someone to be your friend
-    //RE NAME TO friendInviteButtonStyle
-    static func cancelFriendInviteButtonStyle(button: UIButton) {
-        button.backgroundColor = Colors.buttonPrimaryPinkBackground
+    static func friendInviteButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonFriendInviteBackground
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
@@ -86,6 +85,26 @@ enum Buttons {
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
     
+
+    //GENERAL BUTTONS
+    static func buttonPinkStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonPinkBackground
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 6
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.buttonTikTokFont
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+
+    static func buttonGrayStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonGrayBackground
+        button.setTitleColor(.black, for: .normal)
+        button.layer.cornerRadius = 6
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.buttonTikTokFont
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+
 
     //LINK BUTTONS
     static func linkButtonStyle(button: UIButton) {

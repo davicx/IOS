@@ -15,6 +15,7 @@ class GroupCell: UITableViewCell {
 
     private let groupIDLabel = UILabel()
     private let groupNameLabel = UILabel()
+    private let createdByLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,10 +29,12 @@ class GroupCell: UITableViewCell {
     }
 
     private func setupLabels() {
-        groupIDLabel.font = .systemFont(ofSize: 16)
         groupNameLabel.font = .boldSystemFont(ofSize: 20)
+        createdByLabel.font = .systemFont(ofSize: 14)
+        createdByLabel.textColor = .gray
+        groupIDLabel.font = .systemFont(ofSize: 16)
 
-        let stack = UIStackView(arrangedSubviews: [groupIDLabel, groupNameLabel])
+        let stack = UIStackView(arrangedSubviews: [groupNameLabel, createdByLabel, groupIDLabel])
         stack.axis = .vertical
         stack.spacing = 8
         stack.alignment = .center
@@ -45,9 +48,22 @@ class GroupCell: UITableViewCell {
         ])
     }
 
-    func configure(with group: GroupModel) {
-        groupIDLabel.text = "Group ID: \(group.groupID)"
+    func configure(with group: GroupModel, currentUser: String) {
         groupNameLabel.text = group.groupName
+        createdByLabel.text = createdByText(for: group, currentUser: currentUser)
+        groupIDLabel.text = "Group ID: \(group.groupID)"
+    }
+
+    private func createdByText(for group: GroupModel, currentUser: String) -> String {
+        guard let createdBy = group.createdBy, !createdBy.isEmpty else {
+            return "Group Created By: Unknown"
+        }
+
+        if createdBy == currentUser {
+            return "Created by you"
+        }
+
+        return "Group Created By: \(createdBy)"
     }
 }
 

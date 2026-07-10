@@ -356,12 +356,12 @@ final class PostContent: UIView {
         //Header Middle View: User Name and Post Info
         middleView.backgroundColor = .clear
 
-        userNameLabel.font = Fonts.userName
+        userNameLabel.font = Fonts.postUsernameFont
         userNameLabel.textColor = Colors.primaryText
         userNameLabel.numberOfLines = 1
         userNameLabel.lineBreakMode = .byTruncatingTail
 
-        postedAtLabel.font = Fonts.postedAt
+        postedAtLabel.font = Fonts.postedAtFont
         postedAtLabel.textColor = Colors.postedAtText
         postedAtLabel.numberOfLines = 1
         postedAtLabel.lineBreakMode = .byTruncatingTail
@@ -613,12 +613,12 @@ final class PostContent: UIView {
          //Header Middle View: User Name and Post Info
          middleView.backgroundColor = .clear
 
-         userNameLabel.font = Fonts.userName
+         userNameLabel.font = Fonts.postUsernameFont
          userNameLabel.textColor = Colors.primaryText
          userNameLabel.numberOfLines = 1
          userNameLabel.lineBreakMode = .byTruncatingTail
 
-         postedAtLabel.font = Fonts.postedAt
+         postedAtLabel.font = Fonts.postedAtFont
          postedAtLabel.textColor = Colors.postedAtText
          postedAtLabel.numberOfLines = 1
          postedAtLabel.lineBreakMode = .byTruncatingTail

@@ -58,16 +58,18 @@ class YourFriendsTableViewCell: UITableViewCell {
         fullNameLabel.textColor = .gray
 
         cancelFriendInviteButton.setTitle("Cancel", for: .normal)
-        Buttons.cancelFriendInviteButtonStyle(button: cancelFriendInviteButton)
+        Buttons.friendInviteButtonStyle(button: cancelFriendInviteButton)
 
         removeFriendButton.setTitle("Friends", for: .normal)
         Buttons.removeFriendButtonStyle(button: removeFriendButton)
    
         acceptButton.setTitle("Accept", for: .normal)
-        Buttons.acceptFriendRequestButtonStyle(button: acceptButton)
+        // Buttons.acceptFriendRequestButtonStyle(button: acceptButton)
+        Buttons.buttonPinkStyle(button: acceptButton)
 
         declineButton.setTitle("Decline", for: .normal)
-        Buttons.declineFriendRequestButtonStyle(button: declineButton)
+        // Buttons.declineFriendRequestButtonStyle(button: declineButton)
+        Buttons.buttonGrayStyle(button: declineButton)
  
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

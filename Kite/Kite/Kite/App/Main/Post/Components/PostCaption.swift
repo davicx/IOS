@@ -94,7 +94,7 @@ final class PostCaption: UIView {
         userNameLabel.lineBreakMode = .byTruncatingTail
 
         postedAtLabel.font = Fonts.postedAtFont
-        postedAtLabel.textColor = Colors.postedAtText
+        postedAtLabel.textColor = Colors.postedAtTextColor
         postedAtLabel.numberOfLines = 1
         postedAtLabel.lineBreakMode = .byTruncatingTail
 

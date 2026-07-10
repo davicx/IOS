@@ -29,23 +29,37 @@ class Colors {
     static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
     static let itemBackgroundColor = UIColor(hex: "#F7F8F9")
 
+    //Buttons
+    static let tikTokPink = UIColor(hex: "#EF3D57")
+    static let tikTokGray = UIColor(hex: "#F1F1F2")
+    
     
     //IN APP USE
+    //Groups
+    
     //Posts
     static let postCaptionFontColor = primaryText
-    static let postedAtText = tertiaryText
+    static let postedAtTextColor = tertiaryText
 
     //Buttons
-    static let buttonPrimaryBlueBackground = primaryBlue
-    static let buttonPrimaryPinkBackground = primaryPink
+    static let buttonLoginBackground = primaryBlue
+    static let buttonAddFriendBackground = primaryBlue
+    static let buttonCurrentFriendsBackground = primaryBlue
+    static let buttonFriendInviteBackground = primaryPink
     static let buttonAcceptFriendBackground = successGreen
-    static let buttonDeclineFriendBackground = dangerRed
+    static let buttonDeclineFriendBackground = primaryPink
+    static let buttonRemoveFriendBackground = screenBackground
+    static let buttonPinkBackground = tikTokPink
+    static let buttonGrayBackground = tikTokGray
 
+    
     //static let buttonAcceptFriendBackground = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
     //static let buttonDeclineFriendBackground = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
 
 
 }
+
+
 
 
 /*

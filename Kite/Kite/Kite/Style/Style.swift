@@ -15,7 +15,7 @@ import UIKit
 //LABELS
 enum LabelStyle {
 
-    //POST
+    //Post
     static func postEventTitle(_ label: UILabel) {
         label.font = Fonts.postEventTitleFont
         label.textColor = Colors.primaryText
@@ -25,12 +25,12 @@ enum LabelStyle {
 
     static func postEventDetails(_ label: UILabel) {
         label.font = Fonts.postEventDetailsFont
-        label.textColor = Colors.postedAtText
+        label.textColor = Colors.postedAtTextColor
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
     }
 
-    //ITEM
+    //Item
     static func itemName(_ label: UILabel) {
         label.font = Fonts.itemNameFont
         label.textColor = .label
@@ -64,10 +64,12 @@ enum LabelStyle {
 
 }
 
+
 // TEXT VIEWS (Single Line of text)
 enum TextViewStyle {
     
 }
+
 
 // VIEWS
 enum ViewStyle {
@@ -103,12 +105,13 @@ enum TextFieldStyle {
 
 
 
-//POSSIBLY REMOVE LATER
+/*
 struct StyleConstants {
     static let postHeader: CGFloat = 40
     static let postSocials: CGFloat = 40
     static let postDivider: CGFloat = 5
 }
+ */
 
 //APPENDIX
 /*

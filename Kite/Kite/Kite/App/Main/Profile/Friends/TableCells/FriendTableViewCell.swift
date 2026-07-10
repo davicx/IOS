@@ -81,7 +81,7 @@ class FriendTableViewCell: UITableViewCell {
         Buttons.addFriendButtonStyle(button: addFriendButton)
 
         cancelFriendInviteButton.setTitle("Cancel", for: .normal)
-        Buttons.cancelFriendInviteButtonStyle(button: cancelFriendInviteButton)
+        Buttons.friendInviteButtonStyle(button: cancelFriendInviteButton)
 
         removeFriendButton.setTitle("Friends", for: .normal)
         Buttons.removeFriendButtonStyle(button: removeFriendButton)
