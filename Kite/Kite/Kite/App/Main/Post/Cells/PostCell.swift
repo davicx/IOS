@@ -24,11 +24,12 @@ final class PostCell: UITableViewCell {
     //private let postContent = ItemContent()
     private let postCaption = PostCaption()
     private let postSocials = PostSocials()
+    private let mainDivider = MainDivider()
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        [postContent, postCaption, postSocials].forEach {
+        [postContent, postCaption, postSocials, mainDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -42,7 +43,10 @@ final class PostCell: UITableViewCell {
             postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
             postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postSocials.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            mainDivider.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
+            mainDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     

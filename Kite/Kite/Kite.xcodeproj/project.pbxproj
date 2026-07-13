@@ -115,6 +115,7 @@
 		D75D6C3F2DEE6DCA0080751C /* AcceptFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75D6C3E2DEE6DCA0080751C /* AcceptFriendResponseModel.swift */; };
 		D768C1B32E78D3B500350D37 /* GroupMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D768C1B22E78D3B500350D37 /* GroupMembersViewController.swift */; };
 		D768C1B52E78DB1900350D37 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D768C1B42E78DB1900350D37 /* SearchVC.swift */; };
+		D76B2591A302A14175A32DA4 /* Dividers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9D4945DE4D2443B8159C1 /* Dividers.swift */; };
 		D76B2BCE2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76B2BCD2DEFBEAF00FE4B08 /* DeclineFriendResponseModel.swift */; };
 		D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76F77AF2E15F7EE00A28963 /* GroupsDoc.swift */; };
 		D76FD6E02E19FA8200D29FD4 /* GroupDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76FD6DF2E19FA8200D29FD4 /* GroupDataController.swift */; };
@@ -394,6 +395,7 @@
 		D7A44E7A2E7F54F90087D272 /* AppTabBarFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabBarFactory.swift; sourceTree = "<group>"; };
 		D7A75AC82E67A51400BDDA78 /* LoginStatusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStatusModel.swift; sourceTree = "<group>"; };
 		D7A75ACC2E67A54900BDDA78 /* LoginStatusResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStatusResponseModel.swift; sourceTree = "<group>"; };
+		D7A9D4945DE4D2443B8159C1 /* Dividers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dividers.swift; sourceTree = "<group>"; };
 		D7AD5CB82EEB96B300D90E90 /* UserCountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCountModel.swift; sourceTree = "<group>"; };
 		D7AD5CBA2EEB96CA00D90E90 /* UserCountResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCountResponseModel.swift; sourceTree = "<group>"; };
 		D7AEA9752DC8286700272944 /* CommentsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsAPI.swift; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 				D79D10BB2FC90DAE009AA5F0 /* Colors.swift */,
 				D773B52A2F8F0E0100DD937F /* Fonts.swift */,
 				D78AC8C32FAE9A7B000CC5E5 /* Buttons.swift */,
+				D7A9D4945DE4D2443B8159C1 /* Dividers.swift */,
 				D7C59BE22FCA494300661186 /* ImageStyle.swift */,
 				D79D10BD2FC90F06009AA5F0 /* StyleMigrationPlan.swift */,
 				D7A3EF332FF8826B005EC6DA /* StyleDoc.swift */,
@@ -1085,11 +1088,7 @@
 		D79743F82DFB99D900DC97D5 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
-				D701259B2F1327DE00A9C400 /* Groups */,
-				D701259E2F13280300A9C400 /* IndividualGroup */,
-				D7E2A61A2F171B9B00197572 /* GroupMembers */,
-				D7E2A61B2F171BA400197572 /* GroupActions */,
-				D701259A2F1325F800A9C400 /* Organize */,
+				D7A95D3B3003142E00EACCEF /* SORT */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -1174,6 +1173,17 @@
 			path = templates;
 			sourceTree = "<group>";
 		};
+		D7A95D3B3003142E00EACCEF /* SORT */ = {
+			isa = PBXGroup;
+			children = (
+				D701259B2F1327DE00A9C400 /* Groups */,
+				D701259E2F13280300A9C400 /* IndividualGroup */,
+				D7E2A61A2F171B9B00197572 /* GroupMembers */,
+				D701259A2F1325F800A9C400 /* Organize */,
+			);
+			path = SORT;
+			sourceTree = "<group>";
+		};
 		D7AC97EA2F4FCE7A00E383D6 /* Sort */ = {
 			isa = PBXGroup;
 			children = (
@@ -1251,13 +1261,6 @@
 				D768C1B22E78D3B500350D37 /* GroupMembersViewController.swift */,
 			);
 			path = GroupMembers;
-			sourceTree = "<group>";
-		};
-		D7E2A61B2F171BA400197572 /* GroupActions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GroupActions;
 			sourceTree = "<group>";
 		};
 		D7E2A61C2F171BB000197572 /* cells */ = {
@@ -1493,6 +1496,7 @@
 				D78EBDDB2E305A700008F3FE /* IndividualPostCellQA.swift in Sources */,
 				D7D9923C2DFCE66200D6B48A /* GroupCell.swift in Sources */,
 				D78AC8C42FAE9A7B000CC5E5 /* Buttons.swift in Sources */,
+				D76B2591A302A14175A32DA4 /* Dividers.swift in Sources */,
 				D7D793162EECE469004046AC /* ProflieDoc.swift in Sources */,
 				519B24D92D18CFAF00159385 /* PresenterManager.swift in Sources */,
 				D7DFEDC62F468E48005E474D /* RegistrationStyleManager.swift in Sources */,

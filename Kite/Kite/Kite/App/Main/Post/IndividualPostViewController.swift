@@ -148,8 +148,8 @@ class IndividualPostViewController: UIViewController {
         individualPostTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
 
         individualPostTableView.rowHeight = UITableView.automaticDimension
-
-        //Divider: default UITableView row separators between PostCell and CommentCell rows (not full width; no separatorStyle override here)
+        individualPostTableView.separatorStyle = .none
+        //Divider: PostCell draws MainDivider; system separator off so line is full width
         
         view.addSubview(individualPostTableView)
 
