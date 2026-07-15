@@ -14,7 +14,7 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
-//TABLE VIEW: Home Post Cell 
+//TABLE VIEW: Post Cell 
 class IndividualGroupViewController: UIViewController {
 
     //LOGIC
@@ -62,9 +62,10 @@ class IndividualGroupViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(HomePostCell.self, forCellReuseIdentifier: "HomePostCell")
+        tableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.postCell)
+        // tableView.register(HomePostCell.self, forCellReuseIdentifier: "HomePostCell")
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 160
+        tableView.estimatedRowHeight = 700
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
 
@@ -177,9 +178,14 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         }
         let posts = postDataController.getPostsForGroup(groupID: groupID)
         let post = posts[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.postCell, for: indexPath) as! PostCell
+        cell.updatePost(with: post)
+        return cell
+        /*
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomePostCell", for: indexPath) as! HomePostCell
         cell.updatePost(with: post)
         return cell
+        */
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
