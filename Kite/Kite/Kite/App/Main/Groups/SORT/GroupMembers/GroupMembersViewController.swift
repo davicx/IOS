@@ -123,10 +123,26 @@ extension GroupMembersViewController: UITableViewDataSource, UITableViewDelegate
             cell.setLoading(true)
         }
         
-        // Set up button action based on friendship status
-        cell.friendActionTapped = { [weak self] in
+        // Set up button actions based on friendship status
+        cell.addFriendTapped = { [weak self] in
             guard let self = self else { return }
             self.handleFriendAction(for: member, at: indexPath)
+        }
+        cell.cancelFriendInviteTapped = { [weak self] in
+            guard let self = self else { return }
+            self.handleFriendAction(for: member, at: indexPath)
+        }
+        cell.removeFriendTapped = { [weak self] in
+            guard let self = self else { return }
+            self.handleFriendAction(for: member, at: indexPath)
+        }
+        cell.acceptFriendInviteTapped = { [weak self] in
+            guard let self = self else { return }
+            self.handleFriendAction(for: member, at: indexPath)
+        }
+        cell.declineFriendInviteTapped = { [weak self] in
+            guard let self = self else { return }
+            self.handleDeclineInvite(for: member, at: indexPath)
         }
         
         return cell
@@ -274,6 +290,38 @@ extension GroupMembersViewController: UITableViewDataSource, UITableViewDelegate
             loadingUsernames.remove(user.userName)
             cell.setLoading(false)
             break
+        }
+    }
+
+    private func handleDeclineInvite(for user: User, at indexPath: IndexPath) {
+        guard !loadingUsernames.contains(user.userName) else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? FriendTableViewCell else { return }
+
+        loadingUsernames.insert(user.userName)
+        cell.setLoading(true)
+
+        Task {
+            do {
+                try await withTimeout(seconds: Constants.Timeout.friendTimeout) {
+                    try await UserLogic.shared.decline(inviteFrom: user)
+                }
+
+                DispatchQueue.main.async {
+                    self.loadingUsernames.remove(user.userName)
+                    if let updatedUser = UsersDataController.shared.getUser(username: user.userName) {
+                        self.groupMembers[indexPath.row] = updatedUser
+                        cell.configure(with: updatedUser)
+                    } else {
+                        cell.setLoading(false)
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.loadingUsernames.remove(user.userName)
+                    cell.setLoading(false)
+                    self.showErrorAlert(message: "Failed to decline friend request. Please try again.")
+                }
+            }
         }
     }
     

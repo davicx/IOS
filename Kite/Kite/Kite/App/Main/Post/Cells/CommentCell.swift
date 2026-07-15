@@ -141,6 +141,7 @@ final class CommentCell: UITableViewCell {
     }
 
     private func setupCommentFooter() {
+        //Divider: commentFooter gray band (right column only — not full screen width)
         // 4) commentFooter — 40 tall, light gray
         commentFooter.translatesAutoresizingMaskIntoConstraints = false
         commentFooter.backgroundColor = UIColor.systemGray5

@@ -98,7 +98,7 @@ import Foundation
      //FUNCTIONS
      func fetchPosts() {
          Task {
-             await postDataController.fetchPosts(groupID: 72)
+             await postDataController.fetchKitePosts(groupID: 70)
          }
      }
 

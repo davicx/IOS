@@ -120,7 +120,7 @@ final class PostSocials: UIView {
         likesIconView.contentMode = .scaleAspectFit
         likesIconView.tintColor = .label
 
-        Style.styleSocialCountText(likesCountLabel)
+        StyleOld.styleSocialCountText(likesCountLabel)
         likesCountLabel.text = "1,815"
         likesCountLabel.lineBreakMode = .byTruncatingTail
 
@@ -155,7 +155,7 @@ final class PostSocials: UIView {
         commentIconView.contentMode = .scaleAspectFit
         commentIconView.tintColor = .label
 
-        Style.styleSocialCountText(commentCountLabel)
+        StyleOld.styleSocialCountText(commentCountLabel)
         commentCountLabel.text = "15"
         commentCountLabel.lineBreakMode = .byTruncatingTail
 

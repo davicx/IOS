@@ -71,6 +71,15 @@ func printCellInfo(cellName: String, listType: String = "LISTS: Wishlist") {
     print(cellName)
 }
 
+func printCellLoadInfo(cellName: String, parentVC: String, listType: String = "LISTS: Wishlist") {
+    print("________________________")
+    print(listType)
+    print("\(parentVC) <- Parent")
+    print("Cell: \(cellName)")
+    print("________________________")
+    print(" ")
+}
+
 
 //IMAGE FUNCTIONS
 func getImageHeight(image: UIImage) -> CGFloat {

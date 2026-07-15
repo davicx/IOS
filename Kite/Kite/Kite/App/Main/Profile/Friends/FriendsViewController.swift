@@ -244,7 +244,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
             for: indexPath
         ) as! YourFriendsTableViewCell
 
-        cell.configure(with: user)
+        cell.configure(with: user, parentViewController: "FriendsViewController")
         cell.selectionStyle = .none
         configureCellActions(for: user, cell: cell)
 

@@ -94,9 +94,9 @@ final class PostCaptionTemplate: UIView {
         userInfoArea.backgroundColor = .clear
         userCaptionArea.backgroundColor = .clear
 
-        Style.styleUsernameText(postFromLabel)
+        StyleOld.styleUsernameText(postFromLabel)
         postFromLabel.text = "Username"
-        Style.styleTimeText(timeMessageLabel)
+        StyleOld.styleTimeText(timeMessageLabel)
         timeMessageLabel.text = "now"
 
         userCaptionLabel.numberOfLines = 0

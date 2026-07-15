@@ -121,7 +121,7 @@ final class ItemCellLayout: UIView {
 
         // Add purchase button to ItemBodyLeftPurchasedView - 80x36, centered vert and horiz
         purchaseButton.setTitle("Purchase", for: .normal)
-        Buttons.styleNotSelectedButton(purchaseButton, width: 80, height: 36)
+        ButtonsOld.styleNotSelectedButton(purchaseButton, width: 80, height: 36)
         purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
         ItemBodyLeftPurchasedView.addSubview(purchaseButton)
 
@@ -160,16 +160,16 @@ final class ItemCellLayout: UIView {
         ItemBodyView.addSubview(ItemBodyRightView)
         ItemBodyRightView.translatesAutoresizingMaskIntoConstraints = false
 
-        Style.styleItemNameLabel(itemNameLabel)
+        LabelStyle.itemName(itemNameLabel)
         itemNameLabel.text = "Item Name"
 
-        Style.styleItemPriceLabel(itemPriceLabel)
+        LabelStyle.itemPrice(itemPriceLabel)
         itemPriceLabel.text = "$0.00"
 
-        Style.styleItemDescriptionLabel(itemDescriptionLabel)
+        LabelStyle.itemDescription(itemDescriptionLabel)
         itemDescriptionLabel.text = "Item description goes here. Default placeholder text for the item body right view."
 
-        Style.styleItemLinkLabel(itemLinkLabel)
+        LabelStyle.itemLink(itemLinkLabel)
         itemLinkLabel.text = "www.example.com"
 
         ItemBodyRightView.addSubview(itemNameLabel)

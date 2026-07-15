@@ -13,7 +13,8 @@ class UserProfileSocialsView: UIView {
     let viewFriendsButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        Buttons.styleFriendsButton(button)
+        button.setTitle("Friends", for: .normal)
+        Buttons.currentFriendsButtonStyle(button: button)
         return button
     }()
     

@@ -45,13 +45,10 @@ class ProfileViewController: UIViewController {
     private let userInfoRightDivider = UIView()
     private let userRightLeftView = UIView()
     
-    // User Information Labels for Post Count, Group Count and Friend Count
-    private let userPostCountLabel = UILabel()
-    private let userPostsLabel = UILabel()
-    private let userGroupCountLabel = UILabel()
-    private let userGroupLabel = UILabel()
-    private let userFriendsCountLabel = UILabel()
-    private let userFriendsLabel = UILabel()
+    // User Information Cards for Post Count, Group Count and Friend Count
+    private let postsCard = ProfileInfoPostsCard()
+    private let groupsCard = ProfileInfoGroupsCard()
+    private let friendsCard = ProfileInfoFriendsCard()
     
     //BODY
     private let userSelectInfoView = UIView()
@@ -71,8 +68,8 @@ class ProfileViewController: UIViewController {
         
         setupNavigationBar()
         setupUserProfileImageView()
-        setupUserNameView()
         setupFullNameView()
+        setupUserNameView()
         setupUserInfoView()
         setupUserSelectInfoView()
         setupUserBiographyView()
@@ -166,51 +163,51 @@ class ProfileViewController: UIViewController {
         ])
     }
     
-    func setupUserNameView() {
-        view.addSubview(userNameView)
-        userNameView.backgroundColor = .clear
-        userNameView.translatesAutoresizingMaskIntoConstraints = false
-        
-        userNameLabel.font = Style.blackFont
-        userNameLabel.textAlignment = .center
-        userNameLabel.textColor = .black
-        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        userNameView.addSubview(userNameLabel)
-        
-        NSLayoutConstraint.activate([
-            userNameView.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor),
-            userNameView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            userNameView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            userNameView.heightAnchor.constraint(equalToConstant: 24),
-            
-            userNameLabel.centerXAnchor.constraint(equalTo: userNameView.centerXAnchor),
-            userNameLabel.topAnchor.constraint(equalTo: userNameView.topAnchor),
-            userNameLabel.bottomAnchor.constraint(equalTo: userNameView.bottomAnchor),
-            userNameLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
-        ])
-    }
-
     func setupFullNameView() {
         view.addSubview(fullNameView)
         fullNameView.backgroundColor = .clear
         fullNameView.translatesAutoresizingMaskIntoConstraints = false
         
-        fullNameLabel.font = Style.grayFont
+        fullNameLabel.font = Fonts.profileFullNameFont
         fullNameLabel.textAlignment = .center
-        fullNameLabel.textColor = Style.textDarkGray
+        fullNameLabel.textColor = Colors.profileFullNameTextColor
         fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
         fullNameView.addSubview(fullNameLabel)
         
         NSLayoutConstraint.activate([
-            fullNameView.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
+            fullNameView.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor),
             fullNameView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             fullNameView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            fullNameView.heightAnchor.constraint(equalToConstant: 20),
+            fullNameView.heightAnchor.constraint(equalToConstant: 24),
             
             fullNameLabel.centerXAnchor.constraint(equalTo: fullNameView.centerXAnchor),
             fullNameLabel.topAnchor.constraint(equalTo: fullNameView.topAnchor),
             fullNameLabel.bottomAnchor.constraint(equalTo: fullNameView.bottomAnchor),
             fullNameLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
+        ])
+    }
+
+    func setupUserNameView() {
+        view.addSubview(userNameView)
+        userNameView.backgroundColor = .clear
+        userNameView.translatesAutoresizingMaskIntoConstraints = false
+        
+        userNameLabel.font = Fonts.profileUserNameFont
+        userNameLabel.textAlignment = .center
+        userNameLabel.textColor = Colors.profileUserNameTextColor
+        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        userNameView.addSubview(userNameLabel)
+        
+        NSLayoutConstraint.activate([
+            userNameView.topAnchor.constraint(equalTo: fullNameView.bottomAnchor, constant: -4),
+            userNameView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            userNameView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            userNameView.heightAnchor.constraint(equalToConstant: 20),
+            
+            userNameLabel.centerXAnchor.constraint(equalTo: userNameView.centerXAnchor),
+            userNameLabel.topAnchor.constraint(equalTo: userNameView.topAnchor),
+            userNameLabel.bottomAnchor.constraint(equalTo: userNameView.bottomAnchor),
+            userNameLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
         ])
     }
  
@@ -224,10 +221,10 @@ class ProfileViewController: UIViewController {
         userInfoBottomDivider.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            userInfoView.topAnchor.constraint(equalTo: fullNameView.bottomAnchor),
+            userInfoView.topAnchor.constraint(equalTo: userNameView.bottomAnchor),
             userInfoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             userInfoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            userInfoView.heightAnchor.constraint(equalToConstant: 80),
+            userInfoView.heightAnchor.constraint(equalToConstant: 60),
             
             userInfoBottomDivider.topAnchor.constraint(equalTo: userInfoView.bottomAnchor),
             userInfoBottomDivider.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -251,9 +248,6 @@ class ProfileViewController: UIViewController {
         userInfoRightDivider.translatesAutoresizingMaskIntoConstraints = false
         userRightLeftView.translatesAutoresizingMaskIntoConstraints = false
         
-        userInfoLeftView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.25)
-        userMiddleLeftView.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.25)
-        userRightLeftView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.25)
         userInfoLeftDivider.backgroundColor = .systemGray4
         userInfoRightDivider.backgroundColor = .systemGray4
         
@@ -286,75 +280,37 @@ class ProfileViewController: UIViewController {
             userRightLeftView.bottomAnchor.constraint(equalTo: userInfoView.bottomAnchor)
         ])
         
-        userRightLeftView.isUserInteractionEnabled = true
-        let friendsTap = UITapGestureRecognizer(target: self, action: #selector(friendsCountTapped))
-        userRightLeftView.addGestureRecognizer(friendsTap)
-        
-        setupUserInfoLabels()
+        setupUserInfoCards()
     }
     
-    private func setupUserInfoLabels() {
-        // Configure count labels (top, bold, dark)
-        [userPostCountLabel, userGroupCountLabel, userFriendsCountLabel].forEach { label in
-            label.font = Style.mainDarkFont
-            label.textColor = .black
-            label.textAlignment = .center
-            label.translatesAutoresizingMaskIntoConstraints = false
+    private func setupUserInfoCards() {
+        [postsCard, groupsCard, friendsCard].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        
-        // Configure text labels (bottom, regular, gray)
-        [userPostsLabel, userGroupLabel, userFriendsLabel].forEach { label in
-            label.font = Style.mainGrayFont
-            label.textColor = .gray
-            label.textAlignment = .center
-            label.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
-        // Set initial text
-        userPostCountLabel.text = "0"
-        userPostsLabel.text = "Posts"
-        userGroupCountLabel.text = "0"
-        userGroupLabel.text = "Groups"
-        userFriendsCountLabel.text = "0"
-        userFriendsLabel.text = "Friends"
-        
-        // Add labels to their respective views
-        userInfoLeftView.addSubview(userPostCountLabel)
-        userInfoLeftView.addSubview(userPostsLabel)
-        userMiddleLeftView.addSubview(userGroupCountLabel)
-        userMiddleLeftView.addSubview(userGroupLabel)
-        userRightLeftView.addSubview(userFriendsCountLabel)
-        userRightLeftView.addSubview(userFriendsLabel)
-        
-        // Left view constraints (Posts)
+
+        userInfoLeftView.addSubview(postsCard)
+        userMiddleLeftView.addSubview(groupsCard)
+        userRightLeftView.addSubview(friendsCard)
+
         NSLayoutConstraint.activate([
-            userPostCountLabel.centerXAnchor.constraint(equalTo: userInfoLeftView.centerXAnchor),
-            userPostCountLabel.topAnchor.constraint(equalTo: userInfoLeftView.topAnchor, constant: 24),
-            
-            userPostsLabel.centerXAnchor.constraint(equalTo: userInfoLeftView.centerXAnchor),
-            userPostsLabel.topAnchor.constraint(equalTo: userPostCountLabel.bottomAnchor, constant: 4),
-            userPostsLabel.bottomAnchor.constraint(lessThanOrEqualTo: userInfoLeftView.bottomAnchor, constant: -12)
+            postsCard.topAnchor.constraint(equalTo: userInfoLeftView.topAnchor),
+            postsCard.leadingAnchor.constraint(equalTo: userInfoLeftView.leadingAnchor),
+            postsCard.trailingAnchor.constraint(equalTo: userInfoLeftView.trailingAnchor),
+            postsCard.bottomAnchor.constraint(equalTo: userInfoLeftView.bottomAnchor),
+
+            groupsCard.topAnchor.constraint(equalTo: userMiddleLeftView.topAnchor),
+            groupsCard.leadingAnchor.constraint(equalTo: userMiddleLeftView.leadingAnchor),
+            groupsCard.trailingAnchor.constraint(equalTo: userMiddleLeftView.trailingAnchor),
+            groupsCard.bottomAnchor.constraint(equalTo: userMiddleLeftView.bottomAnchor),
+
+            friendsCard.topAnchor.constraint(equalTo: userRightLeftView.topAnchor),
+            friendsCard.leadingAnchor.constraint(equalTo: userRightLeftView.leadingAnchor),
+            friendsCard.trailingAnchor.constraint(equalTo: userRightLeftView.trailingAnchor),
+            friendsCard.bottomAnchor.constraint(equalTo: userRightLeftView.bottomAnchor)
         ])
-        
-        // Middle view constraints (Groups)
-        NSLayoutConstraint.activate([
-            userGroupCountLabel.centerXAnchor.constraint(equalTo: userMiddleLeftView.centerXAnchor),
-            userGroupCountLabel.topAnchor.constraint(equalTo: userMiddleLeftView.topAnchor, constant: 24),
-            
-            userGroupLabel.centerXAnchor.constraint(equalTo: userMiddleLeftView.centerXAnchor),
-            userGroupLabel.topAnchor.constraint(equalTo: userGroupCountLabel.bottomAnchor, constant: 4),
-            userGroupLabel.bottomAnchor.constraint(lessThanOrEqualTo: userMiddleLeftView.bottomAnchor, constant: -12)
-        ])
-        
-        // Right view constraints (Friends)
-        NSLayoutConstraint.activate([
-            userFriendsCountLabel.centerXAnchor.constraint(equalTo: userRightLeftView.centerXAnchor),
-            userFriendsCountLabel.topAnchor.constraint(equalTo: userRightLeftView.topAnchor, constant: 24),
-            
-            userFriendsLabel.centerXAnchor.constraint(equalTo: userRightLeftView.centerXAnchor),
-            userFriendsLabel.topAnchor.constraint(equalTo: userFriendsCountLabel.bottomAnchor, constant: 4),
-            userFriendsLabel.bottomAnchor.constraint(lessThanOrEqualTo: userRightLeftView.bottomAnchor, constant: -12)
-        ])
+
+        let friendsTap = UITapGestureRecognizer(target: self, action: #selector(friendsCountTapped))
+        friendsCard.addGestureRecognizer(friendsTap)
     }
  
     func setupUserSelectInfoView() {
@@ -555,9 +511,9 @@ class ProfileViewController: UIViewController {
         
         // Display 0 in UI if count is -1 (not fetched), otherwise show actual count
         // Keep -1 in the User object, just display 0 in the UI
-        userPostCountLabel.text = user.totalPosts >= 0 ? "\(user.totalPosts)" : "0"
-        userGroupCountLabel.text = user.totalGroups >= 0 ? "\(user.totalGroups)" : "0"
-        userFriendsCountLabel.text = user.totalFriends >= 0 ? "\(user.totalFriends)" : "0"
+        postsCard.configure(count: user.totalPosts)
+        groupsCard.configure(count: user.totalGroups)
+        friendsCard.configure(count: user.totalFriends)
     }
     
     private func updateUIWithUserInfo() {

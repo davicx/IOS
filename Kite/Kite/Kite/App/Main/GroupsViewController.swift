@@ -7,8 +7,159 @@
 
 import UIKit
 
+//GROUPS: Kite
+class GroupsViewController: UIViewController {
 
+    //SETUP
+    let groupsAPI = GroupsAPI()
+    private var groups: [GroupModel] = []
+    
+    private let tableView = UITableView()
+
+    let userDefaultManager = UserDefaultManager()
+    let imageFunctions = ImageFunctions()
+
+    //DATA
+    private var allGroups: [GroupModel] {
+        return GroupDataController.shared.groups
+    }
+    
+    //GROUPS
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupNavigationBar()
+        setupTableView()
+        fetchGroups()
+        
+        // Listen for group updates
+        GroupDataController.shared.onGroupsUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        printPageInfo(vcName: "GroupsViewController")
+ 
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchGroups()
+        tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        GroupDataController.shared.onGroupsUpdated = nil
+    }
+    
+    //ACTIONS
+    @objc private func openProfile() {
+        let currentUserName = UsersDataController.shared.currentUser
+        print("Profile tapped - Current user: \(currentUserName)")
+    }
+    
+
+    @objc private func openCreateGroup() {
+        let createVC = CreateGroupViewController()
+        createVC.modalPresentationStyle = .pageSheet
+        present(createVC, animated: true)
+    }
+    
+    
+    //LAYOUT
+    private func setupNavigationBar() {
+        navigationItem.title = "Your Events"
+
+        let createGroupButton = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(openCreateGroup)
+        )
+        navigationItem.rightBarButtonItem = createGroupButton
+
+        if let image = UIImage(named: "background_14") {
+            let circularImage = imageFunctions.makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
+                .withRenderingMode(.alwaysOriginal)
+
+            let profileButton = UIBarButtonItem(
+                image: circularImage,
+                style: .plain,
+                target: self,
+                action: #selector(openProfile)
+            )
+            navigationItem.leftBarButtonItem = profileButton
+        }
+    }
+
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        tableView.rowHeight = 220
+        tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none  // Comment out divider lines between cells
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+    
+    //FUNCTIONS
+    private func fetchGroups() {
+        GroupDataController.shared.getGroups {
+            self.tableView.reloadData()
+        }
+    }
+}
+
+
+//TABLE VIEW
+extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return allGroups.count
+
+    }
+
+     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let group = allGroups[indexPath.row]
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupCell
+        cell.configure(with: group, currentUser: GroupDataController.shared.currentUser)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let group = allGroups[indexPath.row]
+        let currentUserOwnsGroup = group.createdBy == GroupDataController.shared.currentUser
+
+        
+        // Navigate to IndividualGroupViewController
+        let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualGroupViewControllerID) as? IndividualGroupViewController else { return }
+        vc.groupID = group.groupID
+        vc.currentUserOwnsGroup = currentUserOwnsGroup
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+
+//THIS IS FOR WISHLIST LEAVE HERE DO NOT TOUCH OR REMOVE
 //GROUPS (Lists): Wishlist
+/*
 class GroupsViewController: UIViewController {
 
     //SETUP
@@ -247,3 +398,4 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+*/

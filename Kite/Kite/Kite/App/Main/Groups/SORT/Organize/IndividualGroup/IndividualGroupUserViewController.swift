@@ -1,5 +1,5 @@
 //
-//  IndividualGroupFriendViewController.swift
+//  IndividualGroupUserViewController.swift
 //  Kite
 //
 //  Created by David Vasquez on 6/13/25.
@@ -8,8 +8,8 @@
 import UIKit
 
 
-//LISTS: Wishlist - Shared With Me
-class IndividualGroupFriendViewController: UIViewController {
+//LISTS: Wishlist - User's Own Lists (Uses GroupItemUserCell)
+class IndividualGroupUserViewController: UIViewController {
 
     //GROUPS
     var group: GroupModel?
@@ -44,39 +44,38 @@ class IndividualGroupFriendViewController: UIViewController {
         if let group = group {
             Task {
                 await fetchGroupMemberProfiles()
-                print("IndividualGroupFriendViewController \(groupID)")
+                print("IndividualGroupUserViewController \(groupID)")
             }
         } else {
             print("No group data available")
         }
          
-        // Observe item updates (not post updates)
+        // TEST: Observe item updates using NotificationCenter
+        //Type 'NSNotification.Name?' has no member 'itemUpdated'
+        //IndividualGroupUserViewController
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(itemsUpdated),
-            name: .itemsFetched,
+            selector: #selector(itemUpdated),
+            name: .itemUpdated,
             object: nil
         )
-    }
-    
-    @objc private func itemsUpdated() {
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
-        }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+        
+        // Keep closure callback as backup for now (can remove after testing)
+        // postDataController.onItemsUpdated = { [weak self] in
+        //     DispatchQueue.main.async {
+        //         self?.tableView.reloadData()
+        //     }
+        // }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchItemsForGroup()
-        tableView.reloadData()
+        // Note: tableView.reloadData() is now called inside fetchItemsForGroup() after data is fetched
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        printPageInfo(vcName: "IndividualGroupFriendViewController")
+        printPageInfo(vcName: "IndividualGroupUserViewController")
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -92,11 +91,12 @@ class IndividualGroupFriendViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(GroupItemFriendCell.self, forCellReuseIdentifier: "GroupItemFriendCell")
+        tableView.register(GroupItemUserCell.self, forCellReuseIdentifier: "GroupItemUserCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 160
         tableView.tableHeaderView = createTableHeader()
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none  // Remove separator lines between cells
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -201,7 +201,7 @@ class IndividualGroupFriendViewController: UIViewController {
     
     
 
-    //FUNCTIONS
+    //FUNCTIONS IndividualGroupUserViewController
     private func fetchItemsForGroup() {
         guard let groupID = group?.groupID else {
             print("No group ID available")
@@ -210,18 +210,21 @@ class IndividualGroupFriendViewController: UIViewController {
 
         Task {
             // Fetch items (items are posts with additional item-specific data)
-            await postDataController.fetchPosts(groupID: groupID)
+            await postDataController.fetchWishlistItems(groupID: groupID)
             
             // Print out item names to verify it's working
             DispatchQueue.main.async {
                 print("________________________")
-                print("IndividualGroupFriendViewController: fetchItemsForGroup \(groupID)")
-                let items = self.postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
-                print("Total items fetched: \(items.count)")
-                for item in items {
-                    print("- Item Name: \(item.itemName ?? "No Name"), PostID: \(item.postID)")
+                print("IndividualGroupUserViewController: fetchItemsForGroup \(groupID)")
+                let posts = self.postDataController.getPostsForGroup(groupID: groupID)
+                print("Total items fetched: \(posts.count)")
+                for post in posts {
+                    print("- Item Name: \(post.itemName ?? "No Name"), PostID: \(post.postID)")
                 }
                 print("________________________")
+                
+                // Reload table view after data is fetched
+                self.tableView.reloadData()
             }
         }
     }
@@ -353,26 +356,36 @@ class IndividualGroupFriendViewController: UIViewController {
             present(newPostVC, animated: true, completion: nil)
         }
     }
+    
+    // TEST: Handle item update notification
+    @objc private func itemUpdated() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    deinit {
+        // Remove notification observer
+        NotificationCenter.default.removeObserver(self)
+    }
 
 }
 
 
-extension IndividualGroupFriendViewController: UITableViewDataSource, UITableViewDelegate {
-
+extension IndividualGroupUserViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let groupID = group?.groupID else { return 0 }
         // return postDataController.posts.count
-        let items = postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
-        return items.count
+        return postDataController.getPostsForGroup(groupID: groupID).count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let groupID = group?.groupID else {
             return UITableViewCell()
         }
-        let items = postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
-        let post = items[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemFriendCell", for: indexPath) as! GroupItemFriendCell
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemUserCell", for: indexPath) as! GroupItemUserCell
         cell.configurePost(with: post)
         return cell
     }
@@ -382,20 +395,17 @@ extension IndividualGroupFriendViewController: UITableViewDataSource, UITableVie
         
         guard let groupID = group?.groupID else { return }
         // Get the post at the tapped index (items are posts with postType == "item")
-        let items = postDataController.getPostsForGroup(groupID: groupID).filter { $0.postType == "item" }
-        let post = items[indexPath.row]
-        
-        print("Right now cant navigate to new item")
+        let posts = postDataController.getPostsForGroup(groupID: groupID)
+        let post = posts[indexPath.row]
 
-
-        /*
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let postViewController = storyboard.instantiateViewController(withIdentifier: "IndividualPostViewController") as? IndividualPostViewController {
+        if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
             // Pass the post as currentPost (it's an item if postType == "item")
-            postViewController.currentPost = post
+            //postViewController.currentPost = post
+            postViewController.postID = post.postID
             navigationController?.pushViewController(postViewController, animated: true)
         }
-        */
+         
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -421,3 +431,5 @@ extension IndividualGroupFriendViewController: UITableViewDataSource, UITableVie
         */
     }
 }
+
+

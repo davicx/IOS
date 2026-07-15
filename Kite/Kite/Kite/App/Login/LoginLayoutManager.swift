@@ -88,9 +88,9 @@ class LoginLayoutManager {
         usernameTextField.text = "davey"
         passwordTextField.text = "password"
         
-        Style.styleLoginTextField(usernameTextField)
-        Style.styleLoginTextField(passwordTextField)
-        
+        TextFieldStyle.login(usernameTextField)
+        TextFieldStyle.login(passwordTextField)
+ 
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -113,10 +113,8 @@ class LoginLayoutManager {
     func setupLogoImage() {
         let logoImageView = UIImageView()
         logoImageView.image = UIImage(named: "background_14")
-        logoImageView.contentMode = .scaleAspectFill
-        logoImageView.clipsToBounds = true
+        ImageStyle.loginBackgroundImage(imageView: logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.layer.contentsRect = CGRect(x: 0.25, y: 0, width: 0.5, height: 1)
         
         logoView.addSubview(logoImageView)
         
@@ -129,11 +127,14 @@ class LoginLayoutManager {
     }
     
     func setupButtons(in view: UIView) {
+        
         // Create Forgot Password Button
         let forgotPasswordButton = UIButton(type: .system)
         forgotPasswordButton.setTitle("Forgot password?", for: .normal)
-        forgotPasswordButton.setTitleColor(UIColor(hex: "#3797EF"), for: .normal)
-        forgotPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        
+        //Style
+        Buttons.linkButtonStyle(button: forgotPasswordButton)
+        
         forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
         forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
         loginView.addSubview(forgotPasswordButton)
@@ -141,10 +142,10 @@ class LoginLayoutManager {
         // Create Login Button
         let loginButton = UIButton(type: .system)
         loginButton.setTitle("Log In", for: .normal)
-        loginButton.backgroundColor = UIColor(hex: "#3797EF")
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.layer.cornerRadius = 5
-        loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+
+        //Style
+        Buttons.loginButtonStyle(button: loginButton)
+        
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginView.addSubview(loginButton)
@@ -183,12 +184,13 @@ class LoginLayoutManager {
         let registerLabel = UILabel()
         registerLabel.text = "Don’t have an account?"
         registerLabel.textColor = .black
-        registerLabel.font = UIFont.systemFont(ofSize: 14)
+        registerLabel.font = Fonts.buttonRegularFont
 
         let signUpButton = UIButton(type: .system)
         signUpButton.setTitle("Sign Up", for: .normal)
-        signUpButton.setTitleColor(UIColor(hex: "#3797EF"), for: .normal)
-        signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        
+        //Style
+        Buttons.linkButtonBoldStyle(button: signUpButton)
         signUpButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
 
         registerLabel.translatesAutoresizingMaskIntoConstraints = false

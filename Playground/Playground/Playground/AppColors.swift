@@ -1,6 +1,6 @@
 //
 //  AppColors.swift
-//  Kite
+//  Playground
 //
 //  Created by David Vasquez on 2/26/26.
 //
@@ -25,15 +25,6 @@ extension UIColor {
 
 
 }
-
-/*
- itemInfoView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.15)
- itemImageHolderView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.3)
- itemNamePriceDescriptionHolderView.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
- //static let accentColor = UIColor(hex: "#FF6B00")
- //static let textPrimaryColor = UIColor(hex: "#333333")
- */
-
 
 extension UIColor {
     convenience init(hex: String) {

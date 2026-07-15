@@ -17,15 +17,19 @@ import UIKit
 final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
+    //Kite
+    private let postContent = PostContent()
+    
     //Wishlist
-    private let postContent = ItemContent()
+    //private let postContent = ItemContent()
     private let postCaption = PostCaption()
     private let postSocials = PostSocials()
+    private let mainDivider = MainDivider()
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        [postContent, postCaption, postSocials].forEach {
+        [postContent, postCaption, postSocials, mainDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -39,7 +43,10 @@ final class PostCell: UITableViewCell {
             postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
             postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postSocials.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            mainDivider.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
+            mainDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     
@@ -47,17 +54,26 @@ final class PostCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// Configure socials with post so like count (and later like action) use live data.
+    //Configure socials with post so like count (and later like action) use live data.
     func configure(postID: Int) {
         postSocials.configure(postID: postID)
+
+        if let post = PostDataController.shared.getPostByID(postID: postID) {
+            postContent.configure(with: post)
+            postCaption.configure(with: post)
+        }
     }
 
     func updatePost(with post: Post) {
         postSocials.configure(postID: post.postID)
+        postContent.configure(with: post)
+        postCaption.configure(with: post)
     }
 
     func updateItem(with post: Post) {
         postSocials.configure(postID: post.postID)
+        postContent.configure(with: post)
+        postCaption.configure(with: post)
     }
 }
 

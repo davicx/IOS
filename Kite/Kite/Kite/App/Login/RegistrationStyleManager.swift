@@ -55,14 +55,12 @@ class RegistrationStyleManager {
             logoView.topAnchor.constraint(equalTo: view.topAnchor),
             logoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             logoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            logoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
+            logoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
 
             formView.topAnchor.constraint(equalTo: logoView.bottomAnchor),
             formView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             formView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            formView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45),
 
-            dividerView.topAnchor.constraint(equalTo: formView.bottomAnchor),
             dividerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             dividerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.02),
@@ -86,10 +84,14 @@ class RegistrationStyleManager {
         passwordTextField.placeholder = "Password"
         passwordTextField.isSecureTextEntry = true
 
-        Style.styleLoginTextField(userNameTextField)
-        Style.styleLoginTextField(fullNameTextField)
-        Style.styleLoginTextField(emailTextField)
-        Style.styleLoginTextField(passwordTextField)
+        TextFieldStyle.login(userNameTextField)
+        TextFieldStyle.login(fullNameTextField)
+        TextFieldStyle.login(emailTextField)
+        TextFieldStyle.login(passwordTextField)
+        //StyleOld.styleLoginTextField(userNameTextField)
+        //StyleOld.styleLoginTextField(fullNameTextField)
+        //StyleOld.styleLoginTextField(emailTextField)
+        //StyleOld.styleLoginTextField(passwordTextField)
 
         [userNameTextField, fullNameTextField, emailTextField, passwordTextField].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -97,22 +99,22 @@ class RegistrationStyleManager {
         }
 
         NSLayoutConstraint.activate([
-            userNameTextField.topAnchor.constraint(equalTo: formView.topAnchor, constant: 12),
+            userNameTextField.topAnchor.constraint(equalTo: formView.topAnchor, constant: 20),
             userNameTextField.centerXAnchor.constraint(equalTo: formView.centerXAnchor),
             userNameTextField.widthAnchor.constraint(equalToConstant: 320),
             userNameTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            fullNameTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor, constant: 20),
+            fullNameTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor, constant: 16),
             fullNameTextField.centerXAnchor.constraint(equalTo: formView.centerXAnchor),
             fullNameTextField.widthAnchor.constraint(equalTo: userNameTextField.widthAnchor),
             fullNameTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            emailTextField.topAnchor.constraint(equalTo: fullNameTextField.bottomAnchor, constant: 20),
+            emailTextField.topAnchor.constraint(equalTo: fullNameTextField.bottomAnchor, constant: 16),
             emailTextField.centerXAnchor.constraint(equalTo: formView.centerXAnchor),
             emailTextField.widthAnchor.constraint(equalTo: userNameTextField.widthAnchor),
             emailTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 20),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),
             passwordTextField.centerXAnchor.constraint(equalTo: formView.centerXAnchor),
             passwordTextField.widthAnchor.constraint(equalTo: userNameTextField.widthAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 40)
@@ -128,10 +130,11 @@ class RegistrationStyleManager {
         formView.addSubview(errorLabel)
 
         registerButton.setTitle("Register Now", for: .normal)
-        registerButton.backgroundColor = UIColor(hex: "#3797EF")
-        registerButton.setTitleColor(.white, for: .normal)
-        registerButton.layer.cornerRadius = 5
-        registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        Buttons.loginButtonStyle(button: registerButton)
+        //registerButton.backgroundColor = UIColor(hex: "#3797EF")
+        //registerButton.setTitleColor(.white, for: .normal)
+        //registerButton.layer.cornerRadius = 5
+        //registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         registerButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
         registerButton.translatesAutoresizingMaskIntoConstraints = false
         formView.addSubview(registerButton)
@@ -162,7 +165,10 @@ class RegistrationStyleManager {
             successLabel.topAnchor.constraint(equalTo: registerButton.bottomAnchor, constant: 4),
             successLabel.centerXAnchor.constraint(equalTo: formView.centerXAnchor),
             successLabel.widthAnchor.constraint(equalTo: registerButton.widthAnchor),
-            successHeight
+            successHeight,
+
+            dividerView.topAnchor.constraint(equalTo: successLabel.bottomAnchor, constant: 64),
+            formView.bottomAnchor.constraint(equalTo: dividerView.topAnchor)
         ])
     }
 
@@ -192,11 +198,9 @@ class RegistrationStyleManager {
 
     func setupLogoImage() {
         let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "background_17")
-        logoImageView.contentMode = .scaleAspectFill
-        logoImageView.clipsToBounds = true
+        logoImageView.image = UIImage(named: "background_14")
+        ImageStyle.loginBackgroundImage(imageView: logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.layer.contentsRect = CGRect(x: 0.25, y: 0, width: 0.5, height: 1)
         logoView.addSubview(logoImageView)
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: logoView.topAnchor),

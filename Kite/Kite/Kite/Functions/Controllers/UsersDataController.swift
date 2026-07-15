@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 extension Notification.Name {
     static let usersUpdated = Notification.Name("usersUpdated")
     static let friendsUpdated = Notification.Name("friendsUpdated")
@@ -87,6 +88,16 @@ class UsersDataController {
     // Get or fetch current user profile
     func getOrFetchCurrentUser() async -> User? {
         return await getOrFetchUser(username: currentUser)
+    }
+
+    // Get or fetch user and load profile image (cache → API → ImageCacheManager)
+    func getOrFetchUserWithImage(username: String) async -> User? {
+        guard let user = await getOrFetchUser(username: username) else {
+            return nil
+        }
+
+        await user.fetchProfileImage()
+        return user
     }
     
     // MARK: - User Fetching

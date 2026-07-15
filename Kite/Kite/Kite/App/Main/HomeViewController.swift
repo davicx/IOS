@@ -92,7 +92,10 @@ class HomeViewController: UIViewController {
     func setupTableView() {
         postsTableView.delegate = self
         postsTableView.dataSource = self
-        postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
+        postsTableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.postCell)
+        postsTableView.rowHeight = UITableView.automaticDimension
+        postsTableView.separatorStyle = .none
+        //postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
     deinit {
@@ -103,11 +106,11 @@ class HomeViewController: UIViewController {
     //FUNCTIONS
     func fetchPosts() {
         Task {
-            //APP: Kite
-            //await postDataController.fetchPosts(groupID: 72)
-            
-            //APP: Evently
-            await postDataController.fetchPosts(groupID: 72)
+            //Kite
+            await postDataController.fetchKitePosts(groupID: 70)
+
+            //Wishlist
+            //await postDataController.fetchWishlistItems(groupID: 72)
         }
     }
     
@@ -130,11 +133,17 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      }
 
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.postCell, for: indexPath) as! PostCell
+         let post = postDataController.getHomeFeedPosts()[indexPath.row]
+         cell.updatePost(with: post)
+         return cell
+         /*
          //Constants.TableViewCellIdentifier.homePostCell could have a crashy error
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
          let post = postDataController.getHomeFeedPosts()[indexPath.row]
          cell.updatePost(with: post)
          return cell
+         */
      }
 
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -149,6 +158,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // PostCell sizes via Auto Layout (same as IndividualPostViewController)
+        return UITableView.automaticDimension
+        /*
+        // HomePostCell: hand-rolled height
         let currentPost = postDataController.getHomeFeedPosts()[indexPath.row]
         
         //STEP 1: Get Image Height
@@ -167,10 +180,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let totalHeight = fixedHeights + postImageHeight + postCaptionTextHeight
         
         return totalHeight
+        */
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200 // Estimated height like IndividualPostViewController
+        return 700
+        //return 200 // Estimated height like IndividualPostViewController (HomePostCell)
     }
      
 }

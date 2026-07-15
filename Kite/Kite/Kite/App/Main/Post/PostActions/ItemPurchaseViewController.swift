@@ -118,11 +118,11 @@ class ItemPurchaseViewController: UIViewController {
     private func setupButtons() {
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        Buttons.styleNotSelectedButton(cancelButton, width: 120, height: 44)
+        ButtonsOld.styleNotSelectedButton(cancelButton, width: 120, height: 44)
 
         purchaseButton.setTitle("Purchase", for: .normal)
         purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
-        Buttons.styleSelectedGreenButton(purchaseButton, width: 120, height: 44)
+        ButtonsOld.styleSelectedGreenButton(purchaseButton, width: 120, height: 44)
 
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = 16

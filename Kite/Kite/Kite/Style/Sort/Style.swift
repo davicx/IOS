@@ -5,7 +5,38 @@
 //  Created by David Vasquez on 1/2/25.
 //
 
+
+/*
+ DesignSystem
+ ├── Colors
+ │   ├── AppColors.swift
+ │   └── SemanticColors.swift
+ │
+ ├── Fonts
+ │   └── AppFonts.swift
+ │       └── PostHeaderFont
+ │       └── PostBodyFont
+ │       └── PostUserNameFont (maybe same PostTimeFont) 
+ │       └── PostTimeFont
+ │
+ ├── Style
+ │   └── AppStyle.swift
+ │
+ └── Components
+     ├── PrimaryButton.swift
+     ├── SecondaryButton.swift
+     └── StyledLabel.swift
+
+ */
 import UIKit
+
+
+
+
+
+
+
+
 
 
 //FILES
@@ -37,7 +68,7 @@ COLORS
  
 */
 
-class Style {
+class StyleOld {
     
     
     
