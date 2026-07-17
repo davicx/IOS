@@ -1,9 +1,10 @@
 //
-//  MakePostViewController.swift
+//  NewItemViewController.swift
 //  Kite
 //
-//  Created by David Vasquez on 9/26/25.
+//  Created by David Vasquez on 7/15/26.
 //
+
 
 import UIKit
 
@@ -16,7 +17,7 @@ import UIKit
 
 //IN API
 /*
- fix this to have something 
+ fix this to have something
  var createdPost = {
      postID: 0,
      postType: postType,
@@ -25,7 +26,9 @@ import UIKit
      groupImage: "needGroupImage",
  */
 
-class MakePostViewController: UIViewController {
+
+
+class NewItemViewController: UIViewController {
     
     //LOGIC
     var groupID: Int = 0
@@ -51,6 +54,10 @@ class MakePostViewController: UIViewController {
         setupNewPostLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        printPageInfo(vcName: "NewPostViewController")
+    }
 
     //LAYOUT
     func setupNewPostLayout() {
@@ -64,12 +71,6 @@ class MakePostViewController: UIViewController {
         photoPreviewImageView.translatesAutoresizingMaskIntoConstraints = false
         
         // Set temporary default text
-        /*
-        itemDescriptionInput.text = "This is my cool new item!!"
-        itemNameInput.text = "My Cool Item Name"
-        itemPriceInput.text = "$40"
-        itemLinkInput.text = "www.chronotrigger.com"
-         */
         itemDescriptionInput.text = "I want to get Secret of Mana"
         itemNameInput.text = "Secret of Mana"
         itemPriceInput.text = "$50"
@@ -228,7 +229,7 @@ class MakePostViewController: UIViewController {
     
 }
 
-extension MakePostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension NewItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.editedImage] as? UIImage {
             photoPreviewImageView.image = selectedImage
@@ -243,116 +244,4 @@ extension MakePostViewController: UIImagePickerControllerDelegate, UINavigationC
     }
 }
 
-//WORKING
-/*
-class MakePostViewController: UIViewController {
-    
-    private let titleLabel = componentFunctions.createTitleLabel()
-    private let closeButton = componentFunctions.createCloseButton()
-    private let itemDescriptionInput = componentFunctions.createItemDescriptionInput()
-    private let itemLinkInput = componentFunctions.createItemLinkInput()
-    private let addPhotoButton = componentFunctions.createAddPhotoButton()
-    private let submitItemButton = componentFunctions.createSubmitItemButton()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        
-        // Add all UI elements to view
-        view.addSubview(titleLabel)
-        view.addSubview(closeButton)
-        view.addSubview(itemDescriptionInput)
-        view.addSubview(itemLinkInput)
-        view.addSubview(addPhotoButton)
-        view.addSubview(submitItemButton)
-        
-        // Add button targets
-        closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
-        addPhotoButton.addTarget(self, action: #selector(addPhotoTapped), for: .touchUpInside)
-        submitItemButton.addTarget(self, action: #selector(submitItemTapped), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            // Close button in top-left
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            
-            // Title label below close button
-            titleLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 20),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            // Item description input - 80% width, 120 height
-            itemDescriptionInput.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            itemDescriptionInput.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            itemDescriptionInput.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            itemDescriptionInput.heightAnchor.constraint(equalToConstant: 120),
-            
-            // Item link input - 80% width, 40 height
-            itemLinkInput.topAnchor.constraint(equalTo: itemDescriptionInput.bottomAnchor, constant: 20),
-            itemLinkInput.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            itemLinkInput.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            itemLinkInput.heightAnchor.constraint(equalToConstant: 40),
-            
-            // Add photo button - 80% width, 32 height
-            addPhotoButton.topAnchor.constraint(equalTo: itemLinkInput.bottomAnchor, constant: 20),
-            addPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addPhotoButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            addPhotoButton.heightAnchor.constraint(equalToConstant: 32),
-            
-            // Submit item button - 80% width, 32 height
-            submitItemButton.topAnchor.constraint(equalTo: addPhotoButton.bottomAnchor, constant: 20),
-            submitItemButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            submitItemButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            submitItemButton.heightAnchor.constraint(equalToConstant: 32)
-        ])
-    }
-    
-    @objc private func closeTapped() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc private func addPhotoTapped() {
-        print("addPhotoButton")
-    }
-    
-    @objc private func submitItemTapped() {
-        print("itemDescriptionInput: \(itemDescriptionInput.text ?? "")")
-        print("itemLinkInput: \(itemLinkInput.text ?? "")")
-    }
-}
-*/
 
-/*
-//OLD: Direct API call - replaced with PostLogic
-Task {
-    do {
-        let postsAPI = PostsAPI()
-        let newItemResponseModel = try await postsAPI.makeItemPost(
-            postImage: postImage,
-            postFrom: postFrom,
-            postTo: postTo,
-            postCaption: postCaption,
-            groupID: groupID,
-            listID: listID,
-            itemName: itemName,
-            itemPrice: itemPrice,
-            itemDescription: itemDescription,
-            itemLink: itemLink
-        )
-        
-        DispatchQueue.main.async {
-            if newItemResponseModel.success {
-                print("Item post created successfully!")
-                print("Post ID: \(newItemResponseModel.data.postID)")
-                self.dismiss(animated: true)
-            } else {
-                print("Failed to create item post: \(newItemResponseModel.message)")
-            }
-        }
-        
-    } catch {
-        DispatchQueue.main.async {
-            print("Error creating item post: \(error.localizedDescription)")
-        }
-    }
-}
-*/

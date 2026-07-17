@@ -181,7 +181,7 @@ class IndividualPostViewController: UIViewController {
     //FUNCTIONS
     @objc private func newGroupPostButton() {
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewControllerOld {
             newPostVC.modalPresentationStyle = .fullScreen
             present(newPostVC, animated: true)
         }

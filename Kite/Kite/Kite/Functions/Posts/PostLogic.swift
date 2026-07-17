@@ -16,6 +16,7 @@ FUNCTIONS A: All Functions Related to Post Likes
  
 FUNCTIONS B: All Functions Related to Creating Posts
     1) Function B1: Create item post (WISHLIST)
+    2) Function B2: Create photo post (KITE)
  
 FUNCTIONS C: All Functions Related to Items (purchase)
     1) Function C1: Purchase Item
@@ -101,6 +102,33 @@ final class PostLogic {
             return true
         } catch {
             print("PostLogic: Error creating item post: \(error)")
+            return false
+        }
+    }
+
+    //Function B2: Create photo post (KITE)
+    func createPhotoPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int) async -> Bool {
+        let postsAPI = PostsAPI()
+
+        do {
+            let responseModel = try await postsAPI.makePhotoPost(
+                postImage: postImage,
+                postFrom: postFrom,
+                postTo: postTo,
+                postCaption: postCaption,
+                groupID: groupID,
+                listID: listID
+            )
+
+            guard responseModel.success else {
+                print("PostLogic: Failed to create photo post: \(responseModel.message)")
+                return false
+            }
+
+            await postDataController.addPost(postModel: responseModel.data, groupID: groupID)
+            return true
+        } catch {
+            print("PostLogic: Error creating photo post: \(error)")
             return false
         }
     }

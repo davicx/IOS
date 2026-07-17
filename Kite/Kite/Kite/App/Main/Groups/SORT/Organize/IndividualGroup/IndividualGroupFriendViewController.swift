@@ -346,7 +346,7 @@ class IndividualGroupFriendViewController: UIViewController {
     
     @objc private func newPostButtonTapped() {
         let storyboard = UIStoryboard(name: "Groups", bundle: nil) // change "Main" if you put it in another storyboard
-        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? MakePostViewController {
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? NewPostViewController {
             // Pass the current group ID to the MakePostViewController
             newPostVC.groupID = group?.groupID ?? 0
             newPostVC.modalPresentationStyle = .fullScreen  // makes it fill screen

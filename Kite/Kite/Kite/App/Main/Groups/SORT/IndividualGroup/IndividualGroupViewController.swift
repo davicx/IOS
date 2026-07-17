@@ -38,8 +38,13 @@ class IndividualGroupViewController: UIViewController {
         
         setupNavigationBar()
         setupTableView()
+        setupPostObservers()
       
         getGroupPosts()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,6 +62,35 @@ class IndividualGroupViewController: UIViewController {
     }
     
     //LAYOUT
+    private func setupPostObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostsFetched),
+            name: .postsFetched,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostsFetched),
+            name: .itemsFetched,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
+    }
+
+    @objc private func handlePostsFetched() {
+        tableView.reloadData()
+    }
+
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        tableView.reloadData()
+    }
+
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -124,11 +158,18 @@ class IndividualGroupViewController: UIViewController {
     
     //ACTIONS
     @objc private func newGroupPostButton() {
+        let newPostVC = NewPostViewController()
+        newPostVC.groupID = groupID ?? 0
+        newPostVC.modalPresentationStyle = .fullScreen
+        present(newPostVC, animated: true)
+        /*
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? MakePostViewController {
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? NewPostViewController {
+            newPostVC.groupID = groupID ?? 0
             newPostVC.modalPresentationStyle = .fullScreen
             present(newPostVC, animated: true)
         }
+        */
     }
     
     @objc private func openProfile() {
