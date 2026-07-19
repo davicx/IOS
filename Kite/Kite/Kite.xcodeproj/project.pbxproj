@@ -76,6 +76,26 @@
 		D710E7FB2E7E168B008C11BA /* Groups.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7FA2E7E168B008C11BA /* Groups.storyboard */; };
 		D710E7FD2E7E1691008C11BA /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7FC2E7E1691008C11BA /* Discover.storyboard */; };
 		D710E7FF2E7E19CB008C11BA /* Post.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7FE2E7E19CB008C11BA /* Post.storyboard */; };
+		D71573E9300C40960083B6E5 /* EventsMasterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573E8300C40960083B6E5 /* EventsMasterHeader.swift */; };
+		D71573EE300C41000083B6E5 /* EventHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573ED300C41000083B6E5 /* EventHeader.swift */; };
+		D71573F0300C41080083B6E5 /* EventImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573EF300C41080083B6E5 /* EventImage.swift */; };
+		D71573F2300C410E0083B6E5 /* EventMembers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573F1300C410E0083B6E5 /* EventMembers.swift */; };
+		D71573F4300C41A20083B6E5 /* EventSocials.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573F3300C41A20083B6E5 /* EventSocials.swift */; };
+		D71573F6300C41B40083B6E5 /* ListMasterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573F5300C41B40083B6E5 /* ListMasterHeader.swift */; };
+		D71573F8300C41BC0083B6E5 /* ListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573F7300C41BC0083B6E5 /* ListHeader.swift */; };
+		D71573FA300C41C20083B6E5 /* ListImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573F9300C41C20083B6E5 /* ListImage.swift */; };
+		D71573FC300C41D00083B6E5 /* ListMembers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573FB300C41D00083B6E5 /* ListMembers.swift */; };
+		D71573FE300C41DA0083B6E5 /* ListSocials.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71573FD300C41DA0083B6E5 /* ListSocials.swift */; };
+		D7157405300C42F20083B6E5 /* IndividualEventHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157404300C42F20083B6E5 /* IndividualEventHeader.swift */; };
+		D7157407300C42FF0083B6E5 /* IndividualEventSocials.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157406300C42FF0083B6E5 /* IndividualEventSocials.swift */; };
+		D7157409300C431E0083B6E5 /* IndividualListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157408300C431E0083B6E5 /* IndividualListHeader.swift */; };
+		D715740B300C432C0083B6E5 /* IndividualListMembers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D715740A300C432C0083B6E5 /* IndividualListMembers.swift */; };
+		D715740F300C43550083B6E5 /* PostHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D715740E300C43550083B6E5 /* PostHeader.swift */; };
+		D7157411300C43670083B6E5 /* PostImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157410300C43670083B6E5 /* PostImage.swift */; };
+		D7157413300C438A0083B6E5 /* ItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157412300C438A0083B6E5 /* ItemInfo.swift */; };
+		D7157415300C43980083B6E5 /* ItemPurchased.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157414300C43980083B6E5 /* ItemPurchased.swift */; };
+		D7157417300C4FC60083B6E5 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157416300C4FC60083B6E5 /* EventCell.swift */; };
+		D7157419300C4FCD0083B6E5 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157418300C4FCD0083B6E5 /* ListCell.swift */; };
 		D716D8462F301B08009766D6 /* PostCaptionTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D716D8452F301B08009766D6 /* PostCaptionTemplate.swift */; };
 		D716D84A2F302913009766D6 /* DatabaseSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D716D8492F302913009766D6 /* DatabaseSchema.swift */; };
 		D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71809462DBC37F5003BC46D /* CommentCell.swift */; };
@@ -305,6 +325,26 @@
 		D710E7FA2E7E168B008C11BA /* Groups.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Groups.storyboard; sourceTree = "<group>"; };
 		D710E7FC2E7E1691008C11BA /* Discover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
 		D710E7FE2E7E19CB008C11BA /* Post.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Post.storyboard; sourceTree = "<group>"; };
+		D71573E8300C40960083B6E5 /* EventsMasterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsMasterHeader.swift; sourceTree = "<group>"; };
+		D71573ED300C41000083B6E5 /* EventHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHeader.swift; sourceTree = "<group>"; };
+		D71573EF300C41080083B6E5 /* EventImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventImage.swift; sourceTree = "<group>"; };
+		D71573F1300C410E0083B6E5 /* EventMembers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMembers.swift; sourceTree = "<group>"; };
+		D71573F3300C41A20083B6E5 /* EventSocials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSocials.swift; sourceTree = "<group>"; };
+		D71573F5300C41B40083B6E5 /* ListMasterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMasterHeader.swift; sourceTree = "<group>"; };
+		D71573F7300C41BC0083B6E5 /* ListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHeader.swift; sourceTree = "<group>"; };
+		D71573F9300C41C20083B6E5 /* ListImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListImage.swift; sourceTree = "<group>"; };
+		D71573FB300C41D00083B6E5 /* ListMembers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMembers.swift; sourceTree = "<group>"; };
+		D71573FD300C41DA0083B6E5 /* ListSocials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSocials.swift; sourceTree = "<group>"; };
+		D7157404300C42F20083B6E5 /* IndividualEventHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualEventHeader.swift; sourceTree = "<group>"; };
+		D7157406300C42FF0083B6E5 /* IndividualEventSocials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualEventSocials.swift; sourceTree = "<group>"; };
+		D7157408300C431E0083B6E5 /* IndividualListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualListHeader.swift; sourceTree = "<group>"; };
+		D715740A300C432C0083B6E5 /* IndividualListMembers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualListMembers.swift; sourceTree = "<group>"; };
+		D715740E300C43550083B6E5 /* PostHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHeader.swift; sourceTree = "<group>"; };
+		D7157410300C43670083B6E5 /* PostImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImage.swift; sourceTree = "<group>"; };
+		D7157412300C438A0083B6E5 /* ItemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfo.swift; sourceTree = "<group>"; };
+		D7157414300C43980083B6E5 /* ItemPurchased.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPurchased.swift; sourceTree = "<group>"; };
+		D7157416300C4FC60083B6E5 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		D7157418300C4FCD0083B6E5 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		D716D8452F301B08009766D6 /* PostCaptionTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCaptionTemplate.swift; sourceTree = "<group>"; };
 		D716D8492F302913009766D6 /* DatabaseSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSchema.swift; sourceTree = "<group>"; };
 		D71809462DBC37F5003BC46D /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -826,7 +866,6 @@
 		D701259B2F1327DE00A9C400 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
-				D70125A02F1328B300A9C400 /* cells */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -843,6 +882,8 @@
 			isa = PBXGroup;
 			children = (
 				D7D9923B2DFCE66200D6B48A /* GroupCell.swift */,
+				D7157416300C4FC60083B6E5 /* EventCell.swift */,
+				D7157418300C4FCD0083B6E5 /* ListCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -890,6 +931,113 @@
 				D710E7FE2E7E19CB008C11BA /* Post.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		D71573E6300C40690083B6E5 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				D71573EA300C409C0083B6E5 /* Components */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		D71573E7300C40700083B6E5 /* Lists */ = {
+			isa = PBXGroup;
+			children = (
+				D71573EC300C40C70083B6E5 /* Components */,
+			);
+			path = Lists;
+			sourceTree = "<group>";
+		};
+		D71573EA300C409C0083B6E5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D71573E8300C40960083B6E5 /* EventsMasterHeader.swift */,
+				D71573ED300C41000083B6E5 /* EventHeader.swift */,
+				D71573EF300C41080083B6E5 /* EventImage.swift */,
+				D71573F1300C410E0083B6E5 /* EventMembers.swift */,
+				D71573F3300C41A20083B6E5 /* EventSocials.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D71573EC300C40C70083B6E5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D71573F5300C41B40083B6E5 /* ListMasterHeader.swift */,
+				D71573F7300C41BC0083B6E5 /* ListHeader.swift */,
+				D71573F9300C41C20083B6E5 /* ListImage.swift */,
+				D71573FB300C41D00083B6E5 /* ListMembers.swift */,
+				D71573FD300C41DA0083B6E5 /* ListSocials.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D71573FF300C422A0083B6E5 /* IndividualGroup */ = {
+			isa = PBXGroup;
+			children = (
+				D7157401300C42400083B6E5 /* IndividualList */,
+				D7157400300C42390083B6E5 /* IndividualEvent */,
+			);
+			path = IndividualGroup;
+			sourceTree = "<group>";
+		};
+		D7157400300C42390083B6E5 /* IndividualEvent */ = {
+			isa = PBXGroup;
+			children = (
+				D7157403300C42510083B6E5 /* Components */,
+			);
+			path = IndividualEvent;
+			sourceTree = "<group>";
+		};
+		D7157401300C42400083B6E5 /* IndividualList */ = {
+			isa = PBXGroup;
+			children = (
+				D7157402300C42470083B6E5 /* Components */,
+			);
+			path = IndividualList;
+			sourceTree = "<group>";
+		};
+		D7157402300C42470083B6E5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D7157404300C42F20083B6E5 /* IndividualEventHeader.swift */,
+				D7157406300C42FF0083B6E5 /* IndividualEventSocials.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D7157403300C42510083B6E5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D7157408300C431E0083B6E5 /* IndividualListHeader.swift */,
+				D715740A300C432C0083B6E5 /* IndividualListMembers.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D715740C300C433B0083B6E5 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				D715740E300C43550083B6E5 /* PostHeader.swift */,
+				D7157410300C43670083B6E5 /* PostImage.swift */,
+				D7D994302F4BD9350002261E /* PostCaption.swift */,
+				D7D9942E2F4BD92F0002261E /* PostSocials.swift */,
+				D7FD3C362F4D2C3E0054B9B4 /* PostComment.swift */,
+				D7FD3C342F4D271A0054B9B4 /* PostContent.swift */,
+				D74F9D5A2F7F27D400E8DAB2 /* MakeComment.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		D715740D300C43420083B6E5 /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				D7157412300C438A0083B6E5 /* ItemInfo.swift */,
+				D7157414300C43980083B6E5 /* ItemPurchased.swift */,
+				D701E0512F847763001A4BF9 /* ItemContent.swift */,
+			);
+			path = Item;
 			sourceTree = "<group>";
 		};
 		D716D8482F302907009766D6 /* Docs */ = {
@@ -995,6 +1143,7 @@
 			isa = PBXGroup;
 			children = (
 				D79743F82DFB99D900DC97D5 /* Groups */,
+				D71573FF300C422A0083B6E5 /* IndividualGroup */,
 				51EC39142D34952F0001B6E7 /* Profile */,
 				D7FD3C312F4D25690054B9B4 /* POSTSORT */,
 				D74AAB382D9F4B7600C8AEB5 /* Post */,
@@ -1080,6 +1229,9 @@
 			isa = PBXGroup;
 			children = (
 				D7A95D3B3003142E00EACCEF /* SORT */,
+				D71573E6300C40690083B6E5 /* Events */,
+				D71573E7300C40700083B6E5 /* Lists */,
+				D70125A02F1328B300A9C400 /* cells */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -1279,12 +1431,8 @@
 		D7FD3C322F4D26420054B9B4 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D7FD3C342F4D271A0054B9B4 /* PostContent.swift */,
-				D7D9942E2F4BD92F0002261E /* PostSocials.swift */,
-				D7D994302F4BD9350002261E /* PostCaption.swift */,
-				D7FD3C362F4D2C3E0054B9B4 /* PostComment.swift */,
-				D74F9D5A2F7F27D400E8DAB2 /* MakeComment.swift */,
-				D701E0512F847763001A4BF9 /* ItemContent.swift */,
+				D715740D300C43420083B6E5 /* Item */,
+				D715740C300C433B0083B6E5 /* Post */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1446,11 +1594,13 @@
 				51C69B512D0E62A000C46759 /* LoadingViewController.swift in Sources */,
 				51C58F2E2D1B6D3500942386 /* LogoutResponseModel.swift in Sources */,
 				D7468DD92E875A6E005FFD59 /* NewPostViewController.swift in Sources */,
+				D71573EE300C41000083B6E5 /* EventHeader.swift in Sources */,
 				51C69B2E2D0E57BF00C46759 /* Functions.swift in Sources */,
 				D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */,
 				51ED44682D2E0B460036DB4B /* UserModel.swift in Sources */,
 				D798D97F2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift in Sources */,
 				51C58F2C2D1B64B600942386 /* loginFunctions.swift in Sources */,
+				D7157405300C42F20083B6E5 /* IndividualEventHeader.swift in Sources */,
 				51B109BC2D276754006E4CCF /* StyleOld.swift in Sources */,
 				51C58F302D1B6D4200942386 /* LogoutModel.swift in Sources */,
 				D7A0BB332D7FACEB007EB34C /* UserInformation.swift in Sources */,
@@ -1476,6 +1626,8 @@
 				51C69B422D0E585900C46759 /* UnlikePostResponseModel.swift in Sources */,
 				51CA9DC52D0FA711008C36F0 /* RegistrationViewController.swift in Sources */,
 				51C69B262D0E575200C46759 /* Group.swift in Sources */,
+				D71573F6300C41B40083B6E5 /* ListMasterHeader.swift in Sources */,
+				D7157407300C42FF0083B6E5 /* IndividualEventSocials.swift in Sources */,
 				51ED44662D2E0B3B0036DB4B /* UserProfileResponseModel.swift in Sources */,
 				D78EBDDB2E305A700008F3FE /* IndividualPostCellQA.swift in Sources */,
 				D7D9923C2DFCE66200D6B48A /* GroupCell.swift in Sources */,
@@ -1488,6 +1640,7 @@
 				D77F13913005AF680094246D /* ProfileInfoPostsCard.swift in Sources */,
 				D77F13933005AF680094246D /* ProfileInfoGroupsCard.swift in Sources */,
 				D77F13953005AF680094246D /* ProfileInfoFriendsCard.swift in Sources */,
+				D71573E9300C40960083B6E5 /* EventsMasterHeader.swift in Sources */,
 				D73A1B682E8213940085E4F1 /* FriendSearchResponseModel.swift in Sources */,
 				51C69B492D0E595700C46759 /* RegistrationModel.swift in Sources */,
 				D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */,
@@ -1496,11 +1649,13 @@
 				D773B5292F8F0DBC00DD937F /* Style.swift in Sources */,
 				D798605A2E208A050094B46E /* componentFunctions.swift in Sources */,
 				D701E0522F847763001A4BF9 /* ItemContent.swift in Sources */,
+				D71573F0300C41080083B6E5 /* EventImage.swift in Sources */,
 				D78CEF7B2E2F074B002E3712 /* FullOriginalPostToPullFrom.swift in Sources */,
 				D7958ADE2D557C5800B22150 /* ProfileAPIBackup.swift in Sources */,
 				D700069F2F3808530009CE1C /* PurchaseItemModel.swift in Sources */,
 				D7A0BB312D7FACC2007EB34C /* UserProfileView.swift in Sources */,
 				D74ABDB12E344751009ECAEF /* OriginalPostCellThatWorks.swift in Sources */,
+				D71573FC300C41D00083B6E5 /* ListMembers.swift in Sources */,
 				D7D994332F4BD9640002261E /* PostCell.swift in Sources */,
 				D78BE98F2E271DAE0082ABC4 /* PostHeaderLayout.swift in Sources */,
 				51EB084C2D10FD6900AA9CF1 /* UserGroupsResponseModel.swift in Sources */,
@@ -1508,6 +1663,7 @@
 				D76FD6E02E19FA8200D29FD4 /* GroupDataController.swift in Sources */,
 				D7FB876B2D6FE0090054CDF7 /* HomePostCell.swift in Sources */,
 				51C69B4B2D0E595D00C46759 /* RegistrationResponseModel.swift in Sources */,
+				D71573F4300C41A20083B6E5 /* EventSocials.swift in Sources */,
 				D773A57E2DF3A63700074C88 /* ProfileDoc.swift in Sources */,
 				D7B4D1BD2DEA73F400D1630D /* RemoveFriendResponseModel.swift in Sources */,
 				D720DB3C2DE13FA600F137AD /* AddFriendResponseModel.swift in Sources */,
@@ -1516,20 +1672,25 @@
 				51C69B342D0E580600C46759 /* CommentModel.swift in Sources */,
 				D7FD3C352F4D271A0054B9B4 /* PostContent.swift in Sources */,
 				D747F7BF2D824D4400A08602 /* UserProfileEditView.swift in Sources */,
+				D715740F300C43550083B6E5 /* PostHeader.swift in Sources */,
 				D70BE0BE2F19B5FF00B9CBA4 /* UserLogic.swift in Sources */,
 				D74304022DF6496000D7775A /* PostDataController.swift in Sources */,
 				D7E703802DDD44EE00BF4AE5 /* FriendListResponseModel.swift in Sources */,
 				D74F9D5B2F7F27D400E8DAB2 /* MakeComment.swift in Sources */,
+				D71573F2300C410E0083B6E5 /* EventMembers.swift in Sources */,
 				D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */,
 				D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */,
 				D746A4E32F453FD200800DB8 /* ItemPurchaseUserCell.swift in Sources */,
 				D716D84A2F302913009766D6 /* DatabaseSchema.swift in Sources */,
 				D78EBDD82E305A4E0008F3FE /* HomeViewControllerQA.swift in Sources */,
+				D7157415300C43980083B6E5 /* ItemPurchased.swift in Sources */,
 				D78C15A52E74DC7B00FB6959 /* User.swift in Sources */,
 				D798D97D2DED16B800C1960E /* CancelFriendRequestModel.swift in Sources */,
 				D74470392E723BC800EF2D2D /* GroupUsersModel.swift in Sources */,
+				D715740B300C432C0083B6E5 /* IndividualListMembers.swift in Sources */,
 				D720DB3A2DE13E4400F137AD /* FriendAPI.swift in Sources */,
 				D7AEA9782DC82A8800272944 /* CommentResponseModel.swift in Sources */,
+				D7157409300C431E0083B6E5 /* IndividualListHeader.swift in Sources */,
 				D7AEAB292F2058C2009BDE97 /* CommentCellLayout.swift in Sources */,
 				D79E03802E53EF9700D94B19 /* ListTableViewCell.swift in Sources */,
 				D7FD3C372F4D2C3E0054B9B4 /* PostComment.swift in Sources */,
@@ -1552,6 +1713,7 @@
 				D75470122DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift in Sources */,
 				D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */,
 				D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */,
+				D7157417300C4FC60083B6E5 /* EventCell.swift in Sources */,
 				D7A75AC92E67A51400BDDA78 /* LoginStatusModel.swift in Sources */,
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,
 				D783E50D2F108241005B5170 /* IndividualGroupPostCell.swift in Sources */,
@@ -1568,7 +1730,9 @@
 				D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */,
 				D77FB6722E2B0DB2003E1020 /* groupFunctions.swift in Sources */,
 				D78CEF7D2E2F08DD002E3712 /* PostContentCell.swift in Sources */,
+				D71573F8300C41BC0083B6E5 /* ListHeader.swift in Sources */,
 				D7AF47AE2E21D94200617D69 /* sizeFunctions.swift in Sources */,
+				D71573FA300C41C20083B6E5 /* ListImage.swift in Sources */,
 				51C69B1A2D0E552500C46759 /* Enums.swift in Sources */,
 				51C58F2A2D1B642000942386 /* Appendix.swift in Sources */,
 				D7D88BA42D62B92B002B3084 /* GroupModel.swift in Sources */,
@@ -1576,11 +1740,13 @@
 				D74C9F052D5981AB00947ECE /* KeyChainManager.swift in Sources */,
 				D75D6C3F2DEE6DCA0080751C /* AcceptFriendResponseModel.swift in Sources */,
 				D773A57C2DF3A62600074C88 /* FriendListViewController.swift in Sources */,
+				D7157419300C4FCD0083B6E5 /* ListCell.swift in Sources */,
 				51ED44632D2E09A60036DB4B /* ProfileAPI.swift in Sources */,
 				51C69AE32D0E549100C46759 /* SceneDelegate.swift in Sources */,
 				D78047892DF507B500702C01 /* PlantDataController.swift in Sources */,
 				D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */,
 				D710E7F32E7E1338008C11BA /* DiscoverViewController.swift in Sources */,
+				D7157413300C438A0083B6E5 /* ItemInfo.swift in Sources */,
 				D7A3C11C2D80F51E000B4EB7 /* SimpleBottomStackView.swift in Sources */,
 				D78D50AD2F2C327A00B86D04 /* PostTemplate.swift in Sources */,
 				D7C59BE32FCA494300661186 /* ImageStyle.swift in Sources */,
@@ -1592,7 +1758,9 @@
 				D7834F0C2EA857E900C647AB /* IndividualGroupFriendViewController.swift in Sources */,
 				51C69B2A2D0E576C00C46759 /* postFunctions.swift in Sources */,
 				D78C165E2DD55DBA00EEDD91 /* postLikeFunctions.swift in Sources */,
+				D71573FE300C41DA0083B6E5 /* ListSocials.swift in Sources */,
 				D7AD5CBB2EEB96CA00D90E90 /* UserCountResponseModel.swift in Sources */,
+				D7157411300C43670083B6E5 /* PostImage.swift in Sources */,
 				51C69B3A2D0E583F00C46759 /* LikePostResponseModel.swift in Sources */,
 				D792ED922F073F4D00E0A469 /* PostLogic.swift in Sources */,
 				D7A3C1202D80FB2E000B4EB7 /* UserProfileLayoutExample.swift in Sources */,

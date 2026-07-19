@@ -73,7 +73,30 @@ enum TextViewStyle {
 
 // VIEWS
 enum ViewStyle {
-    
+
+    // Temporary layout blocks — full width comes from parent constraints
+    static func placeholderContent(
+        in view: UIView,
+        title: String,
+        backgroundColor: UIColor,
+        height: CGFloat
+    ) {
+        view.backgroundColor = backgroundColor
+
+        let label = UILabel()
+        label.text = title
+        label.font = Fonts.semibold14
+        label.textColor = Colors.primaryText
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: height),
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
 }
 
 
