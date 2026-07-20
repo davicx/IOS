@@ -46,7 +46,7 @@ final class ItemCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// Configure socials with post so like count (and later like action) use live data.
+    // Configure socials with post so like count (and later like action) use live data.
     func configure(postID: Int) {
         postSocials.configure(postID: postID)
 

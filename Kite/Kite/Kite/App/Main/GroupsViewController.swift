@@ -102,10 +102,23 @@ class GroupsViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
-        tableView.rowHeight = 220
+        
+        //KITE
+        tableView.register(EventCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        let eventsMasterHeader = EventsMasterHeader()
+        eventsMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
+        tableView.tableHeaderView = eventsMasterHeader
+
+        //WISHLIST
+        //tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        //let listMasterHeader = ListMasterHeader()
+        //listMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
+        //tableView.tableHeaderView = listMasterHeader
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 480
         tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .none  // Comment out divider lines between cells
+        tableView.separatorStyle = .singleLine
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -135,11 +148,15 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
      
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let group = allGroups[indexPath.row]
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupCell
-        cell.configure(with: group, currentUser: GroupDataController.shared.currentUser)
+        //KITE
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! EventCell
         return cell
+
+        //WISHLIST
+        //let group = allGroups[indexPath.row]
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupCell
+        //cell.configure(with: group, currentUser: GroupDataController.shared.currentUser)
+        //return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
