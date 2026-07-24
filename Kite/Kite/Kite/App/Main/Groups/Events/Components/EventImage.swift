@@ -16,7 +16,7 @@ final class EventImage: UIView {
             in: self,
             title: "EventImage",
             backgroundColor: UIColor(red: 0.85, green: 0.82, blue: 0.96, alpha: 1.0),
-            height: 220
+            height: 160
         )
     }
 

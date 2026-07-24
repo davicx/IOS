@@ -16,7 +16,7 @@ final class EventHeader: UIView {
             in: self,
             title: "EventHeader",
             backgroundColor: UIColor(red: 1.0, green: 0.90, blue: 0.78, alpha: 1.0),
-            height: 80
+            height: 60
         )
     }
 

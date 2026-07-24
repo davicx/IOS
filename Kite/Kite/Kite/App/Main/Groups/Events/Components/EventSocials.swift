@@ -16,7 +16,7 @@ final class EventSocials: UIView {
             in: self,
             title: "EventSocials",
             backgroundColor: UIColor(red: 0.78, green: 0.88, blue: 0.98, alpha: 1.0),
-            height: 80
+            height: 60
         )
     }
 

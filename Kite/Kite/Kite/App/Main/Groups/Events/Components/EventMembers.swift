@@ -16,7 +16,7 @@ final class EventMembers: UIView {
             in: self,
             title: "EventMembers",
             backgroundColor: UIColor(red: 0.78, green: 0.94, blue: 0.88, alpha: 1.0),
-            height: 100
+            height: 60
         )
     }
 

@@ -22,6 +22,7 @@ final class EventCell: UITableViewCell {
     private let eventImage = EventImage()
     private let eventMembers = EventMembers()
     private let eventSocials = EventSocials()
+    private let thickBlackDivider = ThickBlackDivider()
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -39,6 +40,7 @@ final class EventCell: UITableViewCell {
         setupEventImage()
         setupEventMembers()
         setupEventSocials()
+        setupThickBlackDivider()
     }
 
     private func setupEventHeader() {
@@ -81,8 +83,19 @@ final class EventCell: UITableViewCell {
         NSLayoutConstraint.activate([
             eventSocials.topAnchor.constraint(equalTo: eventMembers.bottomAnchor),
             eventSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            eventSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            eventSocials.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            eventSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
+    }
+
+    private func setupThickBlackDivider() {
+        thickBlackDivider.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(thickBlackDivider)
+
+        NSLayoutConstraint.activate([
+            thickBlackDivider.topAnchor.constraint(equalTo: eventSocials.bottomAnchor),
+            thickBlackDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            thickBlackDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            thickBlackDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 }

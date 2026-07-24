@@ -106,7 +106,7 @@ class GroupsViewController: UIViewController {
         //KITE
         tableView.register(EventCell.self, forCellReuseIdentifier: "GroupTableViewCell")
         let eventsMasterHeader = EventsMasterHeader()
-        eventsMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
+        eventsMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 60)
         tableView.tableHeaderView = eventsMasterHeader
 
         //WISHLIST
@@ -118,7 +118,7 @@ class GroupsViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 480
         tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .singleLine
+        tableView.separatorStyle = .none
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -148,6 +148,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
      
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         //KITE
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! EventCell
         return cell
