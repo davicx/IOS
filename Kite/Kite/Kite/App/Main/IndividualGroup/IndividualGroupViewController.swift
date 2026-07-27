@@ -14,7 +14,24 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
-//TABLE VIEW: Post Cell 
+//STRUCTURE
+/*
+Kite
+- EventHeader
+- EventSocials
+- Table View: Posts belonging to this Group (Event)
+*/
+
+/*
+Wishlist
+ - EventHeader
+ - EventSocials
+ - Table View: Items belonging to this Group (List)
+*/
+
+
+
+//TABLE VIEW: Post Cell
 class IndividualGroupViewController: UIViewController {
 
     //LOGIC
@@ -62,6 +79,7 @@ class IndividualGroupViewController: UIViewController {
     }
     
     //LAYOUT
+    //Does this work for both posts and items?
     private func setupPostObservers() {
         NotificationCenter.default.addObserver(
             self,
