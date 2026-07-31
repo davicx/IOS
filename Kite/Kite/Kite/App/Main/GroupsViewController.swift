@@ -76,7 +76,7 @@ class GroupsViewController: UIViewController {
     
     //LAYOUT
     private func setupNavigationBar() {
-        navigationItem.title = "Your Events"
+        navigationItem.title = "Nav Bar"
 
         let createGroupButton = UIBarButtonItem(
             barButtonSystemItem: .add,

@@ -19,6 +19,7 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
+
 final class ListMasterHeader: UIView {
 
     //LOGIC
