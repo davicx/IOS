@@ -12,6 +12,7 @@ import UIKit
 //GROUPS: Kite
 class GroupsViewController: UIViewController {
 
+    
     //SETUP
     let groupsAPI = GroupsAPI()
     private var groups: [GroupModel] = []
