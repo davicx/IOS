@@ -130,7 +130,7 @@ class IndividualGroupViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        navigationItem.title = "Wishlist"
+        navigationItem.title = "Kite"
 
         // Only show if user owns the group
         guard currentUserOwnsGroup else {

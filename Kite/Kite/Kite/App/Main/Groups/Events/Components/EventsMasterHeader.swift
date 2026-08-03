@@ -37,7 +37,7 @@ final class EventsMasterHeader: UIView {
     private func setupViews() {
         backgroundColor = .systemBackground
 
-        titleLabel.text = "Your Events"
+        titleLabel.text = "Your Events! How Fun!"
         titleLabel.font = Fonts.semibold16
         titleLabel.textColor = Colors.primaryText
         titleLabel.textAlignment = .center

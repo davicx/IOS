@@ -18,6 +18,7 @@ class GroupsViewController: UIViewController {
     private var groups: [GroupModel] = []
     
     private let tableView = UITableView()
+    private var eventsMasterHeader: EventsMasterHeader?
 
     let userDefaultManager = UserDefaultManager()
     let imageFunctions = ImageFunctions()
@@ -38,6 +39,7 @@ class GroupsViewController: UIViewController {
         // Listen for group updates
         GroupDataController.shared.onGroupsUpdated = { [weak self] in
             DispatchQueue.main.async {
+                self?.refreshEventsHeaderCount()
                 self?.tableView.reloadData()
             }
         }
@@ -53,6 +55,7 @@ class GroupsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchGroups()
+        refreshEventsHeaderCount()
         tableView.reloadData()
     }
     
@@ -110,7 +113,9 @@ class GroupsViewController: UIViewController {
         tableView.register(EventCell.self, forCellReuseIdentifier: "GroupTableViewCell")
         let eventsMasterHeader = EventsMasterHeader()
         eventsMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 60)
+        eventsMasterHeader.configure(eventCount: allGroups.count)
         tableView.tableHeaderView = eventsMasterHeader
+        self.eventsMasterHeader = eventsMasterHeader
 
         //WISHLIST
         //tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
@@ -133,8 +138,13 @@ class GroupsViewController: UIViewController {
 
     
     //FUNCTIONS
+    private func refreshEventsHeaderCount() {
+        eventsMasterHeader?.configure(eventCount: allGroups.count)
+    }
+
     private func fetchGroups() {
         GroupDataController.shared.getGroups {
+            self.refreshEventsHeaderCount()
             self.tableView.reloadData()
         }
     }
