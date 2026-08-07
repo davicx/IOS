@@ -19,6 +19,8 @@ class GroupsViewController: UIViewController {
     
     private let tableView = UITableView()
     private var eventsMasterHeader: EventsMasterHeader?
+    private var listMasterHeader: ListMasterHeader?
+    private var selectedListSegment: Int = 0
 
     let userDefaultManager = UserDefaultManager()
     let imageFunctions = ImageFunctions()
@@ -26,6 +28,23 @@ class GroupsViewController: UIViewController {
     //DATA
     private var allGroups: [GroupModel] {
         return GroupDataController.shared.groups
+    }
+
+    // Wishlist: lists I own (gifts I want) vs lists shared with me (what others want)
+    private var myGroups: [GroupModel] {
+        return allGroups.filter { $0.createdBy == GroupDataController.shared.currentUser }
+    }
+
+    private var sharedGroups: [GroupModel] {
+        return allGroups.filter { $0.createdBy != GroupDataController.shared.currentUser }
+    }
+
+    private var displayedGroups: [GroupModel] {
+        //KITE — flat list of all groups
+        // return allGroups
+
+        //WISHLIST — filtered by ListMasterHeader segment
+        return selectedListSegment == 0 ? myGroups : sharedGroups
     }
     
     //GROUPS
@@ -110,18 +129,23 @@ class GroupsViewController: UIViewController {
         tableView.delegate = self
         
         //KITE
-        tableView.register(EventCell.self, forCellReuseIdentifier: "GroupTableViewCell")
-        let eventsMasterHeader = EventsMasterHeader()
-        eventsMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 60)
-        eventsMasterHeader.configure(eventCount: allGroups.count)
-        tableView.tableHeaderView = eventsMasterHeader
-        self.eventsMasterHeader = eventsMasterHeader
+        //tableView.register(EventCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        //let eventsMasterHeader = EventsMasterHeader()
+        //eventsMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 60)
+        //eventsMasterHeader.configure(eventCount: allGroups.count)
+        //tableView.tableHeaderView = eventsMasterHeader
+        //self.eventsMasterHeader = eventsMasterHeader
 
-        //WISHLIST
-        //tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
-        //let listMasterHeader = ListMasterHeader()
-        //listMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
-        //tableView.tableHeaderView = listMasterHeader
+        //WISHLIST (testing ListMasterHeader segments)
+        tableView.register(GroupCell.self, forCellReuseIdentifier: "GroupTableViewCell")
+        let listMasterHeader = ListMasterHeader()
+        listMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 60)
+        listMasterHeader.onSelectionChanged = { [weak self] index in
+            self?.selectedListSegment = index
+            self?.tableView.reloadData()
+        }
+        tableView.tableHeaderView = listMasterHeader
+        self.listMasterHeader = listMasterHeader
 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 480
@@ -155,26 +179,25 @@ class GroupsViewController: UIViewController {
 extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allGroups.count
-
+        return displayedGroups.count
     }
 
      
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //KITE
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! EventCell
-        return cell
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! EventCell
+        //return cell
 
         //WISHLIST
-        //let group = allGroups[indexPath.row]
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupCell
-        //cell.configure(with: group, currentUser: GroupDataController.shared.currentUser)
-        //return cell
+        let group = displayedGroups[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as! GroupCell
+        cell.configure(with: group, currentUser: GroupDataController.shared.currentUser)
+        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let group = allGroups[indexPath.row]
+        let group = displayedGroups[indexPath.row]
         let currentUserOwnsGroup = group.createdBy == GroupDataController.shared.currentUser
 
         
