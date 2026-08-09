@@ -25,6 +25,25 @@ final class PostCell: UITableViewCell {
     private let postCaption = PostCaption()
     private let postSocials = PostSocials()
     private let mainDivider = MainDivider()
+    
+    //GOAL
+    /*
+     //UI COMPONENTS
+     //Kite
+     private let postHeader = PostHeader()
+     private let postImage = PostImage()
+     private let postCaption = PostCaption()
+     private let postSocials = PostSocials()
+     private let mainDivider = MainDivider()
+
+     //Wishlist
+     //private let itemContent = ItemContent()
+     //private let itemPurchasedBy = ItemPurchasedBy()
+     //private let postCaption = PostCaption()
+     //private let postSocials = PostSocials()
+     //private let mainDivider = MainDivider()
+
+     */
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -76,6 +95,10 @@ final class PostCell: UITableViewCell {
         postCaption.configure(with: post)
     }
 }
+
+
+
+
 
 /*
 final class PostCell: UITableViewCell {
