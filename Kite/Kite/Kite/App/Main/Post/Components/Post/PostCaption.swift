@@ -19,7 +19,6 @@ import UIKit
 // PostCaption is a UI renderer. It displays post caption info. It does NOT decide when or how the table refreshes.
 // The ViewController reacts to data changes via NotificationCenter.
 
-
 final class PostCaption: UIView {
 
     //LOGIC
