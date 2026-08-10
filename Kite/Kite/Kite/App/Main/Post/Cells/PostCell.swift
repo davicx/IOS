@@ -18,13 +18,19 @@ final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
     //Kite
-    private let postContent = PostContent()
-    
-    //Wishlist
-    //private let postContent = ItemContent()
+    private let postHeader = PostHeader()
+    private let postImage = PostImage()
     private let postCaption = PostCaption()
     private let postSocials = PostSocials()
     private let mainDivider = MainDivider()
+    
+    //Wishlist
+    //private let itemInfo = ItemInfo()
+    //private let itemPurchasedBy = ItemPurchasedBy()
+    //private let postCaption = PostCaption()
+    //private let postSocials = PostSocials()
+    //private let mainDivider = MainDivider()
+
     
     //GOAL
     /*
@@ -37,7 +43,7 @@ final class PostCell: UITableViewCell {
      private let mainDivider = MainDivider()
 
      //Wishlist
-     //private let itemContent = ItemContent()
+     //private let itemInfo = ItemInfo()
      //private let itemPurchasedBy = ItemPurchasedBy()
      //private let postCaption = PostCaption()
      //private let postSocials = PostSocials()
@@ -48,15 +54,18 @@ final class PostCell: UITableViewCell {
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        [postContent, postCaption, postSocials, mainDivider].forEach {
+        [postHeader, postImage, postCaption, postSocials, mainDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
         NSLayoutConstraint.activate([
-            postContent.topAnchor.constraint(equalTo: contentView.topAnchor),
-            postContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postCaption.topAnchor.constraint(equalTo: postContent.bottomAnchor),
+            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postImage.topAnchor.constraint(equalTo: postHeader.bottomAnchor),
+            postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postCaption.topAnchor.constraint(equalTo: postImage.bottomAnchor),
             postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
@@ -78,20 +87,23 @@ final class PostCell: UITableViewCell {
         postSocials.configure(postID: postID)
 
         if let post = PostDataController.shared.getPostByID(postID: postID) {
-            postContent.configure(with: post)
+            postHeader.configure(with: post)
+            postImage.configure(with: post)
             postCaption.configure(with: post)
         }
     }
 
     func updatePost(with post: Post) {
         postSocials.configure(postID: post.postID)
-        postContent.configure(with: post)
+        postHeader.configure(with: post)
+        postImage.configure(with: post)
         postCaption.configure(with: post)
     }
 
     func updateItem(with post: Post) {
         postSocials.configure(postID: post.postID)
-        postContent.configure(with: post)
+        postHeader.configure(with: post)
+        postImage.configure(with: post)
         postCaption.configure(with: post)
     }
 }

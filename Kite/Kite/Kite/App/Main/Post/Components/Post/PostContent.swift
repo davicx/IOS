@@ -15,6 +15,7 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
+/*
 final class PostContent: UIView {
 
     //LOGIC
@@ -280,6 +281,7 @@ final class PostContent: UIView {
     }
 
 }
+*/
 
 /*
 // BACKUP: PostContent before PlaceholderView demo (username / posted-at loading bars)

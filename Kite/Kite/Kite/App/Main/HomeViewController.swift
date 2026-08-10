@@ -138,7 +138,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          cell.updatePost(with: post)
          return cell
          /*
-         //Constants.TableViewCellIdentifier.homePostCell could have a crashy error
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
          let post = postDataController.getHomeFeedPosts()[indexPath.row]
          cell.updatePost(with: post)
