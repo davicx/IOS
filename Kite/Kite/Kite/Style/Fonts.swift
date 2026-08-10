@@ -13,6 +13,7 @@ class Fonts {
     static let regular12 = UIFont.systemFont(ofSize: 12, weight: .regular)
     static let regular13 = UIFont.systemFont(ofSize: 13, weight: .regular)
     static let regular14 = UIFont.systemFont(ofSize: 14, weight: .regular)
+    static let regular15 = UIFont.systemFont(ofSize: 15, weight: .regular)
 
     static let medium15 = UIFont.systemFont(ofSize: 15, weight: .medium)
 
@@ -25,8 +26,8 @@ class Fonts {
     //APP FONTS
 
     // Post
-    static let postEventTitleFont = semibold16
-    static let postEventDetailsFont = regular14
+    static let postHeaderEventTitleFont = semibold15
+    static let postHeaderEventTimeFont = regular13
 
     static let postCaptionFont = regular14
     static let postUsernameFont = semibold15
@@ -50,5 +51,10 @@ class Fonts {
     static let buttonSemiboldFont = semibold14
     static let buttonTikTokFont = semibold15
 }
+
+
+//OLD
+//static let postEventTitleFont = semibold16
+//static let postEventDetailsFont = regular14
 
 

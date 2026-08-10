@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemPurchased: UIViewController {
+class ItemPurchasedBy: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -14,6 +14,7 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
+/*
 final class ItemCell: UITableViewCell {
 
     //UI COMPONENTS
@@ -68,3 +69,4 @@ final class ItemCell: UITableViewCell {
         postCaption.configure(with: post)
     }
 }
+*/

@@ -35,9 +35,9 @@ final class PostSocials: UIView {
     private let commentIconView = UIImageView()
     private let commentIconBackground = UIView()
     private let commentCountLabel = UILabel()
-    private let sharesIconView = UIImageView()
-    private let sharesIconBackground = UIView()
-    private let sharesCountLabel = UILabel()
+    private let bookmarkIconView = UIImageView()
+    private let bookmarkIconBackground = UIView()
+    private let bookmarkCountLabel = UILabel()
 
     private let stackView = UIStackView()
     private let countMaxWidth: CGFloat = 60
@@ -100,11 +100,11 @@ final class PostSocials: UIView {
 
         setupPostLikeViews()
         setupPostCommentViews()
-        // setupPostSharesViews()
+        setupPostBookmarkViews()
 
         stackView.addArrangedSubview(postLikesView)
         stackView.addArrangedSubview(postCommentView)
-        // stackView.addArrangedSubview(postSharesView)
+        stackView.addArrangedSubview(postSharesView)
     }
 
     private func setupPostLikeViews() {
@@ -178,6 +178,43 @@ final class PostSocials: UIView {
             commentCountLabel.centerYAnchor.constraint(equalTo: postCommentView.centerYAnchor),
             commentCountLabel.trailingAnchor.constraint(equalTo: postCommentView.trailingAnchor),
             commentCountLabel.widthAnchor.constraint(lessThanOrEqualToConstant: countMaxWidth)
+        ])
+    }
+
+    private func setupPostBookmarkViews() {
+        bookmarkIconBackground.backgroundColor = UIColor.tertiarySystemFill
+        bookmarkIconBackground.layer.cornerRadius = iconBackgroundSize / 2
+        bookmarkIconBackground.clipsToBounds = true
+
+        bookmarkIconView.image = UIImage(named: "bookmark") ?? UIImage(systemName: "bookmark")
+        bookmarkIconView.contentMode = .scaleAspectFit
+        bookmarkIconView.tintColor = .label
+
+        StyleOld.styleSocialCountText(bookmarkCountLabel)
+        bookmarkCountLabel.text = "4"
+        bookmarkCountLabel.lineBreakMode = .byTruncatingTail
+
+        [postSharesView, bookmarkIconBackground, bookmarkIconView, bookmarkCountLabel].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        postSharesView.addSubview(bookmarkIconBackground)
+        bookmarkIconBackground.addSubview(bookmarkIconView)
+        postSharesView.addSubview(bookmarkCountLabel)
+
+        NSLayoutConstraint.activate([
+            postSharesView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+            bookmarkIconBackground.leadingAnchor.constraint(equalTo: postSharesView.leadingAnchor),
+            bookmarkIconBackground.centerYAnchor.constraint(equalTo: postSharesView.centerYAnchor),
+            bookmarkIconBackground.widthAnchor.constraint(equalToConstant: iconBackgroundSize),
+            bookmarkIconBackground.heightAnchor.constraint(equalToConstant: iconBackgroundSize),
+            bookmarkIconView.centerXAnchor.constraint(equalTo: bookmarkIconBackground.centerXAnchor),
+            bookmarkIconView.centerYAnchor.constraint(equalTo: bookmarkIconBackground.centerYAnchor),
+            bookmarkIconView.widthAnchor.constraint(equalToConstant: iconSize),
+            bookmarkIconView.heightAnchor.constraint(equalToConstant: iconSize),
+            bookmarkCountLabel.leadingAnchor.constraint(equalTo: bookmarkIconBackground.trailingAnchor, constant: 4),
+            bookmarkCountLabel.centerYAnchor.constraint(equalTo: postSharesView.centerYAnchor),
+            bookmarkCountLabel.trailingAnchor.constraint(equalTo: postSharesView.trailingAnchor),
+            bookmarkCountLabel.widthAnchor.constraint(lessThanOrEqualToConstant: countMaxWidth)
         ])
     }
     

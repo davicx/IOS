@@ -21,6 +21,7 @@ class Colors {
     static let tertiaryText = UIColor(hex: "#5A5A5A")
     static let darkGrayText = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
     static let grayTextColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+    static let darkSecondaryText = UIColor(hex: "#5F5F5F")
 
     //Status
     static let successGreen = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
@@ -49,6 +50,9 @@ class Colors {
     //Posts
     static let postCaptionFontColor = primaryText
     static let postedAtTextColor = tertiaryText
+    static let postHeaderEventTitleTextColor = primaryText
+    static let postHeaderEventTimeTextColor = darkSecondaryText
+    
 
     //Buttons
     static let buttonLoginBackground = primaryBlue
