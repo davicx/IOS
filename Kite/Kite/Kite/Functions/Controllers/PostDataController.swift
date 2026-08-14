@@ -55,7 +55,7 @@ class PostDataController {
     //FUNCTIONS A: All Functions Related to Getting Posts
     //Function A1: Get home feed posts (Kite — group 70 for now)
     func getHomeFeedPosts() -> [Post] {
-        return getPostsForGroup(groupID: 70)
+        return getPostsForGroup(groupID: 80)
     }
     
     //Function A2: Get posts for a specific group

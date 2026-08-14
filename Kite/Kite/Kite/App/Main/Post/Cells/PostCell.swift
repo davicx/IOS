@@ -18,42 +18,37 @@ final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
     //Kite
-    private let postHeader = PostHeader()
-    private let postImage = PostImage()
-    private let postCaption = PostCaption()
-    private let postSocials = PostSocials()
-    private let mainDivider = MainDivider()
-    
-    //Wishlist
-    //private let itemInfo = ItemInfo()
-    //private let itemPurchasedBy = ItemPurchasedBy()
+    //private let postHeader = PostHeader()
+    //private let postImage = PostImage()
     //private let postCaption = PostCaption()
     //private let postSocials = PostSocials()
     //private let mainDivider = MainDivider()
-
     
-    //GOAL
-    /*
-     //UI COMPONENTS
-     //Kite
-     private let postHeader = PostHeader()
-     private let postImage = PostImage()
-     private let postCaption = PostCaption()
-     private let postSocials = PostSocials()
-     private let mainDivider = MainDivider()
+    //Wishlist
+    private let itemInfo = ItemInfo()
+    private let itemPurchasedBy = ItemPurchasedBy()
+    private let postCaption = PostCaption()
+    private let postSocials = PostSocials()
+    private let mainDivider = MainDivider()
 
-     //Wishlist
-     //private let itemInfo = ItemInfo()
-     //private let itemPurchasedBy = ItemPurchasedBy()
-     //private let postCaption = PostCaption()
-     //private let postSocials = PostSocials()
-     //private let mainDivider = MainDivider()
-
-     */
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        //Kite
+        //setupPost()
+
+        //Wishlist
+        setupItem()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    //Kite
+    /*
+    private func setupPost() {
         [postHeader, postImage, postCaption, postSocials, mainDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
@@ -77,9 +72,32 @@ final class PostCell: UITableViewCell {
             mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    */
+
+    //Wishlist
+    private func setupItem() {
+        [itemInfo, itemPurchasedBy, postCaption, postSocials, mainDivider].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
+        NSLayoutConstraint.activate([
+            itemInfo.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemInfo.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemInfo.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemPurchasedBy.topAnchor.constraint(equalTo: itemInfo.bottomAnchor),
+            itemPurchasedBy.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemPurchasedBy.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postCaption.topAnchor.constraint(equalTo: itemPurchasedBy.bottomAnchor),
+            postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
+            postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainDivider.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
+            mainDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
     }
 
     //Configure socials with post so like count (and later like action) use live data.
@@ -87,23 +105,20 @@ final class PostCell: UITableViewCell {
         postSocials.configure(postID: postID)
 
         if let post = PostDataController.shared.getPostByID(postID: postID) {
-            postHeader.configure(with: post)
-            postImage.configure(with: post)
+            itemInfo.configure(with: post)
             postCaption.configure(with: post)
         }
     }
 
     func updatePost(with post: Post) {
+        itemInfo.configure(with: post)
         postSocials.configure(postID: post.postID)
-        postHeader.configure(with: post)
-        postImage.configure(with: post)
         postCaption.configure(with: post)
     }
 
     func updateItem(with post: Post) {
+        itemInfo.configure(with: post)
         postSocials.configure(postID: post.postID)
-        postHeader.configure(with: post)
-        postImage.configure(with: post)
         postCaption.configure(with: post)
     }
 }

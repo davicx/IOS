@@ -9,6 +9,7 @@ import UIKit
 
 
 
+/*
 class PostHeaderLayout: UIView {
 
     private let headerView: UIView = componentFunctions.createHeaderView()
@@ -217,3 +218,4 @@ class PostHeaderLayout: UIView {
 }
 
 
+*/

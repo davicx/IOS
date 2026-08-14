@@ -13,14 +13,14 @@ import UIKit
 //LISTS: Wishlist
 class GroupCell: UITableViewCell {
 
-    private let groupIDLabel = UILabel()
     private let groupNameLabel = UILabel()
     private let createdByLabel = UILabel()
+    private let groupIDLabel = UILabel()
+    private let groupTypeLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLabels()
-        //print("GroupTableViewCell")
         printCellInfo(cellName: "GroupCell")
     }
 
@@ -30,21 +30,38 @@ class GroupCell: UITableViewCell {
 
     private func setupLabels() {
         groupNameLabel.font = .boldSystemFont(ofSize: 20)
+        groupNameLabel.numberOfLines = 2
+        groupNameLabel.textAlignment = .center
+
         createdByLabel.font = .systemFont(ofSize: 14)
         createdByLabel.textColor = .gray
-        groupIDLabel.font = .systemFont(ofSize: 16)
+        createdByLabel.textAlignment = .center
 
-        let stack = UIStackView(arrangedSubviews: [groupNameLabel, createdByLabel, groupIDLabel])
+        groupIDLabel.font = .systemFont(ofSize: 16)
+        groupIDLabel.textAlignment = .center
+
+        groupTypeLabel.font = .systemFont(ofSize: 16)
+        groupTypeLabel.textAlignment = .center
+
+        let stack = UIStackView(arrangedSubviews: [
+            groupNameLabel,
+            createdByLabel,
+            groupIDLabel,
+            groupTypeLabel
+        ])
         stack.axis = .vertical
-        stack.spacing = 8
-        stack.alignment = .center
+        stack.spacing = Layout.spacingS
+        stack.alignment = .fill
 
         contentView.addSubview(stack)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
+        // Pin to edges so automatic row height has a real size (center-only was collapsing the cell).
         NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Layout.spacingL),
+            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.spacingM),
+            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.spacingM),
+            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Layout.spacingL)
         ])
     }
 
@@ -52,6 +69,7 @@ class GroupCell: UITableViewCell {
         groupNameLabel.text = group.groupName
         createdByLabel.text = createdByText(for: group, currentUser: currentUser)
         groupIDLabel.text = "Group ID: \(group.groupID)"
+        groupTypeLabel.text = "Group Type: \(displayGroupType(group.groupType))"
     }
 
     private func createdByText(for group: GroupModel, currentUser: String) -> String {
@@ -64,6 +82,20 @@ class GroupCell: UITableViewCell {
         }
 
         return "Group Created By: \(createdBy)"
+    }
+
+
+    private func displayGroupType(_ groupType: String) -> String {
+        switch groupType.lowercased() {
+        case "kite":
+            return "Kite"
+        case "wishlist":
+            return "Wishlist"
+        case "":
+            return "Unknown"
+        default:
+            return groupType.capitalized
+        }
     }
 }
 

@@ -32,6 +32,12 @@ class Colors {
     static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
     static let itemBackgroundColor = UIColor(hex: "#F7F8F9")
 
+    // Item Detail (Wishlist layout / temporary placeholder visibility)
+    static let itemDetailBackground = UIColor(hex: "#F3F1EE")
+    static let itemDetailContent = UIColor.white
+    static let itemDetailPlaceholder = UIColor(hex: "#E4E1DC")
+    static let itemDetailDivider = UIColor(hex: "#D8D5D0")
+
     //Buttons
     static let tikTokPink = UIColor(hex: "#EF3D57")
     static let tikTokGray = UIColor(hex: "#F1F1F2")
