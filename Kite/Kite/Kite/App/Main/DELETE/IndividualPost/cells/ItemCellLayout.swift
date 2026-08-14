@@ -7,7 +7,7 @@
 
 import UIKit
 
-
+/*
 final class ItemCellLayout: UIView {
 
     //UI COMPONENTS
@@ -396,7 +396,7 @@ final class ItemCellLayout: UIView {
 
 }
 
-
+*/
 
 /*
 final class ItemCellLayout: UIView {

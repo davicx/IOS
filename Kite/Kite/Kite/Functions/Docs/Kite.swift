@@ -165,5 +165,21 @@ import Foundation
  - ItemCell should use ItemContent (finish before Wishlist cell flip is clean).
  - Prefer NewItemViewController for Wishlist create (not the //WISHLIST block inside NewPostViewController).
  - Groups list: Events (Kite) vs Lists (Wishlist).
+ - Groups fetch does NOT filter by group_type yet — see plan below.
+
+
+ --------------------------------
+ RELATED PLANS
+ --------------------------------
+
+ - Docs/feature_group_type_filter.md
+   Filter groups by group_type (kite | wishlist) — API + iOS.
+   Dev DB canonical: 70 kite, 80 Davey wishlist, 82 Sam wishlist.
+   Also covers Home fetch/read group ID alignment (80 vs 70).
+
+ - Docs/feature_enforce_content_by_group_type.md
+   API-first: wishlist groups only create/fetch items;
+   kite groups only create/fetch posts (photo/text).
+   Keeps DB clean even if a client calls the wrong endpoint.
 
  */

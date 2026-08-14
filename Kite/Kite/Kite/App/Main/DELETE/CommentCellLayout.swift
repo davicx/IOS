@@ -8,6 +8,7 @@
 import UIKit
 
 
+/*
 final class CommentCellLayout: UIView {
 
     //LOGIC
@@ -233,6 +234,7 @@ final class CommentCellLayout: UIView {
 
     //FUNCTIONS
 }
+*/
 
 /*
 final class CommentCellLayout: UIView {
