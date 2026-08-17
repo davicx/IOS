@@ -10,18 +10,6 @@ import UIKit
 
 
 //INDIVIDUAL POST
-/*
-Post Cell (Just one)
--> PostContent (Can be post or item)
--> PostCaption
--> PostSocials
- 
-Comment Cell (many)
- 
-Make Comment (placeholder bar; text field + send next)
-->
- 
- */
 
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {

@@ -1042,6 +1042,13 @@
 			path = layouts;
 			sourceTree = "<group>";
 		};
+		D732FC0830312CF200523C21 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
 		D73A1B692E82139B0085E4F1 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1220,13 +1227,6 @@
 				D701258C2F131C5D00A9C400 /* Organize */,
 			);
 			path = DELETE;
-			sourceTree = "<group>";
-		};
-		D7967C3B302E8EA2008984C4 /* Comment */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Comment;
 			sourceTree = "<group>";
 		};
 		D79743F82DFB99D900DC97D5 /* Groups */ = {
@@ -1415,9 +1415,9 @@
 		D7FD3C322F4D26420054B9B4 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D732FC0830312CF200523C21 /* Comment */,
 				D715740C300C433B0083B6E5 /* Post */,
 				D715740D300C43420083B6E5 /* Item */,
-				D7967C3B302E8EA2008984C4 /* Comment */,
 			);
 			path = Components;
 			sourceTree = "<group>";
