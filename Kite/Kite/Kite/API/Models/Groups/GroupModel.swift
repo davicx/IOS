@@ -11,6 +11,7 @@ import Foundation
 struct GroupModel: Codable {
     let groupID: Int
     let groupName: String
+    let groupDescription: String
     let groupType: String
     let groupImage: String?
     let createdBy: String?
@@ -20,6 +21,7 @@ struct GroupModel: Codable {
     init(
         groupID: Int,
         groupName: String,
+        groupDescription: String = "this is my new group so cool",
         groupType: String = "",
         groupImage: String?,
         createdBy: String?,
@@ -28,6 +30,7 @@ struct GroupModel: Codable {
     ) {
         self.groupID = groupID
         self.groupName = groupName
+        self.groupDescription = groupDescription
         self.groupType = groupType
         self.groupImage = groupImage
         self.createdBy = createdBy
@@ -39,6 +42,7 @@ struct GroupModel: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         groupID = try container.decode(Int.self, forKey: .groupID)
         groupName = try container.decode(String.self, forKey: .groupName)
+        groupDescription = try container.decodeIfPresent(String.self, forKey: .groupDescription) ?? "this is my new group so cool"
         groupType = try container.decodeIfPresent(String.self, forKey: .groupType) ?? ""
         groupImage = try container.decodeIfPresent(String.self, forKey: .groupImage)
         createdBy = try container.decodeIfPresent(String.self, forKey: .createdBy)

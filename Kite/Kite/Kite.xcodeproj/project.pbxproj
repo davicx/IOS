@@ -105,6 +105,10 @@
 		D721D2A02DE527070002FE4C /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721D29F2DE527070002FE4C /* FriendsViewController.swift */; };
 		D726CD3F2E7391A900A0A3DA /* UsersDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726CD3E2E7391A900A0A3DA /* UsersDataController.swift */; };
 		D72A1D1D3008541600764EE2 /* NewItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72A1D1C3008541600764EE2 /* NewItemViewController.swift */; };
+		489BF68357DD4147AD6CEBF9 /* NewItemOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC5FBED69994804B58DCD49 /* NewItemOptionView.swift */; };
+		7882ABC0B7334D04BFCF8354 /* AddItemFromTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */; };
+		87D5D6547BD0426495163672 /* AddItemFromPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E43F909A314000AB0DC78F /* AddItemFromPhotoViewController.swift */; };
+		07C4C33AF25E46C0AB80B515 /* AddItemManuallyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA6B2959D4A4B2A96F281C0 /* AddItemManuallyViewController.swift */; };
 		D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */; };
 		D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */; };
 		D73A1B642E8213470085E4F1 /* SearchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73A1B632E8213470085E4F1 /* SearchAPI.swift */; };
@@ -354,6 +358,10 @@
 		D721D29F2DE527070002FE4C /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		D726CD3E2E7391A900A0A3DA /* UsersDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDataController.swift; sourceTree = "<group>"; };
 		D72A1D1C3008541600764EE2 /* NewItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemViewController.swift; sourceTree = "<group>"; };
+		6AC5FBED69994804B58DCD49 /* NewItemOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemOptionView.swift; sourceTree = "<group>"; };
+		975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemFromTextViewController.swift; sourceTree = "<group>"; };
+		E7E43F909A314000AB0DC78F /* AddItemFromPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemFromPhotoViewController.swift; sourceTree = "<group>"; };
+		6CA6B2959D4A4B2A96F281C0 /* AddItemManuallyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemManuallyViewController.swift; sourceTree = "<group>"; };
 		D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeResponseModel.swift; sourceTree = "<group>"; };
 		D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageFunctions.swift; sourceTree = "<group>"; };
 		D73A1B632E8213470085E4F1 /* SearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPI.swift; sourceTree = "<group>"; };
@@ -831,11 +839,22 @@
 			isa = PBXGroup;
 			children = (
 				D7468DD82E875A6E005FFD59 /* NewPostViewController.swift */,
-				D72A1D1C3008541600764EE2 /* NewItemViewController.swift */,
 				D7E1C93B2ED3D720000071D0 /* EditItemViewController.swift */,
 				D79C02A22F41324100F81DF8 /* ItemPurchaseViewController.swift */,
 			);
 			path = PostActions;
+			sourceTree = "<group>";
+		};
+		B0EC23AB858C42329E0DF8CD /* ItemActions */ = {
+			isa = PBXGroup;
+			children = (
+				D72A1D1C3008541600764EE2 /* NewItemViewController.swift */,
+				6AC5FBED69994804B58DCD49 /* NewItemOptionView.swift */,
+				975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */,
+				E7E43F909A314000AB0DC78F /* AddItemFromPhotoViewController.swift */,
+				6CA6B2959D4A4B2A96F281C0 /* AddItemManuallyViewController.swift */,
+			);
+			path = ItemActions;
 			sourceTree = "<group>";
 		};
 		D70125992F1325CF00A9C400 /* Docs */ = {
@@ -1083,6 +1102,7 @@
 				D7FD3C332F4D265B0054B9B4 /* Cells */,
 				D7FD3C322F4D26420054B9B4 /* Components */,
 				D70125982F13257200A9C400 /* PostActions */,
+				B0EC23AB858C42329E0DF8CD /* ItemActions */,
 				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
 			);
 			path = Post;
@@ -1765,6 +1785,10 @@
 				51C69B382D0E583500C46759 /* LikeModel.swift in Sources */,
 				51C69B242D0E574B00C46759 /* Comment.swift in Sources */,
 				D72A1D1D3008541600764EE2 /* NewItemViewController.swift in Sources */,
+				489BF68357DD4147AD6CEBF9 /* NewItemOptionView.swift in Sources */,
+				7882ABC0B7334D04BFCF8354 /* AddItemFromTextViewController.swift in Sources */,
+				87D5D6547BD0426495163672 /* AddItemFromPhotoViewController.swift in Sources */,
+				07C4C33AF25E46C0AB80B515 /* AddItemManuallyViewController.swift in Sources */,
 				51ED446A2D2E0B540036DB4B /* UpdateUserProfileResponseModel.swift in Sources */,
 				51C69B1E2D0E554A00C46759 /* Constants.swift in Sources */,
 				D7A3C1222D810097000B4EB7 /* UserProfileLayout.swift in Sources */,

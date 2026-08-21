@@ -61,6 +61,13 @@ class GroupDataController {
         groups.insert(newGroup, at: 0)
         onGroupsUpdated?()
     }
+
+    func removeGroup(groupID: Int) {
+        groups.removeAll { $0.groupID == groupID }
+        groupDetails.removeValue(forKey: String(groupID))
+        groupUsers.removeValue(forKey: String(groupID))
+        onGroupsUpdated?()
+    }
     
     func refreshGroups(completion: @escaping () -> Void) {
         getGroups {

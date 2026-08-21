@@ -105,6 +105,30 @@ enum Buttons {
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
+    //WISHLIST BUTTONS
+    //Invite Friends / Share List — outlined pills
+    static func wishlistInviteFriendsButtonStyle(button: UIButton) {
+        wishlistListActionButtonStyle(button: button)
+    }
+
+    static func wishlistShareListButtonStyle(button: UIButton) {
+        wishlistListActionButtonStyle(button: button)
+    }
+
+    private static func wishlistListActionButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonWishlistActionBackground
+        button.setTitleColor(Colors.buttonWishlistActionText, for: .normal)
+        button.tintColor = Colors.buttonWishlistActionText
+        button.layer.borderWidth = 1
+        button.layer.borderColor = Colors.buttonWishlistActionBorder.cgColor
+        button.layer.cornerRadius = 14
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.buttonCompactFont
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.8
+        button.contentEdgeInsets = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 8)
+    }
+
 
     //LINK BUTTONS
     static func linkButtonStyle(button: UIButton) {
@@ -141,8 +165,6 @@ enum Buttons {
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
     }
     
-    
-
 }
 
 

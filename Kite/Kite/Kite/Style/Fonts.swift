@@ -14,6 +14,7 @@ class Fonts {
     static let regular13 = UIFont.systemFont(ofSize: 13, weight: .regular)
     static let regular14 = UIFont.systemFont(ofSize: 14, weight: .regular)
     static let regular15 = UIFont.systemFont(ofSize: 15, weight: .regular)
+    static let regular16 = UIFont.systemFont(ofSize: 16, weight: .regular)
 
     static let medium15 = UIFont.systemFont(ofSize: 15, weight: .medium)
 
@@ -22,6 +23,7 @@ class Fonts {
     static let semibold16 = UIFont.systemFont(ofSize: 16, weight: .semibold)
     static let semibold17 = UIFont.systemFont(ofSize: 17, weight: .semibold)
     static let semibold18 = UIFont.systemFont(ofSize: 18, weight: .semibold)
+    static let semibold20 = UIFont.systemFont(ofSize: 20, weight: .semibold)
 
     //APP FONTS
 
@@ -45,11 +47,23 @@ class Fonts {
     static let itemDescriptionFont = regular14
     static let itemLinkFont = regular13
 
+    // List
+    static let listNameFont = semibold18
+    static let listDescriptionFont = regular14
+
+    // New Item (chooser)
+    static let newItemIntroTitleFont = UIFont.systemFont(ofSize: 28, weight: .bold)
+    static let newItemIntroSubtitleFont = regular15
+    static let newItemOptionTitleFont = semibold17
+    static let newItemOptionSubtitleFont = regular14
+    static let newItemInfoFont = regular13
+
     // Buttons
     static let buttonLargeFont = semibold16
     static let buttonRegularFont = regular14
     static let buttonSemiboldFont = semibold14
     static let buttonTikTokFont = semibold15
+    static let buttonCompactFont = regular12
 }
 
 

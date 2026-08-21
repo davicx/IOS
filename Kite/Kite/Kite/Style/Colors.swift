@@ -70,6 +70,19 @@ class Colors {
     static let buttonRemoveFriendBackground = screenBackground
     static let buttonPinkBackground = tikTokPink
     static let buttonGrayBackground = tikTokGray
+    static let buttonWishlistActionBackground = screenBackground
+    static let buttonWishlistActionBorder = itemDetailDivider
+    static let buttonWishlistActionText = primaryText
+
+    // New Item option cards
+    static let newItemPasteCardBackground = primaryPink.withAlphaComponent(0.08)
+    static let newItemPasteIconBackground = primaryPink.withAlphaComponent(0.18)
+    static let newItemPhotoCardBackground = primaryBlue.withAlphaComponent(0.08)
+    static let newItemPhotoIconBackground = primaryBlue.withAlphaComponent(0.18)
+    static let newItemManualCardBackground = UIColor(hex: "#F4F4F5")
+    static let newItemManualIconBackground = UIColor(hex: "#E8E8EA")
+    static let newItemCardBorder = UIColor(hex: "#E5E5E7")
+    static let newItemInfoBackground = UIColor(hex: "#F2F3F5")
 
     
     //static let buttonAcceptFriendBackground = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)

@@ -47,6 +47,7 @@ class IndividualGroupViewController: UIViewController {
     
     //UI COMPONENTS
     private let tableView = UITableView()
+    private let listHeader = IndividualListHeader()
 
     //MANAGE VIEWS
     override func viewDidLoad() {
@@ -55,6 +56,7 @@ class IndividualGroupViewController: UIViewController {
         
         setupNavigationBar()
         setupTableView()
+        setupListHeader()
         setupPostObservers()
       
         getGroupPosts()
@@ -102,6 +104,7 @@ class IndividualGroupViewController: UIViewController {
     }
 
     @objc private func handlePostsFetched() {
+        setupListHeader()
         tableView.reloadData()
     }
 
@@ -121,6 +124,9 @@ class IndividualGroupViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
 
+        listHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 110)
+        tableView.tableHeaderView = listHeader
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -128,66 +134,60 @@ class IndividualGroupViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+
+    private func setupListHeader() {
+        guard let groupID else { return }
+        if let group = GroupDataController.shared.getGroup(by: String(groupID)) {
+            let itemCount = postDataController.getPostsForGroup(groupID: groupID).count
+            listHeader.configure(with: group, itemCount: itemCount)
+        }
+    }
     
     private func setupNavigationBar() {
-        navigationItem.title = "Kite"
+        if let groupID {
+            let group = GroupDataController.shared.getGroup(by: String(groupID))
+            navigationItem.title = group?.groupName ?? "Wishlist"
+        } else {
+            navigationItem.title = "Wishlist"
+        }
 
         // Only show if user owns the group
         guard currentUserOwnsGroup else {
-            navigationItem.rightBarButtonItems = nil
+            navigationItem.rightBarButtonItem = nil
             return
         }
 
-        // Pink container (represents reserved nav space)
-        let pinkContainer = UIView()
-        pinkContainer.backgroundColor = .systemPink
-        pinkContainer.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            pinkContainer.widthAnchor.constraint(equalToConstant: 120),
-            pinkContainer.heightAnchor.constraint(equalToConstant: 32)
-        ])
-
-        // New Post button
-        let newPostButton = UIButton(type: .system)
-        newPostButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        newPostButton.tintColor = .white
-        newPostButton.translatesAutoresizingMaskIntoConstraints = false
-        newPostButton.addTarget(
+        let addItemButton = UIButton(type: .custom)
+        Buttons.buttonPinkStyle(button: addItemButton)
+        addItemButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        addItemButton.setTitle("Add Item", for: .normal)
+        addItemButton.tintColor = .white
+        addItemButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 4)
+        addItemButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+        addItemButton.addTarget(
             self,
             action: #selector(newGroupPostButton),
             for: .touchUpInside
         )
+        addItemButton.sizeToFit()
+        addItemButton.layer.cornerRadius = addItemButton.bounds.height / 2
+        addItemButton.clipsToBounds = true
 
-        // Match back-arrow style spacing
-        newPostButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
-
-        pinkContainer.addSubview(newPostButton)
-
-        NSLayoutConstraint.activate([
-            newPostButton.centerYAnchor.constraint(equalTo: pinkContainer.centerYAnchor),
-            newPostButton.trailingAnchor.constraint(equalTo: pinkContainer.trailingAnchor, constant: -8)
-        ])
-
-        let rightItem = UIBarButtonItem(customView: pinkContainer)
-        navigationItem.rightBarButtonItems = [rightItem]
+        let addItemBarItem = UIBarButtonItem(customView: addItemButton)
+        if #available(iOS 26.0, *) {
+            addItemBarItem.hidesSharedBackground = true
+        }
+        navigationItem.rightBarButtonItem = addItemBarItem
     }
 
     
     //ACTIONS
     @objc private func newGroupPostButton() {
-        let newPostVC = NewPostViewController()
-        newPostVC.groupID = groupID ?? 0
-        newPostVC.modalPresentationStyle = .fullScreen
-        present(newPostVC, animated: true)
-        /*
-        let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "MakePostViewController") as? NewPostViewController {
-            newPostVC.groupID = groupID ?? 0
-            newPostVC.modalPresentationStyle = .fullScreen
-            present(newPostVC, animated: true)
-        }
-        */
+        let newItemVC = NewItemViewController()
+        newItemVC.groupID = groupID ?? 0
+        let nav = UINavigationController(rootViewController: newItemVC)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
     
     @objc private func openProfile() {
@@ -204,19 +204,7 @@ class IndividualGroupViewController: UIViewController {
                 
                 // Print post IDs and captions and reload table
                 DispatchQueue.main.async {
-                    let posts = self.postDataController.getPostsForGroup(groupID: groupID)
-                    
-                    /*
-                    print("________________________")
-                    print("IndividualGroupViewController: Posts for groupID \(groupID)")
-                    print("Total posts: \(posts.count)")
-                    for post in posts {
-                        print("Post ID: \(post.postID), Caption: \(post.postCaption ?? "No caption")")
-                    }
-                    print("________________________")
-                     */
-                    
-                    // Reload table view after data is fetched
+                    self.setupListHeader()
                     self.tableView.reloadData()
                 }
             }
