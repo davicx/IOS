@@ -35,7 +35,7 @@ enum Buttons {
     //Remove Friend Button (White) -> Current Friends: Clicking will Remove that friend
     static func removeFriendButtonStyle(button: UIButton) {
         button.backgroundColor = Colors.buttonRemoveFriendBackground
-        button.setTitleColor(Colors.primaryText, for: .normal)
+        button.setTitleColor(Colors.primaryGrayText, for: .normal)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.layer.cornerRadius = 6

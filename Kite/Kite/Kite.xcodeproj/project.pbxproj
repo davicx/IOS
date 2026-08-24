@@ -108,6 +108,8 @@
 		489BF68357DD4147AD6CEBF9 /* NewItemOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC5FBED69994804B58DCD49 /* NewItemOptionView.swift */; };
 		7882ABC0B7334D04BFCF8354 /* AddItemFromTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */; };
 		87D5D6547BD0426495163672 /* AddItemFromPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E43F909A314000AB0DC78F /* AddItemFromPhotoViewController.swift */; };
+		A1B2C3D4E5F6478901234567 /* ItemDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F678901234567890 /* ItemDraft.swift */; };
+		C3D4E5F60718293A4B5C6D7E /* ReviewItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F60718293A4B5C6D7E8F /* ReviewItemViewController.swift */; };
 		07C4C33AF25E46C0AB80B515 /* AddItemManuallyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA6B2959D4A4B2A96F281C0 /* AddItemManuallyViewController.swift */; };
 		D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */; };
 		D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */; };
@@ -361,6 +363,8 @@
 		6AC5FBED69994804B58DCD49 /* NewItemOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemOptionView.swift; sourceTree = "<group>"; };
 		975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemFromTextViewController.swift; sourceTree = "<group>"; };
 		E7E43F909A314000AB0DC78F /* AddItemFromPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemFromPhotoViewController.swift; sourceTree = "<group>"; };
+		B2C3D4E5F678901234567890 /* ItemDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDraft.swift; sourceTree = "<group>"; };
+		D4E5F60718293A4B5C6D7E8F /* ReviewItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewItemViewController.swift; sourceTree = "<group>"; };
 		6CA6B2959D4A4B2A96F281C0 /* AddItemManuallyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemManuallyViewController.swift; sourceTree = "<group>"; };
 		D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeResponseModel.swift; sourceTree = "<group>"; };
 		D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageFunctions.swift; sourceTree = "<group>"; };
@@ -845,7 +849,7 @@
 			path = PostActions;
 			sourceTree = "<group>";
 		};
-		B0EC23AB858C42329E0DF8CD /* ItemActions */ = {
+		B0EC23AB858C42329E0DF8CD /* AddItem */ = {
 			isa = PBXGroup;
 			children = (
 				D72A1D1C3008541600764EE2 /* NewItemViewController.swift */,
@@ -853,8 +857,10 @@
 				975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */,
 				E7E43F909A314000AB0DC78F /* AddItemFromPhotoViewController.swift */,
 				6CA6B2959D4A4B2A96F281C0 /* AddItemManuallyViewController.swift */,
+				B2C3D4E5F678901234567890 /* ItemDraft.swift */,
+				D4E5F60718293A4B5C6D7E8F /* ReviewItemViewController.swift */,
 			);
-			path = ItemActions;
+			path = AddItem;
 			sourceTree = "<group>";
 		};
 		D70125992F1325CF00A9C400 /* Docs */ = {
@@ -1102,7 +1108,7 @@
 				D7FD3C332F4D265B0054B9B4 /* Cells */,
 				D7FD3C322F4D26420054B9B4 /* Components */,
 				D70125982F13257200A9C400 /* PostActions */,
-				B0EC23AB858C42329E0DF8CD /* ItemActions */,
+				B0EC23AB858C42329E0DF8CD /* AddItem */,
 				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
 			);
 			path = Post;
@@ -1788,6 +1794,8 @@
 				489BF68357DD4147AD6CEBF9 /* NewItemOptionView.swift in Sources */,
 				7882ABC0B7334D04BFCF8354 /* AddItemFromTextViewController.swift in Sources */,
 				87D5D6547BD0426495163672 /* AddItemFromPhotoViewController.swift in Sources */,
+				A1B2C3D4E5F6478901234567 /* ItemDraft.swift in Sources */,
+				C3D4E5F60718293A4B5C6D7E /* ReviewItemViewController.swift in Sources */,
 				07C4C33AF25E46C0AB80B515 /* AddItemManuallyViewController.swift in Sources */,
 				51ED446A2D2E0B540036DB4B /* UpdateUserProfileResponseModel.swift in Sources */,
 				51C69B1E2D0E554A00C46759 /* Constants.swift in Sources */,

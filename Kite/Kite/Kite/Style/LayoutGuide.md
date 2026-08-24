@@ -34,7 +34,7 @@ Tokens define the visual vocabulary.
 Examples:
 
 - `Colors.primaryBlue`
-- `Colors.primaryText`
+- `Colors.primaryGrayText`
 - `Fonts.semibold16`
 - `Layout.spacingMedium`
 - `Layout.radiusSmall`
@@ -73,7 +73,7 @@ Contains:
 Examples:
 
 - token: `primaryBlue`
-- token: `primaryText`
+- token: `primaryGrayText`
 - semantic alias: `buttonLoginBackground`
 - semantic alias: `postedAtTextColor`
 

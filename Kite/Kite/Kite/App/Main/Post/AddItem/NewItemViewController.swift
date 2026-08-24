@@ -12,6 +12,7 @@ final class NewItemViewController: UIViewController {
 
     // LOGIC
     var groupID: Int = 0
+    var listName: String = "List"
 
     // UI COMPONENTS
     private let scrollView = UIScrollView()
@@ -70,7 +71,7 @@ final class NewItemViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "How do you want\nto add this item?"
         titleLabel.font = Fonts.newItemIntroTitleFont
-        titleLabel.textColor = Colors.primaryText
+        titleLabel.textColor = Colors.primaryGrayText
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 2
         contentView.addSubview(titleLabel)
@@ -78,7 +79,7 @@ final class NewItemViewController: UIViewController {
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "We’ll pull out the item details for you."
         subtitleLabel.font = Fonts.newItemIntroSubtitleFont
-        subtitleLabel.textColor = Colors.secondaryText
+        subtitleLabel.textColor = Colors.subtleGrayText
         subtitleLabel.textAlignment = .center
         subtitleLabel.numberOfLines = 0
         contentView.addSubview(subtitleLabel)
@@ -135,14 +136,14 @@ final class NewItemViewController: UIViewController {
 
         privacyIconView.translatesAutoresizingMaskIntoConstraints = false
         privacyIconView.image = UIImage(systemName: "lock.fill")
-        privacyIconView.tintColor = Colors.secondaryText
+        privacyIconView.tintColor = Colors.subtleGrayText
         privacyIconView.contentMode = .scaleAspectFit
         privacyInfoView.addSubview(privacyIconView)
 
         privacyLabel.translatesAutoresizingMaskIntoConstraints = false
         privacyLabel.text = "Nothing is posted yet. You’ll review\neverything before adding to your list."
         privacyLabel.font = Fonts.newItemInfoFont
-        privacyLabel.textColor = Colors.secondaryText
+        privacyLabel.textColor = Colors.subtleGrayText
         privacyLabel.numberOfLines = 0
         privacyInfoView.addSubview(privacyLabel)
 
@@ -184,7 +185,7 @@ final class NewItemViewController: UIViewController {
             title: "Enter manually",
             subtitle: "Fill everything out yourself\nstep by step.",
             iconName: "pencil",
-            iconTintColor: Colors.primaryText,
+            iconTintColor: Colors.primaryGrayText,
             iconBackgroundColor: Colors.newItemManualIconBackground,
             backgroundColor: Colors.newItemManualCardBackground,
             action: { [weak self] in self?.openManual() }
@@ -192,25 +193,31 @@ final class NewItemViewController: UIViewController {
     }
 
     // ACTIONS
+    // X dismisses the entire fullscreen nav (one UINavigationController is the flow).
     @objc private func closeTapped() {
         dismiss(animated: true)
     }
 
+    // Chooser picks path → push only (no Paste | Photo | Manual segment).
+    // Paths fill ItemDraft; only Review Item will create (Step 7).
     private func openPaste() {
         let vc = AddItemFromTextViewController()
-        vc.groupID = groupID
+        vc.draft = ItemDraft.empty(groupID: groupID)
+        vc.listName = listName
         navigationController?.pushViewController(vc, animated: true)
     }
 
     private func openPhoto() {
         let vc = AddItemFromPhotoViewController()
-        vc.groupID = groupID
+        vc.draft = ItemDraft.empty(groupID: groupID)
+        vc.listName = listName
         navigationController?.pushViewController(vc, animated: true)
     }
 
     private func openManual() {
         let vc = AddItemManuallyViewController()
-        vc.groupID = groupID
+        vc.draft = ItemDraft.empty(groupID: groupID)
+        vc.listName = listName
         navigationController?.pushViewController(vc, animated: true)
     }
 }

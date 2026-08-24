@@ -127,7 +127,7 @@ final class ItemInfo: UIView {
     private func setupItemName() {
         itemNameView.translatesAutoresizingMaskIntoConstraints = false
         itemNameView.font = Fonts.itemNameFont
-        itemNameView.textColor = Colors.primaryText
+        itemNameView.textColor = Colors.primaryGrayText
         itemNameView.numberOfLines = 2
         itemNameView.lineBreakMode = .byTruncatingTail
         itemNameView.setContentHuggingPriority(.required, for: .vertical)
@@ -146,7 +146,7 @@ final class ItemInfo: UIView {
     private func setupItemPrice() {
         itemPriceView.translatesAutoresizingMaskIntoConstraints = false
         itemPriceView.font = Fonts.itemPriceFont
-        itemPriceView.textColor = Colors.primaryText
+        itemPriceView.textColor = Colors.primaryGrayText
         itemPriceView.numberOfLines = 1
         itemPriceView.lineBreakMode = .byTruncatingTail
         itemPriceView.setContentHuggingPriority(.required, for: .vertical)
@@ -163,7 +163,7 @@ final class ItemInfo: UIView {
     private func setupItemDescription() {
         itemDescriptionView.translatesAutoresizingMaskIntoConstraints = false
         itemDescriptionView.font = Fonts.itemDescriptionFont
-        itemDescriptionView.textColor = Colors.secondaryText
+        itemDescriptionView.textColor = Colors.subtleGrayText
         itemDescriptionView.numberOfLines = 6
         itemDescriptionView.lineBreakMode = .byTruncatingTail
         itemDescriptionView.setContentHuggingPriority(.required, for: .vertical)

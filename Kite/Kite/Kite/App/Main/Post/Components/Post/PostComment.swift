@@ -91,7 +91,7 @@ final class PostComment: UIView {
         commentBodyView.backgroundColor = UIColor(red: 0.86, green: 0.82, blue: 0.96, alpha: 1.0)
 
         commentBodyLabel.font = UIFont.systemFont(ofSize: 14)
-        commentBodyLabel.textColor = Colors.primaryText
+        commentBodyLabel.textColor = Colors.primaryGrayText
         commentBodyLabel.numberOfLines = 0
         commentBodyLabel.text = "commentBodyView — height expands with text. 60pt min height · fill remaining width."
 
@@ -146,7 +146,7 @@ final class PostComment: UIView {
         let label = UILabel()
         label.text = text
         label.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
-        label.textColor = Colors.primaryText
+        label.textColor = Colors.primaryGrayText
         label.numberOfLines = 0
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -67,12 +67,12 @@ final class NewItemOptionView: UIControl {
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = Fonts.newItemOptionTitleFont
-        titleLabel.textColor = Colors.primaryText
+        titleLabel.textColor = Colors.primaryGrayText
         titleLabel.numberOfLines = 1
 
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = Fonts.newItemOptionSubtitleFont
-        subtitleLabel.textColor = Colors.secondaryText
+        subtitleLabel.textColor = Colors.subtleGrayText
         subtitleLabel.numberOfLines = 2
 
         textStack.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,7 @@ final class NewItemOptionView: UIControl {
 
         chevronImageView.translatesAutoresizingMaskIntoConstraints = false
         chevronImageView.image = UIImage(systemName: "chevron.right")
-        chevronImageView.tintColor = Colors.secondaryText
+        chevronImageView.tintColor = Colors.subtleGrayText
         chevronImageView.contentMode = .scaleAspectFit
         chevronImageView.isUserInteractionEnabled = false
         addSubview(chevronImageView)

@@ -39,11 +39,11 @@ final class EventsMasterHeader: UIView {
 
         titleLabel.text = "Your Events! How Fun!"
         titleLabel.font = Fonts.semibold16
-        titleLabel.textColor = Colors.primaryText
+        titleLabel.textColor = Colors.primaryGrayText
         titleLabel.textAlignment = .center
 
         countLabel.font = Fonts.regular14
-        countLabel.textColor = Colors.grayTextColor
+        countLabel.textColor = Colors.subtleGrayText
         countLabel.textAlignment = .center
         configure(eventCount: 0)
 

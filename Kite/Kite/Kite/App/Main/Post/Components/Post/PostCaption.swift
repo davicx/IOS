@@ -88,7 +88,7 @@ final class PostCaption: UIView {
         commentHeaderView.backgroundColor = UIColor(red: 1.0, green: 0.82, blue: 0.80, alpha: 1.0)
 
         userNameLabel.font = Fonts.postUsernameFont
-        userNameLabel.textColor = Colors.primaryText
+        userNameLabel.textColor = Colors.primaryGrayText
         userNameLabel.numberOfLines = 1
         userNameLabel.lineBreakMode = .byTruncatingTail
 
@@ -219,7 +219,7 @@ final class PostCaption: UIView {
         let label = UILabel()
         label.text = text
         label.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
-        label.textColor = Colors.primaryText
+        label.textColor = Colors.primaryGrayText
         label.numberOfLines = 0
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

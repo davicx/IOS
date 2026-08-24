@@ -1,6 +1,6 @@
 # Feature: New Item (Wishlist)
 
-**Status:** Step 1 done — next is Step 2 (`ItemDraft` + nav conventions)  
+**Status:** Step 7 done — next is Step 8 (optional extraction / OCR)  
 **Related:** [feature_wishlist_new_item.md](./feature_wishlist_new_item.md) (product / AI / extraction) · List screen + `+ Add Item` entry  
 **Reference:** Design mock (Choose → Paste / Photo → Review)
 
@@ -46,15 +46,17 @@ All three paths share one `ItemDraft` → one Review screen. Do **not** build AI
 
 ---
 
-## Existing code (as of Step 1)
+## Existing code (as of Step 4)
 
 | File | Role |
 |------|------|
-| `App/Main/Post/ItemActions/NewItemViewController.swift` | Chooser UI |
-| `App/Main/Post/ItemActions/NewItemOptionView.swift` | Option cards |
-| `App/Main/Post/ItemActions/AddItemFromTextViewController.swift` | Paste placeholder |
-| `App/Main/Post/ItemActions/AddItemFromPhotoViewController.swift` | Photo placeholder |
-| `App/Main/Post/ItemActions/AddItemManuallyViewController.swift` | Old manual form (still submits directly — temporary until Step 4) |
+| `App/Main/Post/AddItem/NewItemViewController.swift` | Chooser UI |
+| `App/Main/Post/AddItem/NewItemOptionView.swift` | Option cards |
+| `App/Main/Post/AddItem/AddItemFromTextViewController.swift` | Paste UI → Draft → Review ✅ |
+| `App/Main/Post/AddItem/AddItemFromPhotoViewController.swift` | Photo picker → Draft → Review ✅ |
+| `App/Main/Post/AddItem/AddItemManuallyViewController.swift` | Manual → Draft → Review ✅ |
+| `App/Main/Post/AddItem/ItemDraft.swift` | Shared draft model ✅ |
+| `App/Main/Post/AddItem/ReviewItemViewController.swift` | Review UI + create ✅ |
 | `App/Main/IndividualGroup/IndividualGroupViewController.swift` | Presents `UINavigationController(root: NewItemViewController)` fullscreen |
 | `App/Main/Post/PostActions/NewPostViewController.swift` | Kite event create — leave alone |
 | `Docs/feature_wishlist_new_item.md` | Broader AI / extraction plan |
@@ -65,7 +67,7 @@ All three paths share one `ItemDraft` → one Review screen. Do **not** build AI
 |----------------|-----|
 | `Colors.primaryPink` / `buttonPinkBackground` | Accent, close, paste card |
 | `Colors.primaryBlue` | Photo card icon |
-| `Colors.primaryText` / `secondaryText` | Titles / body |
+| `Colors.primaryGrayText` / `subtleGrayText` | Titles / body |
 | `Colors.screenBackground` | White |
 | `Colors.newItem*` | Card tints / borders / info strip |
 | `Fonts.newItem*` | Intro + option + info fonts |
@@ -85,17 +87,17 @@ All three paths share one `ItemDraft` → one Review screen. Do **not** build AI
 ## Folder layout
 
 ```text
-App/Main/Post/ItemActions/
+App/Main/Post/AddItem/
 ├── NewItemViewController.swift              ← chooser ✅
 ├── NewItemOptionView.swift                  ← cards ✅
-├── AddItemFromTextViewController.swift      ← Paste
-├── AddItemFromPhotoViewController.swift     ← Photo
-├── AddItemManuallyViewController.swift      ← Manual (stops submitting after Step 4)
-├── ItemDraft.swift                          ← Step 2
-└── ReviewItemViewController.swift           ← Step 3
+├── AddItemFromTextViewController.swift      ← Paste → Review ✅
+├── AddItemFromPhotoViewController.swift     ← Photo → Review ✅
+├── AddItemManuallyViewController.swift      ← Manual → Review ✅
+├── ItemDraft.swift                          ← Step 2 ✅
+└── ReviewItemViewController.swift           ← Step 3 ✅
 ```
 
-`PostActions/` stays Kite/post actions. Wishlist **create** stays in `ItemActions/`.
+`PostActions/` stays Kite/post actions. Wishlist **create** stays in `AddItem/`.
 
 ---
 
@@ -105,123 +107,41 @@ App/Main/Post/ItemActions/
 
 ---
 
-# STEP 2 — Shared `ItemDraft` + navigation conventions
+# STEP 2 ✅ — Shared `ItemDraft` + navigation conventions
 
-**Scope:** One draft model every path speaks. Confirm nav rules above. Little/no new UI.
+**Done.** `ItemDraft` shared by Paste / Photo / Manual. Chooser pushes empty draft. Placeholders + Manual expose `makeDraft()`. Only Review will create (Manual still temporary-submits until Step 4).
 
-### Why early
-
-Paste, Photo, Manual, and Review should share one language **before** more screens are built. Avoid three different “almost drafts” that get reconciled later.
-
-### Model
-
-```swift
-struct ItemDraft {
-    var name: String
-    var price: String?          // stay String while editing; convert at submit
-    var postText: String?       // what the user wants to say (not product copy)
-    var productURL: String?
-    var imageURL: String?       // remote, if any
-    var localImage: UIImage?    // local pick / screenshot — fine for MVP
-    var storeName: String?
-    var groupID: Int
-}
-```
-
-**Naming notes**
-
-- Prefer **`postText`** (or `note`) over `description` — product info and “what I want to say” are different concepts.
-- Keep **`price` as `String`** in the draft. Parse / format for the API only in Review’s submit path.
-- `imageURL` + `localImage` are fine for MVP. An image-state enum later is premature.
-- Align naming with `WishlistItemDraft` in the wishlist doc if needed — **one** model only.
-
-### Nav checklist
-
-- [ ] Still one fullscreen `UINavigationController` for the whole add-item flow
-- [ ] Children only `push` / `pop`
-- [ ] Chooser X dismisses the nav
-- [ ] No `AddItemFlowViewController`
-- [ ] No Paste | Photo | Manual segment control
-
-### Done when
-
-- [ ] `ItemDraft` exists and compiles
-- [ ] Placeholders (and Manual) can accept / produce a draft even if fields are empty
-- [ ] Docs / code comments state: only Review will create
+Nav locked: one fullscreen `UINavigationController`, push/pop only, chooser X dismisses, no segment control, no flow coordinator VC.
 
 ---
 
-# STEP 3 — Review Item screen
+# STEP 3 ✅ — Review Item screen
 
-**Scope:** Editable Review UI only. CTA can print or no-op; wire create in Step 7.
-
-Fields (match mock):
-
-- Title, Price, post text / note, photo
-- “Add to list” row (list name + chevron) — display current list for now
-- Primary pink CTA: **Add to List**
-
-Review owns the draft it was given (edit in place or copy — keep it simple).
-
-### Done when
-
-- [ ] Can push Review with a sample `ItemDraft` and edit fields
-- [ ] Looks consistent with List / chooser (white, pink accent, `Layout`)
-- [ ] Still no create API call (or guarded behind a temporary path only if needed)
+**Done.** `ReviewItemViewController` edits Title / Price / Link / post / photo, shows Add to list row, pink **Add to List** CTA (print only — create in Step 7). Temp: Paste placeholder **Continue to Review** pushes sample draft.
 
 ---
 
-# STEP 4 — Manual → Draft → Review
+# STEP 4 ✅ — Manual → Draft → Review
 
-**Scope:** Manual stops being a forever-submit form.
-
-- Manual collects fields into `ItemDraft`
-- Continues → Review (push)
-- **Remove** direct `createItemPost` from Manual once Review exists
-- Temporary: Manual may still submit until this step lands — then only Review saves
-
-### Done when
-
-- [ ] Manual → Review with populated draft
-- [ ] Manual no longer calls create API
+**Done.** Manual builds `ItemDraft` via `makeDraft()`, pushes Review. Direct `createItemPost` removed. CTA: **Continue to Review**.
 
 ---
 
-# STEP 5 — Paste UI → Draft → Review
+# STEP 5 ✅ — Paste UI → Draft → Review
 
-**Scope:** Real Paste UI (text area + CTA). No AI.
-
-- Non-empty paste required to continue
-- Easy heuristic OK: detect URL → `productURL`; else put blob into `postText`
-- Push Review with draft
-- **No** backend scrape
+**Done.** Real Paste UI (text area, examples, pink CTA). Non-empty required. URL → `productURL`; otherwise blob → `postText`. Pushes Review. No scrape / AI.
 
 ---
 
-# STEP 6 — Photo picker → Draft → Review
+# STEP 6 ✅ — Photo picker → Draft → Review
 
-**Scope:** Library / camera pick + preview. No OCR.
-
-- Set `localImage` on draft; other fields empty for user fill on Review
-- Push Review
-- Reuse existing picker patterns where possible
+**Done.** Photo UI (dashed drop zone + preview). Library picker (same pattern as Review/Manual, no shared helper). Sets `localImage` on draft; other fields empty for Review. Photo required to continue. No OCR.
 
 ---
 
-# STEP 7 — Review → create API → refresh → dismiss
+# STEP 7 ✅ — Review → create API → refresh → dismiss
 
-**Scope:** The only create path.
-
-- Review **Add to List** → `PostLogic.createItemPost` (or equivalent)
-- Convert draft fields (incl. price string) at submit time
-- On success: dismiss entire nav, refresh list (`fetchGroupWishlistItems`)
-- Loading + simple error handling
-- Clear temp image / draft
-
-### Done when
-
-- [ ] Paste / Photo / Manual all save only through Review
-- [ ] List updates after dismiss
+**Done.** **Add to List** → `PostLogic.createItemPost`. Requires photo + title. Spinner + error alert. On success: refresh wishlist (`fetchGroupWishlistItems`), clear draft, dismiss entire nav. Only create path for Paste / Photo / Manual.
 
 ---
 
@@ -269,10 +189,10 @@ Deferred to [feature_wishlist_new_item.md](./feature_wishlist_new_item.md):
 | Step | Deliverable |
 |------|-------------|
 | **1 ✅** | Chooser + cards + placeholders + existing manual form |
-| **2** | Shared `ItemDraft` + navigation conventions |
-| **3** | Review Item screen |
-| **4** | Manual → Draft → Review |
-| **5** | Paste UI → Draft → Review |
-| **6** | Photo picker → Draft → Review |
-| **7** | Review → create API → refresh list → dismiss |
+| **2 ✅** | Shared `ItemDraft` + navigation conventions |
+| **3 ✅** | Review Item screen |
+| **4 ✅** | Manual → Draft → Review |
+| **5 ✅** | Paste UI → Draft → Review |
+| **6 ✅** | Photo picker → Draft → Review |
+| **7 ✅** | Review → create API → refresh list → dismiss |
 | **8** | Extraction / OCR / link intelligence |

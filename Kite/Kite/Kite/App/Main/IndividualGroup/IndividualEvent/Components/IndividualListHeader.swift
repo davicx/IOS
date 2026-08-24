@@ -133,14 +133,14 @@ final class IndividualListHeader: UIView {
 
         listNameLabel.translatesAutoresizingMaskIntoConstraints = false
         listNameLabel.font = Fonts.listNameFont
-        listNameLabel.textColor = Colors.primaryText
+        listNameLabel.textColor = Colors.primaryGrayText
         listNameLabel.numberOfLines = 1
         listNameLabel.lineBreakMode = .byTruncatingTail
         listNameView.addSubview(listNameLabel)
 
         listMenuButton.translatesAutoresizingMaskIntoConstraints = false
         listMenuButton.setImage(UIImage(named: "menu-horizontal"), for: .normal)
-        listMenuButton.tintColor = Colors.primaryText
+        listMenuButton.tintColor = Colors.primaryGrayText
         listMenuButton.imageView?.contentMode = .scaleAspectFit
         setupListMenu()
         listNameView.addSubview(listMenuButton)
@@ -170,7 +170,7 @@ final class IndividualListHeader: UIView {
 
         listDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         listDescriptionLabel.font = Fonts.listDescriptionFont
-        listDescriptionLabel.textColor = Colors.darkSecondaryText
+        listDescriptionLabel.textColor = Colors.mutedGrayText
         listDescriptionLabel.numberOfLines = 1
         listDescriptionLabel.lineBreakMode = .byTruncatingTail
         listDescriptionView.addSubview(listDescriptionLabel)
@@ -195,7 +195,7 @@ final class IndividualListHeader: UIView {
 
         listSocialsLabel.translatesAutoresizingMaskIntoConstraints = false
         listSocialsLabel.font = Fonts.listDescriptionFont
-        listSocialsLabel.textColor = Colors.darkSecondaryText
+        listSocialsLabel.textColor = Colors.mutedGrayText
         listSocialsLabel.numberOfLines = 1
         listSocialsLabel.lineBreakMode = .byTruncatingTail
         listSocialsView.addSubview(listSocialsLabel)

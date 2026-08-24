@@ -359,7 +359,7 @@ final class PostContent: UIView {
         middleView.backgroundColor = .clear
 
         userNameLabel.font = Fonts.postUsernameFont
-        userNameLabel.textColor = Colors.primaryText
+        userNameLabel.textColor = Colors.primaryGrayText
         userNameLabel.numberOfLines = 1
         userNameLabel.lineBreakMode = .byTruncatingTail
 
@@ -616,7 +616,7 @@ final class PostContent: UIView {
          middleView.backgroundColor = .clear
 
          userNameLabel.font = Fonts.postUsernameFont
-         userNameLabel.textColor = Colors.primaryText
+         userNameLabel.textColor = Colors.primaryGrayText
          userNameLabel.numberOfLines = 1
          userNameLabel.lineBreakMode = .byTruncatingTail
 

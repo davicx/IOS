@@ -19,7 +19,7 @@ enum LabelStyle {
     /*
     static func postEventTitle(_ label: UILabel) {
         label.font = Fonts.postEventTitleFont
-        label.textColor = Colors.primaryText
+        label.textColor = Colors.primaryGrayText
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
     }
@@ -88,7 +88,7 @@ enum ViewStyle {
         let label = UILabel()
         label.text = title
         label.font = Fonts.semibold14
-        label.textColor = Colors.primaryText
+        label.textColor = Colors.primaryGrayText
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label)

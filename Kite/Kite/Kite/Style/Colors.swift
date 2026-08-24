@@ -15,13 +15,19 @@ class Colors {
     static let primaryBlue = UIColor(hex: "#3797EF")
     static let primaryPink = UIColor(hex: "#FF2E7A")
 
-    //Text
-    static let primaryText = UIColor.black
-    static let secondaryText = UIColor(hex: "#737373")
-    static let tertiaryText = UIColor(hex: "#5A5A5A")
-    static let darkGrayText = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
-    static let grayTextColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
-    static let darkSecondaryText = UIColor(hex: "#5F5F5F")
+    // Text — darkest to lightest
+    static let primaryGrayText = UIColor.black
+    static let secondaryGrayText = UIColor(hex: "#4D4D4D")
+    static let tertiaryGrayText = UIColor(hex: "#5A5A5A")
+    static let mutedGrayText = UIColor(hex: "#5F5F5F")
+    static let subtleGrayText = UIColor(hex: "#737373")
+    // Old text tokens (replaced):
+    // static let primaryText = UIColor.black
+    // static let secondaryText = UIColor(hex: "#737373")
+    // static let tertiaryText = UIColor(hex: "#5A5A5A")
+    // static let darkGrayText = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
+    // static let grayTextColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+    // static let darkSecondaryText = UIColor(hex: "#5F5F5F")
 
     //Status
     static let successGreen = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
@@ -44,20 +50,19 @@ class Colors {
     
     
     //IN APP USE
-    //Groups
 
     // Profile
-    static let profileFullNameTextColor = primaryText
-    static let profileUserNameTextColor = grayTextColor
-    static let userInfoCountTextColor = primaryText
-    static let userInfoDescriptionTextColor = grayTextColor
+    static let profileFullNameTextColor = primaryGrayText
+    static let profileUserNameTextColor = subtleGrayText
+    static let userInfoCountTextColor = primaryGrayText
+    static let userInfoDescriptionTextColor = subtleGrayText
     
     
     //Posts
-    static let postCaptionFontColor = primaryText
-    static let postedAtTextColor = tertiaryText
-    static let postHeaderEventTitleTextColor = primaryText
-    static let postHeaderEventTimeTextColor = darkSecondaryText
+    static let postCaptionFontColor = primaryGrayText
+    static let postedAtTextColor = tertiaryGrayText
+    static let postHeaderEventTitleTextColor = primaryGrayText
+    static let postHeaderEventTimeTextColor = mutedGrayText
     
 
     //Buttons
@@ -72,9 +77,9 @@ class Colors {
     static let buttonGrayBackground = tikTokGray
     static let buttonWishlistActionBackground = screenBackground
     static let buttonWishlistActionBorder = itemDetailDivider
-    static let buttonWishlistActionText = primaryText
+    static let buttonWishlistActionText = primaryGrayText
 
-    // New Item option cards
+    //Items
     static let newItemPasteCardBackground = primaryPink.withAlphaComponent(0.08)
     static let newItemPasteIconBackground = primaryPink.withAlphaComponent(0.18)
     static let newItemPhotoCardBackground = primaryBlue.withAlphaComponent(0.08)

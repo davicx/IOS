@@ -18,9 +18,14 @@ import UIKit
 class AddItemManuallyViewController: UIViewController {
 
     //LOGIC
-    var groupID: Int = 0
+    var groupID: Int {
+        get { draft.groupID }
+        set { draft.groupID = newValue }
+    }
+    /// Filled here → Review creates (Step 7). Manual only builds the draft.
+    var draft = ItemDraft.empty(groupID: 0)
+    var listName: String = "List"
     var selectedImage: UIImage?
-    private let spinnerHelper = SpinnerHelper()
 
     //UI COMPONENTS
     private let titleLabel = componentFunctions.createTitleLabel()
@@ -31,7 +36,7 @@ class AddItemManuallyViewController: UIViewController {
     private let itemLinkInput = componentFunctions.createItemLinkInput()
     private let addPhotoButton = componentFunctions.createAddPhotoButton()
     private let photoPreviewImageView = UIImageView()
-    private let submitItemButton = componentFunctions.createSubmitItemButton()
+    private let continueButton = componentFunctions.createSubmitItemButton()
 
     //MANAGE VIEWS
     override func viewDidLoad() {
@@ -61,6 +66,8 @@ class AddItemManuallyViewController: UIViewController {
         itemPriceInput.text = "$50"
         itemLinkInput.text = "www.secretofmana.com"
 
+        continueButton.setTitle("Continue to Review", for: .normal)
+
         view.addSubview(titleLabel)
         view.addSubview(closeButton)
         view.addSubview(itemDescriptionInput)
@@ -69,11 +76,11 @@ class AddItemManuallyViewController: UIViewController {
         view.addSubview(itemLinkInput)
         view.addSubview(addPhotoButton)
         view.addSubview(photoPreviewImageView)
-        view.addSubview(submitItemButton)
+        view.addSubview(continueButton)
 
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         addPhotoButton.addTarget(self, action: #selector(addPhotoTapped), for: .touchUpInside)
-        submitItemButton.addTarget(self, action: #selector(submitItemTapped), for: .touchUpInside)
+        continueButton.addTarget(self, action: #selector(continueToReviewTapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -112,10 +119,10 @@ class AddItemManuallyViewController: UIViewController {
             photoPreviewImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
             photoPreviewImageView.heightAnchor.constraint(equalToConstant: 120),
 
-            submitItemButton.topAnchor.constraint(equalTo: photoPreviewImageView.bottomAnchor, constant: 20),
-            submitItemButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            submitItemButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            submitItemButton.heightAnchor.constraint(equalToConstant: 32)
+            continueButton.topAnchor.constraint(equalTo: photoPreviewImageView.bottomAnchor, constant: 20),
+            continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            continueButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            continueButton.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
 
@@ -136,63 +143,27 @@ class AddItemManuallyViewController: UIViewController {
         present(picker, animated: true)
     }
 
-    @objc private func submitItemTapped() {
-        let currentUser = userDefaultManager.getLoggedInUser()
-        let listID = 0
-
-        let postFrom = currentUser
-        let postTo = "\(groupID)"
-
-        let itemDescription = itemDescriptionInput.text ?? "No item description given"
-        let itemName = itemNameInput.text ?? ""
-        let itemPrice = itemPriceInput.text ?? ""
-        let itemLink = itemLinkInput.text ?? ""
-        let postCaption = itemDescription
-
-        guard let postImage = selectedImage else {
-            print("Please select an image")
-            return
-        }
-
-        guard !itemName.isEmpty else {
-            print("Please enter an item name")
-            return
-        }
-
-        guard !itemPrice.isEmpty else {
-            print("Please enter an item price")
-            return
-        }
-
-        print("Submitting item post...")
-        spinnerHelper.show(in: self.view, delay: 0.0)
-
-        Task {
-            let success = await PostLogic.shared.createItemPost(
-                postImage: postImage,
-                postFrom: postFrom,
-                postTo: postTo,
-                postCaption: postCaption,
-                groupID: groupID,
-                listID: listID,
-                itemName: itemName,
-                itemPrice: itemPrice,
-                itemDescription: itemDescription,
-                itemLink: itemLink
-            )
-
-            DispatchQueue.main.async {
-                self.spinnerHelper.hide()
-
-                if success {
-                    print("Item post created successfully!")
-                    self.dismiss(animated: true)
-                } else {
-                    print("Failed to create item post")
-                }
-            }
-        }
+    /// Builds draft from current fields (empty fields OK). Only Review creates.
+    func makeDraft() -> ItemDraft {
+        draft.name = itemNameInput.text ?? ""
+        draft.price = itemPriceInput.text
+        draft.postText = itemDescriptionInput.text
+        draft.productURL = itemLinkInput.text
+        draft.localImage = selectedImage
+        return draft
     }
+
+    @objc private func continueToReviewTapped() {
+        let review = ReviewItemViewController()
+        review.draft = makeDraft()
+        review.listName = listName
+        navigationController?.pushViewController(review, animated: true)
+    }
+
+    /*
+    // OLD: Manual called createItemPost directly. Removed in Step 4 — only Review creates (Step 7).
+    @objc private func submitItemTapped() { ... }
+    */
 }
 
 extension AddItemManuallyViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

@@ -32,6 +32,7 @@ Wishlist
 
 
 //TABLE VIEW: Post Cell
+
 class IndividualGroupViewController: UIViewController {
 
     //LOGIC
@@ -174,9 +175,10 @@ class IndividualGroupViewController: UIViewController {
         addItemButton.clipsToBounds = true
 
         let addItemBarItem = UIBarButtonItem(customView: addItemButton)
-        if #available(iOS 26.0, *) {
-            addItemBarItem.hidesSharedBackground = true
-        }
+        // iOS 26+: hidesSharedBackground — not in current SDK (deployment 16.4)
+        // if #available(iOS 26.0, *) {
+        //     addItemBarItem.hidesSharedBackground = true
+        // }
         navigationItem.rightBarButtonItem = addItemBarItem
     }
 
@@ -185,6 +187,10 @@ class IndividualGroupViewController: UIViewController {
     @objc private func newGroupPostButton() {
         let newItemVC = NewItemViewController()
         newItemVC.groupID = groupID ?? 0
+        if let groupID,
+           let group = GroupDataController.shared.getGroup(by: String(groupID)) {
+            newItemVC.listName = group.groupName
+        }
         let nav = UINavigationController(rootViewController: newItemVC)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
