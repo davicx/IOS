@@ -5,46 +5,69 @@
 //  Created by David Vasquez on 7/15/26.
 //
 
-
 import UIKit
 
-//LOGIC
-//UI COMPONENTS
-//MANAGE VIEWS
-//LAYOUT
-//ACTIONS
-//FUNCTIONS
 
-class AddItemManuallyViewController: UIViewController {
+/// Manual entry → builds `ItemDraft` → Review creates (Step 7).
+final class AddItemManuallyViewController: UIViewController {
 
-    //LOGIC
+    // LOGIC
     var groupID: Int {
         get { draft.groupID }
         set { draft.groupID = newValue }
     }
-    /// Filled here → Review creates (Step 7). Manual only builds the draft.
+    /// Filled here → Review creates. Manual only builds the draft.
     var draft = ItemDraft.empty(groupID: 0)
     var listName: String = "List"
     var selectedImage: UIImage?
 
-    //UI COMPONENTS
-    private let titleLabel = componentFunctions.createTitleLabel()
-    private let closeButton = componentFunctions.createCloseButton()
-    private let itemDescriptionInput = componentFunctions.createItemDescriptionInput()
-    private let itemNameInput = componentFunctions.createItemLinkInput()
-    private let itemPriceInput = componentFunctions.createItemLinkInput()
-    private let itemLinkInput = componentFunctions.createItemLinkInput()
-    private let addPhotoButton = componentFunctions.createAddPhotoButton()
-    private let photoPreviewImageView = UIImageView()
-    private let continueButton = componentFunctions.createSubmitItemButton()
+    // UI
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
 
-    //MANAGE VIEWS
+    private let introTitleLabel = UILabel()
+    private let introSubtitleLabel = UILabel()
+
+    private let titleCaptionLabel = UILabel()
+    private let titleField = UITextField()
+
+    private let priceCaptionLabel = UILabel()
+    private let priceField = UITextField()
+
+    private let linkCaptionLabel = UILabel()
+    private let linkField = UITextField()
+
+    private let postCaptionLabel = UILabel()
+    private let postTextView = UITextView()
+
+    private let addToListCaptionLabel = UILabel()
+    private let addToListRow = UIControl()
+    private let addToListNameLabel = UILabel()
+    private let addToListChevron = UIImageView()
+
+    private let addPhotoButton = UIButton(type: .system)
+    private let photoPreviewImageView = UIImageView()
+
+    private let continueButton = UIButton(type: .system)
+
+    private let fieldCornerRadius: CGFloat = 12
+    private let fieldHeight: CGFloat = 48
+    private let postFieldHeight: CGFloat = 110
+    private let photoPreviewHeight: CGFloat = 120
+
+    private var photoPreviewHeightConstraint: NSLayoutConstraint?
+    private var photoPreviewTopConstraint: NSLayoutConstraint?
+
+    // MANAGE VIEWS
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = Colors.screenBackground
         title = "Enter Manually"
         navigationItem.largeTitleDisplayMode = .never
-        setupNewPostLayout()
+        setupViews()
+        setupKeyboardDismiss()
+        applySampleDefaultsIfNeeded()
+        updatePhotoUI()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -52,87 +75,310 @@ class AddItemManuallyViewController: UIViewController {
         printPageInfo(vcName: "AddItemManuallyViewController")
     }
 
-    //LAYOUT
-    func setupNewPostLayout() {
-        photoPreviewImageView.contentMode = .scaleAspectFill
-        photoPreviewImageView.clipsToBounds = true
-        photoPreviewImageView.layer.cornerRadius = 8
-        photoPreviewImageView.backgroundColor = .lightGray
-        photoPreviewImageView.isHidden = true
-        photoPreviewImageView.translatesAutoresizingMaskIntoConstraints = false
+    // LAYOUT
+    private func setupViews() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.alwaysBounceVertical = true
+        scrollView.keyboardDismissMode = .onDrag
+        view.addSubview(scrollView)
 
-        itemDescriptionInput.text = "I want to get Secret of Mana"
-        itemNameInput.text = "Secret of Mana"
-        itemPriceInput.text = "$50"
-        itemLinkInput.text = "www.secretofmana.com"
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentView)
 
-        continueButton.setTitle("Continue to Review", for: .normal)
+        setupIntro()
+        setupField(caption: titleCaptionLabel, title: "Title", field: titleField, placeholder: "Item name")
+        setupField(caption: priceCaptionLabel, title: "Price", field: priceField, placeholder: "$0.00")
+        setupField(caption: linkCaptionLabel, title: "Link (optional)", field: linkField, placeholder: "https://")
+        linkField.keyboardType = .URL
+        linkField.autocapitalizationType = .none
+        linkField.autocorrectionType = .no
 
-        view.addSubview(titleLabel)
-        view.addSubview(closeButton)
-        view.addSubview(itemDescriptionInput)
-        view.addSubview(itemNameInput)
-        view.addSubview(itemPriceInput)
-        view.addSubview(itemLinkInput)
-        view.addSubview(addPhotoButton)
-        view.addSubview(photoPreviewImageView)
-        view.addSubview(continueButton)
+        setupPostField()
+        setupAddToListSection()
+        setupPhotoSection()
+        setupContinueButton()
 
-        closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
-        addPhotoButton.addTarget(self, action: #selector(addPhotoTapped), for: .touchUpInside)
-        continueButton.addTarget(self, action: #selector(continueToReviewTapped), for: .touchUpInside)
+        let side = Layout.spacingXXL
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+
+            introTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Layout.spacingXL),
+            introTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            introTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            introSubtitleLabel.topAnchor.constraint(equalTo: introTitleLabel.bottomAnchor, constant: Layout.spacingS),
+            introSubtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            introSubtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            titleCaptionLabel.topAnchor.constraint(equalTo: introSubtitleLabel.bottomAnchor, constant: Layout.spacingXL),
+            titleCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            titleCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            titleField.topAnchor.constraint(equalTo: titleCaptionLabel.bottomAnchor, constant: Layout.spacingS),
+            titleField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            titleField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            titleField.heightAnchor.constraint(equalToConstant: fieldHeight),
+
+            priceCaptionLabel.topAnchor.constraint(equalTo: titleField.bottomAnchor, constant: Layout.spacingL),
+            priceCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            priceCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            priceField.topAnchor.constraint(equalTo: priceCaptionLabel.bottomAnchor, constant: Layout.spacingS),
+            priceField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            priceField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            priceField.heightAnchor.constraint(equalToConstant: fieldHeight),
+
+            linkCaptionLabel.topAnchor.constraint(equalTo: priceField.bottomAnchor, constant: Layout.spacingL),
+            linkCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            linkCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            linkField.topAnchor.constraint(equalTo: linkCaptionLabel.bottomAnchor, constant: Layout.spacingS),
+            linkField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            linkField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            linkField.heightAnchor.constraint(equalToConstant: fieldHeight),
+
+            postCaptionLabel.topAnchor.constraint(equalTo: linkField.bottomAnchor, constant: Layout.spacingL),
+            postCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            postCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            postTextView.topAnchor.constraint(equalTo: postCaptionLabel.bottomAnchor, constant: Layout.spacingS),
+            postTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            postTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            postTextView.heightAnchor.constraint(equalToConstant: postFieldHeight),
+
+            addToListCaptionLabel.topAnchor.constraint(equalTo: postTextView.bottomAnchor, constant: Layout.spacingXL),
+            addToListCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            addToListCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            addToListRow.topAnchor.constraint(equalTo: addToListCaptionLabel.bottomAnchor, constant: Layout.spacingS),
+            addToListRow.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            addToListRow.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            addToListRow.heightAnchor.constraint(equalToConstant: 56),
+
+            addPhotoButton.topAnchor.constraint(equalTo: addToListRow.bottomAnchor, constant: Layout.spacingXL),
+            addPhotoButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            addPhotoButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            addPhotoButton.heightAnchor.constraint(equalToConstant: 48),
+
+            photoPreviewImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            photoPreviewImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            continueButton.topAnchor.constraint(equalTo: photoPreviewImageView.bottomAnchor, constant: Layout.spacingXL),
+            continueButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            continueButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            continueButton.heightAnchor.constraint(equalToConstant: 52),
+            continueButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Layout.spacingXXL)
+        ])
+
+        let previewTop = photoPreviewImageView.topAnchor.constraint(
+            equalTo: addPhotoButton.bottomAnchor,
+            constant: Layout.spacingL
+        )
+        let previewHeight = photoPreviewImageView.heightAnchor.constraint(equalToConstant: 0)
+        photoPreviewTopConstraint = previewTop
+        photoPreviewHeightConstraint = previewHeight
+        NSLayoutConstraint.activate([previewTop, previewHeight])
+    }
+
+    private func setupIntro() {
+        introTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        introTitleLabel.text = "Add item details"
+        introTitleLabel.font = Fonts.semibold17
+        introTitleLabel.textColor = Colors.primaryGrayText
+        contentView.addSubview(introTitleLabel)
+
+        introSubtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        introSubtitleLabel.text = "Fill in what you know."
+        introSubtitleLabel.font = Fonts.regular14
+        introSubtitleLabel.textColor = Colors.subtleGrayText
+        introSubtitleLabel.numberOfLines = 0
+        contentView.addSubview(introSubtitleLabel)
+    }
+
+    /// Same field styling as Review Item.
+    private func setupField(caption: UILabel, title: String, field: UITextField, placeholder: String) {
+        caption.translatesAutoresizingMaskIntoConstraints = false
+        caption.text = title
+        caption.font = Fonts.semibold14
+        caption.textColor = Colors.primaryGrayText
+        contentView.addSubview(caption)
+
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.placeholder = placeholder
+        field.font = Fonts.regular16
+        field.textColor = Colors.primaryGrayText
+        field.backgroundColor = Colors.screenBackground
+        field.layer.cornerRadius = fieldCornerRadius
+        field.layer.borderWidth = 1
+        field.layer.borderColor = Colors.newItemCardBorder.cgColor
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: Layout.spacingL, height: 1))
+        field.leftViewMode = .always
+        field.rightView = UIView(frame: CGRect(x: 0, y: 0, width: Layout.spacingL, height: 1))
+        field.rightViewMode = .always
+        contentView.addSubview(field)
+    }
+
+    private func setupPostField() {
+        postCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        postCaptionLabel.text = "Your post (optional)"
+        postCaptionLabel.font = Fonts.semibold14
+        postCaptionLabel.textColor = Colors.primaryGrayText
+        contentView.addSubview(postCaptionLabel)
+
+        postTextView.translatesAutoresizingMaskIntoConstraints = false
+        postTextView.font = Fonts.regular16
+        postTextView.textColor = Colors.primaryGrayText
+        postTextView.backgroundColor = Colors.screenBackground
+        postTextView.layer.cornerRadius = fieldCornerRadius
+        postTextView.layer.borderWidth = 1
+        postTextView.layer.borderColor = Colors.newItemCardBorder.cgColor
+        postTextView.textContainerInset = UIEdgeInsets(
+            top: Layout.spacingM,
+            left: Layout.spacingS,
+            bottom: Layout.spacingM,
+            right: Layout.spacingS
+        )
+        contentView.addSubview(postTextView)
+    }
+
+    /// Display-only list row — same visual language as Review Item.
+    private func setupAddToListSection() {
+        addToListCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addToListCaptionLabel.text = "Add to list"
+        addToListCaptionLabel.font = Fonts.semibold14
+        addToListCaptionLabel.textColor = Colors.primaryGrayText
+        contentView.addSubview(addToListCaptionLabel)
+
+        addToListRow.translatesAutoresizingMaskIntoConstraints = false
+        addToListRow.backgroundColor = Colors.newItemInfoBackground
+        addToListRow.layer.cornerRadius = fieldCornerRadius
+        addToListRow.clipsToBounds = true
+        addToListRow.isUserInteractionEnabled = false
+        contentView.addSubview(addToListRow)
+
+        let listIcon = UIImageView(image: UIImage(systemName: "list.bullet.rectangle"))
+        listIcon.translatesAutoresizingMaskIntoConstraints = false
+        listIcon.tintColor = Colors.subtleGrayText
+        listIcon.contentMode = .scaleAspectFit
+        addToListRow.addSubview(listIcon)
+
+        addToListNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        addToListNameLabel.font = Fonts.semibold15
+        addToListNameLabel.textColor = Colors.primaryGrayText
+        addToListNameLabel.text = listName.isEmpty ? "List" : listName
+        addToListRow.addSubview(addToListNameLabel)
+
+        addToListChevron.translatesAutoresizingMaskIntoConstraints = false
+        addToListChevron.image = UIImage(systemName: "chevron.right")
+        addToListChevron.tintColor = Colors.subtleGrayText
+        addToListChevron.contentMode = .scaleAspectFit
+        addToListRow.addSubview(addToListChevron)
 
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            listIcon.leadingAnchor.constraint(equalTo: addToListRow.leadingAnchor, constant: Layout.spacingL),
+            listIcon.centerYAnchor.constraint(equalTo: addToListRow.centerYAnchor),
+            listIcon.widthAnchor.constraint(equalToConstant: 22),
+            listIcon.heightAnchor.constraint(equalToConstant: 22),
 
-            titleLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 20),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addToListNameLabel.leadingAnchor.constraint(equalTo: listIcon.trailingAnchor, constant: Layout.spacingM),
+            addToListNameLabel.centerYAnchor.constraint(equalTo: addToListRow.centerYAnchor),
+            addToListNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: addToListChevron.leadingAnchor, constant: -Layout.spacingS),
 
-            itemDescriptionInput.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            itemDescriptionInput.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            itemDescriptionInput.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            itemDescriptionInput.heightAnchor.constraint(equalToConstant: 120),
-
-            itemNameInput.topAnchor.constraint(equalTo: itemDescriptionInput.bottomAnchor, constant: 20),
-            itemNameInput.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            itemNameInput.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            itemNameInput.heightAnchor.constraint(equalToConstant: 40),
-
-            itemPriceInput.topAnchor.constraint(equalTo: itemNameInput.bottomAnchor, constant: 20),
-            itemPriceInput.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            itemPriceInput.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            itemPriceInput.heightAnchor.constraint(equalToConstant: 40),
-
-            itemLinkInput.topAnchor.constraint(equalTo: itemPriceInput.bottomAnchor, constant: 20),
-            itemLinkInput.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            itemLinkInput.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            itemLinkInput.heightAnchor.constraint(equalToConstant: 40),
-
-            addPhotoButton.topAnchor.constraint(equalTo: itemLinkInput.bottomAnchor, constant: 20),
-            addPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addPhotoButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            addPhotoButton.heightAnchor.constraint(equalToConstant: 32),
-
-            photoPreviewImageView.topAnchor.constraint(equalTo: addPhotoButton.bottomAnchor, constant: 20),
-            photoPreviewImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            photoPreviewImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            photoPreviewImageView.heightAnchor.constraint(equalToConstant: 120),
-
-            continueButton.topAnchor.constraint(equalTo: photoPreviewImageView.bottomAnchor, constant: 20),
-            continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            continueButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            continueButton.heightAnchor.constraint(equalToConstant: 32)
+            addToListChevron.trailingAnchor.constraint(equalTo: addToListRow.trailingAnchor, constant: -Layout.spacingL),
+            addToListChevron.centerYAnchor.constraint(equalTo: addToListRow.centerYAnchor),
+            addToListChevron.widthAnchor.constraint(equalToConstant: 12),
+            addToListChevron.heightAnchor.constraint(equalToConstant: 16)
         ])
     }
 
-    //ACTIONS
-    @objc private func closeTapped() {
-        if let navigationController, navigationController.viewControllers.first != self {
-            navigationController.popViewController(animated: true)
-        } else {
-            dismiss(animated: true, completion: nil)
+    private func setupPhotoSection() {
+        addPhotoButton.translatesAutoresizingMaskIntoConstraints = false
+        addPhotoButton.setTitle("Add Photo (optional)", for: .normal)
+        if let camera = UIImage(systemName: "camera.fill") {
+            addPhotoButton.setImage(camera, for: .normal)
+            addPhotoButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -6, bottom: 0, right: 6)
         }
+        Buttons.addFriendButtonStyle(button: addPhotoButton)
+        addPhotoButton.layer.cornerRadius = 14
+        addPhotoButton.titleLabel?.font = Fonts.semibold15
+        addPhotoButton.tintColor = .white
+        addPhotoButton.addTarget(self, action: #selector(addPhotoTapped), for: .touchUpInside)
+        contentView.addSubview(addPhotoButton)
+
+        photoPreviewImageView.translatesAutoresizingMaskIntoConstraints = false
+        photoPreviewImageView.contentMode = .scaleAspectFill
+        photoPreviewImageView.clipsToBounds = true
+        photoPreviewImageView.layer.cornerRadius = fieldCornerRadius
+        photoPreviewImageView.backgroundColor = Colors.newItemInfoBackground
+        photoPreviewImageView.isHidden = true
+        contentView.addSubview(photoPreviewImageView)
+    }
+
+    private func setupContinueButton() {
+        continueButton.translatesAutoresizingMaskIntoConstraints = false
+        continueButton.setTitle("Continue to Review", for: .normal)
+        Buttons.buttonPinkStyle(button: continueButton)
+        continueButton.layer.cornerRadius = 14
+        continueButton.titleLabel?.font = Fonts.semibold16
+        continueButton.addTarget(self, action: #selector(continueToReviewTapped), for: .touchUpInside)
+        contentView.addSubview(continueButton)
+    }
+
+    private func setupKeyboardDismiss() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    private func applySampleDefaultsIfNeeded() {
+        if titleField.text?.isEmpty != false {
+            titleField.text = "Secret of Mana"
+        }
+        if priceField.text?.isEmpty != false {
+            priceField.text = "$49.99"
+        }
+        if linkField.text?.isEmpty != false {
+            linkField.text = "https://www.nintendo.com/secret-of-mana"
+        }
+        if postTextView.text?.isEmpty != false {
+            postTextView.text = "I want to get Secret of Mana.\nLooks awesome!"
+        }
+        addToListNameLabel.text = listName.isEmpty ? "List" : listName
+    }
+
+    private func updatePhotoUI() {
+        let image = selectedImage ?? draft.localImage
+        let hasPhoto = image != nil
+        photoPreviewImageView.image = image
+        photoPreviewImageView.isHidden = !hasPhoto
+        photoPreviewTopConstraint?.constant = hasPhoto ? Layout.spacingL : 0
+        photoPreviewHeightConstraint?.constant = hasPhoto ? photoPreviewHeight : 0
+        addPhotoButton.setTitle(hasPhoto ? "Change Photo" : "Add Photo (optional)", for: .normal)
+    }
+
+    // DRAFT
+    /// Builds draft from current fields (empty fields OK). Only Review creates.
+    func makeDraft() -> ItemDraft {
+        draft.name = titleField.text ?? ""
+        draft.price = priceField.text
+        draft.postText = postTextView.text
+        draft.productURL = linkField.text
+        draft.localImage = selectedImage ?? draft.localImage
+        return draft
+    }
+
+    // ACTIONS
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     @objc private func addPhotoTapped() {
@@ -143,36 +389,23 @@ class AddItemManuallyViewController: UIViewController {
         present(picker, animated: true)
     }
 
-    /// Builds draft from current fields (empty fields OK). Only Review creates.
-    func makeDraft() -> ItemDraft {
-        draft.name = itemNameInput.text ?? ""
-        draft.price = itemPriceInput.text
-        draft.postText = itemDescriptionInput.text
-        draft.productURL = itemLinkInput.text
-        draft.localImage = selectedImage
-        return draft
-    }
-
     @objc private func continueToReviewTapped() {
         let review = ReviewItemViewController()
         review.draft = makeDraft()
         review.listName = listName
         navigationController?.pushViewController(review, animated: true)
     }
-
-    /*
-    // OLD: Manual called createItemPost directly. Removed in Step 4 — only Review creates (Step 7).
-    @objc private func submitItemTapped() { ... }
-    */
 }
 
 extension AddItemManuallyViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let selectedImage = info[.editedImage] as? UIImage {
-            photoPreviewImageView.image = selectedImage
-            photoPreviewImageView.isHidden = false
-            self.selectedImage = selectedImage
-        }
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
+        let image = (info[.editedImage] as? UIImage) ?? (info[.originalImage] as? UIImage)
+        selectedImage = image
+        draft.localImage = image
+        updatePhotoUI()
         picker.dismiss(animated: true)
     }
 

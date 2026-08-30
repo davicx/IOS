@@ -172,12 +172,18 @@ class HomeViewController: UIViewController {
     //FUNCTIONS
     func fetchPosts() {
         Task {
-            //Kite
-            //await postDataController.fetchKitePosts(groupID: 70)
-
-            //Wishlist
-            await postDataController.fetchWishlistItems(groupID: 80)
+            await getHomePostsWishlist()
         }
+    }
+
+    /// Kite Home posts — wire later to GET /posts
+    func getHomePosts() {
+        // await postDataController.fetchAllKitePosts() when GET /posts is cleaned up
+    }
+
+    /// Wishlist Home items — GET /items (global, limit 12)
+    func getHomePostsWishlist() async {
+        await postDataController.fetchAllWishlistItems()
     }
 
 

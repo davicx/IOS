@@ -46,7 +46,7 @@ final class PostSocials: UIView {
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
-        print("POST SOCIALS")
+        //print("POST SOCIALS")
         super.init(frame: frame)
         setupViews()
         NotificationCenter.default.addObserver(
@@ -271,7 +271,7 @@ final class PostSocials: UIView {
         likesCountLabel.text = "\(likeCount)"
         commentCountLabel.text = "\(commentCount)"
 
-        print("PostSocials: comment count = \(commentCount)")
+        //print("PostSocials: comment count = \(commentCount)")
     }
 
 

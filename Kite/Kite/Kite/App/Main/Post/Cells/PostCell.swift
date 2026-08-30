@@ -25,9 +25,8 @@ final class PostCell: UITableViewCell {
     //private let mainDivider = MainDivider()
     
     //Wishlist
-    private let itemInfo = ItemInfo()
-    private let itemPurchasedBy = ItemPurchasedBy()
-    private let postCaption = PostCaption()
+    private let itemHeader = ItemHeader()
+    private let itemBody = ItemBody()
     private let postSocials = PostSocials()
     private let mainDivider = MainDivider()
 
@@ -75,24 +74,28 @@ final class PostCell: UITableViewCell {
     */
 
     //Wishlist
+    // ItemHeader
+    // ItemBody
+    // PostSocials
+    // MainDivider
     private func setupItem() {
-        [itemInfo, itemPurchasedBy, postCaption, postSocials, mainDivider].forEach {
+        [itemHeader, itemBody, postSocials, mainDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
         NSLayoutConstraint.activate([
-            itemInfo.topAnchor.constraint(equalTo: contentView.topAnchor),
-            itemInfo.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemInfo.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            itemPurchasedBy.topAnchor.constraint(equalTo: itemInfo.bottomAnchor),
-            itemPurchasedBy.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemPurchasedBy.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postCaption.topAnchor.constraint(equalTo: itemPurchasedBy.bottomAnchor),
-            postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
+            itemHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            itemBody.topAnchor.constraint(equalTo: itemHeader.bottomAnchor),
+            itemBody.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemBody.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            postSocials.topAnchor.constraint(equalTo: itemBody.bottomAnchor),
             postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
             mainDivider.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
             mainDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mainDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -103,23 +106,14 @@ final class PostCell: UITableViewCell {
     //Configure socials with post so like count (and later like action) use live data.
     func configure(postID: Int) {
         postSocials.configure(postID: postID)
-
-        if let post = PostDataController.shared.getPostByID(postID: postID) {
-            itemInfo.configure(with: post)
-            postCaption.configure(with: post)
-        }
     }
 
     func updatePost(with post: Post) {
-        itemInfo.configure(with: post)
         postSocials.configure(postID: post.postID)
-        postCaption.configure(with: post)
     }
 
     func updateItem(with post: Post) {
-        itemInfo.configure(with: post)
         postSocials.configure(postID: post.postID)
-        postCaption.configure(with: post)
     }
 }
 

@@ -30,18 +30,27 @@ class GroupsViewController: UIViewController {
         return GroupDataController.shared.groups
     }
 
+    /// Mode filter first — then My / Shared. Flip with //KITE / //WISHLIST.
+    private var modeGroups: [GroupModel] {
+        //KITE
+        // return allGroups.filter { $0.groupType.lowercased() == "kite" }
+
+        //WISHLIST
+        return allGroups.filter { $0.groupType.lowercased() == "wishlist" }
+    }
+
     // Wishlist: lists I own (gifts I want) vs lists shared with me (what others want)
     private var myGroups: [GroupModel] {
-        return allGroups.filter { $0.createdBy == GroupDataController.shared.currentUser }
+        return modeGroups.filter { $0.createdBy == GroupDataController.shared.currentUser }
     }
 
     private var sharedGroups: [GroupModel] {
-        return allGroups.filter { $0.createdBy != GroupDataController.shared.currentUser }
+        return modeGroups.filter { $0.createdBy != GroupDataController.shared.currentUser }
     }
 
     private var displayedGroups: [GroupModel] {
-        //KITE — flat list of all groups
-        // return allGroups
+        //KITE — flat list of mode-filtered groups
+        // return modeGroups
 
         //WISHLIST — filtered by ListMasterHeader segment
         return selectedListSegment == 0 ? myGroups : sharedGroups
@@ -132,7 +141,7 @@ class GroupsViewController: UIViewController {
         //tableView.register(EventCell.self, forCellReuseIdentifier: "GroupTableViewCell")
         //let eventsMasterHeader = EventsMasterHeader()
         //eventsMasterHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 60)
-        //eventsMasterHeader.configure(eventCount: allGroups.count)
+        //eventsMasterHeader.configure(eventCount: modeGroups.count)
         //tableView.tableHeaderView = eventsMasterHeader
         //self.eventsMasterHeader = eventsMasterHeader
 
@@ -163,7 +172,7 @@ class GroupsViewController: UIViewController {
     
     //FUNCTIONS
     private func refreshEventsHeaderCount() {
-        eventsMasterHeader?.configure(eventCount: allGroups.count)
+        eventsMasterHeader?.configure(eventCount: modeGroups.count)
     }
 
     private func fetchGroups() {

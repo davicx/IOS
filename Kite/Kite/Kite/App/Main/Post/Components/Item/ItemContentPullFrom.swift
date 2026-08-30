@@ -16,7 +16,7 @@ import UIKit
 //FUNCTIONS
 
 
-final class ItemContent: UIView {
+final class ItemContentPullFrom: UIView {
 
     //UI COMPONENTS
     //UI COMPONENTS: Main Containers

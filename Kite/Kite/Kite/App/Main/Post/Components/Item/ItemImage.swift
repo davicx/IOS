@@ -1,23 +1,24 @@
 //
-//  ItemPurchased.swift
+//  ItemImage.swift
 //  Kite
 //
-//  Created by David Vasquez on 7/18/26.
+//  Created by David Vasquez on 8/29/26.
 //
 
 import UIKit
 
 
-final class ItemPurchasedBy: UIView {
+// Wishlist item cell — product image (empty shell for layout). 40% width / 180 tall from parent.
+final class ItemImage: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         ViewStyle.placeholderContent(
             in: self,
-            title: "ItemPurchasedBy",
-            backgroundColor: Colors.itemDetailPlaceholder,
-            height: 48
+            title: "ItemImage",
+            backgroundColor: UIColor.systemBlue.withAlphaComponent(0.35),
+            height: 180
         )
     }
 

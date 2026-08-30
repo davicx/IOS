@@ -457,6 +457,31 @@ class PostsAPI {
             
         }
     }
+
+    //Function B2b: Get All Items (global Home feed)
+    func getAllItemsAPI() async throws -> PostResponseModel {
+        let endpoint = "http://localhost:3003/items"
+
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        let apiURL = URLRequest(url: url)
+
+        let (data, response) = try await URLSession.shared.data(for: apiURL)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode(PostResponseModel.self, from: data)
+        } catch {
+            print("Error decoding data: \(error)")
+            return PostResponseModel()
+        }
+    }
     
 
     
