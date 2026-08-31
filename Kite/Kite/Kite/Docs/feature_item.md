@@ -1,7 +1,7 @@
 # Feature: Wishlist Item Post Components
 
-**Status:** Step 1 structural holders done (`ItemHeader` + `ItemBody` in `PostCell`) — next is real `ItemImage` / `ItemInfo` leaves (not yet)  
-**Related:** Live Wishlist `PostCell` · [feature_new_item.md](./feature_new_item.md) · Design mock (Live A Live card)  
+**Status:** `ItemFrom` built (avatar / name / time / caption, 3-line max) — next: real `ItemImage` / `ItemInfo` leaves  
+**Related:** Live Wishlist `PostCell` · [feature_new_item.md](./feature_new_item.md) · Design mock (Live A Live card) · `PostCaption.swift` (layout reference)  
 **Folder:** `App/Main/Post/Components/Item/`
 
 UIKit only. Programmatic Auto Layout. No Storyboards / XIBs.
@@ -218,7 +218,7 @@ ItemFrom caption
     natural → MAX → truncate
 
 ItemDescription
-    natural → MAX (~3–4 lines) → truncate
+    natural → MAX (3 lines) → truncate
 ```
 
 Everything above them responds naturally. **No giant fixed post height.**
@@ -422,7 +422,118 @@ Avoid inventing `customDarkGray2` / `wishlistGray3` / `newItemText` unless nothi
 | **3** | Leaf areas: Title, Price, Tags, Description, Purchase |
 | **4** | Compose leaves in `ItemInfo` → `ItemBody` |
 | **5** | Polish wiring / self-sizing as needed |
-| **6** | Later: `ItemFrom` content + rename `EditItem` → `ItemMenu` + menu actions |
+| **6 ✅** | **`ItemFrom` content** — avatar / name / time / caption (3-line max) |
+| **7** | Later: rename `EditItem` → `ItemMenu` + menu actions |
+
+---
+
+## Plan: Build `ItemFrom` (next)
+
+**Scope:** Fill the orange `ItemFrom` shell only. Do not redesign `ItemBody` / `ItemInfo` leaves. Do not rename `EditItem`. Keep `ItemHeader` ownership as-is.
+
+**Mirror:** `PostCaption.swift` structure (section comments, area views, configure, user image load).
+
+**File:** `Components/Item/Components/ItemFrom.swift` (current location)
+
+### Target layout (matches mock + caption under name)
+
+```text
+ItemFrom
+┌────────────────────────────────────────────┐
+│ userImageView   userNameView  postTimeView │
+│                 postCaptionView            │
+│                 (grows → max → truncate)   │
+└────────────────────────────────────────────┘
+```
+
+Caption sits **below** username/time (mock header + your requirement). Menu stays in `EditItem` outside `ItemFrom`.
+
+### Subviews — one view each
+
+| View | Role |
+|------|------|
+| `userImageView` | Circular avatar |
+| `userNameView` | Username (container + label, PostCaption-style) |
+| `postTimeView` | Relative time e.g. “10 months ago” |
+| `postCaptionView` | User post caption under name row; dynamic height → max |
+
+Optional thin wrappers (same idea as PostCaption’s areas) if it keeps layout clear:
+
+```text
+userImageArea          ← holds userImageView
+userMetaRow            ← userNameView + postTimeView horizontal
+postCaptionView        ← holds caption label
+```
+
+Do **not** invent 10 tiny files for these — keep them **inside `ItemFrom.swift`** unless you later extract.
+
+### File section style
+
+```swift
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT and UI
+//ACTIONS
+//FUNCTIONS
+```
+
+Separate `setupUserImage…` / `setupUserMeta…` / `setupCaption…` like PostCaption.
+
+### Style reuse (no new pinks)
+
+| Need | Reuse |
+|------|--------|
+| Username | `Fonts.postUsernameFont` · `Colors.primaryGrayText` |
+| Time | `Fonts.postedAtFont` · `Colors.postedAtTextColor` |
+| Caption | `Fonts.postCaptionFont` · `Colors.postCaptionFontColor` |
+| Avatar | `ImageStyle.userProfileImage(…)` (same ~38pt as PostCaption) |
+| Gaps | `Layout.spacingXS` / `S` / `M` for name↔time, image↔text, padding |
+
+Hardcode only component-specific sizes (avatar diameter, caption max lines) — Layout docs allow that.
+
+**Colors:** do not add near-duplicate pink/gray. Temporary debug orange can stay until layout is verified, then go clear/white like the mock.
+
+### Height rules (already in this doc)
+
+```text
+short caption → natural ItemFrom / ItemHeader height
+long caption  → grow until MAX (3 lines) → truncate
+```
+
+```swift
+// caption label
+numberOfLines = 0
+lineBreakMode = .byTruncatingTail
+// + max 3 lines (label/layout limit — not fixed ItemFrom height)
+```
+
+`ItemFrom` stays content-driven (no `height = constant`). `ItemHeader` still: From owns height; `EditItem` top-trailing (tighten to fixed top-aligned later if still bottom-stretched).
+
+### Configure / data
+
+Follow PostCaption:
+
+- `configure(with post: Post)` or specific fields: `postFrom`, `timeMessage`, `postCaption`, avatar via `UsersDataController.getOrFetchUserWithImage`
+- Renderer only — no table refresh / NotificationCenter ownership
+
+Empty caption → hide or collapse `postCaptionView` so header stays tight.
+
+### Out of scope for this step
+
+- `EditItem` / menu actions
+- `ItemBody` / `ItemInfo` redesign
+- `PostSocials`
+- API / models
+- Extracting caption into a shared component with PostCaption (OK to duplicate pattern for now)
+
+### Done when
+
+- [ ] Mock-like header: avatar · username · time
+- [ ] Caption under name row; short/long height behavior works
+- [ ] `EditItem` `•••` area unchanged beside it
+- [ ] Uses existing Fonts / Colors / ImageStyle / Layout
+- [ ] Looks like PostCaption code organization, not a new architecture
 
 ---
 

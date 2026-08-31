@@ -461,6 +461,20 @@ class PostDataController {
         }
     }
 
+    //Function: Remove a post from all group caches (after successful delete API)
+    func removePost(postID: Int) {
+        for (groupID, posts) in groupPosts {
+            let filtered = posts.filter { $0.postID != postID }
+            if filtered.count != posts.count {
+                groupPosts[groupID] = filtered
+            }
+        }
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .postsFetched, object: nil)
+            NotificationCenter.default.post(name: .itemsFetched, object: nil)
+        }
+    }
+
 
 }
 

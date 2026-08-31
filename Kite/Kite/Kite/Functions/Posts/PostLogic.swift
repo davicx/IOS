@@ -17,6 +17,7 @@ FUNCTIONS A: All Functions Related to Post Likes
 FUNCTIONS B: All Functions Related to Creating Posts
     1) Function B1: Create item post (WISHLIST)
     2) Function B2: Create photo post (KITE)
+    3) Function B3: Delete a post
  
 FUNCTIONS C: All Functions Related to Items (purchase)
     1) Function C1: Purchase Item
@@ -129,6 +130,29 @@ final class PostLogic {
             return true
         } catch {
             print("PostLogic: Error creating photo post: \(error)")
+            return false
+        }
+    }
+
+    //Function B3: Delete a post
+    func deletePost(postID: Int) async -> Bool {
+        let currentUser = postDataController.currentUser
+
+        do {
+            let success = try await PostsAPI().deletePostAPI(
+                currentUser: currentUser,
+                postID: postID
+            )
+            guard success else {
+                print("PostLogic: Failed to delete post \(postID)")
+                return false
+            }
+            await MainActor.run {
+                postDataController.removePost(postID: postID)
+            }
+            return true
+        } catch {
+            print("PostLogic: Error deleting post: \(error)")
             return false
         }
     }

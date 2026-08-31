@@ -53,4 +53,9 @@ final class ItemBody: UIView {
             itemInfo.bottomAnchor.constraint(equalTo: itemImage.bottomAnchor)
         ])
     }
+
+    //FUNCTIONS
+    func configure(with post: Post) {
+        itemInfo.configure(with: post)
+    }
 }

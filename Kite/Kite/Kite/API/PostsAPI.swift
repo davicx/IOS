@@ -581,6 +581,36 @@ class PostsAPI {
     }
     
     
+    //Function C5: Delete a Post
+    func deletePostAPI(currentUser: String, postID: Int) async throws -> Bool {
+        let endpoint = "http://localhost:3003/post/delete/"
+
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        let parameters = ["currentUser": currentUser, "postID": postID] as [String: Any]
+
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            print("Error setting JSON")
+            return false
+        }
+
+        request.httpBody = httpBody
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+
+        return true
+    }
+
+    
     //FUNCTIONS D: All Functions Related to Items
     //Function D1: Purchase an Item
     func purchaseItemAPI(currentUser: String, postID: Int, itemID: Int, showPurchased: [String]) async throws -> PurchaseItemResponseModel {

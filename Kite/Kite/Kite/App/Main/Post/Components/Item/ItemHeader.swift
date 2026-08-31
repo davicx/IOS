@@ -41,17 +41,21 @@ final class ItemHeader: UIView {
             addSubview($0)
         }
 
-        // ItemFrom owns natural height; EditItem stays on the trailing side.
-        // Bottom pin preserves current visual; ItemFrom can still grow later.
+        // ItemFrom owns natural height; EditItem is fixed top-trailing (does not stretch).
         NSLayoutConstraint.activate([
             itemFrom.topAnchor.constraint(equalTo: topAnchor),
             itemFrom.leadingAnchor.constraint(equalTo: leadingAnchor),
             itemFrom.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            editItem.topAnchor.constraint(equalTo: topAnchor),
+            editItem.topAnchor.constraint(equalTo: topAnchor, constant: 2),
             editItem.leadingAnchor.constraint(equalTo: itemFrom.trailingAnchor),
-            editItem.trailingAnchor.constraint(equalTo: trailingAnchor),
-            editItem.bottomAnchor.constraint(equalTo: itemFrom.bottomAnchor)
+            editItem.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
+    }
+
+    //FUNCTIONS
+    func configure(with post: Post) {
+        itemFrom.configure(with: post)
+        editItem.configure(with: post)
     }
 }

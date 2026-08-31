@@ -106,13 +106,21 @@ final class PostCell: UITableViewCell {
     //Configure socials with post so like count (and later like action) use live data.
     func configure(postID: Int) {
         postSocials.configure(postID: postID)
+        if let post = PostDataController.shared.getPostByID(postID: postID) {
+            itemHeader.configure(with: post)
+            itemBody.configure(with: post)
+        }
     }
 
     func updatePost(with post: Post) {
+        itemHeader.configure(with: post)
+        itemBody.configure(with: post)
         postSocials.configure(postID: post.postID)
     }
 
     func updateItem(with post: Post) {
+        itemHeader.configure(with: post)
+        itemBody.configure(with: post)
         postSocials.configure(postID: post.postID)
     }
 }

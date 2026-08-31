@@ -96,6 +96,17 @@ enum Buttons {
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
+    // Wishlist item — full-width Purchase (cart + title); slightly rounded, not a pill
+    static func wishlistPurchaseButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonPinkBackground
+        button.setTitleColor(.white, for: .normal)
+        button.tintColor = .white
+        button.layer.cornerRadius = 8
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.buttonTikTokFont
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+    }
+
     static func buttonGrayStyle(button: UIButton) {
         button.backgroundColor = Colors.buttonGrayBackground
         button.setTitleColor(.black, for: .normal)
