@@ -41,13 +41,13 @@ final class ItemHeader: UIView {
             addSubview($0)
         }
 
-        // ItemFrom owns natural height; EditItem is fixed top-trailing (does not stretch).
+        // ItemFrom owns natural height; EditItem vertically centered with the header row.
         NSLayoutConstraint.activate([
             itemFrom.topAnchor.constraint(equalTo: topAnchor),
             itemFrom.leadingAnchor.constraint(equalTo: leadingAnchor),
             itemFrom.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            editItem.topAnchor.constraint(equalTo: topAnchor, constant: 2),
+            editItem.centerYAnchor.constraint(equalTo: itemFrom.centerYAnchor),
             editItem.leadingAnchor.constraint(equalTo: itemFrom.trailingAnchor),
             editItem.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])

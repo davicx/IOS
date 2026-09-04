@@ -124,6 +124,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.estimatedRowHeight = 700
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
+        tableView.backgroundColor = Colors.feedBackground
 
         listHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 110)
         tableView.tableHeaderView = listHeader

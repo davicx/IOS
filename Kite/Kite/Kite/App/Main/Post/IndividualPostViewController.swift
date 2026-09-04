@@ -116,7 +116,7 @@ class IndividualPostViewController: UIViewController {
 
         individualPostTableView.rowHeight = UITableView.automaticDimension
         individualPostTableView.separatorStyle = .none
-        //Divider: PostCell draws MainDivider; system separator off so line is full width
+        individualPostTableView.backgroundColor = Colors.feedBackground
         
         view.addSubview(individualPostTableView)
 
@@ -343,7 +343,7 @@ class IndividualPostViewController: UIViewController {
         
         //TEMP
         individualPostTableView.separatorStyle = .none
-        //TEMP
+        individualPostTableView.backgroundColor = Colors.feedBackground
         
         //Enable automatic dimension for dynamic cell heights
         individualPostTableView.rowHeight = UITableView.automaticDimension

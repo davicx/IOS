@@ -45,17 +45,18 @@ final class ItemBody: UIView {
             itemImage.topAnchor.constraint(equalTo: topAnchor),
             itemImage.leadingAnchor.constraint(equalTo: leadingAnchor),
             itemImage.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.4),
-            itemImage.bottomAnchor.constraint(equalTo: bottomAnchor),
+            itemImage.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
 
             itemInfo.topAnchor.constraint(equalTo: topAnchor),
             itemInfo.leadingAnchor.constraint(equalTo: itemImage.trailingAnchor),
             itemInfo.trailingAnchor.constraint(equalTo: trailingAnchor),
-            itemInfo.bottomAnchor.constraint(equalTo: itemImage.bottomAnchor)
+            itemInfo.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
     //FUNCTIONS
     func configure(with post: Post) {
+        itemImage.configure(with: post)
         itemInfo.configure(with: post)
     }
 }

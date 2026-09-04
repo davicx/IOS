@@ -17,23 +17,26 @@ import UIKit
 final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
+    private let itemDivider = ItemDivider()
+
     //Kite
     //private let postHeader = PostHeader()
     //private let postImage = PostImage()
     //private let postCaption = PostCaption()
     //private let postSocials = PostSocials()
-    //private let mainDivider = MainDivider()
     
     //Wishlist
     private let itemHeader = ItemHeader()
     private let itemBody = ItemBody()
     private let postSocials = PostSocials()
-    private let mainDivider = MainDivider()
 
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+        backgroundColor = Colors.feedBackground
+        contentView.backgroundColor = .clear
         //Kite
         //setupPost()
 
@@ -74,17 +77,17 @@ final class PostCell: UITableViewCell {
     */
 
     //Wishlist
-    // ItemHeader
-    // ItemBody
-    // PostSocials
-    // MainDivider
+    // Post-level separation only — internal item components stay unaware of feed spacing.
     private func setupItem() {
-        [itemHeader, itemBody, postSocials, mainDivider].forEach {
+        itemDivider.install(in: contentView)
+
+        [itemHeader, itemBody, postSocials].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
+
         NSLayoutConstraint.activate([
-            itemHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemHeader.topAnchor.constraint(equalTo: itemDivider.contentTopAnchor),
             itemHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             itemHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
@@ -94,13 +97,10 @@ final class PostCell: UITableViewCell {
 
             postSocials.topAnchor.constraint(equalTo: itemBody.bottomAnchor),
             postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
-            mainDivider.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
-            mainDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
+
+        itemDivider.linkContentBottom(to: postSocials.bottomAnchor)
     }
 
     //Configure socials with post so like count (and later like action) use live data.

@@ -46,7 +46,7 @@ final class ItemInfo: UIView {
     }
 
     private func setupViews() {
-        backgroundColor = .clear
+        backgroundColor = UIColor.systemYellow.withAlphaComponent(0.35)
         setupTitle()
         setupPrice()
         setupTagsSlot()
@@ -155,10 +155,11 @@ final class ItemInfo: UIView {
 
     private func activateLayout() {
         let inset = Layout.spacingM
+        let topInset = inset - 6
 
         NSLayoutConstraint.activate([
             // Title
-            itemTitleView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
+            itemTitleView.topAnchor.constraint(equalTo: topAnchor, constant: topInset),
             itemTitleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: inset),
             itemTitleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -inset),
 
@@ -178,10 +179,10 @@ final class ItemInfo: UIView {
             itemDescriptionView.leadingAnchor.constraint(equalTo: itemTitleView.leadingAnchor),
             itemDescriptionView.trailingAnchor.constraint(equalTo: itemTitleView.trailingAnchor),
 
-            // Purchase pinned to bottom of column (matches mock)
+            // Purchase pinned to bottom of column (−4pt vs prior spacingM)
             itemPurchaseView.leadingAnchor.constraint(equalTo: itemTitleView.leadingAnchor),
             itemPurchaseView.trailingAnchor.constraint(equalTo: itemTitleView.trailingAnchor),
-            itemPurchaseView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset),
+            itemPurchaseView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
             itemPurchaseView.topAnchor.constraint(
                 greaterThanOrEqualTo: itemDescriptionView.bottomAnchor,
                 constant: Layout.spacingS

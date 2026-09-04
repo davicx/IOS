@@ -35,6 +35,7 @@ class Colors {
     
     //Backgrounds
     static let screenBackground = UIColor.white
+    static let feedBackground = UIColor(hex: "#F3F3F3")
     static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
     static let itemBackgroundColor = UIColor(hex: "#F7F8F9")
 
@@ -63,6 +64,7 @@ class Colors {
     static let postedAtTextColor = tertiaryGrayText
     static let postHeaderEventTitleTextColor = primaryGrayText
     static let postHeaderEventTimeTextColor = mutedGrayText
+    static let separator = UIColor(hex: "#ECECEC")
     
 
     //Buttons

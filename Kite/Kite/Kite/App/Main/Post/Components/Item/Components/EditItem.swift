@@ -57,7 +57,7 @@ final class EditItem: UIView {
             widthAnchor.constraint(equalToConstant: menuSize),
             heightAnchor.constraint(equalToConstant: menuSize),
 
-            menuButton.topAnchor.constraint(equalTo: topAnchor),
+            menuButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             menuButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             menuButton.widthAnchor.constraint(equalToConstant: menuSize),
             menuButton.heightAnchor.constraint(equalToConstant: menuSize)

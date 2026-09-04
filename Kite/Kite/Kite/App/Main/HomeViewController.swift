@@ -165,6 +165,7 @@ class HomeViewController: UIViewController {
         postsTableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.postCell)
         postsTableView.rowHeight = UITableView.automaticDimension
         postsTableView.separatorStyle = .none
+        postsTableView.backgroundColor = Colors.feedBackground
         //postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
