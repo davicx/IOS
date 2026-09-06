@@ -77,7 +77,7 @@ class GroupCell: UITableViewCell {
             return "Group Created By: Unknown"
         }
 
-        if createdBy == currentUser {
+        if createdBy.caseInsensitiveCompare(currentUser) == .orderedSame {
             return "Created by you"
         }
 

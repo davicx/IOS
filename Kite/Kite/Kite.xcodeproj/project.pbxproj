@@ -73,6 +73,7 @@
 		87E6F82775D541CCB2BBD4C0 /* ItemFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A00A72DEC314C1885407A9A /* ItemFrom.swift */; };
 		8BA646B9A8804800846FF008 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D65C90D10C4DDF836ADAB2 /* ItemImage.swift */; };
 		A1B2C3D4E5F6478901234567 /* ItemDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F678901234567890 /* ItemDraft.swift */; };
+		B1D3AC6799EC4607A583FFB2 /* PurchaseButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3BC1F70FE6AB4C4CA12462B /* PurchaseButtonState.swift */; };
 		C3D4E5F60718293A4B5C6D7E /* ReviewItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F60718293A4B5C6D7E8F /* ReviewItemViewController.swift */; };
 		D700069D2F3808180009CE1C /* PurchaseItemResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D700069C2F3808180009CE1C /* PurchaseItemResponseModel.swift */; };
 		D700069F2F3808530009CE1C /* PurchaseItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D700069E2F3808530009CE1C /* PurchaseItemModel.swift */; };
@@ -332,6 +333,7 @@
 		6AC5FBED69994804B58DCD49 /* NewItemOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemOptionView.swift; sourceTree = "<group>"; };
 		6CA6B2959D4A4B2A96F281C0 /* AddItemManuallyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemManuallyViewController.swift; sourceTree = "<group>"; };
 		975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemFromTextViewController.swift; sourceTree = "<group>"; };
+		A3BC1F70FE6AB4C4CA12462B /* PurchaseButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseButtonState.swift; sourceTree = "<group>"; };
 		B2C3D4E5F678901234567890 /* ItemDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDraft.swift; sourceTree = "<group>"; };
 		D4E5F60718293A4B5C6D7E8F /* ReviewItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewItemViewController.swift; sourceTree = "<group>"; };
 		D700069C2F3808180009CE1C /* PurchaseItemResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseItemResponseModel.swift; sourceTree = "<group>"; };
@@ -1016,8 +1018,8 @@
 		D7157402300C42470083B6E5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D7157404300C42F20083B6E5 /* IndividualEventHeader.swift */,
-				D7157406300C42FF0083B6E5 /* IndividualEventSocials.swift */,
+				D7157408300C431E0083B6E5 /* IndividualListHeader.swift */,
+				D715740A300C432C0083B6E5 /* IndividualListMembers.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1025,8 +1027,8 @@
 		D7157403300C42510083B6E5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D7157408300C431E0083B6E5 /* IndividualListHeader.swift */,
-				D715740A300C432C0083B6E5 /* IndividualListMembers.swift */,
+				D7157404300C42F20083B6E5 /* IndividualEventHeader.swift */,
+				D7157406300C42FF0083B6E5 /* IndividualEventSocials.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1246,6 +1248,7 @@
 			isa = PBXGroup;
 			children = (
 				D792ED912F073F4D00E0A469 /* PostLogic.swift */,
+				A3BC1F70FE6AB4C4CA12462B /* PurchaseButtonState.swift */,
 				D7454AB42F147AD400D76F3B /* GroupLogic.swift */,
 				D70BE0BD2F19B5FF00B9CBA4 /* UserLogic.swift */,
 			);
@@ -1800,6 +1803,7 @@
 				D7157411300C43670083B6E5 /* PostImage.swift in Sources */,
 				51C69B3A2D0E583F00C46759 /* LikePostResponseModel.swift in Sources */,
 				D792ED922F073F4D00E0A469 /* PostLogic.swift in Sources */,
+				B1D3AC6799EC4607A583FFB2 /* PurchaseButtonState.swift in Sources */,
 				D7A3C1202D80FB2E000B4EB7 /* UserProfileLayoutExample.swift in Sources */,
 				D742D6AB2D7A76F7000A1E62 /* UserFollowersView.swift in Sources */,
 				D7AD5CB92EEB96B300D90E90 /* UserCountModel.swift in Sources */,

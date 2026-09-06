@@ -34,6 +34,10 @@ final class ItemInfo: UIView {
     private let itemPurchaseView = UIView()
     private let purchaseButton = UIButton(type: .system)
 
+    private var post: Post?
+    private var buttonState: PurchaseButtonState = .purchase
+    var onPurchaseTapped: ((Post, PurchaseButtonState) -> Void)?
+
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +50,7 @@ final class ItemInfo: UIView {
     }
 
     private func setupViews() {
-        backgroundColor = UIColor.systemYellow.withAlphaComponent(0.35)
+        backgroundColor = .clear
         setupTitle()
         setupPrice()
         setupTagsSlot()
@@ -192,11 +196,14 @@ final class ItemInfo: UIView {
 
     //ACTIONS
     @objc private func purchaseTapped() {
-        print("purchase")
+        guard let post else { return }
+        onPurchaseTapped?(post, buttonState)
     }
 
     //FUNCTIONS
     func configure(with post: Post) {
+        self.post = post
+
         let name = post.itemName?.trimmingCharacters(in: .whitespacesAndNewlines)
         itemTitleLabel.text = (name?.isEmpty == false) ? name : "Untitled"
 
@@ -205,5 +212,40 @@ final class ItemInfo: UIView {
 
         let description = post.itemDescription?.trimmingCharacters(in: .whitespacesAndNewlines)
         itemDescriptionLabel.text = (description?.isEmpty == false) ? description : nil
+
+        applyPurchaseButtonState(
+            purchaseButtonState(post: post, currentUser: PostDataController.shared.currentUser)
+        )
+    }
+
+    private func applyPurchaseButtonState(_ state: PurchaseButtonState) {
+        buttonState = state
+
+        switch state {
+        case .hidden:
+            // Q5: hide button, keep layout (do not collapse purchase row)
+            purchaseButton.isHidden = true
+
+        case .purchase:
+            purchaseButton.isHidden = false
+            purchaseButton.setTitle("Purchase", for: .normal)
+            purchaseButton.setImage(UIImage(systemName: "cart.fill"), for: .normal)
+            purchaseButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 4)
+            Buttons.wishlistPurchaseButtonStyle(button: purchaseButton)
+
+        case .youPurchased:
+            purchaseButton.isHidden = false
+            purchaseButton.setTitle("You Purchased", for: .normal)
+            purchaseButton.setImage(nil, for: .normal)
+            purchaseButton.imageEdgeInsets = .zero
+            Buttons.buttonGrayStyle(button: purchaseButton)
+
+        case .purchased:
+            purchaseButton.isHidden = false
+            purchaseButton.setTitle("Purchased", for: .normal)
+            purchaseButton.setImage(nil, for: .normal)
+            purchaseButton.imageEdgeInsets = .zero
+            Buttons.buttonGrayStyle(button: purchaseButton)
+        }
     }
 }

@@ -22,6 +22,11 @@ final class ItemBody: UIView {
     private let itemImage = ItemImage()
     private let itemInfo = ItemInfo()
 
+    var onPurchaseTapped: ((Post, PurchaseButtonState) -> Void)? {
+        get { itemInfo.onPurchaseTapped }
+        set { itemInfo.onPurchaseTapped = newValue }
+    }
+
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)

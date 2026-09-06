@@ -41,11 +41,17 @@ class GroupsViewController: UIViewController {
 
     // Wishlist: lists I own (gifts I want) vs lists shared with me (what others want)
     private var myGroups: [GroupModel] {
-        return modeGroups.filter { $0.createdBy == GroupDataController.shared.currentUser }
+        let me = GroupDataController.shared.currentUser
+        return modeGroups.filter {
+            ($0.createdBy ?? "").caseInsensitiveCompare(me) == .orderedSame
+        }
     }
 
     private var sharedGroups: [GroupModel] {
-        return modeGroups.filter { $0.createdBy != GroupDataController.shared.currentUser }
+        let me = GroupDataController.shared.currentUser
+        return modeGroups.filter {
+            ($0.createdBy ?? "").caseInsensitiveCompare(me) != .orderedSame
+        }
     }
 
     private var displayedGroups: [GroupModel] {
@@ -207,7 +213,8 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = displayedGroups[indexPath.row]
-        let currentUserOwnsGroup = group.createdBy == GroupDataController.shared.currentUser
+        let currentUserOwnsGroup = (group.createdBy ?? "")
+            .caseInsensitiveCompare(GroupDataController.shared.currentUser) == .orderedSame
 
         
         // Navigate to IndividualGroupViewController

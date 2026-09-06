@@ -24,15 +24,15 @@ Kite
 
 /*
 Wishlist
- - EventHeader
- - EventSocials
+ - IndividualListHeader
+ - List (Group) Members
+ - IndividualList
  - Table View: Items belonging to this Group (List)
 */
 
 
 
 //TABLE VIEW: Post Cell
-
 class IndividualGroupViewController: UIViewController {
 
     //LOGIC
@@ -47,8 +47,10 @@ class IndividualGroupViewController: UIViewController {
     private var groupMembers: [User] = []
     
     //UI COMPONENTS
-    private let tableView = UITableView()
     private let listHeader = IndividualListHeader()
+    private let listMembers = IndividualListMembers()
+    private let headerContainer = UIView()
+    private let tableView = UITableView()
 
     //MANAGE VIEWS
     override func viewDidLoad() {
@@ -61,6 +63,7 @@ class IndividualGroupViewController: UIViewController {
         setupPostObservers()
       
         getGroupPosts()
+        fetchGroupMembers()
     }
     
     deinit {
@@ -126,8 +129,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = Colors.feedBackground
 
-        listHeader.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 110)
-        tableView.tableHeaderView = listHeader
+        setupTableHeader()
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -137,12 +139,81 @@ class IndividualGroupViewController: UIViewController {
         ])
     }
 
+    private func setupTableHeader() {
+        headerContainer.backgroundColor = .clear
+
+        listHeader.translatesAutoresizingMaskIntoConstraints = false
+        listMembers.translatesAutoresizingMaskIntoConstraints = false
+        headerContainer.addSubview(listHeader)
+        headerContainer.addSubview(listMembers)
+
+        NSLayoutConstraint.activate([
+            listHeader.topAnchor.constraint(equalTo: headerContainer.topAnchor),
+            listHeader.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor),
+            listHeader.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor),
+            listHeader.heightAnchor.constraint(equalToConstant: 110),
+
+            listMembers.topAnchor.constraint(equalTo: listHeader.bottomAnchor),
+            listMembers.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor),
+            listMembers.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor),
+            listMembers.bottomAnchor.constraint(equalTo: headerContainer.bottomAnchor)
+        ])
+
+        listMembers.onMembersTapped = { [weak self] in
+            self?.openGroupMembers()
+        }
+
+        let width = view.bounds.width > 0 ? view.bounds.width : UIScreen.main.bounds.width
+        let headerHeight: CGFloat = 110 + listMembers.totalHeight
+        headerContainer.frame = CGRect(x: 0, y: 0, width: width, height: headerHeight)
+        tableView.tableHeaderView = headerContainer
+    }
+
+    private func refreshTableHeaderLayout() {
+        guard let header = tableView.tableHeaderView else { return }
+        let width = tableView.bounds.width > 0 ? tableView.bounds.width : view.bounds.width
+        let headerHeight: CGFloat = 110 + listMembers.totalHeight
+        header.frame = CGRect(x: 0, y: 0, width: width, height: headerHeight)
+        tableView.tableHeaderView = header
+    }
+
     private func setupListHeader() {
         guard let groupID else { return }
         if let group = GroupDataController.shared.getGroup(by: String(groupID)) {
             let itemCount = postDataController.getPostsForGroup(groupID: groupID).count
             listHeader.configure(with: group, itemCount: itemCount)
         }
+        refreshTableHeaderLayout()
+    }
+
+    private func fetchGroupMembers() {
+        guard let groupID,
+              let group = GroupDataController.shared.getGroup(by: String(groupID)) else { return }
+
+        let usernames = group.activeGroupMembers + group.pendingGroupMembers
+        Task {
+            let members = await usersDataController.fetchUsersWithImages(
+                usernames: usernames,
+                refreshFriendshipStatus: true
+            )
+            await MainActor.run {
+                self.groupMembers = members
+                self.listMembers.configure(with: members)
+                self.refreshTableHeaderLayout()
+            }
+        }
+    }
+
+    private func openGroupMembers() {
+        let membersVC = GroupMembersViewController()
+        if let groupID,
+           let group = GroupDataController.shared.getGroup(by: String(groupID)) {
+            membersVC.title = group.groupName
+        } else {
+            membersVC.title = "Group Members"
+        }
+        membersVC.groupMembers = groupMembers
+        navigationController?.pushViewController(membersVC, animated: true)
     }
     
     private func setupNavigationBar() {

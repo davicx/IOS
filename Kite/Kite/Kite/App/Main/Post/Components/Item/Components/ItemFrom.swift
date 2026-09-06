@@ -47,7 +47,7 @@ final class ItemFrom: UIView {
     }
 
     private func setupViews() {
-        backgroundColor = UIColor.systemOrange.withAlphaComponent(0.35)
+        backgroundColor = .clear
         setupUserImageArea()
         setupUserNameView()
         setupPostTimeView()

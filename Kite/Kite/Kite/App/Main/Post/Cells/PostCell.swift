@@ -101,6 +101,65 @@ final class PostCell: UITableViewCell {
         ])
 
         itemDivider.linkContentBottom(to: postSocials.bottomAnchor)
+
+        itemBody.onPurchaseTapped = { [weak self] post, state in
+            self?.handlePurchaseAction(post: post, state: state)
+        }
+    }
+
+    //ACTIONS
+    private func handlePurchaseAction(post: Post, state: PurchaseButtonState) {
+        guard let presentingVC = findViewController() else { return }
+
+        switch state {
+        case .hidden:
+            break
+
+        case .purchase:
+            let storyboard = UIStoryboard(name: "Post", bundle: nil)
+            guard let itemPurchaseVC = storyboard.instantiateViewController(withIdentifier: "ItemPurchaseViewControllerID") as? ItemPurchaseViewController else { return }
+            itemPurchaseVC.post = post
+            itemPurchaseVC.groupID = post.groupID
+            itemPurchaseVC.modalPresentationStyle = .pageSheet
+            presentingVC.present(itemPurchaseVC, animated: true)
+
+        case .youPurchased:
+            let alert = UIAlertController(
+                title: nil,
+                message: "Cancel this purchase?",
+                preferredStyle: .actionSheet
+            )
+            alert.addAction(UIAlertAction(title: "Cancel Purchase", style: .destructive) { _ in
+                let groupID = post.groupID ?? 0
+                Task {
+                    await PostLogic.shared.removeItem(post: post, groupID: groupID)
+                }
+            })
+            alert.addAction(UIAlertAction(title: "Keep", style: .cancel))
+            if let popover = alert.popoverPresentationController {
+                popover.sourceView = self
+                popover.sourceRect = bounds
+            }
+            presentingVC.present(alert, animated: true)
+
+        case .purchased(let by):
+            let alert = UIAlertController(
+                title: nil,
+                message: "\(by) purchased this item already.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            presentingVC.present(alert, animated: true)
+        }
+    }
+
+    private func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while responder != nil {
+            responder = responder?.next
+            if let vc = responder as? UIViewController { return vc }
+        }
+        return nil
     }
 
     //Configure socials with post so like count (and later like action) use live data.
