@@ -117,6 +117,14 @@
 		D72A1D1D3008541600764EE2 /* NewItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72A1D1C3008541600764EE2 /* NewItemViewController.swift */; };
 		D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */; };
 		D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */; };
+		D73601F0304E29F50043B544 /* ProfileViewControllerBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73601EF304E29F50043B544 /* ProfileViewControllerBackup.swift */; };
+		D73601F8304E302D0043B544 /* AboutMeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73601F7304E302D0043B544 /* AboutMeModule.swift */; };
+		D73601FF304E30820043B544 /* PostList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73601FE304E30820043B544 /* PostList.swift */; };
+		D7360204304E34890043B544 /* AboutMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7360203304E34890043B544 /* AboutMe.swift */; };
+		D7360208304E37DC0043B544 /* ClothingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7360207304E37DC0043B544 /* ClothingModule.swift */; };
+		D736020C304E384C0043B544 /* ClothingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736020B304E384C0043B544 /* ClothingHeader.swift */; };
+		D736020E304E38570043B544 /* ClothingBodyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736020D304E38570043B544 /* ClothingBodyList.swift */; };
+		D7360210304E38610043B544 /* ClothingFooterAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736020F304E38610043B544 /* ClothingFooterAddNew.swift */; };
 		D73A1B642E8213470085E4F1 /* SearchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73A1B632E8213470085E4F1 /* SearchAPI.swift */; };
 		D73A1B682E8213940085E4F1 /* FriendSearchResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73A1B672E8213940085E4F1 /* FriendSearchResponseModel.swift */; };
 		D73A1B6B2E8213B50085E4F1 /* FriendSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73A1B6A2E8213B50085E4F1 /* FriendSearchModel.swift */; };
@@ -166,6 +174,7 @@
 		D7834F0E2EA85A6000C647AB /* GroupItemUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0D2EA85A6000C647AB /* GroupItemUserCell.swift */; };
 		D7834F102EA85A7C00C647AB /* GroupItemFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F0F2EA85A7C00C647AB /* GroupItemFriendCell.swift */; };
 		D783E50D2F108241005B5170 /* IndividualGroupPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D783E50C2F108241005B5170 /* IndividualGroupPostCell.swift */; };
+		D784D7799FFA884B62BDECB2 /* ProfileModuleSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72B324BBDF4C44378ADFCAA /* ProfileModuleSlider.swift */; };
 		D78AC8C42FAE9A7B000CC5E5 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78AC8C32FAE9A7B000CC5E5 /* Buttons.swift */; };
 		D78BE98D2E271CEE0082ABC4 /* PostCellBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98C2E271CEE0082ABC4 /* PostCellBackup.swift */; };
 		D78BE98F2E271DAE0082ABC4 /* PostHeaderLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BE98E2E271DAE0082ABC4 /* PostHeaderLayout.swift */; };
@@ -376,8 +385,17 @@
 		D721D29F2DE527070002FE4C /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		D726CD3E2E7391A900A0A3DA /* UsersDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDataController.swift; sourceTree = "<group>"; };
 		D72A1D1C3008541600764EE2 /* NewItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemViewController.swift; sourceTree = "<group>"; };
+		D72B324BBDF4C44378ADFCAA /* ProfileModuleSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModuleSlider.swift; sourceTree = "<group>"; };
 		D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeResponseModel.swift; sourceTree = "<group>"; };
 		D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageFunctions.swift; sourceTree = "<group>"; };
+		D73601EF304E29F50043B544 /* ProfileViewControllerBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerBackup.swift; sourceTree = "<group>"; };
+		D73601F7304E302D0043B544 /* AboutMeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMeModule.swift; sourceTree = "<group>"; };
+		D73601FE304E30820043B544 /* PostList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostList.swift; sourceTree = "<group>"; };
+		D7360203304E34890043B544 /* AboutMe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMe.swift; sourceTree = "<group>"; };
+		D7360207304E37DC0043B544 /* ClothingModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingModule.swift; sourceTree = "<group>"; };
+		D736020B304E384C0043B544 /* ClothingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingHeader.swift; sourceTree = "<group>"; };
+		D736020D304E38570043B544 /* ClothingBodyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingBodyList.swift; sourceTree = "<group>"; };
+		D736020F304E38610043B544 /* ClothingFooterAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingFooterAddNew.swift; sourceTree = "<group>"; };
 		D73A1B632E8213470085E4F1 /* SearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPI.swift; sourceTree = "<group>"; };
 		D73A1B672E8213940085E4F1 /* FriendSearchResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSearchResponseModel.swift; sourceTree = "<group>"; };
 		D73A1B6A2E8213B50085E4F1 /* FriendSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSearchModel.swift; sourceTree = "<group>"; };
@@ -1088,6 +1106,72 @@
 			path = Comment;
 			sourceTree = "<group>";
 		};
+		D73601EB304E29CA0043B544 /* CodeBackupSort */ = {
+			isa = PBXGroup;
+			children = (
+				D73601EC304E29DB0043B544 /* CurrentBackup */,
+				D7967C3A302E8C0B008984C4 /* DELETE */,
+				D70125992F1325CF00A9C400 /* Docs */,
+			);
+			path = CodeBackupSort;
+			sourceTree = "<group>";
+		};
+		D73601EC304E29DB0043B544 /* CurrentBackup */ = {
+			isa = PBXGroup;
+			children = (
+				D73601EF304E29F50043B544 /* ProfileViewControllerBackup.swift */,
+			);
+			path = CurrentBackup;
+			sourceTree = "<group>";
+		};
+		D73601F3304E2D730043B544 /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				D71828782D839ED00084F071 /* layouts */,
+				D773A57D2DF3A63700074C88 /* ProfileDoc.swift */,
+				D77F138F3005AF680094246D /* InfoGroups */,
+			);
+			path = Sort;
+			sourceTree = "<group>";
+		};
+		D73601F6304E2E7A0043B544 /* AboutMe */ = {
+			isa = PBXGroup;
+			children = (
+				D7360201304E31650043B544 /* Modules */,
+				D7360202304E316C0043B544 /* Components */,
+			);
+			path = AboutMe;
+			sourceTree = "<group>";
+		};
+		D73601FC304E30660043B544 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				D73601FE304E30820043B544 /* PostList.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		D7360201304E31650043B544 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				D73601F7304E302D0043B544 /* AboutMeModule.swift */,
+				D72B324BBDF4C44378ADFCAA /* ProfileModuleSlider.swift */,
+				D7360207304E37DC0043B544 /* ClothingModule.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		D7360202304E316C0043B544 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D7360203304E34890043B544 /* AboutMe.swift */,
+				D736020B304E384C0043B544 /* ClothingHeader.swift */,
+				D736020D304E38570043B544 /* ClothingBodyList.swift */,
+				D736020F304E38610043B544 /* ClothingFooterAddNew.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		D73A1B692E82139B0085E4F1 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1121,6 +1205,7 @@
 			children = (
 				D7FD3C332F4D265B0054B9B4 /* Cells */,
 				D7FD3C322F4D26420054B9B4 /* Components */,
+				D73601FC304E30660043B544 /* Modules */,
 				D70125982F13257200A9C400 /* PostActions */,
 				B0EC23AB858C42329E0DF8CD /* AddItem */,
 				D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */,
@@ -1177,8 +1262,7 @@
 				D74AAB382D9F4B7600C8AEB5 /* Post */,
 				D768C1B62E78DB1D00350D37 /* Search */,
 				D710E7F42E7E133E008C11BA /* Discover */,
-				D7967C3A302E8C0B008984C4 /* DELETE */,
-				D70125992F1325CF00A9C400 /* Docs */,
+				D73601EB304E29CA0043B544 /* CodeBackupSort */,
 				51CA9DC72D0FAA54008C36F0 /* HomeViewController.swift */,
 				51CA9DC92D0FAA5A008C36F0 /* GroupsViewController.swift */,
 				51CA9DCD2D0FAA6F008C36F0 /* SearchViewController.swift */,
@@ -1292,10 +1376,9 @@
 		D79743FA2DFB9E7D00DC97D5 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
-				D77F138F3005AF680094246D /* InfoGroups */,
-				D773A57D2DF3A63700074C88 /* ProfileDoc.swift */,
+				D73601F6304E2E7A0043B544 /* AboutMe */,
+				D73601F3304E2D730043B544 /* Sort */,
 				51EC39172D3495850001B6E7 /* EditProfileViewController.swift */,
-				D71828782D839ED00084F071 /* layouts */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -1632,6 +1715,7 @@
 				D7468DD92E875A6E005FFD59 /* NewPostViewController.swift in Sources */,
 				D71573EE300C41000083B6E5 /* EventHeader.swift in Sources */,
 				51C69B2E2D0E57BF00C46759 /* Functions.swift in Sources */,
+				D7360208304E37DC0043B544 /* ClothingModule.swift in Sources */,
 				D7B7EF9D2D7BBC03001BACF4 /* ColorStackView.swift in Sources */,
 				51ED44682D2E0B460036DB4B /* UserModel.swift in Sources */,
 				D798D97F2DED16CE00C1960E /* CancelFriendRequestReponseModel.swift in Sources */,
@@ -1648,6 +1732,7 @@
 				51CA9DCA2D0FAA5A008C36F0 /* GroupsViewController.swift in Sources */,
 				51CA9DD02D0FAA75008C36F0 /* ProfileViewController.swift in Sources */,
 				51C69B3C2D0E584500C46759 /* NewPostResponseModel.swift in Sources */,
+				D73601F0304E29F50043B544 /* ProfileViewControllerBackup.swift in Sources */,
 				D79743F72DFB980A00DC97D5 /* LoginDoc.swift in Sources */,
 				51C69B222D0E572B00C46759 /* LoginAPI.swift in Sources */,
 				D768C1B32E78D3B500350D37 /* GroupMembersViewController.swift in Sources */,
@@ -1677,6 +1762,8 @@
 				D77F13933005AF680094246D /* ProfileInfoGroupsCard.swift in Sources */,
 				D77F13953005AF680094246D /* ProfileInfoFriendsCard.swift in Sources */,
 				D71573E9300C40960083B6E5 /* EventsMasterHeader.swift in Sources */,
+				D736020C304E384C0043B544 /* ClothingHeader.swift in Sources */,
+				D736020E304E38570043B544 /* ClothingBodyList.swift in Sources */,
 				D73A1B682E8213940085E4F1 /* FriendSearchResponseModel.swift in Sources */,
 				51C69B492D0E595700C46759 /* RegistrationModel.swift in Sources */,
 				D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */,
@@ -1748,6 +1835,7 @@
 				D75470122DFA4BDB00D02978 /* YourFriendsViewControllerLayout.swift in Sources */,
 				D78EDE732D7D13D80095D133 /* UserProfileFollowers.swift in Sources */,
 				D747F7C12D824D5B00A08602 /* UserProfileBiographyView.swift in Sources */,
+				D73601FF304E30820043B544 /* PostList.swift in Sources */,
 				D7157417300C4FC60083B6E5 /* EventCell.swift in Sources */,
 				D7A75AC92E67A51400BDDA78 /* LoginStatusModel.swift in Sources */,
 				51C69B402D0E585100C46759 /* PostResponseModel.swift in Sources */,
@@ -1759,6 +1847,8 @@
 				51C69AE12D0E549100C46759 /* AppDelegate.swift in Sources */,
 				D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */,
 				D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */,
+				D73601F8304E302D0043B544 /* AboutMeModule.swift in Sources */,
+				D784D7799FFA884B62BDECB2 /* ProfileModuleSlider.swift in Sources */,
 				51EC39182D3495850001B6E7 /* EditProfileViewController.swift in Sources */,
 				D7A3EF342FF8826B005EC6DA /* StyleDoc.swift in Sources */,
 				D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */,
@@ -1805,6 +1895,7 @@
 				D792ED922F073F4D00E0A469 /* PostLogic.swift in Sources */,
 				B1D3AC6799EC4607A583FFB2 /* PurchaseButtonState.swift in Sources */,
 				D7A3C1202D80FB2E000B4EB7 /* UserProfileLayoutExample.swift in Sources */,
+				D7360204304E34890043B544 /* AboutMe.swift in Sources */,
 				D742D6AB2D7A76F7000A1E62 /* UserFollowersView.swift in Sources */,
 				D7AD5CB92EEB96B300D90E90 /* UserCountModel.swift in Sources */,
 				51848FB42D139D7500E629CD /* NewGroupResponseModel.swift in Sources */,
@@ -1828,6 +1919,7 @@
 				87D5D6547BD0426495163672 /* AddItemFromPhotoViewController.swift in Sources */,
 				A1B2C3D4E5F6478901234567 /* ItemDraft.swift in Sources */,
 				C3D4E5F60718293A4B5C6D7E /* ReviewItemViewController.swift in Sources */,
+				D7360210304E38610043B544 /* ClothingFooterAddNew.swift in Sources */,
 				07C4C33AF25E46C0AB80B515 /* AddItemManuallyViewController.swift in Sources */,
 				51ED446A2D2E0B540036DB4B /* UpdateUserProfileResponseModel.swift in Sources */,
 				51C69B1E2D0E554A00C46759 /* Constants.swift in Sources */,
