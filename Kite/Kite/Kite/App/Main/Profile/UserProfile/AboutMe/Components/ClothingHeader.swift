@@ -28,6 +28,8 @@ final class ClothingHeader: UIView {
     private let editButton = UIButton(type: .system)
     private let subtitleLabel = UILabel()
 
+    var onEditTapped: (() -> Void)?
+
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,7 +54,7 @@ final class ClothingHeader: UIView {
         editButton.setTitle("Edit", for: .normal)
         editButton.titleLabel?.font = Fonts.semibold16
         editButton.setTitleColor(Colors.primaryBlue, for: .normal)
-        editButton.isUserInteractionEnabled = false
+        editButton.addTarget(self, action: #selector(editTapped), for: .touchUpInside)
         addSubview(editButton)
 
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -75,5 +77,16 @@ final class ClothingHeader: UIView {
             subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
             subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+
+    //ACTIONS
+    @objc private func editTapped() {
+        onEditTapped?()
+    }
+
+    //FUNCTIONS
+    func setEditingControlsHidden(_ hidden: Bool) {
+        editButton.isHidden = hidden
+        editButton.isUserInteractionEnabled = !hidden
     }
 }

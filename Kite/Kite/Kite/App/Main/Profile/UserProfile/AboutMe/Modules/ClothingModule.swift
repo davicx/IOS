@@ -28,6 +28,16 @@ final class ClothingModule: UIView {
     private let bodyList = ClothingBodyList()
     private let footerAddNew = ClothingFooterAddNew()
 
+    var onEditTapped: (() -> Void)? {
+        get { header.onEditTapped }
+        set { header.onEditTapped = newValue }
+    }
+
+    var onAddTapped: (() -> Void)? {
+        get { footerAddNew.onAddTapped }
+        set { footerAddNew.onAddTapped = newValue }
+    }
+
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,5 +70,12 @@ final class ClothingModule: UIView {
             footerAddNew.trailingAnchor.constraint(equalTo: trailingAnchor),
             footerAddNew.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+
+    //FUNCTIONS
+    func configure(preferences: [ProfilePreference], isOwner: Bool) {
+        bodyList.configure(preferences: preferences)
+        header.setEditingControlsHidden(!isOwner)
+        footerAddNew.setAddControlsHidden(!isOwner)
     }
 }

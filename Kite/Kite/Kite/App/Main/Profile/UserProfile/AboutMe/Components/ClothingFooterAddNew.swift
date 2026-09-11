@@ -25,6 +25,8 @@ final class ClothingFooterAddNew: UIView {
     private let addButton = UIButton(type: .system)
     private let dashedBorder = CAShapeLayer()
 
+    var onAddTapped: (() -> Void)?
+
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,12 +43,12 @@ final class ClothingFooterAddNew: UIView {
 
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.setTitle("+ Add clothing note", for: .normal)
-        addButton.isUserInteractionEnabled = false
         addButton.backgroundColor = Colors.primaryBlue.withAlphaComponent(0.08)
         addButton.setTitleColor(Colors.primaryBlue, for: .normal)
         addButton.titleLabel?.font = Fonts.semibold17
         addButton.layer.cornerRadius = 16
         addButton.clipsToBounds = true
+        addButton.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
         addSubview(addButton)
 
         NSLayoutConstraint.activate([
@@ -68,5 +70,16 @@ final class ClothingFooterAddNew: UIView {
         dashedBorder.lineDashPattern = [6, 4]
         dashedBorder.path = UIBezierPath(roundedRect: addButton.bounds, cornerRadius: 16).cgPath
         addButton.layer.addSublayer(dashedBorder)
+    }
+
+    //ACTIONS
+    @objc private func addTapped() {
+        onAddTapped?()
+    }
+
+    //FUNCTIONS
+    func setAddControlsHidden(_ hidden: Bool) {
+        isHidden = hidden
+        addButton.isUserInteractionEnabled = !hidden
     }
 }

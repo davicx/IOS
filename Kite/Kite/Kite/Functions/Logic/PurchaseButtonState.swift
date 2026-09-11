@@ -8,14 +8,7 @@
 import Foundation
 
 
-enum PurchaseButtonState: Equatable {
-    case hidden
-    case purchase
-    case youPurchased
-    case purchased(by: String)
-}
-
-/// MVP presentation rules for wishlist purchase button (see Doc/feature_item_purchase.md).
+//MVP presentation rules for wishlist purchase button (see Doc/feature_item_purchase.md).
 func purchaseButtonState(post: Post, currentUser: String) -> PurchaseButtonState {
     if let postFrom = post.postFrom, postFrom == currentUser {
         return .hidden

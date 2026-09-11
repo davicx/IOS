@@ -17,7 +17,6 @@ class ProfileViewController: UIViewController {
     let userDefaultManager = UserDefaultManager()
     
     private let userProfileLayout = UserProfileLayout()
-    private let logoutButton = UIButton(type: .system)
   
     var userResponseModel: UserProfileResponseModel?
     var currentUser: User?
@@ -55,7 +54,6 @@ class ProfileViewController: UIViewController {
     private let moduleContainerView = UIView()
     private let aboutMeModule = AboutMeModule()
     private let postListModule = PostList()
-    private var moduleContainerHeightConstraint: NSLayoutConstraint!
 
     // Old bio/clothing UI (kept declared for later restore)
     private let userSelectInfoView = UIView()
@@ -80,7 +78,23 @@ class ProfileViewController: UIViewController {
         setupUserInfoView()
         setupModuleSlider()
         setupModuleContainer()
-        setupTempLogoutButton()
+
+        aboutMeModule.onLogoutTapped = { [weak self] in
+            self?.tempLogoutTapped()
+        }
+        aboutMeModule.onEditPreferencesTapped = { [weak self] in
+            self?.presentPreferencesSheet(openAdd: false)
+        }
+        aboutMeModule.onAddPreferenceTapped = { [weak self] in
+            self?.presentPreferencesSheet(openAdd: true)
+        }
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePreferencesUpdated),
+            name: .preferencesUpdated,
+            object: nil
+        )
         
         // Observe user updates to refresh profile image when it loads
         NotificationCenter.default.addObserver(
@@ -94,6 +108,7 @@ class ProfileViewController: UIViewController {
             await getUserInfo()
             await getUserFriends()
             await fetchUserCounts()
+            await fetchUserPreferences()
         }
     }
     
@@ -337,26 +352,28 @@ class ProfileViewController: UIViewController {
         view.addSubview(moduleContainerView)
         moduleContainerView.translatesAutoresizingMaskIntoConstraints = false
         moduleContainerView.backgroundColor = Colors.feedBackground
+        moduleContainerView.clipsToBounds = true
 
         moduleContainerView.addSubview(aboutMeModule)
         moduleContainerView.addSubview(postListModule)
 
-        moduleContainerHeightConstraint = moduleContainerView.heightAnchor.constraint(equalToConstant: 140)
-
+        // Fixed content area: fills remaining space below the segmented control.
+        // About Me / Posts each scroll inside this container — header + slider stay fixed.
         NSLayoutConstraint.activate([
+            moduleContainerView.topAnchor.constraint(equalTo: moduleSlider.bottomAnchor),
+            moduleContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            moduleContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            moduleContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
             aboutMeModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
             aboutMeModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
             aboutMeModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
+            aboutMeModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
 
             postListModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
             postListModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
             postListModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
-            postListModule.heightAnchor.constraint(equalToConstant: 140),
-
-            moduleContainerView.topAnchor.constraint(equalTo: moduleSlider.bottomAnchor),
-            moduleContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            moduleContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            moduleContainerHeightConstraint
+            postListModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor)
         ])
 
         showModule(at: 0)
@@ -365,38 +382,6 @@ class ProfileViewController: UIViewController {
     private func showModule(at index: Int) {
         aboutMeModule.isHidden = index != 0
         postListModule.isHidden = index != 1
-        updateModuleContainerHeight(for: index)
-    }
-
-    private func updateModuleContainerHeight(for index: Int) {
-        if index == 0 {
-            let width = moduleContainerView.bounds.width > 0
-                ? moduleContainerView.bounds.width
-                : view.bounds.width
-            let size = aboutMeModule.systemLayoutSizeFitting(
-                CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
-                withHorizontalFittingPriority: .required,
-                verticalFittingPriority: .fittingSizeLevel
-            )
-            moduleContainerHeightConstraint.constant = max(size.height, 1)
-        } else {
-            moduleContainerHeightConstraint.constant = 140
-        }
-    }
-
-    //TEMP: Logout button at bottom
-    private func setupTempLogoutButton() {
-        logoutButton.setTitle("Temp Logout", for: .normal)
-        logoutButton.addTarget(self, action: #selector(tempLogoutTapped), for: .touchUpInside)
-        logoutButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(logoutButton)
-        NSLayoutConstraint.activate([
-            moduleContainerView.bottomAnchor.constraint(lessThanOrEqualTo: logoutButton.topAnchor, constant: -16),
-            logoutButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
-            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
-            logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
-            logoutButton.heightAnchor.constraint(equalToConstant: 44)
-        ])
     }
 
     //ACTIONS
@@ -416,6 +401,52 @@ class ProfileViewController: UIViewController {
 
     @objc private func tempLogoutTapped() {
         LoginManager.shared.logoutCurrentUser()
+    }
+
+    @objc private func handlePreferencesUpdated(_ notification: Notification) {
+        let profileUserName = currentUser?.userName ?? userDefaultManager.getLoggedInUser()
+        if let updatedUser = notification.userInfo?["userName"] as? String,
+           !updatedUser.isEmpty,
+           updatedUser != profileUserName {
+            return
+        }
+        refreshPreferencesUI()
+    }
+
+    private func presentPreferencesSheet(openAdd: Bool) {
+        let profileUserName = currentUser?.userName ?? userDefaultManager.getLoggedInUser()
+        let loggedInUser = userDefaultManager.getLoggedInUser()
+        guard profileUserName == loggedInUser else { return }
+
+        let manageVC = ProfilePreferencesManageViewController()
+        manageVC.userName = profileUserName
+        let nav = UINavigationController(rootViewController: manageVC)
+        nav.modalPresentationStyle = .pageSheet
+        if let sheet = nav.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.prefersGrabberVisible = true
+        }
+        present(nav, animated: true) {
+            manageVC.openAddFormIfNeeded(openAdd: openAdd)
+        }
+    }
+
+    private func refreshPreferencesUI() {
+        let profileUserName = currentUser?.userName ?? userDefaultManager.getLoggedInUser()
+        let loggedInUser = userDefaultManager.getLoggedInUser()
+        let preferences = ProfilePreferenceDataController.shared.preferences(for: profileUserName)
+        aboutMeModule.configurePreferences(
+            preferences: preferences,
+            isOwner: profileUserName == loggedInUser
+        )
+    }
+
+    private func fetchUserPreferences() async {
+        let profileUserName = currentUser?.userName ?? userDefaultManager.getLoggedInUser()
+        await ProfilePreferenceDataController.shared.fetchPreferences(userName: profileUserName)
+        await MainActor.run {
+            self.refreshPreferencesUI()
+        }
     }
     
     @objc private func handleUsersUpdated() {
@@ -557,7 +588,7 @@ class ProfileViewController: UIViewController {
         // Update biography text area
         userBiographyTextArea.text = user.biography.isEmpty ? "biography" : user.biography
         aboutMeModule.configure(biography: user.biography)
-        updateModuleContainerHeight(for: moduleSlider.selectedIndex)
+        refreshPreferencesUI()
         
         // Update count labels if counts are available
         updateCountLabels()

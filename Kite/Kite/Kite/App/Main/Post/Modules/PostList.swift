@@ -8,7 +8,7 @@
 import UIKit
 
 
-/// Profile module placeholder — posts feed lives here later.
+/// Profile Posts tab — fills the fixed content area; will host a scrolling posts list later.
 final class PostList: UIView {
 
     private let titleLabel = UILabel()
@@ -34,7 +34,6 @@ final class PostList: UIView {
         addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 140),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])

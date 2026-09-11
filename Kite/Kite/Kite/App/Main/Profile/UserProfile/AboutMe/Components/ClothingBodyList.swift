@@ -18,19 +18,6 @@ import UIKit
 
 final class ClothingBodyList: UIView {
 
-    //LOGIC
-    private struct TempItem {
-        let emoji: String
-        let name: String
-        let value: String
-    }
-
-    private let tempItems: [TempItem] = [
-        TempItem(emoji: "👟", name: "Shoes", value: "Men's 12"),
-        TempItem(emoji: "🧥", name: "Coats", value: "Large only"),
-        TempItem(emoji: "👕", name: "Shirts", value: "No T-shirts for me")
-    ]
-
     //UI COMPONENTS
     // ClothingBodyList
     // └── cardView
@@ -38,6 +25,7 @@ final class ClothingBodyList: UIView {
 
     private let cardView = UIView()
     private let stackView = UIStackView()
+    private let emptyLabel = UILabel()
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
@@ -55,7 +43,7 @@ final class ClothingBodyList: UIView {
 
         setupCardView()
         setupStackView()
-        populateTempRows()
+        setupEmptyLabel()
         layoutViews()
     }
 
@@ -78,19 +66,15 @@ final class ClothingBodyList: UIView {
         cardView.addSubview(stackView)
     }
 
-    private func populateTempRows() {
-        for (index, item) in tempItems.enumerated() {
-            let row = makeRow(emoji: item.emoji, name: item.name, value: item.value)
-            stackView.addArrangedSubview(row)
-
-            if index < tempItems.count - 1 {
-                let divider = UIView()
-                divider.translatesAutoresizingMaskIntoConstraints = false
-                divider.backgroundColor = Colors.separator
-                stackView.addArrangedSubview(divider)
-                divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
-            }
-        }
+    private func setupEmptyLabel() {
+        emptyLabel.translatesAutoresizingMaskIntoConstraints = false
+        emptyLabel.text = "No clothing preferences yet."
+        emptyLabel.font = Fonts.regular16
+        emptyLabel.textColor = Colors.subtleGrayText
+        emptyLabel.textAlignment = .center
+        emptyLabel.numberOfLines = 0
+        emptyLabel.isHidden = true
+        cardView.addSubview(emptyLabel)
     }
 
     //LAYOUT and UI
@@ -104,12 +88,41 @@ final class ClothingBodyList: UIView {
             stackView.topAnchor.constraint(equalTo: cardView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor)
+            stackView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor),
+
+            emptyLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: Layout.spacingXL),
+            emptyLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: Layout.spacingL),
+            emptyLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -Layout.spacingL),
+            emptyLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -Layout.spacingXL)
         ])
     }
 
     //FUNCTIONS
-    private func makeRow(emoji: String, name: String, value: String) -> UIView {
+    func configure(preferences: [ProfilePreference]) {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+        emptyLabel.isHidden = !preferences.isEmpty
+        stackView.isHidden = preferences.isEmpty
+
+        for (index, preference) in preferences.enumerated() {
+            let row = makeRow(
+                category: preference.preferenceCategory,
+                title: preference.preferenceTitle,
+                description: preference.preferenceDescription
+            )
+            stackView.addArrangedSubview(row)
+
+            if index < preferences.count - 1 {
+                let divider = UIView()
+                divider.translatesAutoresizingMaskIntoConstraints = false
+                divider.backgroundColor = Colors.separator
+                stackView.addArrangedSubview(divider)
+                divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
+            }
+        }
+    }
+
+    private func makeRow(category: String, title: String, description: String) -> UIView {
         let row = UIView()
         row.translatesAutoresizingMaskIntoConstraints = false
         row.backgroundColor = .clear
@@ -122,7 +135,7 @@ final class ClothingBodyList: UIView {
 
         let iconLabel = UILabel()
         iconLabel.translatesAutoresizingMaskIntoConstraints = false
-        iconLabel.text = emoji
+        iconLabel.text = emoji(for: category)
         iconLabel.font = UIFont.systemFont(ofSize: 24)
         iconLabel.textAlignment = .center
         iconBackground.addSubview(iconLabel)
@@ -137,16 +150,27 @@ final class ClothingBodyList: UIView {
 
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.text = name
+        nameLabel.text = category
         nameLabel.font = Fonts.semibold16
         nameLabel.textColor = Colors.subtleGrayText
 
         let valueLabel = UILabel()
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        valueLabel.text = value
+        valueLabel.text = title
         valueLabel.font = Fonts.semibold17
         valueLabel.textColor = Colors.primaryGrayText
-        valueLabel.numberOfLines = 0
+        valueLabel.numberOfLines = 2
+        valueLabel.lineBreakMode = .byTruncatingTail
+
+        let descriptionLabel = UILabel()
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        let trimmedDescription = description.trimmingCharacters(in: .whitespacesAndNewlines)
+        descriptionLabel.text = trimmedDescription.isEmpty ? nil : trimmedDescription
+        descriptionLabel.font = Fonts.regular14
+        descriptionLabel.textColor = Colors.subtleGrayText
+        descriptionLabel.numberOfLines = 2
+        descriptionLabel.lineBreakMode = .byTruncatingTail
+        descriptionLabel.isHidden = trimmedDescription.isEmpty
 
         let chevronLabel = UILabel()
         chevronLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -158,9 +182,12 @@ final class ClothingBodyList: UIView {
 
         textStack.addArrangedSubview(nameLabel)
         textStack.addArrangedSubview(valueLabel)
+        if !descriptionLabel.isHidden {
+            textStack.addArrangedSubview(descriptionLabel)
+        }
 
         NSLayoutConstraint.activate([
-            row.heightAnchor.constraint(equalToConstant: 104),
+            row.heightAnchor.constraint(greaterThanOrEqualToConstant: 104),
 
             iconBackground.leadingAnchor.constraint(equalTo: row.leadingAnchor, constant: Layout.spacingL),
             iconBackground.centerYAnchor.constraint(equalTo: row.centerYAnchor),
@@ -171,7 +198,8 @@ final class ClothingBodyList: UIView {
             iconLabel.centerYAnchor.constraint(equalTo: iconBackground.centerYAnchor),
 
             textStack.leadingAnchor.constraint(equalTo: iconBackground.trailingAnchor, constant: Layout.spacingL),
-            textStack.centerYAnchor.constraint(equalTo: row.centerYAnchor),
+            textStack.topAnchor.constraint(equalTo: row.topAnchor, constant: Layout.spacingM),
+            textStack.bottomAnchor.constraint(equalTo: row.bottomAnchor, constant: -Layout.spacingM),
 
             chevronLabel.leadingAnchor.constraint(equalTo: textStack.trailingAnchor, constant: Layout.spacingS),
             chevronLabel.trailingAnchor.constraint(equalTo: row.trailingAnchor, constant: -Layout.spacingL),
@@ -180,5 +208,15 @@ final class ClothingBodyList: UIView {
         ])
 
         return row
+    }
+
+    private func emoji(for category: String) -> String {
+        let key = category.lowercased()
+        if key.contains("shoe") { return "👟" }
+        if key.contains("coat") || key.contains("jacket") { return "🧥" }
+        if key.contains("shirt") || key.contains("tee") { return "👕" }
+        if key.contains("pant") || key.contains("jean") { return "👖" }
+        if key.contains("hat") { return "🧢" }
+        return "👕"
     }
 }
