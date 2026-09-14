@@ -15,7 +15,6 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
-
 final class AboutMe: UIView {
 
     //LOGIC
