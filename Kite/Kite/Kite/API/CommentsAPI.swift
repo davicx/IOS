@@ -149,4 +149,39 @@ class CommentsAPI {
             return commentLikeResponseModel
         }
     }
+
+    //Function 4: Soft-delete Comment
+    func deleteComment(currentUser: String, commentID: Int, postID: Int) async throws -> Bool {
+        let endpoint = "http://localhost:3003/comment/delete"
+
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        let parameters = ["currentUser": currentUser, "commentID": commentID, "postID": postID] as [String: Any]
+
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            print("Error setting JSON")
+            return false
+        }
+
+        request.httpBody = httpBody
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+
+        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let success = json["success"] as? Bool {
+            return success
+        }
+
+        return true
+    }
 }

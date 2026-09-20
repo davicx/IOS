@@ -4,36 +4,36 @@
 //
 //  Created by David Vasquez on 7/18/26.
 //
-// HEIGHT: Designed for ~60pt (matches the working Wishlist tableHeaderView).
+// HEIGHT: Designed for ~116pt with subtitle + segment.
 // When used as tableView.tableHeaderView, set the header frame height
-// (or re-measure after layout) — tableHeaderView does not auto-resize
+// (or re-measure after layout) — tableHeaderView does not auto-size
 // from Auto Layout alone.
 
 import UIKit
 
 
-//LOGIC
-//UI COMPONENTS
-//MANAGE VIEWS
-//LAYOUT and UI
-//ACTIONS
-//FUNCTIONS
+//On List Page this is the top area
+final class ListsHeaderView: UIView {
 
+    // LOGIC
+    var onListTypeChanged: ((Int) -> Void)?
+    private var selectedListType: Int = 0
+    private var underlineWidthConstraint: NSLayoutConstraint!
+    private var underlineCenterXConstraint: NSLayoutConstraint!
 
-final class ListMasterHeader: UIView {
+    // LAYOUT
+    private let listTypeHeight: CGFloat = 50
+    private let preferredHeight: CGFloat = 116
 
-    //LOGIC
-    var onSelectionChanged: ((Int) -> Void)?
-    private var underlineLeadingConstraint: NSLayoutConstraint!
+    // UI COMPONENTS
+    private let subtitleLabel = UILabel()
+    private let listTypeContainer = UIView()
+    private let myListsButton = UIButton(type: .system)
+    private let sharedListsButton = UIButton(type: .system)
+    private let listTypeStack = UIStackView()
+    private let selectionIndicator = UIView()
 
-    //UI COMPONENTS
-    private let segmentedControl: UISegmentedControl = {
-        let sc = UISegmentedControl(items: ["My Lists", "Shared With Me"])
-        return sc
-    }()
-    private let underlineView = UIView()
-
-    //MANAGE VIEWS
+    // MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -43,52 +43,146 @@ final class ListMasterHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: UIView.noIntrinsicMetric, height: preferredHeight)
+    }
+
+    // LAYOUT
     private func setupViews() {
-        backgroundColor = .systemBackground
+        backgroundColor = Colors.screenBackground
 
-        setupSegmentedControl()
-        addSubview(segmentedControl)
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.text = "Keep wishes organized and share them with friends."
+        subtitleLabel.font = Fonts.regular15
+        subtitleLabel.textColor = Colors.secondaryGrayText
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.numberOfLines = 1
+        subtitleLabel.lineBreakMode = .byTruncatingTail
+        addSubview(subtitleLabel)
 
-        underlineView.backgroundColor = .black
-        underlineView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(underlineView)
+        listTypeContainer.translatesAutoresizingMaskIntoConstraints = false
+        listTypeContainer.backgroundColor = Colors.newItemInfoBackground
+        listTypeContainer.layer.cornerRadius = 13
+        listTypeContainer.clipsToBounds = true
+        addSubview(listTypeContainer)
 
-        underlineLeadingConstraint = underlineView.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor)
+        setupListTypeButton(myListsButton, title: "My Lists", tag: 0)
+        setupListTypeButton(sharedListsButton, title: "Shared With Me", tag: 1)
+
+        listTypeStack.translatesAutoresizingMaskIntoConstraints = false
+        listTypeStack.axis = .horizontal
+        listTypeStack.distribution = .fillEqually
+        listTypeStack.alignment = .fill
+        listTypeStack.spacing = 0
+        listTypeStack.addArrangedSubview(myListsButton)
+        listTypeStack.addArrangedSubview(sharedListsButton)
+        listTypeContainer.addSubview(listTypeStack)
+
+        selectionIndicator.translatesAutoresizingMaskIntoConstraints = false
+        selectionIndicator.backgroundColor = Colors.primaryPink
+        selectionIndicator.layer.cornerRadius = 1
+        listTypeContainer.addSubview(selectionIndicator)
+
+        underlineWidthConstraint = selectionIndicator.widthAnchor.constraint(equalToConstant: 40)
+        underlineCenterXConstraint = selectionIndicator.centerXAnchor.constraint(equalTo: myListsButton.centerXAnchor)
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 60),
+            heightAnchor.constraint(equalToConstant: preferredHeight),
 
-            segmentedControl.centerXAnchor.constraint(equalTo: centerXAnchor),
-            segmentedControl.centerYAnchor.constraint(equalTo: centerYAnchor),
-            segmentedControl.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8),
-            segmentedControl.heightAnchor.constraint(equalToConstant: 30),
+            subtitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingM),
+            subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingL),
+            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
 
-            underlineView.bottomAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
-            underlineLeadingConstraint,
-            underlineView.widthAnchor.constraint(
-                equalTo: segmentedControl.widthAnchor,
-                multiplier: 1 / CGFloat(segmentedControl.numberOfSegments)
-            ),
-            underlineView.heightAnchor.constraint(equalToConstant: 2)
+            listTypeContainer.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: Layout.spacingL),
+            listTypeContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingL),
+            listTypeContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
+            listTypeContainer.heightAnchor.constraint(equalToConstant: listTypeHeight),
+            listTypeContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingM),
+
+            listTypeStack.topAnchor.constraint(equalTo: listTypeContainer.topAnchor),
+            listTypeStack.leadingAnchor.constraint(equalTo: listTypeContainer.leadingAnchor),
+            listTypeStack.trailingAnchor.constraint(equalTo: listTypeContainer.trailingAnchor),
+            listTypeStack.bottomAnchor.constraint(equalTo: listTypeContainer.bottomAnchor),
+
+            myListsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.touchTargetSize),
+            sharedListsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.touchTargetSize),
+
+            selectionIndicator.bottomAnchor.constraint(equalTo: listTypeContainer.bottomAnchor, constant: -3),
+            selectionIndicator.heightAnchor.constraint(equalToConstant: 2),
+            underlineWidthConstraint,
+            underlineCenterXConstraint
         ])
+
+        updateSelectedListType(animated: false)
     }
 
-    private func setupSegmentedControl() {
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.removeBackgroundAndDivider()
-        segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateSelectionIndicatorWidth()
     }
 
-    //ACTIONS
-    @objc private func segmentChanged(_ sender: UISegmentedControl) {
-        let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
-        underlineLeadingConstraint.constant = segmentWidth * CGFloat(sender.selectedSegmentIndex)
+    private func setupListTypeButton(_ button: UIButton, title: String, tag: Int) {
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tag = tag
+        button.setTitle(title, for: .normal)
+        button.addTarget(self, action: #selector(listTypeButtonTapped(_:)), for: .touchUpInside)
+        button.accessibilityLabel = title
+    }
 
-        UIView.animate(withDuration: 0.3) {
+    // ACTIONS
+    @objc private func listTypeButtonTapped(_ sender: UIButton) {
+        guard sender.tag != selectedListType else { return }
+        selectedListType = sender.tag
+        updateSelectedListType(animated: true)
+        onListTypeChanged?(selectedListType)
+    }
+
+    // FUNCTIONS
+    func selectListType(_ index: Int, animated: Bool = false) {
+        selectedListType = max(0, min(1, index))
+        updateSelectedListType(animated: animated)
+    }
+
+    private func updateSelectedListType(animated: Bool) {
+        let myListsSelected = selectedListType == 0
+
+        myListsButton.titleLabel?.font = myListsSelected ? Fonts.semibold14 : Fonts.regular14
+        sharedListsButton.titleLabel?.font = myListsSelected ? Fonts.regular14 : Fonts.semibold14
+        myListsButton.setTitleColor(
+            myListsSelected ? Colors.primaryGrayText : Colors.secondaryGrayText,
+            for: .normal
+        )
+        sharedListsButton.setTitleColor(
+            myListsSelected ? Colors.secondaryGrayText : Colors.primaryGrayText,
+            for: .normal
+        )
+        myListsButton.backgroundColor = myListsSelected ? Colors.screenBackground : .clear
+        sharedListsButton.backgroundColor = myListsSelected ? .clear : Colors.screenBackground
+
+        myListsButton.accessibilityTraits = myListsSelected ? [.button, .selected] : .button
+        sharedListsButton.accessibilityTraits = myListsSelected ? .button : [.button, .selected]
+
+        underlineCenterXConstraint.isActive = false
+        underlineCenterXConstraint = selectionIndicator.centerXAnchor.constraint(
+            equalTo: (myListsSelected ? myListsButton : sharedListsButton).centerXAnchor
+        )
+        underlineCenterXConstraint.isActive = true
+        updateSelectionIndicatorWidth()
+
+        let updates = {
             self.layoutIfNeeded()
         }
 
-        onSelectionChanged?(sender.selectedSegmentIndex)
+        if animated {
+            UIView.animate(withDuration: 0.25, animations: updates)
+        } else {
+            updates()
+        }
+    }
+
+    private func updateSelectionIndicatorWidth() {
+        let buttonWidth = listTypeContainer.bounds.width / 2
+        guard buttonWidth > 0 else { return }
+        underlineWidthConstraint.constant = max(24, buttonWidth - 16)
     }
 }

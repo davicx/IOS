@@ -49,7 +49,7 @@ import Foundation
     Wishlist:
     - Title: "Wishlist"
     - Register / dequeue: GroupCell
-    - Header: ListMasterHeader
+    - Header: ListsHeaderView
 
     Look for: //KITE and //WISHLIST near setupTableView + cellForRow
 

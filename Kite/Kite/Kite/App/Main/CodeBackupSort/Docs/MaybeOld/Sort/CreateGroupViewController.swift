@@ -68,9 +68,9 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         Task {
             do {
-                // Sample data, just like in your Postman call
-                let currentUser = "davey"
-                let groupType = "kite"
+                // Use logged-in user and Wishlist type so new lists appear on Lists index
+                let currentUser = UserDefaultManager().getLoggedInUser()
+                let groupType = "wishlist"
                 let groupPrivate = 1
                 let groupUsers = Array(selectedUsernames) + [currentUser]
                 let notificationMessage = "Invited you to a new Group"

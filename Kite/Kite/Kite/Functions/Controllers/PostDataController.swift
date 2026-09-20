@@ -387,6 +387,24 @@ class PostDataController {
         }
     }
 
+    //Function D4: Remove soft-deleted comment from local post
+    func removeComment(postID: Int, commentID: Int) {
+        for (groupID, posts) in groupPosts {
+            if let postIndex = posts.firstIndex(where: { $0.postID == postID }) {
+                var updatedPosts = posts
+                updatedPosts[postIndex].commentsArray?.removeAll { $0.commentID == commentID }
+                groupPosts[groupID] = updatedPosts
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .commentUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
+
     //Function D2: Unlike a Comment
     func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
         // Search across all groups

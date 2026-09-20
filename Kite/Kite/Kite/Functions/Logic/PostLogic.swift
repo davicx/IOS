@@ -194,6 +194,30 @@ final class PostLogic {
         }
     }
 
+    //Function D2: Soft-delete comment (author only)
+    func deleteComment(postID: Int, commentID: Int) async -> Bool {
+        let currentUser = postDataController.currentUser
+
+        do {
+            let success = try await CommentsAPI.shared.deleteComment(
+                currentUser: currentUser,
+                commentID: commentID,
+                postID: postID
+            )
+            guard success else {
+                print("PostLogic: deleteComment failed for comment \(commentID)")
+                return false
+            }
+            await MainActor.run {
+                postDataController.removeComment(postID: postID, commentID: commentID)
+            }
+            return true
+        } catch {
+            print("PostLogic: deleteComment error: \(error)")
+            return false
+        }
+    }
+
     //KITE
     //Add Kite Later
     /*

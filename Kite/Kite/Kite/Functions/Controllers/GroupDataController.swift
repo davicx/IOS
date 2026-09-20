@@ -30,7 +30,7 @@ class GroupDataController {
     }
 
     // Fetch groups
-    func getGroups(completion: @escaping () -> Void) {
+    func getGroups(completion: @escaping (_ success: Bool) -> Void) {
         let currentUser = userDefaultManager.getLoggedInUser()
 
         Task {
@@ -39,18 +39,18 @@ class GroupDataController {
                 if response.statusCode == 401 {
                     LoginManager.shared.logoutCurrentUser()
                     DispatchQueue.main.async {
-                        completion()
+                        completion(false)
                     }
                     return
                 }
                 self.groups = response.data
                 DispatchQueue.main.async {
-                    completion()
+                    completion(true)
                 }
             } catch {
                 print("Failed to fetch groups:", error)
                 DispatchQueue.main.async {
-                    completion()
+                    completion(false)
                 }
             }
         }
@@ -70,7 +70,7 @@ class GroupDataController {
     }
     
     func refreshGroups(completion: @escaping () -> Void) {
-        getGroups {
+        getGroups { _ in
             self.onGroupsUpdated?()
             completion()
         }

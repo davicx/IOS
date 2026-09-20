@@ -56,7 +56,7 @@ Use the system navigation bar for fixed page navigation.
 Use a table header for scrollable page content, such as:
 
 - `EventsMasterHeader`
-- `ListMasterHeader`
+- `ListsHeaderView`
 - filters
 - segmented controls
 - profile summary blocks
