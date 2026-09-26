@@ -90,6 +90,11 @@
 		D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7096A762DDE92DE00A51D32 /* FriendTableUserCell.swift */; };
 		D70BE0BE2F19B5FF00B9CBA4 /* UserLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE0BD2F19B5FF00B9CBA4 /* UserLogic.swift */; };
 		D710E7F32E7E1338008C11BA /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710E7F22E7E1338008C11BA /* DiscoverViewController.swift */; };
+		D7D15C022F9A110100A1B001 /* DiscoverSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D15C012F9A110100A1B001 /* DiscoverSearchBar.swift */; };
+		D7D15C042F9A110100A1B002 /* DiscoverTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D15C032F9A110100A1B002 /* DiscoverTabBar.swift */; };
+		D7D15C062F9A110100A1B003 /* DiscoverItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D15C052F9A110100A1B003 /* DiscoverItem.swift */; };
+		D7D15C082F9A110100A1B004 /* DiscoverUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D15C072F9A110100A1B004 /* DiscoverUser.swift */; };
+		D7D15C0A2F9A110100A1B005 /* DiscoverList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D15C092F9A110100A1B005 /* DiscoverList.swift */; };
 		D710E7F72E7E1675008C11BA /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7F62E7E1675008C11BA /* Home.storyboard */; };
 		D710E7F92E7E1686008C11BA /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7F82E7E1686008C11BA /* Profile.storyboard */; };
 		D710E7FB2E7E168B008C11BA /* Groups.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D710E7FA2E7E168B008C11BA /* Groups.storyboard */; };
@@ -370,6 +375,11 @@
 		D7096A762DDE92DE00A51D32 /* FriendTableUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableUserCell.swift; sourceTree = "<group>"; };
 		D70BE0BD2F19B5FF00B9CBA4 /* UserLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLogic.swift; sourceTree = "<group>"; };
 		D710E7F22E7E1338008C11BA /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
+		D7D15C012F9A110100A1B001 /* DiscoverSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchBar.swift; sourceTree = "<group>"; };
+		D7D15C032F9A110100A1B002 /* DiscoverTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTabBar.swift; sourceTree = "<group>"; };
+		D7D15C052F9A110100A1B003 /* DiscoverItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverItem.swift; sourceTree = "<group>"; };
+		D7D15C072F9A110100A1B004 /* DiscoverUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverUser.swift; sourceTree = "<group>"; };
+		D7D15C092F9A110100A1B005 /* DiscoverList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverList.swift; sourceTree = "<group>"; };
 		D710E7F62E7E1675008C11BA /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		D710E7F82E7E1686008C11BA /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		D710E7FA2E7E168B008C11BA /* Groups.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Groups.storyboard; sourceTree = "<group>"; };
@@ -976,9 +986,22 @@
 		D710E7F42E7E133E008C11BA /* Discover */ = {
 			isa = PBXGroup;
 			children = (
+				D7D15C0B2F9A110100A1B006 /* Components */,
 				D710E7F22E7E1338008C11BA /* DiscoverViewController.swift */,
 			);
 			path = Discover;
+			sourceTree = "<group>";
+		};
+		D7D15C0B2F9A110100A1B006 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D7D15C012F9A110100A1B001 /* DiscoverSearchBar.swift */,
+				D7D15C032F9A110100A1B002 /* DiscoverTabBar.swift */,
+				D7D15C052F9A110100A1B003 /* DiscoverItem.swift */,
+				D7D15C072F9A110100A1B004 /* DiscoverUser.swift */,
+				D7D15C092F9A110100A1B005 /* DiscoverList.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		D710E7F52E7E1644008C11BA /* Storyboards */ = {
@@ -1918,6 +1941,11 @@
 				D78047892DF507B500702C01 /* PlantDataController.swift in Sources */,
 				D76F77B02E15F7EE00A28963 /* GroupsDoc.swift in Sources */,
 				D710E7F32E7E1338008C11BA /* DiscoverViewController.swift in Sources */,
+				D7D15C022F9A110100A1B001 /* DiscoverSearchBar.swift in Sources */,
+				D7D15C042F9A110100A1B002 /* DiscoverTabBar.swift in Sources */,
+				D7D15C062F9A110100A1B003 /* DiscoverItem.swift in Sources */,
+				D7D15C082F9A110100A1B004 /* DiscoverUser.swift in Sources */,
+				D7D15C0A2F9A110100A1B005 /* DiscoverList.swift in Sources */,
 				D7157413300C438A0083B6E5 /* ItemInfoPullFrom.swift in Sources */,
 				87E6F82775D541CCB2BBD4C0 /* ItemFrom.swift in Sources */,
 				336350624C934873AB44D228 /* EditItem.swift in Sources */,
