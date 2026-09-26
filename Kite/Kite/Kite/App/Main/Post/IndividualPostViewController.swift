@@ -10,18 +10,6 @@ import UIKit
 
 
 //INDIVIDUAL POST
-/*
-Post Cell (Just one)
--> PostContent (Can be post or item)
--> PostCaption
--> PostSocials
- 
-Comment Cell (many)
- 
-Make Comment (placeholder bar; text field + send next)
-->
- 
- */
 
 //LISTS: Wishlist
 class IndividualPostViewController: UIViewController {
@@ -58,28 +46,7 @@ class IndividualPostViewController: UIViewController {
         super.viewDidLoad()
         setupNewComment()
         setupIndividualPostTableView()
-        
-        //print("IndividualPostViewController loaded")
-        //print("postID =", postID ?? -1)
 
-        /*
-        if let post = post {
-            print("FOUND POST:", post.postID ?? -1)
-            //print(post.postCaption)
-            //print(post.itemDescription)
-            //print(post.itemPrice)
-            
-            if let viewers = post.purchasedViewers {
-                print("purchased_viewers:", viewers.isEmpty ? "[]" : viewers)
-            } else {
-                print("purchased_viewers: (nil - item block never ran for this post)")
-            }
-             
-            //printPostLikes(post: post)
-        } else {
-            print("POST NOT FOUND")
-        }
-         */
         
         // Observe comment updates
         NotificationCenter.default.addObserver(
@@ -149,7 +116,7 @@ class IndividualPostViewController: UIViewController {
 
         individualPostTableView.rowHeight = UITableView.automaticDimension
         individualPostTableView.separatorStyle = .none
-        //Divider: PostCell draws MainDivider; system separator off so line is full width
+        individualPostTableView.backgroundColor = Colors.feedBackground
         
         view.addSubview(individualPostTableView)
 
@@ -181,7 +148,7 @@ class IndividualPostViewController: UIViewController {
     //FUNCTIONS
     @objc private func newGroupPostButton() {
         let storyboard = UIStoryboard(name: "Post", bundle: nil)
-        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewController {
+        if let newPostVC = storyboard.instantiateViewController(withIdentifier: "NewPostViewControllerID") as? NewPostViewControllerOld {
             newPostVC.modalPresentationStyle = .fullScreen
             present(newPostVC, animated: true)
         }
@@ -251,6 +218,29 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     }
 }
 
+
+
+//print("IndividualPostViewController loaded")
+//print("postID =", postID ?? -1)
+
+/*
+if let post = post {
+    print("FOUND POST:", post.postID ?? -1)
+    //print(post.postCaption)
+    //print(post.itemDescription)
+    //print(post.itemPrice)
+    
+    if let viewers = post.purchasedViewers {
+        print("purchased_viewers:", viewers.isEmpty ? "[]" : viewers)
+    } else {
+        print("purchased_viewers: (nil - item block never ran for this post)")
+    }
+     
+    //printPostLikes(post: post)
+} else {
+    print("POST NOT FOUND")
+}
+ */
 
 /*
 //LISTS: Wishlist
@@ -353,7 +343,7 @@ class IndividualPostViewController: UIViewController {
         
         //TEMP
         individualPostTableView.separatorStyle = .none
-        //TEMP
+        individualPostTableView.backgroundColor = Colors.feedBackground
         
         //Enable automatic dimension for dynamic cell heights
         individualPostTableView.rowHeight = UITableView.automaticDimension

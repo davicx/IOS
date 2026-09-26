@@ -9,9 +9,16 @@
 import UIKit
 
 
+//LOGIC
+//UI COMPONENTS
+//MANAGE VIEWS
+//LAYOUT and UI
+//ACTIONS
+//FUNCTIONS
+
 class HomeViewController: UIViewController {
 
-    //HOME: API and data
+    //LOGIC: API and data
     let postDataController = PostDataController.shared
     
     let loginAPI = LoginAPI()
@@ -23,13 +30,18 @@ class HomeViewController: UIViewController {
         return userDefaultManager.getLoggedInUser()
     }()
     
-    
-    @IBOutlet weak var postsTableView: UITableView!
-
     // Polling Manager
     private let pollingManager = PollingManager()
 
 
+    //UI COMPONENTS
+    @IBOutlet weak var postsTableView: UITableView!
+    let topNavigationView = UIView()
+    let topNavigationProfileImageView = UIImageView()
+    let topNavigationProfileButton = UIButton(type: .custom)
+    let topNavigationLogoImageView = UIImageView()
+
+    //MANAGE VIEWS
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,6 +77,7 @@ class HomeViewController: UIViewController {
         // Start polling
         pollingManager.startPolling()
 
+        setupTopNavigationView()
         setupTableView()
     }
     
@@ -86,34 +99,109 @@ class HomeViewController: UIViewController {
         super.viewWillDisappear(animated)
         pollingManager.stopPolling() // Stop polling when view goes away
     }
-
     
-    //TABLE VIEW: Setup
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    //LAYOUT and UI
+    //Top Navigation View: Setup
+    func setupTopNavigationView() {
+        topNavigationView.translatesAutoresizingMaskIntoConstraints = false
+        topNavigationView.widthAnchor.constraint(equalToConstant: view.bounds.width - 32).isActive = true
+        topNavigationView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+
+        topNavigationProfileImageView.image = UIImage(named: "user")
+        topNavigationProfileImageView.contentMode = .scaleAspectFill
+        topNavigationProfileImageView.clipsToBounds = true
+        topNavigationProfileImageView.layer.cornerRadius = 16
+        topNavigationProfileImageView.translatesAutoresizingMaskIntoConstraints = false
+        topNavigationView.addSubview(topNavigationProfileImageView)
+
+        topNavigationProfileButton.translatesAutoresizingMaskIntoConstraints = false
+        topNavigationProfileButton.accessibilityLabel = "Profile"
+        topNavigationProfileButton.addTarget(self, action: #selector(profileImageTapped), for: .touchUpInside)
+        topNavigationView.addSubview(topNavigationProfileButton)
+
+        topNavigationLogoImageView.image = UIImage(named: "blue_logo")
+        //topNavigationLogoImageView.image = UIImage(named: "pink_logo")
+        topNavigationLogoImageView.contentMode = .scaleAspectFit
+        topNavigationLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+        topNavigationView.addSubview(topNavigationLogoImageView)
+
+        NSLayoutConstraint.activate([
+            topNavigationProfileImageView.leadingAnchor.constraint(equalTo: topNavigationView.leadingAnchor),
+            topNavigationProfileImageView.centerYAnchor.constraint(equalTo: topNavigationView.centerYAnchor),
+            topNavigationProfileImageView.widthAnchor.constraint(equalToConstant: 32),
+            topNavigationProfileImageView.heightAnchor.constraint(equalToConstant: 32),
+
+            topNavigationProfileButton.leadingAnchor.constraint(equalTo: topNavigationView.leadingAnchor),
+            topNavigationProfileButton.centerYAnchor.constraint(equalTo: topNavigationView.centerYAnchor),
+            topNavigationProfileButton.widthAnchor.constraint(equalToConstant: 40),
+            topNavigationProfileButton.heightAnchor.constraint(equalToConstant: 44),
+
+            topNavigationLogoImageView.centerXAnchor.constraint(equalTo: topNavigationView.centerXAnchor),
+            topNavigationLogoImageView.centerYAnchor.constraint(equalTo: topNavigationView.centerYAnchor),
+            topNavigationLogoImageView.widthAnchor.constraint(equalToConstant: 38),
+            topNavigationLogoImageView.heightAnchor.constraint(equalToConstant: 38)
+        ])
+
+        navigationItem.titleView = topNavigationView
+
+        Task {
+            if let user = await UsersDataController.shared.getOrFetchUserWithImage(username: currentUser),
+               let profileImage = user.profileImage {
+                await MainActor.run {
+                    self.topNavigationProfileImageView.image = profileImage
+                }
+            }
+        }
+    }
+
+    //Table View: Setup
     func setupTableView() {
         postsTableView.delegate = self
         postsTableView.dataSource = self
         postsTableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.postCell)
         postsTableView.rowHeight = UITableView.automaticDimension
         postsTableView.separatorStyle = .none
+        postsTableView.backgroundColor = Colors.feedBackground
         //postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 
-    
     //FUNCTIONS
     func fetchPosts() {
         Task {
-            //Kite
-            await postDataController.fetchKitePosts(groupID: 70)
-
-            //Wishlist
-            //await postDataController.fetchWishlistItems(groupID: 72)
+            await getHomePostsWishlist()
         }
     }
-    
+
+    /// Kite Home posts — wire later to GET /posts
+    func getHomePosts() {
+        // await postDataController.fetchAllKitePosts() when GET /posts is cleaned up
+    }
+
+    /// Wishlist Home items — GET /items (global, limit 12)
+    func getHomePostsWishlist() async {
+        await postDataController.fetchAllWishlistItems()
+    }
+
+
+    //ACTIONS
+    @objc private func profileImageTapped() {
+        print("Logo Tapped")
+        guard let tabBarController,
+              let profileTabIndex = tabBarController.viewControllers?.firstIndex(where: { viewController in
+                  let navigationController = viewController as? UINavigationController
+                  return navigationController?.viewControllers.first is ProfileViewController
+              }) else { return }
+
+        let profileNavigationController = tabBarController.viewControllers?[profileTabIndex] as? UINavigationController
+        profileNavigationController?.popToRootViewController(animated: false)
+        tabBarController.selectedIndex = profileTabIndex
+    }
+
     @objc private func handlePostsFetched() {
         postsTableView.reloadData()
     }
@@ -122,7 +210,6 @@ class HomeViewController: UIViewController {
         // Simple pattern: just reload the table (matches DataController example)
         postsTableView.reloadData()
     }
-
 }
 
 //TABLE VIEW: For Individual Posts in Home Feed
@@ -138,7 +225,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          cell.updatePost(with: post)
          return cell
          /*
-         //Constants.TableViewCellIdentifier.homePostCell could have a crashy error
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
          let post = postDataController.getHomeFeedPosts()[indexPath.row]
          cell.updatePost(with: post)
@@ -185,8 +271,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 700
-        //return 200 // Estimated height like IndividualPostViewController (HomePostCell)
     }
      
 }
-

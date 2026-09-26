@@ -22,7 +22,7 @@ class PresenterManager {
     func showMainApp() {
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
            let window = sceneDelegate.window {
-            window.rootViewController = AppTabBarFactory.makeMainTabBar()
+            window.rootViewController = AppTabBar.setupTabBar()
             window.makeKeyAndVisible()
         }
     }

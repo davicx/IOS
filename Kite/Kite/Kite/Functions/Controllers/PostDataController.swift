@@ -14,6 +14,7 @@ FUNCTIONS A: All Functions Related to Getting Posts
     2) Function A2: Get posts for a specific group
     3) Function A3: Fetch Kite posts for group (getPostsAPI)
     4) Function A4: Fetch Wishlist items for group (getItemsAPI)
+    4b) Function A4b: Fetch all Wishlist items (getAllItemsAPI — Home)
     5) Function A5: Get all posts from all groups
     6) Function A6: Get a Post (searches across all groups)
     7) Function A7: Get an Item (searches across all groups)
@@ -42,6 +43,8 @@ class PostDataController {
     static let shared = PostDataController()
 
     private var groupPosts: [Int: [Post]] = [:] // groupID -> [Post]
+    /// Sentinel key for Home feed (not a real group). Keeps likes/comments lookup working.
+    private let homeFeedStorageKey = 0
 
     private let postsAPI = PostsAPI()
     private let userDefaultManager = UserDefaultManager()
@@ -53,9 +56,9 @@ class PostDataController {
     var currentUserOwnsGroupForDisplay: Bool = true
 
     //FUNCTIONS A: All Functions Related to Getting Posts
-    //Function A1: Get home feed posts (Kite — group 70 for now)
+    //Function A1: Get home feed posts
     func getHomeFeedPosts() -> [Post] {
-        return getPostsForGroup(groupID: 70)
+        return getPostsForGroup(groupID: homeFeedStorageKey)
     }
     
     //Function A2: Get posts for a specific group
@@ -100,6 +103,28 @@ class PostDataController {
             }
         } catch {
             print("PostDataController: Failed to fetch Wishlist items - \(error)")
+        }
+    }
+
+    //Function A4b: Fetch all Wishlist items (global Home feed)
+    func fetchAllWishlistItems() async {
+        do {
+            let postsResponseModel = try await postsAPI.getAllItemsAPI()
+            let fetchedPosts = try await loadPostsWithImages(from: postsResponseModel)
+            groupPosts[homeFeedStorageKey] = fetchedPosts
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .postsFetched,
+                    object: nil
+                )
+                NotificationCenter.default.post(
+                    name: .itemsFetched,
+                    object: nil
+                )
+            }
+        } catch {
+            print("PostDataController: Failed to fetch all Wishlist items - \(error)")
         }
     }
 
@@ -362,6 +387,24 @@ class PostDataController {
         }
     }
 
+    //Function D4: Remove soft-deleted comment from local post
+    func removeComment(postID: Int, commentID: Int) {
+        for (groupID, posts) in groupPosts {
+            if let postIndex = posts.firstIndex(where: { $0.postID == postID }) {
+                var updatedPosts = posts
+                updatedPosts[postIndex].commentsArray?.removeAll { $0.commentID == commentID }
+                groupPosts[groupID] = updatedPosts
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .commentUpdated,
+                        object: postID
+                    )
+                }
+                return
+            }
+        }
+    }
+
     //Function D2: Unlike a Comment
     func unlikeComment(postID: Int, commentID: Int, commentLikeModel: CommentLikeModel) {
         // Search across all groups
@@ -433,6 +476,20 @@ class PostDataController {
                 }
                 return
             }
+        }
+    }
+
+    //Function: Remove a post from all group caches (after successful delete API)
+    func removePost(postID: Int) {
+        for (groupID, posts) in groupPosts {
+            let filtered = posts.filter { $0.postID != postID }
+            if filtered.count != posts.count {
+                groupPosts[groupID] = filtered
+            }
+        }
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .postsFetched, object: nil)
+            NotificationCenter.default.post(name: .itemsFetched, object: nil)
         }
     }
 

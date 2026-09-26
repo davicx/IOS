@@ -78,7 +78,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.viewControllers = [homeNav, groupsNav, discoverNav, profileNav]
 
         //window?.rootViewController = tabBarController
-        window?.rootViewController = AppTabBarFactory.makeMainTabBar()
+        window?.rootViewController = AppTabBar.setupTabBar()
         window?.makeKeyAndVisible()
     }
 

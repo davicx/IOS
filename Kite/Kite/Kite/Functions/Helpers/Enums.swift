@@ -39,6 +39,18 @@ enum FriendAction {
     case accept
 }
 
+enum PurchaseButtonState: Equatable {
+    case hidden
+    case purchase
+    case youPurchased
+    case purchased(by: String)
+}
+
+enum PreferenceFormMode {
+    case add
+    case edit(ProfilePreference)
+}
+
 
 
 

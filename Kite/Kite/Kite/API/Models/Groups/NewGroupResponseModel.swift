@@ -18,7 +18,7 @@ struct NewGroupResponseModel: Codable {
     
     
     init() {
-        self.data = GroupModel(groupID: 0, groupName: "groupName", groupImage: nil, createdBy: "createdBy", activeGroupMembers: ["activeMembers"], pendingGroupMembers: ["pendingMembers"])
+        self.data = GroupModel(groupID: 0, groupName: "groupName", groupType: "", groupImage: nil, createdBy: "createdBy", activeGroupMembers: ["activeMembers"], pendingGroupMembers: ["pendingMembers"])
         self.message = ""
         self.success = false
         self.statusCode = 500

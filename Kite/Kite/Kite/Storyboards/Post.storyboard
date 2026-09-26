@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -12,7 +11,7 @@
         <!--Post-->
         <scene sceneID="NKW-5e-uIw">
             <objects>
-                <viewController storyboardIdentifier="NewPostViewController" id="Qmd-6V-jFJ" customClass="NewPostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewPostViewController" id="Qmd-6V-jFJ" customClass="NewPostViewControllerOld" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Yhf-iR-PNq">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -100,10 +99,10 @@
             </objects>
             <point key="canvasLocation" x="2473" y="-508"/>
         </scene>
-        <!--New Post View Controller-->
+        <!--New Post View Controller Old-->
         <scene sceneID="7VE-Y9-B30">
             <objects>
-                <viewController storyboardIdentifier="NewPostViewControllerID" id="37D-3T-bXt" customClass="NewPostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewPostViewControllerID" id="37D-3T-bXt" customClass="NewPostViewControllerOld" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ik6-Ic-idz">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -160,10 +159,10 @@
             </objects>
             <point key="canvasLocation" x="4332" y="-508"/>
         </scene>
-        <!--Make Post View Controller-->
+        <!--New Post View Controller-->
         <scene sceneID="7E1-KP-tjG">
             <objects>
-                <viewController storyboardIdentifier="MakePostViewController" id="WwX-5I-cMT" customClass="MakePostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MakePostViewController" id="WwX-5I-cMT" customClass="NewPostViewController" customModule="Kite" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2x8-cv-oIG">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

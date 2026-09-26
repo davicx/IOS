@@ -17,27 +17,52 @@ import UIKit
 final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
+    private let itemDivider = ItemDivider()
+
     //Kite
-    private let postContent = PostContent()
+    //private let postHeader = PostHeader()
+    //private let postImage = PostImage()
+    //private let postCaption = PostCaption()
+    //private let postSocials = PostSocials()
     
     //Wishlist
-    //private let postContent = ItemContent()
-    private let postCaption = PostCaption()
+    private let itemHeader = ItemHeader()
+    private let itemBody = ItemBody()
     private let postSocials = PostSocials()
-    private let mainDivider = MainDivider()
+
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        [postContent, postCaption, postSocials, mainDivider].forEach {
+        selectionStyle = .none
+        backgroundColor = Colors.feedBackground
+        contentView.backgroundColor = .clear
+        //Kite
+        //setupPost()
+
+        //Wishlist
+        setupItem()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    //Kite
+    /*
+    private func setupPost() {
+        [postHeader, postImage, postCaption, postSocials, mainDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
         NSLayoutConstraint.activate([
-            postContent.topAnchor.constraint(equalTo: contentView.topAnchor),
-            postContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postCaption.topAnchor.constraint(equalTo: postContent.bottomAnchor),
+            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postImage.topAnchor.constraint(equalTo: postHeader.bottomAnchor),
+            postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postCaption.topAnchor.constraint(equalTo: postImage.bottomAnchor),
             postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
@@ -49,33 +74,119 @@ final class PostCell: UITableViewCell {
             mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    */
+
+    //Wishlist
+    // Post-level separation only — internal item components stay unaware of feed spacing.
+    private func setupItem() {
+        itemDivider.install(in: contentView)
+
+        [itemHeader, itemBody, postSocials].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
+
+        NSLayoutConstraint.activate([
+            itemHeader.topAnchor.constraint(equalTo: itemDivider.contentTopAnchor),
+            itemHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            itemBody.topAnchor.constraint(equalTo: itemHeader.bottomAnchor),
+            itemBody.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemBody.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            postSocials.topAnchor.constraint(equalTo: itemBody.bottomAnchor),
+            postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
+
+        itemDivider.linkContentBottom(to: postSocials.bottomAnchor)
+
+        itemBody.onPurchaseTapped = { [weak self] post, state in
+            self?.handlePurchaseAction(post: post, state: state)
+        }
+    }
+
+    //ACTIONS
+    private func handlePurchaseAction(post: Post, state: PurchaseButtonState) {
+        guard let presentingVC = findViewController() else { return }
+
+        switch state {
+        case .hidden:
+            break
+
+        case .purchase:
+            let storyboard = UIStoryboard(name: "Post", bundle: nil)
+            guard let itemPurchaseVC = storyboard.instantiateViewController(withIdentifier: "ItemPurchaseViewControllerID") as? ItemPurchaseViewController else { return }
+            itemPurchaseVC.post = post
+            itemPurchaseVC.groupID = post.groupID
+            itemPurchaseVC.modalPresentationStyle = .pageSheet
+            presentingVC.present(itemPurchaseVC, animated: true)
+
+        case .youPurchased:
+            let alert = UIAlertController(
+                title: nil,
+                message: "Cancel this purchase?",
+                preferredStyle: .actionSheet
+            )
+            alert.addAction(UIAlertAction(title: "Cancel Purchase", style: .destructive) { _ in
+                let groupID = post.groupID ?? 0
+                Task {
+                    await PostLogic.shared.removeItem(post: post, groupID: groupID)
+                }
+            })
+            alert.addAction(UIAlertAction(title: "Keep", style: .cancel))
+            if let popover = alert.popoverPresentationController {
+                popover.sourceView = self
+                popover.sourceRect = bounds
+            }
+            presentingVC.present(alert, animated: true)
+
+        case .purchased(let by):
+            let alert = UIAlertController(
+                title: nil,
+                message: "\(by) purchased this item already.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            presentingVC.present(alert, animated: true)
+        }
+    }
+
+    private func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while responder != nil {
+            responder = responder?.next
+            if let vc = responder as? UIViewController { return vc }
+        }
+        return nil
     }
 
     //Configure socials with post so like count (and later like action) use live data.
     func configure(postID: Int) {
         postSocials.configure(postID: postID)
-
         if let post = PostDataController.shared.getPostByID(postID: postID) {
-            postContent.configure(with: post)
-            postCaption.configure(with: post)
+            itemHeader.configure(with: post)
+            itemBody.configure(with: post)
         }
     }
 
     func updatePost(with post: Post) {
+        itemHeader.configure(with: post)
+        itemBody.configure(with: post)
         postSocials.configure(postID: post.postID)
-        postContent.configure(with: post)
-        postCaption.configure(with: post)
     }
 
     func updateItem(with post: Post) {
+        itemHeader.configure(with: post)
+        itemBody.configure(with: post)
         postSocials.configure(postID: post.postID)
-        postContent.configure(with: post)
-        postCaption.configure(with: post)
     }
 }
+
+
+
+
 
 /*
 final class PostCell: UITableViewCell {

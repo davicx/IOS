@@ -15,12 +15,19 @@ class Colors {
     static let primaryBlue = UIColor(hex: "#3797EF")
     static let primaryPink = UIColor(hex: "#FF2E7A")
 
-    //Text
-    static let primaryText = UIColor.black
-    static let secondaryText = UIColor(hex: "#737373")
-    static let tertiaryText = UIColor(hex: "#5A5A5A")
-    static let darkGrayText = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
-    static let grayTextColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+    // Text — darkest to lightest
+    static let primaryGrayText = UIColor.black
+    static let secondaryGrayText = UIColor(hex: "#4D4D4D")
+    static let tertiaryGrayText = UIColor(hex: "#5A5A5A")
+    static let mutedGrayText = UIColor(hex: "#5F5F5F")
+    static let subtleGrayText = UIColor(hex: "#737373")
+    // Old text tokens (replaced):
+    // static let primaryText = UIColor.black
+    // static let secondaryText = UIColor(hex: "#737373")
+    // static let tertiaryText = UIColor(hex: "#5A5A5A")
+    // static let darkGrayText = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
+    // static let grayTextColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+    // static let darkSecondaryText = UIColor(hex: "#5F5F5F")
 
     //Status
     static let successGreen = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
@@ -28,8 +35,15 @@ class Colors {
     
     //Backgrounds
     static let screenBackground = UIColor.white
+    static let feedBackground = UIColor(hex: "#F3F3F3")
     static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
     static let itemBackgroundColor = UIColor(hex: "#F7F8F9")
+
+    // Item Detail (Wishlist layout / temporary placeholder visibility)
+    static let itemDetailBackground = UIColor(hex: "#F3F1EE")
+    static let itemDetailContent = UIColor.white
+    static let itemDetailPlaceholder = UIColor(hex: "#E4E1DC")
+    static let itemDetailDivider = UIColor(hex: "#D8D5D0")
 
     //Buttons
     static let tikTokPink = UIColor(hex: "#EF3D57")
@@ -37,18 +51,21 @@ class Colors {
     
     
     //IN APP USE
-    //Groups
 
     // Profile
-    static let profileFullNameTextColor = primaryText
-    static let profileUserNameTextColor = grayTextColor
-    static let userInfoCountTextColor = primaryText
-    static let userInfoDescriptionTextColor = grayTextColor
+    static let profileFullNameTextColor = primaryGrayText
+    static let profileUserNameTextColor = subtleGrayText
+    static let userInfoCountTextColor = primaryGrayText
+    static let userInfoDescriptionTextColor = subtleGrayText
     
     
     //Posts
-    static let postCaptionFontColor = primaryText
-    static let postedAtTextColor = tertiaryText
+    static let postCaptionFontColor = primaryGrayText
+    static let postedAtTextColor = tertiaryGrayText
+    static let postHeaderEventTitleTextColor = primaryGrayText
+    static let postHeaderEventTimeTextColor = mutedGrayText
+    static let separator = UIColor(hex: "#ECECEC")
+    
 
     //Buttons
     static let buttonLoginBackground = primaryBlue
@@ -60,6 +77,19 @@ class Colors {
     static let buttonRemoveFriendBackground = screenBackground
     static let buttonPinkBackground = tikTokPink
     static let buttonGrayBackground = tikTokGray
+    static let buttonWishlistActionBackground = screenBackground
+    static let buttonWishlistActionBorder = itemDetailDivider
+    static let buttonWishlistActionText = primaryGrayText
+
+    //Items
+    static let newItemPasteCardBackground = primaryPink.withAlphaComponent(0.08)
+    static let newItemPasteIconBackground = primaryPink.withAlphaComponent(0.18)
+    static let newItemPhotoCardBackground = primaryBlue.withAlphaComponent(0.08)
+    static let newItemPhotoIconBackground = primaryBlue.withAlphaComponent(0.18)
+    static let newItemManualCardBackground = UIColor(hex: "#F4F4F5")
+    static let newItemManualIconBackground = UIColor(hex: "#E8E8EA")
+    static let newItemCardBorder = UIColor(hex: "#E5E5E7")
+    static let newItemInfoBackground = UIColor(hex: "#F2F3F5")
 
     
     //static let buttonAcceptFriendBackground = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)

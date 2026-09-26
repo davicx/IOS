@@ -35,7 +35,7 @@ enum Buttons {
     //Remove Friend Button (White) -> Current Friends: Clicking will Remove that friend
     static func removeFriendButtonStyle(button: UIButton) {
         button.backgroundColor = Colors.buttonRemoveFriendBackground
-        button.setTitleColor(Colors.primaryText, for: .normal)
+        button.setTitleColor(Colors.primaryGrayText, for: .normal)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.layer.cornerRadius = 6
@@ -96,6 +96,17 @@ enum Buttons {
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
+    // Wishlist item — full-width Purchase (cart + title); slightly rounded, not a pill
+    static func wishlistPurchaseButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonPinkBackground
+        button.setTitleColor(.white, for: .normal)
+        button.tintColor = .white
+        button.layer.cornerRadius = 8
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.buttonTikTokFont
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+    }
+
     static func buttonGrayStyle(button: UIButton) {
         button.backgroundColor = Colors.buttonGrayBackground
         button.setTitleColor(.black, for: .normal)
@@ -103,6 +114,30 @@ enum Buttons {
         button.clipsToBounds = true
         button.titleLabel?.font = Fonts.buttonTikTokFont
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+
+    //WISHLIST BUTTONS
+    //Invite Friends / Share List — outlined pills
+    static func wishlistInviteFriendsButtonStyle(button: UIButton) {
+        wishlistListActionButtonStyle(button: button)
+    }
+
+    static func wishlistShareListButtonStyle(button: UIButton) {
+        wishlistListActionButtonStyle(button: button)
+    }
+
+    private static func wishlistListActionButtonStyle(button: UIButton) {
+        button.backgroundColor = Colors.buttonWishlistActionBackground
+        button.setTitleColor(Colors.buttonWishlistActionText, for: .normal)
+        button.tintColor = Colors.buttonWishlistActionText
+        button.layer.borderWidth = 1
+        button.layer.borderColor = Colors.buttonWishlistActionBorder.cgColor
+        button.layer.cornerRadius = 14
+        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.buttonCompactFont
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.8
+        button.contentEdgeInsets = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 8)
     }
 
 
@@ -141,8 +176,6 @@ enum Buttons {
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
     }
     
-    
-
 }
 
 
