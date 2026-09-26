@@ -51,10 +51,10 @@ class GroupsViewController: UIViewController {
     /// Mode filter first — then My / Shared. Flip with //KITE / //WISHLIST.
     private var modeGroups: [GroupModel] {
         // KITE
-        // return allGroups.filter { $0.groupType.lowercased() == "kite" }
+        return allGroups.filter { $0.groupType.lowercased() == "kite" }
 
         // WISHLIST
-        return allGroups.filter { $0.groupType.lowercased() == "wishlist" }
+        // return allGroups.filter { $0.groupType.lowercased() == "wishlist" }
     }
 
     private var myGroups: [GroupModel] {

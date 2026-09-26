@@ -122,7 +122,6 @@
 		D7157417300C4FC60083B6E5 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157416300C4FC60083B6E5 /* EventCell.swift */; };
 		D7157419300C4FCD0083B6E5 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7157418300C4FCD0083B6E5 /* ListCell.swift */; };
 		D716D8462F301B08009766D6 /* PostCaptionTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D716D8452F301B08009766D6 /* PostCaptionTemplate.swift */; };
-		D716D84C2F302913009766D7 /* Kite.swift in Sources */ = {isa = PBXBuildFile; fileRef = D716D84B2F302913009766D7 /* Kite.swift */; };
 		D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71809462DBC37F5003BC46D /* CommentCell.swift */; };
 		D720DB382DE136C000F137AD /* CommentLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = D720DB372DE136C000F137AD /* CommentLike.swift */; };
 		D720DB3A2DE13E4400F137AD /* FriendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D720DB392DE13E4400F137AD /* FriendAPI.swift */; };
@@ -407,7 +406,6 @@
 		D7157416300C4FC60083B6E5 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		D7157418300C4FCD0083B6E5 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		D716D8452F301B08009766D6 /* PostCaptionTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCaptionTemplate.swift; sourceTree = "<group>"; };
-		D716D84B2F302913009766D7 /* Kite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kite.swift; sourceTree = "<group>"; };
 		D71809462DBC37F5003BC46D /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		D720DB372DE136C000F137AD /* CommentLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLike.swift; sourceTree = "<group>"; };
 		D720DB392DE13E4400F137AD /* FriendAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAPI.swift; sourceTree = "<group>"; };
@@ -622,7 +620,6 @@
 				51C69B102D0E54C000C46759 /* API */,
 				51C69B162D0E550100C46759 /* Functions */,
 				51CA9DC62D0FA94F008C36F0 /* App */,
-				D742F71130521D490090883D /* Doc */,
 				51B109B82D2763F3006E4CCF /* Style */,
 				D710E7F52E7E1644008C11BA /* Storyboards */,
 				51C69AE02D0E549100C46759 /* AppDelegate.swift */,
@@ -1231,14 +1228,6 @@
 				D73A1B6A2E8213B50085E4F1 /* FriendSearchModel.swift */,
 			);
 			path = Search;
-			sourceTree = "<group>";
-		};
-		D742F71130521D490090883D /* Doc */ = {
-			isa = PBXGroup;
-			children = (
-				D716D84B2F302913009766D7 /* Kite.swift */,
-			);
-			path = Doc;
 			sourceTree = "<group>";
 		};
 		D742F71230521D750090883D /* Logic */ = {
@@ -1875,7 +1864,6 @@
 				D7096A772DDE92DE00A51D32 /* FriendTableUserCell.swift in Sources */,
 				D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */,
 				D746A4E32F453FD200800DB8 /* ItemPurchaseUserCell.swift in Sources */,
-				D716D84C2F302913009766D7 /* Kite.swift in Sources */,
 				D78EBDD82E305A4E0008F3FE /* HomeViewControllerQA.swift in Sources */,
 				D78C15A52E74DC7B00FB6959 /* User.swift in Sources */,
 				D798D97D2DED16B800C1960E /* CancelFriendRequestModel.swift in Sources */,

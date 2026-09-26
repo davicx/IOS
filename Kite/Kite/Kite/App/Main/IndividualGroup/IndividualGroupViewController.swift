@@ -219,9 +219,15 @@ class IndividualGroupViewController: UIViewController {
     private func setupNavigationBar() {
         if let groupID {
             let group = GroupDataController.shared.getGroup(by: String(groupID))
-            navigationItem.title = group?.groupName ?? "Wishlist"
+            //KITE
+            navigationItem.title = group?.groupName ?? "Events"
+            //WISHLIST
+            // navigationItem.title = group?.groupName ?? "Wishlist"
         } else {
-            navigationItem.title = "Wishlist"
+            //KITE
+            navigationItem.title = "Events"
+            //WISHLIST
+            // navigationItem.title = "Wishlist"
         }
 
         // Only show if user owns the group
@@ -233,7 +239,10 @@ class IndividualGroupViewController: UIViewController {
         let addItemButton = UIButton(type: .custom)
         Buttons.buttonPinkStyle(button: addItemButton)
         addItemButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addItemButton.setTitle("Add Item", for: .normal)
+        //KITE
+        addItemButton.setTitle("Add Post", for: .normal)
+        //WISHLIST
+        // addItemButton.setTitle("Add Item", for: .normal)
         addItemButton.tintColor = .white
         addItemButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 4)
         addItemButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
@@ -257,6 +266,15 @@ class IndividualGroupViewController: UIViewController {
     
     //ACTIONS
     @objc private func newGroupPostButton() {
+        //KITE
+        let newPostVC = NewPostViewController()
+        newPostVC.groupID = groupID ?? 0
+        let nav = UINavigationController(rootViewController: newPostVC)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
+
+        //WISHLIST
+        /*
         let newItemVC = NewItemViewController()
         newItemVC.groupID = groupID ?? 0
         if let groupID,
@@ -266,6 +284,7 @@ class IndividualGroupViewController: UIViewController {
         let nav = UINavigationController(rootViewController: newItemVC)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
+        */
     }
     
     @objc private func openProfile() {
@@ -277,8 +296,11 @@ class IndividualGroupViewController: UIViewController {
         // Fetch items for this group (Wishlist shows items; items API returns full item payload including purchased_viewers)
         if let groupID = groupID {
             Task {
+                //KITE: fetchKitePosts uses getPostsAPI
+                await GroupLogic.shared.fetchGroupKitePosts(groupID: groupID)
+
                 //WISHLIST: fetchWishlistItems uses getItemsAPI
-                await GroupLogic.shared.fetchGroupWishlistItems(groupID: groupID)
+                // await GroupLogic.shared.fetchGroupWishlistItems(groupID: groupID)
                 
                 // Print post IDs and captions and reload table
                 DispatchQueue.main.async {

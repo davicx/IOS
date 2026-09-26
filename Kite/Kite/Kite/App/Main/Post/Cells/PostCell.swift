@@ -17,18 +17,19 @@ import UIKit
 final class PostCell: UITableViewCell {
 
     //UI COMPONENTS
-    private let itemDivider = ItemDivider()
 
     //Kite
-    //private let postHeader = PostHeader()
-    //private let postImage = PostImage()
-    //private let postCaption = PostCaption()
-    //private let postSocials = PostSocials()
-    
-    //Wishlist
-    private let itemHeader = ItemHeader()
-    private let itemBody = ItemBody()
+    private let postHeader = PostHeader()
+    private let postImage = PostImage()
+    private let postCaption = PostCaption()
     private let postSocials = PostSocials()
+    private let mainDivider = MainDivider()
+
+    //Wishlist
+    //private let itemDivider = ItemDivider()
+    //private let itemHeader = ItemHeader()
+    //private let itemBody = ItemBody()
+    //private let postSocials = PostSocials()
 
 
     //MANAGE VIEWS
@@ -38,10 +39,10 @@ final class PostCell: UITableViewCell {
         backgroundColor = Colors.feedBackground
         contentView.backgroundColor = .clear
         //Kite
-        //setupPost()
+        setupPost()
 
         //Wishlist
-        setupItem()
+        //setupItem()
     }
 
     required init?(coder: NSCoder) {
@@ -49,7 +50,6 @@ final class PostCell: UITableViewCell {
     }
 
     //Kite
-    /*
     private func setupPost() {
         [postHeader, postImage, postCaption, postSocials, mainDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -74,10 +74,10 @@ final class PostCell: UITableViewCell {
             mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    */
 
     //Wishlist
     // Post-level separation only — internal item components stay unaware of feed spacing.
+    /*
     private func setupItem() {
         itemDivider.install(in: contentView)
 
@@ -106,6 +106,7 @@ final class PostCell: UITableViewCell {
             self?.handlePurchaseAction(post: post, state: state)
         }
     }
+    */
 
     //ACTIONS
     private func handlePurchaseAction(post: Post, state: PurchaseButtonState) {
@@ -166,21 +167,38 @@ final class PostCell: UITableViewCell {
     func configure(postID: Int) {
         postSocials.configure(postID: postID)
         if let post = PostDataController.shared.getPostByID(postID: postID) {
-            itemHeader.configure(with: post)
-            itemBody.configure(with: post)
+            //Kite
+            postHeader.configure(with: post)
+            postImage.configure(with: post)
+            postCaption.configure(with: post)
+            //Wishlist
+            //itemHeader.configure(with: post)
+            //itemBody.configure(with: post)
         }
     }
 
     func updatePost(with post: Post) {
-        itemHeader.configure(with: post)
-        itemBody.configure(with: post)
+        //Kite
+        postHeader.configure(with: post)
+        postImage.configure(with: post)
+        postCaption.configure(with: post)
         postSocials.configure(postID: post.postID)
+        //Wishlist
+        //itemHeader.configure(with: post)
+        //itemBody.configure(with: post)
+        //postSocials.configure(postID: post.postID)
     }
 
     func updateItem(with post: Post) {
-        itemHeader.configure(with: post)
-        itemBody.configure(with: post)
+        //Kite
+        postHeader.configure(with: post)
+        postImage.configure(with: post)
+        postCaption.configure(with: post)
         postSocials.configure(postID: post.postID)
+        //Wishlist
+        //itemHeader.configure(with: post)
+        //itemBody.configure(with: post)
+        //postSocials.configure(postID: post.postID)
     }
 }
 

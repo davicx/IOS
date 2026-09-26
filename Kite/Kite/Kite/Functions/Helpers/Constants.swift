@@ -50,18 +50,18 @@ struct Constants {
     struct TableViewCellIdentifier {
         
         //KITE
+        static let postCell = "PostCell"
+        static let homePostCell = "HomePostCell"
+        static let commentCell = "CommentCell"
+        static let friendCell = "friendCell"
+
+        //WISHLIST
         /*
         static let postCell = "PostCell"
         static let homePostCell = "HomePostCell"
         static let commentCell = "CommentCell"
         static let friendCell = "friendCell"
         */
-        
-        //WISHLIST
-        static let postCell = "PostCell"
-        static let homePostCell = "HomePostCell"
-        static let commentCell = "CommentCell"
-        static let friendCell = "friendCell"
     }
     
     //Image Constants

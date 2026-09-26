@@ -19,7 +19,7 @@ final class AboutMe: UIView {
 
     //LOGIC
     private var biographyText: String = ""
-    /// Caps bio text area (~5–6 lines at 15pt). Longer bios scroll inside the card.
+    // Caps bio text area (~5–6 lines at 15pt). Longer bios scroll inside the card.
     private let maxBioTextHeight: CGFloat = 120
 
     //UI COMPONENTS

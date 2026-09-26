@@ -173,12 +173,17 @@ class HomeViewController: UIViewController {
     //FUNCTIONS
     func fetchPosts() {
         Task {
-            await getHomePostsWishlist()
+            //KITE
+            await getHomePosts()
+
+            //WISHLIST
+            //await getHomePostsWishlist()
         }
     }
 
-    /// Kite Home posts — wire later to GET /posts
-    func getHomePosts() {
+    /// Kite Home posts — group 70
+    func getHomePosts() async {
+        await postDataController.fetchKitePosts(groupID: 70)
         // await postDataController.fetchAllKitePosts() when GET /posts is cleaned up
     }
 
