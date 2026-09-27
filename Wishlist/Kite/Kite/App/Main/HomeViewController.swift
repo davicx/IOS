@@ -39,7 +39,6 @@ class HomeViewController: UIViewController {
     let topNavigationView = UIView()
     let topNavigationProfileImageView = UIImageView()
     let topNavigationProfileButton = UIButton(type: .custom)
-    let topNavigationLogoImageView = UIImageView()
 
     //MANAGE VIEWS
     override func viewDidLoad() {
@@ -123,11 +122,7 @@ class HomeViewController: UIViewController {
         topNavigationProfileButton.addTarget(self, action: #selector(profileImageTapped), for: .touchUpInside)
         topNavigationView.addSubview(topNavigationProfileButton)
 
-        topNavigationLogoImageView.image = UIImage(named: "blue_logo")
         //topNavigationLogoImageView.image = UIImage(named: "pink_logo")
-        topNavigationLogoImageView.contentMode = .scaleAspectFit
-        topNavigationLogoImageView.translatesAutoresizingMaskIntoConstraints = false
-        topNavigationView.addSubview(topNavigationLogoImageView)
 
         NSLayoutConstraint.activate([
             topNavigationProfileImageView.leadingAnchor.constraint(equalTo: topNavigationView.leadingAnchor),
@@ -138,12 +133,7 @@ class HomeViewController: UIViewController {
             topNavigationProfileButton.leadingAnchor.constraint(equalTo: topNavigationView.leadingAnchor),
             topNavigationProfileButton.centerYAnchor.constraint(equalTo: topNavigationView.centerYAnchor),
             topNavigationProfileButton.widthAnchor.constraint(equalToConstant: 40),
-            topNavigationProfileButton.heightAnchor.constraint(equalToConstant: 44),
-
-            topNavigationLogoImageView.centerXAnchor.constraint(equalTo: topNavigationView.centerXAnchor),
-            topNavigationLogoImageView.centerYAnchor.constraint(equalTo: topNavigationView.centerYAnchor),
-            topNavigationLogoImageView.widthAnchor.constraint(equalToConstant: 38),
-            topNavigationLogoImageView.heightAnchor.constraint(equalToConstant: 38)
+            topNavigationProfileButton.heightAnchor.constraint(equalToConstant: 44)
         ])
 
         navigationItem.titleView = topNavigationView
@@ -162,11 +152,10 @@ class HomeViewController: UIViewController {
     func setupTableView() {
         postsTableView.delegate = self
         postsTableView.dataSource = self
-        postsTableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.postCell)
+        postsTableView.register(ItemCell.self, forCellReuseIdentifier: "ItemCell")
         postsTableView.rowHeight = UITableView.automaticDimension
         postsTableView.separatorStyle = .none
         postsTableView.backgroundColor = Colors.feedBackground
-        //postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
 
@@ -177,12 +166,7 @@ class HomeViewController: UIViewController {
         }
     }
 
-    /// Kite Home posts — wire later to GET /posts
-    func getHomePosts() {
-        // await postDataController.fetchAllKitePosts() when GET /posts is cleaned up
-    }
-
-    /// Wishlist Home items — GET /items (global, limit 12)
+    // Wishlist Home items — GET /items (global, limit 12)
     func getHomePostsWishlist() async {
         await postDataController.fetchAllWishlistItems()
     }
@@ -220,53 +204,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      }
 
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.postCell, for: indexPath) as! PostCell
-         let post = postDataController.getHomeFeedPosts()[indexPath.row]
-         cell.updatePost(with: post)
+         let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
          return cell
-         /*
-         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
-         let post = postDataController.getHomeFeedPosts()[indexPath.row]
-         cell.updatePost(with: post)
-         return cell
-         */
-     }
-
-     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         let post = postDataController.getHomeFeedPosts()[indexPath.row]
-         
-         let storyboard = UIStoryboard(name: "Post", bundle: nil)
-         if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {
-             //postViewController.currentPost = post
-             postViewController.postID = post.postID
-             navigationController?.pushViewController(postViewController, animated: true)
-         }
      }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // PostCell sizes via Auto Layout (same as IndividualPostViewController)
         return UITableView.automaticDimension
-        /*
-        // HomePostCell: hand-rolled height
-        let currentPost = postDataController.getHomeFeedPosts()[indexPath.row]
-        
-        //STEP 1: Get Image Height
-        let postImageHeight = sizeFunctions.calculatePostImageHeight(from: currentPost.postImageData)
-
-        //STEP 2: Get Caption Height (now includes 40pt fixed user info + dynamic text height)
-        let postCaptionTextHeight = sizeFunctions.calculatePostCaptionHeight(from: currentPost.postCaption)
-        //let postCaptionUserInfoHeight: CGFloat = 40 // Fixed height for user info section
-        //let totalCaptionHeight = postCaptionUserInfoHeight + postCaptionTextHeight
-        
-        //STEP 3: Calculate total height (matching actual cell layout)
-        // Fixed heights: header (52) + image (dynamic) + caption user info (28) + caption text (dynamic) + socials (32) + divider (2)
-        let fixedHeights: CGFloat = 52 + 22 + 32 + 2
-        
-        // Total height = fixed heights + dynamic image height + dynamic caption text height
-        let totalHeight = fixedHeights + postImageHeight + postCaptionTextHeight
-        
-        return totalHeight
-        */
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

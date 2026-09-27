@@ -19,12 +19,7 @@ final class PostCell: UITableViewCell {
     //UI COMPONENTS
     private let itemDivider = ItemDivider()
 
-    //Kite
-    //private let postHeader = PostHeader()
-    //private let postImage = PostImage()
-    //private let postCaption = PostCaption()
-    //private let postSocials = PostSocials()
-    
+ 
     //Wishlist
     private let itemHeader = ItemHeader()
     private let itemBody = ItemBody()
@@ -48,36 +43,7 @@ final class PostCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //Kite
-    /*
-    private func setupPost() {
-        [postHeader, postImage, postCaption, postSocials, mainDivider].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
-        }
-        NSLayoutConstraint.activate([
-            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
-            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postImage.topAnchor.constraint(equalTo: postHeader.bottomAnchor),
-            postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postCaption.topAnchor.constraint(equalTo: postImage.bottomAnchor),
-            postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postSocials.topAnchor.constraint(equalTo: postCaption.bottomAnchor),
-            postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            mainDivider.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
-            mainDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            mainDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-    }
-    */
 
-    //Wishlist
-    // Post-level separation only — internal item components stay unaware of feed spacing.
     private func setupItem() {
         itemDivider.install(in: contentView)
 

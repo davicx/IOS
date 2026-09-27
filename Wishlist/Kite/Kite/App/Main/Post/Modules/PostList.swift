@@ -8,7 +8,7 @@
 import UIKit
 
 
-/// Profile Posts tab — fills the fixed content area; will host a scrolling posts list later.
+//Profile Posts tab — fills the fixed content area; will host a scrolling posts list later.
 final class PostList: UIView {
 
     private let titleLabel = UILabel()

@@ -15,23 +15,6 @@ import UIKit
 //LABELS
 enum LabelStyle {
 
-    //Post
-    /*
-    static func postEventTitle(_ label: UILabel) {
-        label.font = Fonts.postEventTitleFont
-        label.textColor = Colors.primaryGrayText
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-    }
-
-    static func postEventDetails(_ label: UILabel) {
-        label.font = Fonts.postEventDetailsFont
-        label.textColor = Colors.postedAtTextColor
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-    }
-    */
-
     //Item
     static func itemName(_ label: UILabel) {
         label.font = Fonts.itemNameFont
