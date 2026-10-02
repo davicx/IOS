@@ -18,13 +18,14 @@ import UIKit
 final class ItemImageView: UIView {
 
     //UI COMPONENTS
-    private let titleLabel = UILabel()
+    private let productImageView = UIImageView()
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.systemBlue.withAlphaComponent(0.28)
+        backgroundColor = .systemGray4 // temp — holder behind the image
         setupViews()
+        configure(image: UIImage(named: "chrono"), name: "Secret of Mana")
     }
 
     required init?(coder: NSCoder) {
@@ -33,19 +34,28 @@ final class ItemImageView: UIView {
 
     //LAYOUT and UI
     private func setupViews() {
-        titleLabel.text = "ItemImageView"
-        titleLabel.font = Fonts.semibold16
-        titleLabel.textColor = Colors.primaryGrayText
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(titleLabel)
+        productImageView.translatesAutoresizingMaskIntoConstraints = false
+        productImageView.contentMode = .scaleAspectFill
+        productImageView.clipsToBounds = true
+        productImageView.backgroundColor = Colors.itemDetailPlaceholder
+        productImageView.layer.cornerRadius = 12
+        if #available(iOS 13.0, *) {
+            productImageView.layer.cornerCurve = .continuous
+        }
+        addSubview(productImageView)
 
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            productImageView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingXS),
+            productImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingXS),
+            productImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingXS),
+            productImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingXS)
         ])
     }
 
     //FUNCTIONS
     func configure(image: UIImage?, name: String?) {
+        productImageView.image = image
+        let trimmedName = name?.trimmingCharacters(in: .whitespacesAndNewlines)
+        productImageView.accessibilityLabel = (trimmedName?.isEmpty == false) ? trimmedName : "Item image"
     }
 }

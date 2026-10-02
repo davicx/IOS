@@ -18,12 +18,16 @@ import UIKit
 final class ItemProductView: UIView {
 
     //UI COMPONENTS
-    private let titleLabel = UILabel()
+    private let itemTitleView = UIView()
+    private let itemEditMenuView = UIView()
+    private let menuImageView = UIImageView()
+    private let itemPriceView = UIView()
+    private let itemDescriptionView = UIView()
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.systemPink.withAlphaComponent(0.28)
+        backgroundColor = .clear
         setupViews()
     }
 
@@ -31,17 +35,70 @@ final class ItemProductView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //LAYOUT and UI
     private func setupViews() {
-        titleLabel.text = "ItemProductView"
-        titleLabel.font = Fonts.semibold16
-        titleLabel.textColor = Colors.primaryGrayText
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(titleLabel)
+        [itemTitleView, itemEditMenuView, itemPriceView, itemDescriptionView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+
+        setupItemTitleView()
+        setupItemEditMenuView()
+        setupItemPriceView()
+        setupItemDescriptionView()
+    }
+
+    //LAYOUT and UI
+    private func setupItemTitleView() {
+        itemTitleView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.28) // temp
 
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            itemTitleView.topAnchor.constraint(equalTo: topAnchor),
+            itemTitleView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            itemTitleView.trailingAnchor.constraint(equalTo: itemEditMenuView.leadingAnchor),
+            itemTitleView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    private func setupItemEditMenuView() {
+        itemEditMenuView.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.45) // temp
+
+        menuImageView.translatesAutoresizingMaskIntoConstraints = false
+        menuImageView.image = UIImage(named: "menu-horizontal")
+        menuImageView.contentMode = .scaleAspectFit
+        itemEditMenuView.addSubview(menuImageView)
+
+        NSLayoutConstraint.activate([
+            itemEditMenuView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            itemEditMenuView.centerYAnchor.constraint(equalTo: itemTitleView.centerYAnchor),
+            itemEditMenuView.widthAnchor.constraint(equalToConstant: 40),
+            itemEditMenuView.heightAnchor.constraint(equalToConstant: 40),
+
+            menuImageView.centerXAnchor.constraint(equalTo: itemEditMenuView.centerXAnchor),
+            menuImageView.centerYAnchor.constraint(equalTo: itemEditMenuView.centerYAnchor),
+            menuImageView.widthAnchor.constraint(equalToConstant: 20),
+            menuImageView.heightAnchor.constraint(equalToConstant: 20)
+        ])
+    }
+
+    private func setupItemPriceView() {
+        itemPriceView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.28) // temp
+
+        NSLayoutConstraint.activate([
+            itemPriceView.topAnchor.constraint(equalTo: itemTitleView.bottomAnchor),
+            itemPriceView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            itemPriceView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            itemPriceView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    private func setupItemDescriptionView() {
+        itemDescriptionView.backgroundColor = UIColor.systemPurple.withAlphaComponent(0.28) // temp
+
+        NSLayoutConstraint.activate([
+            itemDescriptionView.topAnchor.constraint(equalTo: itemPriceView.bottomAnchor),
+            itemDescriptionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            itemDescriptionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            itemDescriptionView.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
 }

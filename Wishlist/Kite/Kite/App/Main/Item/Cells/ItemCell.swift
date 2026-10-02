@@ -18,7 +18,7 @@ import UIKit
 final class ItemCell: UITableViewCell {
 
     //UI COMPONENTS
-    private let itemInfo = ItemInfoContainer()
+    private let itemInfo = ItemInfoView()
     private let itemDivider = ItemDivider()
     
     //MANAGE VIEWS
