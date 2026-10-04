@@ -2,7 +2,7 @@
 //  ItemCaption.swift
 //  Kite
 //
-//  Created by David Vasquez on 9/27/26.
+//  Created by David Vasquez on 10/4/26.
 //
 
 import UIKit
@@ -18,12 +18,12 @@ import UIKit
 final class ItemCaption: UIView {
 
     //UI COMPONENTS
-    private let titleLabel = UILabel()
+    private let captionLabel = UILabel()
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.systemOrange.withAlphaComponent(0.28)
+        backgroundColor = .clear
         setupViews()
     }
 
@@ -33,17 +33,24 @@ final class ItemCaption: UIView {
 
     //LAYOUT and UI
     private func setupViews() {
-        titleLabel.text = "ItemCaption"
-        titleLabel.font = Fonts.semibold16
-        titleLabel.textColor = Colors.primaryGrayText
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(titleLabel)
+        captionLabel.font = Fonts.postCaptionFont
+        captionLabel.textColor = Colors.postCaptionFontColor
+        captionLabel.numberOfLines = 0
+        captionLabel.lineBreakMode = .byTruncatingTail
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(captionLabel)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingL),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingL),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingL)
+            captionLabel.topAnchor.constraint(equalTo: topAnchor),
+            captionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            captionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            captionLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+
+    //FUNCTIONS
+    func configure(with post: Post) {
+        let caption = post.postCaption?.trimmingCharacters(in: .whitespacesAndNewlines)
+        captionLabel.text = (caption?.isEmpty == false) ? caption : nil
     }
 }

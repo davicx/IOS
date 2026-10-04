@@ -31,7 +31,7 @@ class Colors {
 
     //Status
     static let successGreen = UIColor(red: 0.1, green: 0.7, blue: 0.2, alpha: 1.0)
-    static let dangerRed = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
+    // static let dangerRed = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)
     
     //Backgrounds
     static let screenBackground = UIColor.white

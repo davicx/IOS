@@ -5,6 +5,7 @@
 //  Created by David Vasquez on 9/27/26.
 //
 
+/*
 import UIKit
 
 
@@ -54,4 +55,10 @@ final class ItemInfoView: UIView {
             bottomAnchor.constraint(equalTo: itemProductView.bottomAnchor)
         ])
     }
+
+    //FUNCTIONS
+    func configureItem(with post: Post) {
+        itemProductView.configure(name: post.itemName, price: post.itemPrice, description: post.itemDescription)
+    }
 }
+*/

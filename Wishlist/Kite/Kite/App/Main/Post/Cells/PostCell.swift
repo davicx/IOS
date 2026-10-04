@@ -21,8 +21,8 @@ final class PostCell: UITableViewCell {
 
  
     //Wishlist
-    private let itemHeader = ItemHeader()
-    private let itemBody = ItemBody()
+    private let itemHeader = PostItemHeader()
+    private let itemBody = PostItemBody()
     private let postSocials = PostSocials()
 
 

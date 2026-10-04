@@ -157,6 +157,7 @@ enum Buttons {
     
     
     //EXTERNAL
+    /*
     static func styleTwitterButton(_ button:UIButton) {
         button.backgroundColor = UIColor(hex: "#1DA1F2")
         button.layer.cornerRadius = 12.0
@@ -165,6 +166,7 @@ enum Buttons {
         // Set the font to Helvetica Neue, size 18, bold
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
     }
+    */
     
     static func styleTikTokButton(_ button: UIButton) {
         button.backgroundColor = .clear // Clear background

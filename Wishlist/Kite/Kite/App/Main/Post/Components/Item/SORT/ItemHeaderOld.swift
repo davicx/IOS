@@ -1,5 +1,5 @@
 //
-//  ItemHeader.swift
+//  ItemHeaderOld.swift
 //  Kite
 //
 //  Created by David Vasquez on 8/29/26.
@@ -16,10 +16,10 @@ import UIKit
 //FUNCTIONS
 
 // Wishlist post header — owns ItemFrom + EditItem layout.
-final class ItemHeader: UIView {
+final class PostItemHeader: UIView {
 
     //UI COMPONENTS
-    private let itemFrom = ItemFrom()
+    private let itemFrom = PostItemFrom()
     private let editItem = EditItem()
 
     //MANAGE VIEWS

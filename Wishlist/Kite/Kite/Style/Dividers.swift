@@ -10,6 +10,7 @@ import UIKit
 
 //Full-width hairline matching the default UITableView separator (color + 1px height), with no leading inset.
 //Includes 4pt clear space below the line for breathing room between posts.
+/*
 final class MainDivider: UIView {
 
     private let lineView = UIView()
@@ -36,6 +37,7 @@ final class MainDivider: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+*/
 
 // Post feed cell chrome: top/bottom hairlines, white content bg, gray gap below.
 // Content pins to contentTopAnchor … contentBottomAnchor; call linkContentBottom(to:) last.

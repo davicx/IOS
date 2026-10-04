@@ -51,9 +51,11 @@ enum LabelStyle {
 
 
 // TEXT VIEWS (Single Line of text)
+/*
 enum TextViewStyle {
     
 }
+*/
 
 
 // VIEWS

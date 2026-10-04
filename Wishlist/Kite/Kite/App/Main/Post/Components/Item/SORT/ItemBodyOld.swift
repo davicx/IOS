@@ -1,5 +1,5 @@
 //
-//  ItemBody.swift
+//  ItemBodyOld.swift
 //  Kite
 //
 //  Created by David Vasquez on 8/29/26.
@@ -16,11 +16,11 @@ import UIKit
 //FUNCTIONS
 
 // Wishlist post body — owns ItemImage + ItemInfo layout.
-final class ItemBody: UIView {
+final class PostItemBody: UIView {
 
     //UI COMPONENTS
     private let itemImage = ItemImage()
-    private let itemInfo = ItemInfo()
+    private let itemInfo = PostItemInfo()
 
     var onPurchaseTapped: ((Post, PurchaseButtonState) -> Void)? {
         get { itemInfo.onPurchaseTapped }

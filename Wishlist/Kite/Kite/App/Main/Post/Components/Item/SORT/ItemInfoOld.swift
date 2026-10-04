@@ -1,5 +1,5 @@
 //
-//  ItemInfo.swift
+//  ItemInfoOld.swift
 //  Kite
 //
 //  Created by David Vasquez on 8/29/26.
@@ -16,7 +16,7 @@ import UIKit
 //FUNCTIONS
 
 // Right column of ItemBody — title, price, (tags later), description, Purchase.
-final class ItemInfo: UIView {
+final class PostItemInfo: UIView {
 
     //UI COMPONENTS
     private let itemTitleView = UIView()

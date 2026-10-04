@@ -5,6 +5,7 @@
 //  Created by David Vasquez on 9/27/26.
 //
 
+/*
 import UIKit
 
 
@@ -46,8 +47,8 @@ final class ItemImageView: UIView {
 
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingXS),
-            productImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingXS),
-            productImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingXS),
+            productImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
+            productImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
             productImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingXS)
         ])
     }
@@ -59,3 +60,4 @@ final class ItemImageView: UIView {
         productImageView.accessibilityLabel = (trimmedName?.isEmpty == false) ? trimmedName : "Item image"
     }
 }
+*/

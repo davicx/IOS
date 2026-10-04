@@ -1,5 +1,5 @@
 //
-//  ItemFrom.swift
+//  ItemFromOld.swift
 //  Kite
 //
 //  Created by David Vasquez on 8/29/26.
@@ -17,7 +17,7 @@ import UIKit
 
 // ItemFrom is a UI renderer. It displays who posted. It does NOT refresh the table.
 
-final class ItemFrom: UIView {
+final class PostItemFrom: UIView {
 
     //LOGIC
     private var usersDataController: UsersDataController { UsersDataController.shared }

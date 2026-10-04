@@ -205,6 +205,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
+         let post = postDataController.getHomeFeedPosts()[indexPath.row]
+         cell.configure(with: post)
          return cell
      }
     
