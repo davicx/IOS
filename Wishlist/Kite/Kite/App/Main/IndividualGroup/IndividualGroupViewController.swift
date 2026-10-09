@@ -121,7 +121,7 @@ class IndividualGroupViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.postCell)
+        tableView.register(ItemCell.self, forCellReuseIdentifier: "ItemCell")
         // tableView.register(HomePostCell.self, forCellReuseIdentifier: "HomePostCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 700
@@ -303,8 +303,8 @@ extension IndividualGroupViewController: UITableViewDataSource, UITableViewDeleg
         }
         let posts = postDataController.getPostsForGroup(groupID: groupID)
         let post = posts[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.postCell, for: indexPath) as! PostCell
-        cell.updatePost(with: post)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
+        cell.configure(with: post)
         return cell
         /*
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomePostCell", for: indexPath) as! HomePostCell

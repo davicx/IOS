@@ -18,8 +18,12 @@ import UIKit
 final class ItemHeader: UIView {
 
     //UI COMPONENTS
-    private let itemFrom = ItemFrom()
-    private let menuButton = UIButton(type: .system)
+    private let itemInfo = ItemInfo()
+
+    var onPurchaseTapped: ((Post, PurchaseButtonState) -> Void)? {
+        get { itemInfo.onPurchaseTapped }
+        set { itemInfo.onPurchaseTapped = newValue }
+    }
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
@@ -34,32 +38,19 @@ final class ItemHeader: UIView {
 
     //LAYOUT and UI
     private func setupViews() {
-        itemFrom.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(itemFrom)
-
-        menuButton.translatesAutoresizingMaskIntoConstraints = false
-        menuButton.setImage(UIImage(named: "menu-horizontal"), for: .normal)
-        menuButton.tintColor = Colors.subtleGrayText
-        menuButton.imageView?.contentMode = .scaleAspectFit
-        menuButton.contentEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
-        menuButton.accessibilityLabel = "More"
-        addSubview(menuButton)
+        itemInfo.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(itemInfo)
 
         NSLayoutConstraint.activate([
-            itemFrom.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingM),
-            itemFrom.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingL),
-            itemFrom.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingM),
-            itemFrom.trailingAnchor.constraint(equalTo: menuButton.leadingAnchor, constant: -Layout.spacingS),
-
-            menuButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingM),
-            menuButton.centerYAnchor.constraint(equalTo: itemFrom.centerYAnchor),
-            menuButton.widthAnchor.constraint(equalToConstant: Layout.touchTargetSize),
-            menuButton.heightAnchor.constraint(equalToConstant: Layout.touchTargetSize)
+            itemInfo.topAnchor.constraint(equalTo: topAnchor),
+            itemInfo.leadingAnchor.constraint(equalTo: leadingAnchor),
+            itemInfo.trailingAnchor.constraint(equalTo: trailingAnchor),
+            itemInfo.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
     //FUNCTIONS
     func configure(with post: Post) {
-        itemFrom.configure(with: post)
+        itemInfo.configure(with: post)
     }
 }

@@ -25,6 +25,8 @@ class ItemPurchaseViewController: UIViewController {
 
     //UI COMPONENTS
     private let tableView = UITableView()
+    private let titleHeader = UIView()
+    private var titleHeaderWidth: CGFloat = 0
     private let cancelButton = UIButton(type: .system)
     private let purchaseButton = UIButton(type: .system)
     private let buttonStackView = UIStackView()
@@ -36,7 +38,23 @@ class ItemPurchaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        setupTitleHeader()
         setupButtons()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let width = tableView.bounds.width
+        guard width > 0, width != titleHeaderWidth else { return }
+        titleHeaderWidth = width
+        titleHeader.frame.size.width = width
+        let height = titleHeader.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
+        titleHeader.frame.size.height = height
+        tableView.tableHeaderView = titleHeader
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -60,6 +78,38 @@ class ItemPurchaseViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+
+    private func setupTitleHeader() {
+        titleHeader.backgroundColor = .systemBackground
+
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "Select who can see your Purchase"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        titleLabel.textColor = Colors.primaryGrayText
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        let divider = UIView()
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = tableView.separatorColor ?? .separator
+
+        titleHeader.addSubview(titleLabel)
+        titleHeader.addSubview(divider)
+
+        let inset = tableView.separatorInset
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: titleHeader.topAnchor, constant: 32),
+            titleLabel.leadingAnchor.constraint(equalTo: titleHeader.leadingAnchor, constant: Layout.spacingL),
+            titleLabel.trailingAnchor.constraint(equalTo: titleHeader.trailingAnchor, constant: -Layout.spacingL),
+
+            divider.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Layout.spacingL),
+            divider.leadingAnchor.constraint(equalTo: titleHeader.leadingAnchor, constant: inset.left),
+            divider.trailingAnchor.constraint(equalTo: titleHeader.trailingAnchor, constant: -inset.right),
+            divider.bottomAnchor.constraint(equalTo: titleHeader.bottomAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
         ])
     }
 

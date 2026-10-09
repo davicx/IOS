@@ -37,7 +37,7 @@ final class ItemFooter: UIView {
         addSubview(itemSocials)
 
         NSLayoutConstraint.activate([
-            itemSocials.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingXS),
+            itemSocials.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingS),
             itemSocials.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingL),
             itemSocials.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
             itemSocials.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingS)

@@ -217,5 +217,23 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 700
     }
-     
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let posts = postDataController.getHomeFeedPosts()
+        guard indexPath.row < posts.count else { return }
+        let post = posts[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        guard let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController else { return }
+
+        postViewController.postID = post.postID
+        if let groupID = post.groupID,
+           let group = GroupDataController.shared.getGroup(by: String(groupID)) {
+            postViewController.currentUserOwnsGroup = (group.createdBy ?? "")
+                .caseInsensitiveCompare(currentUser) == .orderedSame
+        }
+        navigationController?.pushViewController(postViewController, animated: true)
+    }
 }

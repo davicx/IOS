@@ -18,22 +18,27 @@ import UIKit
 final class ItemInfo: UIView {
 
     //UI COMPONENTS
-    private let menuButton = UIButton(type: .system)
     private let productImageView = UIImageView()
     private let itemTitleLabel = UILabel()
     private let itemPriceLabel = UILabel()
     private let itemDescriptionLabel = UILabel()
     private let purchaseButton = UIButton(type: .system)
-    private let itemDivider = UIView()
 
     private var post: Post?
     private var buttonState: PurchaseButtonState = .purchase
     var onPurchaseTapped: ((Post, PurchaseButtonState) -> Void)?
 
+    private let panelCornerRadius: CGFloat = 12
+
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .clear
+        backgroundColor = UIColor(hex: "#F0F1F3")
+        layer.cornerRadius = panelCornerRadius
+        clipsToBounds = true
+        if #available(iOS 13.0, *) {
+            layer.cornerCurve = .continuous
+        }
         setupViews()
     }
 
@@ -43,15 +48,6 @@ final class ItemInfo: UIView {
 
     //LAYOUT and UI
     private func setupViews() {
-        menuButton.translatesAutoresizingMaskIntoConstraints = false
-        menuButton.setImage(UIImage(named: "menu-horizontal"), for: .normal)
-        menuButton.tintColor = Colors.subtleGrayText
-        menuButton.imageView?.contentMode = .scaleAspectFit
-        menuButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-        menuButton.accessibilityLabel = "More"
-        addSubview(menuButton)
-        setupMenu()
-
         productImageView.translatesAutoresizingMaskIntoConstraints = false
         productImageView.contentMode = .scaleAspectFit
         productImageView.clipsToBounds = true
@@ -66,11 +62,7 @@ final class ItemInfo: UIView {
         itemTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         itemTitleLabel.textColor = Colors.primaryGrayText
         itemTitleLabel.numberOfLines = 1
-        itemTitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         addSubview(itemTitleLabel)
-
-        menuButton.setContentHuggingPriority(.required, for: .horizontal)
-        menuButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         LabelStyle.itemPrice(itemPriceLabel)
         itemPriceLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -96,10 +88,6 @@ final class ItemInfo: UIView {
         purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
         addSubview(purchaseButton)
 
-        itemDivider.translatesAutoresizingMaskIntoConstraints = false
-        itemDivider.backgroundColor = UIColor(hex: "#D0D0D0")
-        addSubview(itemDivider)
-
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingS),
             productImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingS),
@@ -107,108 +95,26 @@ final class ItemInfo: UIView {
             productImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.44),
 
             itemTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingM),
-            itemTitleLabel.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor),
-            itemTitleLabel.trailingAnchor.constraint(equalTo: menuButton.leadingAnchor),
-
-            menuButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingS),
-            menuButton.centerYAnchor.constraint(equalTo: itemTitleLabel.centerYAnchor),
-            menuButton.widthAnchor.constraint(equalToConstant: 32),
-            menuButton.heightAnchor.constraint(equalToConstant: 32),
+            itemTitleLabel.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: Layout.spacingM),
+            itemTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingM),
 
             itemPriceLabel.topAnchor.constraint(equalTo: itemTitleLabel.bottomAnchor, constant: Layout.spacingXS),
-            itemPriceLabel.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor),
-            itemPriceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingS),
+            itemPriceLabel.leadingAnchor.constraint(equalTo: itemTitleLabel.leadingAnchor),
+            itemPriceLabel.trailingAnchor.constraint(equalTo: itemTitleLabel.trailingAnchor),
 
             itemDescriptionLabel.topAnchor.constraint(equalTo: itemPriceLabel.bottomAnchor, constant: Layout.spacingS),
-            itemDescriptionLabel.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor),
-            itemDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingS),
+            itemDescriptionLabel.leadingAnchor.constraint(equalTo: itemTitleLabel.leadingAnchor),
+            itemDescriptionLabel.trailingAnchor.constraint(equalTo: itemTitleLabel.trailingAnchor),
 
-            purchaseButton.topAnchor.constraint(equalTo: itemDescriptionLabel.bottomAnchor, constant: Layout.spacingM + 4),
+            purchaseButton.topAnchor.constraint(equalTo: itemDescriptionLabel.bottomAnchor, constant: Layout.spacingM),
             purchaseButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
             purchaseButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingM),
-            purchaseButton.bottomAnchor.constraint(equalTo: itemDivider.topAnchor, constant: -Layout.spacingM),
-            purchaseButton.heightAnchor.constraint(equalToConstant: 36),
-
-            itemDivider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            itemDivider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            itemDivider.bottomAnchor.constraint(equalTo: bottomAnchor),
-            itemDivider.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+            purchaseButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingM),
+            purchaseButton.heightAnchor.constraint(equalToConstant: 36)
         ])
     }
 
-    private func setupMenu() {
-        let editAction = UIAction(
-            title: "Edit",
-            image: UIImage(systemName: "pencil")
-        ) { [weak self] _ in
-            self?.editTapped()
-        }
-
-        let deleteAction = UIAction(
-            title: "Delete",
-            image: UIImage(systemName: "trash"),
-            attributes: .destructive
-        ) { [weak self] _ in
-            self?.confirmDelete()
-        }
-
-        menuButton.menu = UIMenu(children: [editAction, deleteAction])
-        menuButton.showsMenuAsPrimaryAction = true
-    }
-
     //ACTIONS
-    private func editTapped() {
-        print("edit")
-    }
-
-    private func confirmDelete() {
-        guard let viewController = findViewController() else { return }
-
-        let name = post?.itemName?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let itemName = (name?.isEmpty == false) ? name! : (post?.postCaption ?? "")
-        let label = itemName.isEmpty ? "this item" : "\"\(itemName)\""
-        let alert = UIAlertController(
-            title: "Delete Item?",
-            message: "Are you sure you want to delete \(label)? This cannot be undone.",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-            self?.deleteItem()
-        })
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            viewController.present(alert, animated: true)
-        }
-    }
-
-    private func deleteItem() {
-        guard let postID = post?.postID else {
-            print("Delete Item: missing postID")
-            return
-        }
-
-        Task {
-            let success = await PostLogic.shared.deletePost(postID: postID)
-            await MainActor.run {
-                if !success {
-                    self.showDeleteFailedAlert()
-                }
-            }
-        }
-    }
-
-    private func showDeleteFailedAlert() {
-        guard let viewController = findViewController() else { return }
-        let alert = UIAlertController(
-            title: "Couldn’t delete item",
-            message: "Something went wrong. Please try again.",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        viewController.present(alert, animated: true)
-    }
-
     @objc private func purchaseTapped() {
         guard let post else { return }
         onPurchaseTapped?(post, buttonState)
@@ -267,16 +173,5 @@ final class ItemInfo: UIView {
             purchaseButton.imageEdgeInsets = .zero
             Buttons.buttonGrayStyle(button: purchaseButton)
         }
-    }
-
-    private func findViewController() -> UIViewController? {
-        var responder: UIResponder? = self
-        while let next = responder?.next {
-            if let viewController = next as? UIViewController {
-                return viewController
-            }
-            responder = next
-        }
-        return nil
     }
 }
