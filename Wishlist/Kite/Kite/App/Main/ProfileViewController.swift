@@ -51,9 +51,27 @@ class ProfileViewController: UIViewController {
     
     //BODY — module slider + modules
     private let moduleSlider = ProfileModuleSlider()
+    private let contentTabs = ProfileContentTabs()
     private let moduleContainerView = UIView()
     private let aboutMeModule = AboutMeModule()
     private let postListModule = PostList()
+    private let itemModule = ItemModule()
+    private let listModule = ListModule()
+
+    private enum ProfileTab {
+        case aboutMe
+        case content
+    }
+
+    private enum ProfileContent {
+        case items
+        case lists
+    }
+
+    private var selectedTab: ProfileTab = .aboutMe
+    private var contentKind: ProfileContent = .items
+    private var listsLoadID = 0
+    private var memberProfilesTask: Task<Void, Never>?
 
     // Old bio/clothing UI (kept declared for later restore)
     private let userSelectInfoView = UIView()
@@ -76,8 +94,15 @@ class ProfileViewController: UIViewController {
         setupFullNameView()
         setupUserNameView()
         setupUserInfoView()
-        setupModuleSlider()
+        // setupModuleSlider()
         setupModuleContainer()
+
+        itemModule.onItemSelected = { [weak self] post in
+            self?.openItem(post)
+        }
+        listModule.onListSelected = { [weak self] list in
+            self?.openList(list)
+        }
 
         aboutMeModule.onLogoutTapped = { [weak self] in
             self?.tempLogoutTapped()
@@ -109,6 +134,7 @@ class ProfileViewController: UIViewController {
             await getUserFriends()
             await fetchUserCounts()
             await fetchUserPreferences()
+            loadProfileLists()
         }
     }
     
@@ -331,10 +357,17 @@ class ProfileViewController: UIViewController {
             friendsCard.bottomAnchor.constraint(equalTo: userRightLeftView.bottomAnchor)
         ])
 
+        let itemsTap = UITapGestureRecognizer(target: self, action: #selector(itemsCountTapped))
+        postsCard.addGestureRecognizer(itemsTap)
+
+        let listsTap = UITapGestureRecognizer(target: self, action: #selector(listsCountTapped))
+        groupsCard.addGestureRecognizer(listsTap)
+
         let friendsTap = UITapGestureRecognizer(target: self, action: #selector(friendsCountTapped))
         friendsCard.addGestureRecognizer(friendsTap)
     }
  
+    /*
     func setupModuleSlider() {
         view.addSubview(moduleSlider)
         moduleSlider.onSelectionChanged = { [weak self] index in
@@ -347,8 +380,14 @@ class ProfileViewController: UIViewController {
             moduleSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
+    */
 
     func setupModuleContainer() {
+        view.addSubview(contentTabs)
+        contentTabs.onSelectionChanged = { [weak self] index in
+            self?.contentTabSelected(index)
+        }
+
         view.addSubview(moduleContainerView)
         moduleContainerView.translatesAutoresizingMaskIntoConstraints = false
         moduleContainerView.backgroundColor = Colors.feedBackground
@@ -356,11 +395,19 @@ class ProfileViewController: UIViewController {
 
         moduleContainerView.addSubview(aboutMeModule)
         moduleContainerView.addSubview(postListModule)
+        moduleContainerView.addSubview(itemModule)
+        moduleContainerView.addSubview(listModule)
 
         // Fixed content area: fills remaining space below the segmented control.
         // About Me / Posts each scroll inside this container — header + slider stay fixed.
         NSLayoutConstraint.activate([
-            moduleContainerView.topAnchor.constraint(equalTo: moduleSlider.bottomAnchor),
+            contentTabs.topAnchor.constraint(equalTo: userInfoBottomDivider.bottomAnchor, constant: 4),
+            contentTabs.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentTabs.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+            moduleContainerView.topAnchor.constraint(equalTo: contentTabs.bottomAnchor),
+            // moduleContainerView.topAnchor.constraint(equalTo: userInfoBottomDivider.bottomAnchor, constant: 4),
+            // moduleContainerView.topAnchor.constraint(equalTo: moduleSlider.bottomAnchor),
             moduleContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             moduleContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             moduleContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -373,26 +420,98 @@ class ProfileViewController: UIViewController {
             postListModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
             postListModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
             postListModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
-            postListModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor)
+            postListModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
+
+            itemModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
+            itemModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
+            itemModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
+            itemModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
+
+            listModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
+            listModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
+            listModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
+            listModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor)
         ])
 
+        // GET /items is the shared home feed. There is no items-by-user call in PostsAPI.
+        itemModule.configure(posts: [])
         showModule(at: 0)
     }
 
     private func showModule(at index: Int) {
-        aboutMeModule.isHidden = index != 0
-        postListModule.isHidden = index != 1
+        selectedTab = index == 0 ? .aboutMe : .content
+        contentTabs.setSelectedIndex(index == 0 ? 0 : 1, animated: false)
+        updateModuleVisibility()
+    }
+
+    private func contentTabSelected(_ index: Int) {
+        selectedTab = index == 0 ? .aboutMe : .content
+        updateModuleVisibility()
+        if selectedTab == .content {
+            loadVisibleContent()
+        }
+    }
+
+    private func updateModuleVisibility() {
+        let showingItems = selectedTab == .content && contentKind == .items
+        let showingLists = selectedTab == .content && contentKind == .lists
+        aboutMeModule.isHidden = selectedTab != .aboutMe
+        itemModule.isHidden = !showingItems
+        listModule.isHidden = !showingLists
+        postListModule.isHidden = true
+    }
+
+    private func showContent(_ kind: ProfileContent) {
+        let animateUnderline = selectedTab != .content
+        contentKind = kind
+        selectedTab = .content
+        contentTabs.setSelectedIndex(1, animated: animateUnderline)
+        updateModuleVisibility()
+        loadVisibleContent()
     }
 
     //ACTIONS
     @objc private func openProfile() {
         print("Profile tapped")
     }
+
+    @objc private func itemsCountTapped() {
+        showContent(.items)
+    }
+
+    @objc private func listsCountTapped() {
+        showContent(.lists)
+    }
     
     @objc private func friendsCountTapped() {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         guard let friendsVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as? FriendsViewController else { return }
         navigationController?.pushViewController(friendsVC, animated: true)
+    }
+
+    private func openItem(_ post: Post) {
+        let storyboard = UIStoryboard(name: "Post", bundle: nil)
+        guard let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController else { return }
+
+        postViewController.postID = post.postID
+        if let groupID = post.groupID,
+           let group = GroupDataController.shared.getGroup(by: String(groupID)) {
+            postViewController.currentUserOwnsGroup = (group.createdBy ?? "")
+                .caseInsensitiveCompare(userDefaultManager.getLoggedInUser()) == .orderedSame
+        }
+        navigationController?.pushViewController(postViewController, animated: true)
+    }
+
+    private func openList(_ group: GroupModel) {
+        let storyboard = UIStoryboard(name: Constants.StoryboardNames.groupsStoryboard, bundle: nil)
+        guard let groupViewController = storyboard.instantiateViewController(
+            withIdentifier: Constants.StoryboardID.individualGroupViewControllerID
+        ) as? IndividualGroupViewController else { return }
+
+        groupViewController.groupID = group.groupID
+        groupViewController.currentUserOwnsGroup = (group.createdBy ?? "")
+            .caseInsensitiveCompare(userDefaultManager.getLoggedInUser()) == .orderedSame
+        navigationController?.pushViewController(groupViewController, animated: true)
     }
     
     @objc private func editProfileButton() {
@@ -446,6 +565,76 @@ class ProfileViewController: UIViewController {
         await ProfilePreferenceDataController.shared.fetchPreferences(userName: profileUserName)
         await MainActor.run {
             self.refreshPreferencesUI()
+        }
+    }
+
+    private func loadVisibleContent() {
+        switch contentKind {
+        case .items:
+            break
+        case .lists:
+            loadProfileLists()
+        }
+    }
+
+    private func loadProfileLists() {
+        let profileUserName = currentUser?.userName ?? userDefaultManager.getLoggedInUser()
+        listsLoadID += 1
+        let loadID = listsLoadID
+
+        GroupDataController.shared.getGroups { [weak self] success in
+            guard let self, loadID == self.listsLoadID else { return }
+            guard success else {
+                self.listModule.showLoadFailed()
+                return
+            }
+
+            let lists = GroupDataController.shared.groups.filter {
+                $0.groupType.lowercased() == "wishlist"
+                    && ($0.createdBy ?? "").caseInsensitiveCompare(profileUserName) == .orderedSame
+            }
+            self.listModule.configure(
+                lists: lists,
+                currentUser: GroupDataController.shared.currentUser,
+                memberProfiles: [:]
+            )
+            self.loadMemberProfiles(for: lists, loadID: loadID)
+        }
+    }
+
+    private func loadMemberProfiles(for lists: [GroupModel], loadID: Int) {
+        let usernames = Array(
+            Set(
+                lists
+                    .flatMap { $0.activeGroupMembers }
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
+            )
+        )
+
+        guard !usernames.isEmpty else { return }
+
+        memberProfilesTask?.cancel()
+        memberProfilesTask = Task { [weak self] in
+            let users = await UsersDataController.shared.fetchUsersWithImages(
+                usernames: usernames,
+                refreshFriendshipStatus: false
+            )
+            guard !Task.isCancelled else { return }
+
+            var map: [String: User] = [:]
+            for user in users {
+                map[user.userName.lowercased()] = user
+            }
+
+            await MainActor.run {
+                guard let self, loadID == self.listsLoadID else { return }
+                self.listModule.configure(
+                    lists: lists,
+                    currentUser: GroupDataController.shared.currentUser,
+                    memberProfiles: map
+                )
+            }
         }
     }
     

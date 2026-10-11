@@ -10,7 +10,8 @@ import Foundation
 
 //MVP presentation rules for wishlist purchase button (see Doc/feature_item_purchase.md).
 func purchaseButtonState(post: Post, currentUser: String) -> PurchaseButtonState {
-    if let postFrom = post.postFrom, postFrom == currentUser {
+    if let postFrom = post.postFrom,
+       postFrom.caseInsensitiveCompare(currentUser) == .orderedSame {
         return .hidden
     }
 

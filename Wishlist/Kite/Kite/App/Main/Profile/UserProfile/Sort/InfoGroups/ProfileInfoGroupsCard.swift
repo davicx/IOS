@@ -34,7 +34,7 @@ class ProfileInfoGroupsCard: UIView {
         descriptionLabel.font = Fonts.userInfoDescriptionFont
         descriptionLabel.textColor = Colors.userInfoDescriptionTextColor
         descriptionLabel.textAlignment = .center
-        descriptionLabel.text = "Groups"
+        descriptionLabel.text = "Lists"
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(countLabel)

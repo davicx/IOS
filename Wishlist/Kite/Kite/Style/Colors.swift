@@ -13,7 +13,10 @@ class Colors {
     //APP MAIN
     //Kite Main Colors
     static let primaryBlue = UIColor(hex: "#3797EF")
-    static let primaryPink = UIColor(hex: "#FF2E7A")
+    static let primaryPink = UIColor(hex: "#FF2E6B")
+    static let primaryPinkLight = UIColor(hex: "#FCE6ED")
+    static let primaryText = UIColor(hex: "#171717")
+    static let secondaryText = UIColor(hex: "#737373")
 
     // Text — darkest to lightest
     static let primaryGrayText = UIColor.black
@@ -35,6 +38,8 @@ class Colors {
     
     //Backgrounds
     static let screenBackground = UIColor.white
+    static let surfaceBackground = UIColor(hex: "#F7F7F7")
+    static let dividerColor = UIColor(hex: "#E8E8EA")
     static let feedBackground = UIColor(hex: "#F3F3F3")
     static let loadingViewBackgroundColor = UIColor(hex: "#E5E5E5")
     static let itemBackgroundColor = UIColor(hex: "#F7F8F9")

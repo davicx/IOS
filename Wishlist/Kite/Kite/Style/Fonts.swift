@@ -18,6 +18,7 @@ class Fonts {
 
     static let medium15 = UIFont.systemFont(ofSize: 15, weight: .medium)
 
+    static let semibold13 = UIFont.systemFont(ofSize: 13, weight: .semibold)
     static let semibold14 = UIFont.systemFont(ofSize: 14, weight: .semibold)
     static let semibold15 = UIFont.systemFont(ofSize: 15, weight: .semibold)
     static let semibold16 = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -63,6 +64,8 @@ class Fonts {
     static let buttonRegularFont = regular14
     static let buttonSemiboldFont = semibold14
     static let buttonTikTokFont = semibold15
+    static let buttonTextFont = semibold15
+    static let socialCountFont = semibold13
     static let buttonCompactFont = regular12
 }
 

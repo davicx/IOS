@@ -2,8 +2,6 @@
 //  ItemCaption.swift
 //  Kite
 //
-//  Created by David Vasquez on 10/4/26.
-//
 
 import UIKit
 
@@ -15,28 +13,17 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
-// ItemCaption shows who posted and the caption.
-// Layout: [ image | username / posted / caption ]
-
+// Username and post caption in one line of text, then the comments entry.
 final class ItemCaption: UIView {
 
-    //LOGIC
-    private var usersDataController: UsersDataController { UsersDataController.shared }
-    private var loadUserName: String?
-    private let avatarSize: CGFloat = 48
-
     //UI COMPONENTS
-    private let imageContainer = UIView()
-    private let profileImageView = UIImageView()
-    private let usernameLabel = UILabel()
-    private let postedAtLabel = UILabel()
     private let captionLabel = UILabel()
-    private let textStack = UIStackView()
+    private let commentsLabel = UILabel()
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .clear
+        backgroundColor = Colors.screenBackground
         setupViews()
     }
 
@@ -46,91 +33,74 @@ final class ItemCaption: UIView {
 
     //LAYOUT and UI
     private func setupViews() {
-        imageContainer.translatesAutoresizingMaskIntoConstraints = false
-        imageContainer.backgroundColor = .clear
-        addSubview(imageContainer)
-
-        profileImageView.image = UIImage(named: "background_1")
-        ImageStyle.userProfileImage(imageView: profileImageView, diameter: avatarSize)
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        imageContainer.addSubview(profileImageView)
-
-        usernameLabel.font = Fonts.postUsernameFont
-        usernameLabel.textColor = Colors.primaryGrayText
-        usernameLabel.numberOfLines = 1
-        usernameLabel.lineBreakMode = .byTruncatingTail
-
-        postedAtLabel.font = Fonts.postedAtFont
-        postedAtLabel.textColor = Colors.postedAtTextColor
-        postedAtLabel.numberOfLines = 1
-        postedAtLabel.lineBreakMode = .byTruncatingTail
-
-        captionLabel.font = Fonts.postCaptionFont
-        captionLabel.textColor = Colors.postCaptionFontColor
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
         captionLabel.numberOfLines = 0
-        captionLabel.lineBreakMode = .byTruncatingTail
+        captionLabel.textColor = Colors.primaryText
+        addSubview(captionLabel)
 
-        textStack.axis = .vertical
-        textStack.alignment = .leading
-        textStack.spacing = Layout.spacingXS
-        textStack.translatesAutoresizingMaskIntoConstraints = false
-        textStack.addArrangedSubview(usernameLabel)
-        textStack.addArrangedSubview(postedAtLabel)
-        textStack.addArrangedSubview(captionLabel)
-        addSubview(textStack)
+        commentsLabel.translatesAutoresizingMaskIntoConstraints = false
+        commentsLabel.font = Fonts.regular13
+        commentsLabel.textColor = Colors.secondaryText
+        commentsLabel.numberOfLines = 1
+        addSubview(commentsLabel)
 
         NSLayoutConstraint.activate([
-            imageContainer.topAnchor.constraint(equalTo: topAnchor),
-            imageContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageContainer.widthAnchor.constraint(equalToConstant: avatarSize),
-            imageContainer.heightAnchor.constraint(equalToConstant: avatarSize),
-            imageContainer.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+            captionLabel.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingS),
+            captionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
+            captionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingM),
 
-            profileImageView.topAnchor.constraint(equalTo: imageContainer.topAnchor),
-            profileImageView.leadingAnchor.constraint(equalTo: imageContainer.leadingAnchor),
-            profileImageView.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
-            profileImageView.bottomAnchor.constraint(equalTo: imageContainer.bottomAnchor),
-
-            textStack.topAnchor.constraint(equalTo: topAnchor, constant: -Layout.spacingXS),
-            textStack.leadingAnchor.constraint(equalTo: imageContainer.trailingAnchor, constant: Layout.spacingM),
-            textStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            textStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            commentsLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: Layout.spacingS),
+            commentsLabel.leadingAnchor.constraint(equalTo: captionLabel.leadingAnchor),
+            commentsLabel.trailingAnchor.constraint(equalTo: captionLabel.trailingAnchor),
+            commentsLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
     //FUNCTIONS
     func configure(with post: Post) {
-        postedAtLabel.text = post.timeMessage ?? "now"
+        let username = post.postFrom?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let caption = post.postCaption?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
 
-        let caption = post.postCaption?.trimmingCharacters(in: .whitespacesAndNewlines)
-        captionLabel.text = (caption?.isEmpty == false) ? caption : nil
-        captionLabel.isHidden = captionLabel.text == nil
-
-        guard let username = post.postFrom, !username.isEmpty else {
-            usernameLabel.text = nil
-            return
+        if username.isEmpty && caption.isEmpty {
+            captionLabel.attributedText = nil
+            captionLabel.isHidden = true
+        } else {
+            captionLabel.isHidden = false
+            captionLabel.attributedText = captionText(username: username, caption: caption)
         }
 
-        usernameLabel.text = username
-        loadUserProfile(username: username)
+        let commentCount = post.commentsArray?.count ?? 0
+        commentsLabel.text = commentCount > 0 ? "View all \(commentCount) comments" : "View comments"
     }
 
-    private func loadUserProfile(username: String) {
-        loadUserName = username
+    private func captionText(username: String, caption: String) -> NSAttributedString {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineSpacing = 3
 
-        Task {
-            guard let user = await usersDataController.getOrFetchUserWithImage(username: username) else {
-                return
-            }
-
-            guard loadUserName == username else { return }
-
-            await MainActor.run {
-                guard self.loadUserName == username else { return }
-                if let image = user.profileImage {
-                    self.profileImageView.image = image
-                }
-            }
+        let result = NSMutableAttributedString()
+        if !username.isEmpty {
+            result.append(NSAttributedString(
+                string: username,
+                attributes: [
+                    .font: Fonts.semibold14,
+                    .foregroundColor: Colors.primaryText,
+                    .paragraphStyle: paragraph
+                ]
+            ))
         }
+        if !caption.isEmpty {
+            if result.length > 0 {
+                result.append(NSAttributedString(string: " "))
+            }
+            result.append(NSAttributedString(
+                string: caption,
+                attributes: [
+                    .font: Fonts.postCaptionFont,
+                    .foregroundColor: Colors.primaryText,
+                    .paragraphStyle: paragraph
+                ]
+            ))
+        }
+        return result
     }
 }

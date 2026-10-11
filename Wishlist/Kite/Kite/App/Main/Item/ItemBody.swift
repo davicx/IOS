@@ -2,8 +2,6 @@
 //  ItemBody.swift
 //  Kite
 //
-//  Created by David Vasquez on 10/4/26.
-//
 
 import UIKit
 
@@ -23,7 +21,7 @@ final class ItemBody: UIView {
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .clear
+        backgroundColor = Colors.screenBackground
         setupViews()
     }
 
@@ -37,10 +35,10 @@ final class ItemBody: UIView {
         addSubview(itemCaption)
 
         NSLayoutConstraint.activate([
-            itemCaption.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingL),
-            itemCaption.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingL),
-            itemCaption.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
-            itemCaption.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.spacingS)
+            itemCaption.topAnchor.constraint(equalTo: topAnchor),
+            itemCaption.leadingAnchor.constraint(equalTo: leadingAnchor),
+            itemCaption.trailingAnchor.constraint(equalTo: trailingAnchor),
+            itemCaption.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 

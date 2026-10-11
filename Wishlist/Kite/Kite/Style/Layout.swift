@@ -23,6 +23,10 @@ enum Layout {
 
     static let iconSize: CGFloat = 24
     static let touchTargetSize: CGFloat = 40
+
+    static let cornerSmall: CGFloat = 8
+    static let cornerMedium: CGFloat = 12
+    static let cornerLarge: CGFloat = 16
 }
 
 

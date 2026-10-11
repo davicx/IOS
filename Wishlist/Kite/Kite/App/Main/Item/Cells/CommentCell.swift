@@ -77,23 +77,22 @@ final class CommentCell: UITableViewCell {
         userImageArea.translatesAutoresizingMaskIntoConstraints = false
 
         userProfileImageView.image = UIImage(named: "user") ?? UIImage(named: "background_1")
-        ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 38)
+        ImageStyle.userProfileImage(imageView: userProfileImageView, diameter: 34)
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(userImageArea)
         userImageArea.addSubview(userProfileImageView)
 
         NSLayoutConstraint.activate([
-            userImageArea.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            userImageArea.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.spacingM),
             userImageArea.topAnchor.constraint(equalTo: contentView.topAnchor),
             userImageArea.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            userImageArea.widthAnchor.constraint(equalToConstant: 46),
+            userImageArea.widthAnchor.constraint(equalToConstant: 44),
 
-            userProfileImageView.topAnchor.constraint(equalTo: userImageArea.topAnchor, constant: 8),
-            userProfileImageView.leadingAnchor.constraint(equalTo: userImageArea.leadingAnchor, constant: 2),
-            userProfileImageView.trailingAnchor.constraint(equalTo: userImageArea.trailingAnchor, constant: -6),
-            userProfileImageView.widthAnchor.constraint(equalToConstant: 38),
-            userProfileImageView.heightAnchor.constraint(equalToConstant: 38)
+            userProfileImageView.topAnchor.constraint(equalTo: userImageArea.topAnchor, constant: Layout.spacingL),
+            userProfileImageView.leadingAnchor.constraint(equalTo: userImageArea.leadingAnchor),
+            userProfileImageView.widthAnchor.constraint(equalToConstant: 34),
+            userProfileImageView.heightAnchor.constraint(equalToConstant: 34)
         ])
     }
 
@@ -102,7 +101,7 @@ final class CommentCell: UITableViewCell {
         commentHeaderView.backgroundColor = Colors.screenBackground
         commentHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
-        userNameLabel.font = Fonts.postUsernameFont
+        userNameLabel.font = Fonts.semibold14
         userNameLabel.textColor = Colors.primaryGrayText
         userNameLabel.numberOfLines = 1
         userNameLabel.lineBreakMode = .byTruncatingTail
@@ -110,7 +109,7 @@ final class CommentCell: UITableViewCell {
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
 
         postedAtLabel.font = Fonts.postedAtFont
-        postedAtLabel.textColor = Colors.postedAtTextColor
+        postedAtLabel.textColor = Colors.secondaryText
         postedAtLabel.numberOfLines = 1
         postedAtLabel.lineBreakMode = .byTruncatingTail
         postedAtLabel.text = "now"
@@ -163,8 +162,8 @@ final class CommentCell: UITableViewCell {
         commentBodyView.backgroundColor = Colors.screenBackground
         commentBodyView.translatesAutoresizingMaskIntoConstraints = false
 
-        commentBodyLabel.font = Fonts.postCaptionFont
-        commentBodyLabel.textColor = Colors.postCaptionFontColor
+        commentBodyLabel.font = Fonts.regular14
+        commentBodyLabel.textColor = Colors.primaryText
         commentBodyLabel.numberOfLines = 0
         commentBodyLabel.text = "Comment body"
         commentBodyLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -210,7 +209,7 @@ final class CommentCell: UITableViewCell {
             commentFooterView.topAnchor.constraint(equalTo: commentBodyView.bottomAnchor, constant: 4),
             commentFooterView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
             commentFooterView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            commentFooterView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            commentFooterView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Layout.spacingL),
             commentFooterView.heightAnchor.constraint(equalToConstant: 24),
 
             likeImageView.leadingAnchor.constraint(equalTo: commentFooterView.leadingAnchor),

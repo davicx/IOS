@@ -60,7 +60,17 @@ final class MakeComment: UIView {
     //LAYOUT and UI
     private func setupViews() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemBackground
+        backgroundColor = Colors.screenBackground
+        let divider = UIView()
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = Colors.dividerColor
+        addSubview(divider)
+        NSLayoutConstraint.activate([
+            divider.topAnchor.constraint(equalTo: topAnchor),
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+        ])
 
         setupProfileImageView()
         setupTextView()
@@ -94,9 +104,9 @@ final class MakeComment: UIView {
 
     private func setupTextView() {
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.font = .systemFont(ofSize: 16)
-        textView.backgroundColor = .systemGray6
-        textView.layer.cornerRadius = 16
+        textView.font = Fonts.regular14
+        textView.backgroundColor = Colors.surfaceBackground
+        textView.layer.cornerRadius = Layout.cornerMedium
         textView.clipsToBounds = true
         textView.isScrollEnabled = false
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
@@ -111,8 +121,8 @@ final class MakeComment: UIView {
 
     private func setupPlaceholder() {
         placeholderLabel.text = "Add a comment..."
-        placeholderLabel.textColor = .placeholderText
-        placeholderLabel.font = .systemFont(ofSize: 16)
+        placeholderLabel.textColor = Colors.secondaryText
+        placeholderLabel.font = Fonts.regular14
 
         placeholderLabel.isUserInteractionEnabled = false
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -127,6 +137,8 @@ final class MakeComment: UIView {
     private func setupSendButton() {
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.setTitle("Send", for: .normal)
+        sendButton.setTitleColor(Colors.primaryPink, for: .normal)
+        sendButton.titleLabel?.font = Fonts.buttonTextFont
         sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         addSubview(sendButton)
     }

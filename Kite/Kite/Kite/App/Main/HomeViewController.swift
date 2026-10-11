@@ -163,9 +163,11 @@ class HomeViewController: UIViewController {
         postsTableView.delegate = self
         postsTableView.dataSource = self
         postsTableView.register(PostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.postCell)
+        postsTableView.register(DesignPostCell.self, forCellReuseIdentifier: "DesignPostCell")
         postsTableView.rowHeight = UITableView.automaticDimension
         postsTableView.separatorStyle = .none
         postsTableView.backgroundColor = Colors.feedBackground
+        postsTableView.backgroundColor = DesignStyleTemp.background
         //postsTableView.register(HomePostCell.self, forCellReuseIdentifier: Constants.TableViewCellIdentifier.homePostCell)
     }
 
@@ -216,14 +218,26 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return postDataController.getHomeFeedPosts().count
+         return DesignPostCell.previewPosts.count
+         // return postDataController.getHomeFeedPosts().count
      }
 
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "DesignPostCell", for: indexPath) as! DesignPostCell
+         cell.configure(with: DesignPostCell.previewPosts[indexPath.row])
+         cell.onLayoutChange = { [weak tableView] in
+             UIView.performWithoutAnimation {
+                 tableView?.beginUpdates()
+                 tableView?.endUpdates()
+             }
+         }
+         return cell
+         /*
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.postCell, for: indexPath) as! PostCell
          let post = postDataController.getHomeFeedPosts()[indexPath.row]
          cell.updatePost(with: post)
          return cell
+         */
          /*
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TableViewCellIdentifier.homePostCell, for: indexPath) as! HomePostCell
          let post = postDataController.getHomeFeedPosts()[indexPath.row]
@@ -233,7 +247,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      }
 
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         let post = postDataController.getHomeFeedPosts()[indexPath.row]
+         let posts = postDataController.getHomeFeedPosts()
+         guard indexPath.row < posts.count else { return }
+         let post = posts[indexPath.row]
          
          let storyboard = UIStoryboard(name: "Post", bundle: nil)
          if let postViewController = storyboard.instantiateViewController(withIdentifier: Constants.StoryboardID.individualPostViewControllerID) as? IndividualPostViewController {

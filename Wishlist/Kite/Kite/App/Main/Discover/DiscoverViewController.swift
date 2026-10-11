@@ -21,6 +21,7 @@ class DiscoverViewController: UIViewController {
     private var selectedCategory: DiscoverCategory = .items
     private var lastBrowseCategory: DiscoverCategory = .items
     private var searchGeneration = 0
+    private var browseGeneration = 0
     private var searchTask: Task<Void, Never>?
     private let searchAPI = SearchAPI.shared
 
@@ -29,20 +30,6 @@ class DiscoverViewController: UIViewController {
         ("Zelda: Echoes of Wisdom", "Video Games", "discover_2"),
         ("Botanical Garden", "LEGO", "discover_3"),
         ("Retro Camera", "LEGO", "discover_4")
-    ]
-
-    private let placeholderPeople: [(name: String, username: String)] = [
-        ("Sarah Miller", "@sarahm"),
-        ("Sam", "@sam"),
-        ("Maya Chen", "@mayac"),
-        ("Alex Rivera", "@alexr")
-    ]
-
-    private let placeholderLists: [(title: String, detail: String)] = [
-        ("Cozy Game Night", "12 items · by alex"),
-        ("Sam's Cool List", "8 items · by Sam"),
-        ("Weekend Wishlist", "6 items · by maya"),
-        ("Retro Finds", "4 items · by jordan")
     ]
 
     //UI COMPONENTS
@@ -235,6 +222,8 @@ class DiscoverViewController: UIViewController {
     }
 
     private func reloadPlaceholders() {
+        browseGeneration += 1
+        let generation = browseGeneration
         clearContent()
 
         switch selectedCategory {
@@ -243,21 +232,109 @@ class DiscoverViewController: UIViewController {
             contentStack.addArrangedSubview(itemGrid())
         case .people:
             contentStack.addArrangedSubview(sectionTitle("People"))
-            placeholderPeople.forEach { person in
-                let row = DiscoverUser()
-                row.configure(name: person.name, username: person.username)
-                row.addTarget(self, action: #selector(userTapped(_:)), for: .touchUpInside)
-                contentStack.addArrangedSubview(row)
+            contentStack.addArrangedSubview(caption("Loading friends…"))
+            Task { [weak self] in
+                await self?.loadFriends(generation: generation)
             }
         case .lists:
             contentStack.addArrangedSubview(sectionTitle("Lists"))
-            placeholderLists.forEach { list in
-                let row = DiscoverList()
-                row.configure(title: list.title, detail: list.detail)
-                row.addTarget(self, action: #selector(listTapped(_:)), for: .touchUpInside)
-                contentStack.addArrangedSubview(row)
+            contentStack.addArrangedSubview(caption("Loading lists…"))
+            Task { [weak self] in
+                await self?.loadDiscoverLists(generation: generation)
             }
         }
+    }
+
+    private func loadFriends(generation: Int) async {
+        do {
+            _ = try await UsersDataController.shared.fetchFriends()
+        } catch {
+            await MainActor.run {
+                guard generation == self.browseGeneration, self.selectedCategory == .people else { return }
+                self.showMessage("Couldn't load friends.")
+            }
+            return
+        }
+
+        let friends = UsersDataController.shared.splitFriendsByStatus().friends.sorted {
+            $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending
+        }
+
+        await MainActor.run {
+            guard generation == self.browseGeneration, self.selectedCategory == .people else { return }
+            self.clearContent()
+            self.contentStack.addArrangedSubview(self.sectionTitle("People"))
+            if friends.isEmpty {
+                self.contentStack.addArrangedSubview(self.caption("No friends yet."))
+                return
+            }
+            friends.forEach { friend in
+                let row = DiscoverUser()
+                let username = friend.userName.isEmpty ? "" : "@\(friend.userName)"
+                row.configure(name: friend.displayName, username: username, image: friend.profileImage)
+                row.addTarget(self, action: #selector(self.userTapped(_:)), for: .touchUpInside)
+                self.contentStack.addArrangedSubview(row)
+            }
+        }
+    }
+
+    private func loadDiscoverLists(generation: Int) async {
+        let outcome: (Bool, [GroupModel]) = await withCheckedContinuation { continuation in
+            GroupDataController.shared.getGroups { success in
+                let lists = GroupDataController.shared.groups.filter {
+                    $0.groupType.lowercased() == "wishlist"
+                }
+                continuation.resume(returning: (success, lists))
+            }
+        }
+
+        await MainActor.run {
+            guard generation == self.browseGeneration, self.selectedCategory == .lists else { return }
+            self.clearContent()
+            self.contentStack.addArrangedSubview(self.sectionTitle("Lists"))
+            if !outcome.0 {
+                self.contentStack.addArrangedSubview(self.caption("Couldn't load lists."))
+                return
+            }
+            if outcome.1.isEmpty {
+                self.contentStack.addArrangedSubview(self.caption("No lists yet."))
+                return
+            }
+            outcome.1.forEach { list in
+                let row = DiscoverList()
+                row.configure(title: list.groupName, detail: self.listDetail(for: list))
+                row.addTarget(self, action: #selector(self.listTapped(_:)), for: .touchUpInside)
+                self.contentStack.addArrangedSubview(row)
+                self.loadListCover(list, into: row, generation: generation)
+            }
+        }
+    }
+
+    private func loadListCover(_ list: GroupModel, into row: DiscoverList, generation: Int) {
+        let imageURL = list.groupImage
+        Task { [weak row] in
+            guard let imageURL,
+                  let image = await ImageCacheManager.shared.fetchImageIfNeeded(from: imageURL) else { return }
+            await MainActor.run {
+                guard generation == self.browseGeneration else { return }
+                row?.setCoverImage(image)
+            }
+        }
+    }
+
+    private func listDetail(for list: GroupModel) -> String {
+        var seen = Set<String>()
+        for member in list.activeGroupMembers {
+            let name = member.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            if !name.isEmpty {
+                seen.insert(name)
+            }
+        }
+        let memberText = seen.count == 1 ? "1 member" : "\(seen.count) members"
+        if let createdBy = list.createdBy, !createdBy.isEmpty {
+            return "\(memberText) · by \(createdBy)"
+        }
+        return memberText
     }
 
     private func isFailed<T>(_ result: Result<T, Error>) -> Bool {

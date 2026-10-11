@@ -34,7 +34,7 @@ class ProfileInfoPostsCard: UIView {
         descriptionLabel.font = Fonts.userInfoDescriptionFont
         descriptionLabel.textColor = Colors.userInfoDescriptionTextColor
         descriptionLabel.textAlignment = .center
-        descriptionLabel.text = "Posts"
+        descriptionLabel.text = "Items"
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(countLabel)

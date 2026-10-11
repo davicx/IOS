@@ -124,6 +124,9 @@
 		D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */; };
 		D73601F0304E29F50043B544 /* ProfileViewControllerBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73601EF304E29F50043B544 /* ProfileViewControllerBackup.swift */; };
 		D73601F8304E302D0043B544 /* AboutMeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73601F7304E302D0043B544 /* AboutMeModule.swift */; };
+		D7E4B1022F12000100DD937F /* ProfileContentTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4B1012F12000100DD937F /* ProfileContentTabs.swift */; };
+		D7E4B1042F12000100DD937F /* ItemModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4B1032F12000100DD937F /* ItemModule.swift */; };
+		D7E4B1062F12000100DD937F /* ListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4B1052F12000100DD937F /* ListModule.swift */; };
 		D73601FF304E30820043B544 /* PostList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73601FE304E30820043B544 /* PostList.swift */; };
 		D7360204304E34890043B544 /* AboutMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7360203304E34890043B544 /* AboutMe.swift */; };
 		D7360208304E37DC0043B544 /* ClothingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7360207304E37DC0043B544 /* ClothingModule.swift */; };
@@ -265,6 +268,13 @@
 		DB546A41C38B4A28A35724B5 /* ItemHeaderOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F50967103BA495592C48D59 /* ItemHeaderOld.swift */; };
 		DF3D24009005497984CF9F2D /* ProfilePreferenceDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87281CB171AE41B8A8C621DE /* ProfilePreferenceDataController.swift */; };
 		E1010002306A111100715C3F /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010001306A111100715C3F /* ItemCell.swift */; };
+		E20100022F13000100DD937F /* ItemCellOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20100012F13000100DD937F /* ItemCellOriginal.swift */; };
+		E20100042F13000100DD937F /* ItemHeaderOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20100032F13000100DD937F /* ItemHeaderOriginal.swift */; };
+		E20100062F13000100DD937F /* ItemBodyOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20100052F13000100DD937F /* ItemBodyOriginal.swift */; };
+		E20100082F13000100DD937F /* ItemFooterOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20100072F13000100DD937F /* ItemFooterOriginal.swift */; };
+		E201000A2F13000100DD937F /* ItemInfoOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20100092F13000100DD937F /* ItemInfoOriginal.swift */; };
+		E201000C2F13000100DD937F /* ItemCaptionOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201000B2F13000100DD937F /* ItemCaptionOriginal.swift */; };
+		E201000E2F13000100DD937F /* ItemSocialsOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201000D2F13000100DD937F /* ItemSocialsOriginal.swift */; };
 		E1010006306A111300715C3F /* ItemCaptionOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010005306A111300715C3F /* ItemCaptionOld.swift */; };
 		E1010008306A111400715C3F /* ItemSocialsOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010007306A111400715C3F /* ItemSocialsOld.swift */; };
 		E101000A306A111500715C3F /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010009306A111500715C3F /* ItemInfoView.swift */; };
@@ -425,6 +435,9 @@
 		D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageFunctions.swift; sourceTree = "<group>"; };
 		D73601EF304E29F50043B544 /* ProfileViewControllerBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerBackup.swift; sourceTree = "<group>"; };
 		D73601F7304E302D0043B544 /* AboutMeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMeModule.swift; sourceTree = "<group>"; };
+		D7E4B1012F12000100DD937F /* ProfileContentTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileContentTabs.swift; sourceTree = "<group>"; };
+		D7E4B1032F12000100DD937F /* ItemModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModule.swift; sourceTree = "<group>"; };
+		D7E4B1052F12000100DD937F /* ListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModule.swift; sourceTree = "<group>"; };
 		D73601FE304E30820043B544 /* PostList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostList.swift; sourceTree = "<group>"; };
 		D7360203304E34890043B544 /* AboutMe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMe.swift; sourceTree = "<group>"; };
 		D7360207304E37DC0043B544 /* ClothingModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingModule.swift; sourceTree = "<group>"; };
@@ -563,6 +576,13 @@
 		D7FD3C362F4D2C3E0054B9B4 /* PostComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComment.swift; sourceTree = "<group>"; };
 		D9463C24F9A44538B4D72266 /* ItemBodyOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBodyOld.swift; sourceTree = "<group>"; };
 		E1010001306A111100715C3F /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		E20100012F13000100DD937F /* ItemCellOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellOriginal.swift; sourceTree = "<group>"; };
+		E20100032F13000100DD937F /* ItemHeaderOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemHeaderOriginal.swift; sourceTree = "<group>"; };
+		E20100052F13000100DD937F /* ItemBodyOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBodyOriginal.swift; sourceTree = "<group>"; };
+		E20100072F13000100DD937F /* ItemFooterOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFooterOriginal.swift; sourceTree = "<group>"; };
+		E20100092F13000100DD937F /* ItemInfoOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoOriginal.swift; sourceTree = "<group>"; };
+		E201000B2F13000100DD937F /* ItemCaptionOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCaptionOriginal.swift; sourceTree = "<group>"; };
+		E201000D2F13000100DD937F /* ItemSocialsOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSocialsOriginal.swift; sourceTree = "<group>"; };
 		E1010005306A111300715C3F /* ItemCaptionOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCaptionOld.swift; sourceTree = "<group>"; };
 		E1010007306A111400715C3F /* ItemSocialsOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSocialsOld.swift; sourceTree = "<group>"; };
 		E1010009306A111500715C3F /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
@@ -1033,6 +1053,7 @@
 			children = (
 				D70289EF3069D8E000715C3F /* Components */,
 				D70289EC3069D89800715C3F /* Cells */,
+				E20100102F13000100DD937F /* ItemOriginal */,
 				D70289ED3069D8A000715C3F /* Modules */,
 				D70289EE3069D8B000715C3F /* ItemActions */,
 				E1010031306A130100715C3F /* ItemHeader.swift */,
@@ -1040,6 +1061,20 @@
 				E1010035306A130300715C3F /* ItemFooter.swift */,
 			);
 			path = Item;
+			sourceTree = "<group>";
+		};
+		E20100102F13000100DD937F /* ItemOriginal */ = {
+			isa = PBXGroup;
+			children = (
+				E20100012F13000100DD937F /* ItemCellOriginal.swift */,
+				E20100032F13000100DD937F /* ItemHeaderOriginal.swift */,
+				E20100052F13000100DD937F /* ItemBodyOriginal.swift */,
+				E20100072F13000100DD937F /* ItemFooterOriginal.swift */,
+				E20100092F13000100DD937F /* ItemInfoOriginal.swift */,
+				E201000B2F13000100DD937F /* ItemCaptionOriginal.swift */,
+				E201000D2F13000100DD937F /* ItemSocialsOriginal.swift */,
+			);
+			path = ItemOriginal;
 			sourceTree = "<group>";
 		};
 		D70289EC3069D89800715C3F /* Cells */ = {
@@ -1285,6 +1320,9 @@
 			children = (
 				D73601F7304E302D0043B544 /* AboutMeModule.swift */,
 				D72B324BBDF4C44378ADFCAA /* ProfileModuleSlider.swift */,
+				D7E4B1012F12000100DD937F /* ProfileContentTabs.swift */,
+				D7E4B1032F12000100DD937F /* ItemModule.swift */,
+				D7E4B1052F12000100DD937F /* ListModule.swift */,
 				D7360207304E37DC0043B544 /* ClothingModule.swift */,
 			);
 			path = Modules;
@@ -1926,6 +1964,13 @@
 				D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */,
 				D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */,
 				E1010002306A111100715C3F /* ItemCell.swift in Sources */,
+				E20100022F13000100DD937F /* ItemCellOriginal.swift in Sources */,
+				E20100042F13000100DD937F /* ItemHeaderOriginal.swift in Sources */,
+				E20100062F13000100DD937F /* ItemBodyOriginal.swift in Sources */,
+				E20100082F13000100DD937F /* ItemFooterOriginal.swift in Sources */,
+				E201000A2F13000100DD937F /* ItemInfoOriginal.swift in Sources */,
+				E201000C2F13000100DD937F /* ItemCaptionOriginal.swift in Sources */,
+				E201000E2F13000100DD937F /* ItemSocialsOriginal.swift in Sources */,
 				E1010032306A130100715C3F /* ItemHeader.swift in Sources */,
 				E1010034306A130200715C3F /* ItemBody.swift in Sources */,
 				E1010036306A130300715C3F /* ItemFooter.swift in Sources */,
@@ -2018,6 +2063,9 @@
 				D7E7037E2DDD443800BF4AE5 /* FriendProfileViewController.swift in Sources */,
 				D73601F8304E302D0043B544 /* AboutMeModule.swift in Sources */,
 				D784D7799FFA884B62BDECB2 /* ProfileModuleSlider.swift in Sources */,
+				D7E4B1022F12000100DD937F /* ProfileContentTabs.swift in Sources */,
+				D7E4B1042F12000100DD937F /* ItemModule.swift in Sources */,
+				D7E4B1062F12000100DD937F /* ListModule.swift in Sources */,
 				51EC39182D3495850001B6E7 /* EditProfileViewController.swift in Sources */,
 				D7A3EF342FF8826B005EC6DA /* StyleDoc.swift in Sources */,
 				D7E1C93C2ED3D720000071D0 /* EditItemViewController.swift in Sources */,

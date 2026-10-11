@@ -108,12 +108,49 @@ enum Buttons {
     }
 
     static func buttonGrayStyle(button: UIButton) {
+        button.configuration = nil
+        button.configurationUpdateHandler = nil
+        button.alpha = 1
         button.backgroundColor = Colors.buttonGrayBackground
         button.setTitleColor(.black, for: .normal)
+        button.tintColor = .black
+        button.layer.borderWidth = 0
         button.layer.cornerRadius = 6
         button.clipsToBounds = true
         button.titleLabel?.font = Fonts.buttonTikTokFont
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    }
+
+    // Filled pink. Visual only — does not own the button action.
+    static func pinkFullStyle(button: UIButton) {
+        applyPinkStyle(button: button, filled: true)
+    }
+
+    // Pink title and border on white. Visual only.
+    static func pinkOutlineStyle(button: UIButton) {
+        applyPinkStyle(button: button, filled: false)
+    }
+
+    private static func applyPinkStyle(button: UIButton, filled: Bool) {
+        button.configuration = nil
+        button.configurationUpdateHandler = nil
+        button.alpha = button.isEnabled ? 1 : 0.45
+        button.clipsToBounds = true
+        button.layer.cornerRadius = Layout.cornerMedium
+        button.titleLabel?.font = Fonts.buttonTextFont
+        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        if filled {
+            button.backgroundColor = Colors.primaryPink
+            button.setTitleColor(.white, for: .normal)
+            button.tintColor = .white
+            button.layer.borderWidth = 0
+        } else {
+            button.backgroundColor = Colors.screenBackground
+            button.setTitleColor(Colors.primaryPink, for: .normal)
+            button.tintColor = Colors.primaryPink
+            button.layer.borderWidth = 1
+            button.layer.borderColor = Colors.primaryPink.cgColor
+        }
     }
 
     //WISHLIST BUTTONS

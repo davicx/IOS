@@ -25,6 +25,7 @@ final class DiscoverList: UIControl {
     // └── chevron
 
     private let coverView = UIView()
+    private let coverImageView = UIImageView()
     private let coverLabel = UILabel()
     private let titleLabel = UILabel()
     private let detailLabel = UILabel()
@@ -50,8 +51,15 @@ final class DiscoverList: UIControl {
         coverView.translatesAutoresizingMaskIntoConstraints = false
         coverView.backgroundColor = Colors.newItemPhotoIconBackground
         coverView.layer.cornerRadius = 10
+        coverView.clipsToBounds = true
         coverView.isUserInteractionEnabled = false
         addSubview(coverView)
+
+        coverImageView.translatesAutoresizingMaskIntoConstraints = false
+        coverImageView.contentMode = .scaleAspectFill
+        coverImageView.clipsToBounds = true
+        coverImageView.isHidden = true
+        coverView.addSubview(coverImageView)
 
         coverLabel.translatesAutoresizingMaskIntoConstraints = false
         coverLabel.font = Fonts.semibold16
@@ -89,6 +97,11 @@ final class DiscoverList: UIControl {
             coverView.widthAnchor.constraint(equalToConstant: 56),
             coverView.heightAnchor.constraint(equalToConstant: 56),
 
+            coverImageView.topAnchor.constraint(equalTo: coverView.topAnchor),
+            coverImageView.leadingAnchor.constraint(equalTo: coverView.leadingAnchor),
+            coverImageView.trailingAnchor.constraint(equalTo: coverView.trailingAnchor),
+            coverImageView.bottomAnchor.constraint(equalTo: coverView.bottomAnchor),
+
             coverLabel.centerXAnchor.constraint(equalTo: coverView.centerXAnchor),
             coverLabel.centerYAnchor.constraint(equalTo: coverView.centerYAnchor),
 
@@ -117,10 +130,17 @@ final class DiscoverList: UIControl {
     //ACTIONS
 
     //FUNCTIONS
-    func configure(title: String, detail: String) {
+    func configure(title: String, detail: String, image: UIImage? = nil) {
         titleLabel.text = title
         detailLabel.text = detail
         coverLabel.text = String(title.prefix(1)).uppercased()
+        setCoverImage(image)
         accessibilityLabel = "\(title), \(detail)"
+    }
+
+    func setCoverImage(_ image: UIImage?) {
+        coverImageView.image = image
+        coverImageView.isHidden = image == nil
+        coverLabel.isHidden = image != nil
     }
 }

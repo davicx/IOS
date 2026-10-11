@@ -118,8 +118,14 @@ class UsersDataController {
                 let user = createUser(from: userProfile, isCurrentUser: isCurrentUser)
                 
                 // Store in cache (thread-safe)
+                // Key by the profile username and drop any other entry for that same name.
                 usersQueue.async {
-                    self.users[username] = user
+                    let canonical = user.userName
+                    let lower = canonical.lowercased()
+                    for key in Array(self.users.keys) where key.lowercased() == lower && key != canonical {
+                        self.users.removeValue(forKey: key)
+                    }
+                    self.users[canonical] = user
                 }
                 
                 // Fetch image asynchronously
@@ -217,6 +223,10 @@ class UsersDataController {
                     if let existingUser = self.users[friend.userName], let cachedImage = existingUser.profileImage {
                         friend.profileImage = cachedImage
                     }
+                    let lower = friend.userName.lowercased()
+                    for key in Array(self.users.keys) where key.lowercased() == lower && key != friend.userName {
+                        self.users.removeValue(forKey: key)
+                    }
                     self.users[friend.userName] = friend
                 }
                 continuation.resume()
@@ -232,9 +242,18 @@ class UsersDataController {
     }
     
     // Get all friends (users with friendship status)
+    // One row per username. The cache can hold the same account under more than one key.
     func getFriends() -> [User] {
         return usersQueue.sync {
-            return Array(users.values).filter { !$0.friendshipKey.isEmpty && $0.friendshipKey != "not_friends" }
+            var seen = Set<String>()
+            var unique: [User] = []
+            for user in users.values {
+                guard !user.friendshipKey.isEmpty, user.friendshipKey != "not_friends" else { continue }
+                let key = user.userName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                guard !key.isEmpty, seen.insert(key).inserted else { continue }
+                unique.append(user)
+            }
+            return unique
         }
     }
     

@@ -25,6 +25,7 @@ final class DiscoverUser: UIControl {
     // └── chevron
 
     private let avatarView = UIView()
+    private let avatarImageView = UIImageView()
     private let initialLabel = UILabel()
     private let nameLabel = UILabel()
     private let usernameLabel = UILabel()
@@ -50,8 +51,14 @@ final class DiscoverUser: UIControl {
         avatarView.translatesAutoresizingMaskIntoConstraints = false
         avatarView.backgroundColor = Colors.newItemPasteIconBackground
         avatarView.layer.cornerRadius = 27
+        avatarView.clipsToBounds = true
         avatarView.isUserInteractionEnabled = false
         addSubview(avatarView)
+
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        ImageStyle.userProfileImage(imageView: avatarImageView, diameter: 54)
+        avatarImageView.isHidden = true
+        avatarView.addSubview(avatarImageView)
 
         initialLabel.translatesAutoresizingMaskIntoConstraints = false
         initialLabel.font = Fonts.semibold16
@@ -88,6 +95,11 @@ final class DiscoverUser: UIControl {
             avatarView.widthAnchor.constraint(equalToConstant: 54),
             avatarView.heightAnchor.constraint(equalToConstant: 54),
 
+            avatarImageView.topAnchor.constraint(equalTo: avatarView.topAnchor),
+            avatarImageView.leadingAnchor.constraint(equalTo: avatarView.leadingAnchor),
+            avatarImageView.trailingAnchor.constraint(equalTo: avatarView.trailingAnchor),
+            avatarImageView.bottomAnchor.constraint(equalTo: avatarView.bottomAnchor),
+
             initialLabel.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor),
             initialLabel.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor),
 
@@ -116,10 +128,13 @@ final class DiscoverUser: UIControl {
     //ACTIONS
 
     //FUNCTIONS
-    func configure(name: String, username: String) {
+    func configure(name: String, username: String, image: UIImage? = nil) {
         nameLabel.text = name
         usernameLabel.text = username
         initialLabel.text = String(name.prefix(1)).uppercased()
+        avatarImageView.image = image
+        avatarImageView.isHidden = image == nil
+        initialLabel.isHidden = image != nil
         accessibilityLabel = "\(name), \(username)"
     }
 }

@@ -116,7 +116,8 @@ class IndividualPostViewController: UIViewController {
 
         individualPostTableView.rowHeight = UITableView.automaticDimension
         individualPostTableView.separatorStyle = .none
-        individualPostTableView.backgroundColor = Colors.feedBackground
+        individualPostTableView.backgroundColor = Colors.screenBackground
+        view.backgroundColor = Colors.screenBackground
         
         view.addSubview(individualPostTableView)
 
@@ -188,23 +189,53 @@ class IndividualPostViewController: UIViewController {
 }
 
 extension IndividualPostViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1 + comments.count
+        if section == 0 {
+            return 1
+        }
+        return comments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             let postCell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
+            postCell.purchaseStyle = .pinkFull
             if let post {
                 postCell.configure(with: post)
             }
             return postCell
         } else {
             let commentCell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
-            let comment = comments[indexPath.row - 1]
+            let comment = comments[indexPath.row]
             commentCell.configureCommentCell(with: comment)
             return commentCell
         }
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == 1 else { return nil }
+        let header = UIView()
+        header.backgroundColor = Colors.screenBackground
+        let title = UILabel()
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.text = "Comments"
+        title.font = Fonts.semibold16
+        title.textColor = Colors.primaryText
+        header.addSubview(title)
+        NSLayoutConstraint.activate([
+            title.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: Layout.spacingM),
+            title.trailingAnchor.constraint(equalTo: header.trailingAnchor, constant: -Layout.spacingM),
+            title.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: -Layout.spacingS)
+        ])
+        return header
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 1 ? 44 : 0
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -213,7 +244,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             return 700
         }
         return 180

@@ -2,8 +2,6 @@
 //  ItemCell.swift
 //  Kite
 //
-//  Created by David Vasquez on 9/27/26.
-//
 
 import UIKit
 
@@ -18,22 +16,20 @@ import UIKit
 final class ItemCell: UITableViewCell {
 
     //UI COMPONENTS
-    private let itemHolder = UIView()
     private let itemHeader = ItemHeader()
-    private let itemBody = ItemBody()
+    private let itemInfo = ItemInfo()
     private let itemFooter = ItemFooter()
+    private let itemBody = ItemBody()
+    private let divider = UIView()
 
-    private let holderCornerRadius: CGFloat = 16
-    private let holderSideInset: CGFloat = Layout.spacingL * 0.8
-    
+    var purchaseStyle: ItemPurchaseStyle = .pinkOutline
+
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        backgroundColor = Colors.feedBackground
-        contentView.backgroundColor = Colors.feedBackground
-        clipsToBounds = false
-        contentView.clipsToBounds = false
+        backgroundColor = Colors.screenBackground
+        contentView.backgroundColor = Colors.screenBackground
         setupItem()
     }
 
@@ -43,49 +39,43 @@ final class ItemCell: UITableViewCell {
 
     //LAYOUT and UI
     private func setupItem() {
-        itemHolder.translatesAutoresizingMaskIntoConstraints = false
-        itemHolder.backgroundColor = Colors.screenBackground
-        itemHolder.layer.cornerRadius = holderCornerRadius
-        itemHolder.layer.borderWidth = 1
-        itemHolder.layer.borderColor = Colors.separator.cgColor
-        itemHolder.clipsToBounds = true
-        if #available(iOS 13.0, *) {
-            itemHolder.layer.cornerCurve = .continuous
-        }
-        contentView.addSubview(itemHolder)
-
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.06
-        layer.shadowRadius = 8
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.masksToBounds = false
-
-        [itemHeader, itemBody, itemFooter].forEach {
+        [itemHeader, itemInfo.mediaRegion, itemFooter, itemBody, itemInfo.productSummary, divider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            itemHolder.addSubview($0)
+            contentView.addSubview($0)
         }
+
+        divider.backgroundColor = Colors.dividerColor
 
         NSLayoutConstraint.activate([
-            itemHolder.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Layout.spacingM),
-            itemHolder.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: holderSideInset),
-            itemHolder.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -holderSideInset),
-            itemHolder.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Layout.spacingM),
+            itemHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
-            itemHeader.topAnchor.constraint(equalTo: itemHolder.topAnchor),
-            itemHeader.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
-            itemHeader.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
+            itemInfo.mediaRegion.topAnchor.constraint(equalTo: itemHeader.bottomAnchor),
+            itemInfo.mediaRegion.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemInfo.mediaRegion.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemInfo.mediaRegion.heightAnchor.constraint(equalTo: itemInfo.mediaRegion.widthAnchor, multiplier: 0.75),
 
-            itemBody.topAnchor.constraint(equalTo: itemHeader.bottomAnchor),
-            itemBody.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
-            itemBody.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
+            itemFooter.topAnchor.constraint(equalTo: itemInfo.mediaRegion.bottomAnchor),
+            itemFooter.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemFooter.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
-            itemFooter.topAnchor.constraint(equalTo: itemBody.bottomAnchor),
-            itemFooter.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
-            itemFooter.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
-            itemFooter.bottomAnchor.constraint(equalTo: itemHolder.bottomAnchor)
+            itemBody.topAnchor.constraint(equalTo: itemFooter.bottomAnchor),
+            itemBody.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemBody.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            itemInfo.productSummary.topAnchor.constraint(equalTo: itemBody.bottomAnchor, constant: Layout.spacingS),
+            itemInfo.productSummary.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemInfo.productSummary.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            divider.topAnchor.constraint(equalTo: itemInfo.productSummary.bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
         ])
 
-        itemHeader.onPurchaseTapped = { [weak self] post, state in
+        itemInfo.onPurchaseTapped = { [weak self] post, state in
             self?.handlePurchaseAction(post: post, state: state)
         }
     }
@@ -147,18 +137,18 @@ final class ItemCell: UITableViewCell {
         return nil
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(
-            roundedRect: itemHolder.frame,
-            cornerRadius: holderCornerRadius
-        ).cgPath
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        purchaseStyle = .pinkOutline
+        itemHeader.prepareForReuse()
+        itemInfo.prepareForReuse()
     }
 
     //FUNCTIONS
     func configure(with post: Post) {
         itemHeader.configure(with: post)
-        itemBody.configure(with: post)
+        itemInfo.configure(with: post, purchaseStyle: purchaseStyle)
         itemFooter.configure(with: post)
+        itemBody.configure(with: post)
     }
 }

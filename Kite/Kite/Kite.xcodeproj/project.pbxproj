@@ -240,6 +240,8 @@
 		D7BD27742DF7A15200B7D6AC /* FriendDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */; };
 		D7BD62C12E5546030008F6E1 /* PostDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD62C02E5546030008F6E1 /* PostDoc.swift */; };
 		D7C59BE32FCA494300661186 /* ImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C59BE22FCA494300661186 /* ImageStyle.swift */; };
+		D7E4A1012F11000100DD937F /* DesignStyleTemp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4A1002F11000100DD937F /* DesignStyleTemp.swift */; };
+		D7E4A1032F11000100DD937F /* DesignPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4A1022F11000100DD937F /* DesignPostCell.swift */; };
 		D7CB0A2A2DAB2DAD00696CAA /* IndividualPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */; };
 		D7D0768C2DDAA64F00F0843C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */; };
 		D7D3DD322D518D8F00B9DAA7 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */; };
@@ -525,6 +527,8 @@
 		D7BD27732DF7A15200B7D6AC /* FriendDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDataController.swift; sourceTree = "<group>"; };
 		D7BD62C02E5546030008F6E1 /* PostDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDoc.swift; sourceTree = "<group>"; };
 		D7C59BE22FCA494300661186 /* ImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStyle.swift; sourceTree = "<group>"; };
+		D7E4A1002F11000100DD937F /* DesignStyleTemp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignStyleTemp.swift; sourceTree = "<group>"; };
+		D7E4A1022F11000100DD937F /* DesignPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignPostCell.swift; sourceTree = "<group>"; };
 		D7CB0A292DAB2DAD00696CAA /* IndividualPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualPostViewController.swift; sourceTree = "<group>"; };
 		D7D0768B2DDAA64F00F0843C /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
 		D7D3DD312D518D8F00B9DAA7 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
@@ -591,6 +595,7 @@
 				D78AC8C32FAE9A7B000CC5E5 /* Buttons.swift */,
 				D7A9D4945DE4D2443B8159C1 /* Dividers.swift */,
 				D7C59BE22FCA494300661186 /* ImageStyle.swift */,
+				D7E4A1002F11000100DD937F /* DesignStyleTemp.swift */,
 				D7A3EF332FF8826B005EC6DA /* StyleDoc.swift */,
 			);
 			path = Style;
@@ -1614,6 +1619,7 @@
 			isa = PBXGroup;
 			children = (
 				D7D994322F4BD9640002261E /* PostCell.swift */,
+				D7E4A1022F11000100DD937F /* DesignPostCell.swift */,
 				D71809462DBC37F5003BC46D /* CommentCell.swift */,
 			);
 			path = Cells;
@@ -1948,6 +1954,8 @@
 				D7A3C11C2D80F51E000B4EB7 /* SimpleBottomStackView.swift in Sources */,
 				D78D50AD2F2C327A00B86D04 /* PostTemplate.swift in Sources */,
 				D7C59BE32FCA494300661186 /* ImageStyle.swift in Sources */,
+				D7E4A1012F11000100DD937F /* DesignStyleTemp.swift in Sources */,
+				D7E4A1032F11000100DD937F /* DesignPostCell.swift in Sources */,
 				D7DBC7352EC94726002DD687 /* CommentTemplate.swift in Sources */,
 				D74470372E723BA500EF2D2D /* GroupUsersResponseModel.swift in Sources */,
 				51CA9DC32D0FA707008C36F0 /* LoginViewController.swift in Sources */,
