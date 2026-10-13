@@ -23,7 +23,6 @@ final class ItemSocials: UIView {
     private let commentWell = UIView()
     private let bookmarkWell = UIView()
     private let likeCountLabel = UILabel()
-    private var likeCountHeight: NSLayoutConstraint!
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
@@ -63,7 +62,6 @@ final class ItemSocials: UIView {
         likeCountLabel.textColor = Colors.primaryText
         likeCountLabel.numberOfLines = 1
         addSubview(likeCountLabel)
-        likeCountHeight = likeCountLabel.heightAnchor.constraint(equalToConstant: 0)
 
         NSLayoutConstraint.activate([
             likeWell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingS),
@@ -76,7 +74,10 @@ final class ItemSocials: UIView {
             likeImageView.widthAnchor.constraint(equalToConstant: Layout.iconSize),
             likeImageView.heightAnchor.constraint(equalToConstant: Layout.iconSize),
 
-            commentWell.leadingAnchor.constraint(equalTo: likeWell.trailingAnchor),
+            likeCountLabel.leadingAnchor.constraint(equalTo: likeImageView.trailingAnchor, constant: Layout.spacingXS),
+            likeCountLabel.centerYAnchor.constraint(equalTo: likeImageView.centerYAnchor),
+
+            commentWell.leadingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor, constant: Layout.spacingS),
             commentWell.centerYAnchor.constraint(equalTo: likeWell.centerYAnchor),
             commentWell.widthAnchor.constraint(equalToConstant: 44),
             commentWell.heightAnchor.constraint(equalToConstant: 44),
@@ -96,10 +97,7 @@ final class ItemSocials: UIView {
             bookmarkImageView.widthAnchor.constraint(equalToConstant: Layout.iconSize),
             bookmarkImageView.heightAnchor.constraint(equalToConstant: Layout.iconSize),
 
-            likeCountLabel.topAnchor.constraint(equalTo: likeWell.bottomAnchor),
-            likeCountLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
-            likeCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Layout.spacingM),
-            likeCountLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            likeWell.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
@@ -108,9 +106,6 @@ final class ItemSocials: UIView {
         let liked = post.isLikedByCurrentUser ?? false
         likeImageView.image = UIImage(named: liked ? "Liked" : "like")
 
-        let likeCount = post.simpleLikesArray?.count ?? 0
-        likeCountLabel.text = likeCount == 1 ? "1 like" : "\(likeCount) likes"
-        likeCountLabel.isHidden = false
-        likeCountHeight.isActive = false
+        likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
     }
 }
