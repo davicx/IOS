@@ -74,7 +74,7 @@ final class ItemHeader: UIView {
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
             profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            profileImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            profileImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6),
             profileImageView.widthAnchor.constraint(equalToConstant: avatarSize),
             profileImageView.heightAnchor.constraint(equalToConstant: avatarSize),
 

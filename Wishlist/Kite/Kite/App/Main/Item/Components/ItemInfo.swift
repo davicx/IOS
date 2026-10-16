@@ -51,7 +51,7 @@ final class ItemInfo: UIView {
     //LAYOUT and UI
     private func setupViews() {
         mediaRegion.translatesAutoresizingMaskIntoConstraints = false
-        mediaRegion.backgroundColor = Colors.surfaceBackground
+        mediaRegion.backgroundColor = Colors.screenBackground
 
         productImageView.translatesAutoresizingMaskIntoConstraints = false
         productImageView.contentMode = .scaleAspectFit
@@ -60,7 +60,9 @@ final class ItemInfo: UIView {
         mediaRegion.addSubview(productImageView)
 
         productSummary.translatesAutoresizingMaskIntoConstraints = false
-        productSummary.backgroundColor = Colors.screenBackground
+        productSummary.backgroundColor = UIColor(hex: "#E6E6EA")
+        productSummary.layer.cornerRadius = 12
+        productSummary.clipsToBounds = true
 
         itemTitleLabel.font = Fonts.itemNameFont
         itemTitleLabel.textColor = Colors.primaryText
@@ -97,7 +99,7 @@ final class ItemInfo: UIView {
             productImageView.topAnchor.constraint(equalTo: mediaRegion.topAnchor, constant: Layout.spacingS),
             productImageView.leadingAnchor.constraint(equalTo: mediaRegion.leadingAnchor, constant: Layout.spacingS),
             productImageView.trailingAnchor.constraint(equalTo: mediaRegion.trailingAnchor, constant: -Layout.spacingS),
-            productImageView.bottomAnchor.constraint(equalTo: mediaRegion.bottomAnchor, constant: -Layout.spacingS),
+            productImageView.bottomAnchor.constraint(equalTo: mediaRegion.bottomAnchor, constant: -Layout.spacingXS),
 
             textStack.topAnchor.constraint(equalTo: productSummary.topAnchor, constant: Layout.spacingM),
             textStack.leadingAnchor.constraint(equalTo: productSummary.leadingAnchor, constant: Layout.spacingM),

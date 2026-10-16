@@ -45,11 +45,11 @@ final class ItemCaption: UIView {
         addSubview(commentsLabel)
 
         NSLayoutConstraint.activate([
-            captionLabel.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingS),
+            captionLabel.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingXS),
             captionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
             captionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingM),
 
-            commentsLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: Layout.spacingS),
+            commentsLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: Layout.spacingXS),
             commentsLabel.leadingAnchor.constraint(equalTo: captionLabel.leadingAnchor),
             commentsLabel.trailingAnchor.constraint(equalTo: captionLabel.trailingAnchor),
             commentsLabel.bottomAnchor.constraint(equalTo: bottomAnchor)

@@ -155,8 +155,8 @@ class HomeViewController: UIViewController {
         postsTableView.register(ItemCell.self, forCellReuseIdentifier: "ItemCell")
         postsTableView.rowHeight = UITableView.automaticDimension
         postsTableView.separatorStyle = .none
-        postsTableView.backgroundColor = Colors.screenBackground
-        view.backgroundColor = Colors.screenBackground
+        postsTableView.backgroundColor = Colors.feedBackground
+        view.backgroundColor = Colors.feedBackground
     }
 
 
@@ -207,6 +207,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
          let post = postDataController.getHomeFeedPosts()[indexPath.row]
+         cell.usesFeedCard = true
          cell.configure(with: post)
          return cell
      }

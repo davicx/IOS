@@ -16,13 +16,25 @@ import UIKit
 final class ItemCell: UITableViewCell {
 
     //UI COMPONENTS
+    private let itemHolder = UIView()
     private let itemHeader = ItemHeader()
     private let itemInfo = ItemInfo()
     private let itemFooter = ItemFooter()
     private let itemBody = ItemBody()
     private let divider = UIView()
 
+    private var holderLeading: NSLayoutConstraint!
+    private var holderTrailing: NSLayoutConstraint!
+    private var holderBottom: NSLayoutConstraint!
+    private var dividerHeight: NSLayoutConstraint!
+
     var purchaseStyle: ItemPurchaseStyle = .pinkOutline
+    var usesFeedCard = false {
+        didSet {
+            guard oldValue != usesFeedCard else { return }
+            applyCardStyle()
+        }
+    }
 
     //MANAGE VIEWS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -39,44 +51,83 @@ final class ItemCell: UITableViewCell {
 
     //LAYOUT and UI
     private func setupItem() {
+        itemHolder.translatesAutoresizingMaskIntoConstraints = false
+        itemHolder.backgroundColor = Colors.screenBackground
+        contentView.addSubview(itemHolder)
+
         [itemHeader, itemInfo.mediaRegion, itemFooter, itemBody, itemInfo.productSummary, divider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
+            itemHolder.addSubview($0)
         }
 
-        divider.backgroundColor = Colors.dividerColor
+        divider.backgroundColor = UIColor(hex: "#B0B4BC")
+        dividerHeight = divider.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+        holderLeading = itemHolder.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+        holderTrailing = itemHolder.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        holderBottom = itemHolder.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
 
         NSLayoutConstraint.activate([
-            itemHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
-            itemHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemHolder.topAnchor.constraint(equalTo: contentView.topAnchor),
+            holderLeading,
+            holderTrailing,
+            holderBottom,
+
+            itemHeader.topAnchor.constraint(equalTo: itemHolder.topAnchor),
+            itemHeader.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
+            itemHeader.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
 
             itemInfo.mediaRegion.topAnchor.constraint(equalTo: itemHeader.bottomAnchor),
-            itemInfo.mediaRegion.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemInfo.mediaRegion.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemInfo.mediaRegion.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
+            itemInfo.mediaRegion.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
             itemInfo.mediaRegion.heightAnchor.constraint(equalTo: itemInfo.mediaRegion.widthAnchor, multiplier: 0.75),
 
             itemFooter.topAnchor.constraint(equalTo: itemInfo.mediaRegion.bottomAnchor),
-            itemFooter.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemFooter.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemFooter.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
+            itemFooter.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
 
             itemBody.topAnchor.constraint(equalTo: itemFooter.bottomAnchor),
-            itemBody.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemBody.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemBody.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
+            itemBody.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
 
-            itemInfo.productSummary.topAnchor.constraint(equalTo: itemBody.bottomAnchor, constant: Layout.spacingS),
-            itemInfo.productSummary.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemInfo.productSummary.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemInfo.productSummary.topAnchor.constraint(equalTo: itemBody.bottomAnchor, constant: Layout.spacingM),
+            itemInfo.productSummary.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor, constant: Layout.spacingM),
+            itemInfo.productSummary.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor, constant: -Layout.spacingM),
 
-            divider.topAnchor.constraint(equalTo: itemInfo.productSummary.bottomAnchor),
-            divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+            divider.topAnchor.constraint(equalTo: itemInfo.productSummary.bottomAnchor, constant: Layout.spacingM),
+            divider.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: itemHolder.bottomAnchor),
+            dividerHeight
         ])
 
         itemInfo.onPurchaseTapped = { [weak self] post, state in
             self?.handlePurchaseAction(post: post, state: state)
+        }
+
+        applyCardStyle()
+    }
+
+    private func applyCardStyle() {
+        if usesFeedCard {
+            backgroundColor = .clear
+            contentView.backgroundColor = .clear
+            itemHolder.layer.cornerRadius = 16
+            itemHolder.layer.masksToBounds = true
+            divider.isHidden = true
+            dividerHeight.constant = 0
+            holderLeading.constant = 8
+            holderTrailing.constant = -8
+            holderBottom.constant = -12
+        } else {
+            backgroundColor = Colors.screenBackground
+            contentView.backgroundColor = Colors.screenBackground
+            itemHolder.layer.cornerRadius = 0
+            itemHolder.layer.masksToBounds = false
+            divider.isHidden = false
+            dividerHeight.constant = 1 / UIScreen.main.scale
+            holderLeading.constant = 0
+            holderTrailing.constant = 0
+            holderBottom.constant = 0
         }
     }
 
@@ -140,6 +191,7 @@ final class ItemCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         purchaseStyle = .pinkOutline
+        usesFeedCard = false
         itemHeader.prepareForReuse()
         itemInfo.prepareForReuse()
     }

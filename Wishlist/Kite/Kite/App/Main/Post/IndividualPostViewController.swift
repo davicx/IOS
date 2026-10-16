@@ -116,6 +116,7 @@ class IndividualPostViewController: UIViewController {
 
         individualPostTableView.rowHeight = UITableView.automaticDimension
         individualPostTableView.separatorStyle = .none
+        individualPostTableView.sectionHeaderTopPadding = 0
         individualPostTableView.backgroundColor = Colors.screenBackground
         view.backgroundColor = Colors.screenBackground
         
@@ -229,13 +230,14 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         NSLayoutConstraint.activate([
             title.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: Layout.spacingM),
             title.trailingAnchor.constraint(equalTo: header.trailingAnchor, constant: -Layout.spacingM),
-            title.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: -Layout.spacingS)
+            title.topAnchor.constraint(equalTo: header.topAnchor, constant: Layout.spacingS),
+            title.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: -Layout.spacingXS)
         ])
         return header
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 1 ? 44 : 0
+        return section == 1 ? 28 : 0
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
