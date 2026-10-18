@@ -90,28 +90,47 @@ final class ItemHeader: UIView {
     }
 
     private func setupMenu() {
-        let editAction = UIAction(
-            title: "Edit",
-            image: UIImage(systemName: "pencil")
-        ) { [weak self] _ in
-            self?.editTapped()
-        }
-
-        let deleteAction = UIAction(
-            title: "Delete",
-            image: UIImage(systemName: "trash"),
-            attributes: .destructive
-        ) { [weak self] _ in
-            self?.confirmDelete()
-        }
-
-        menuButton.menu = UIMenu(children: [editAction, deleteAction])
         menuButton.showsMenuAsPrimaryAction = true
+        updateMenu()
+    }
+
+    private func updateMenu() {
+        let currentUser = PostDataController.shared.currentUser
+        let owner = post?.postFrom ?? ""
+        let isOwner = !owner.isEmpty && owner.caseInsensitiveCompare(currentUser) == .orderedSame
+
+        if isOwner {
+            let editAction = UIAction(
+                title: "Edit Item",
+                image: UIImage(systemName: "pencil")
+            ) { [weak self] _ in
+                self?.editTapped()
+            }
+            let deleteAction = UIAction(
+                title: "Delete",
+                image: UIImage(systemName: "trash"),
+                attributes: .destructive
+            ) { [weak self] _ in
+                self?.confirmDelete()
+            }
+            menuButton.menu = UIMenu(children: [editAction, deleteAction])
+        } else {
+            let hideAction = UIAction(
+                title: "Hide",
+                image: UIImage(systemName: "eye.slash")
+            ) { _ in }
+            menuButton.menu = UIMenu(children: [hideAction])
+        }
     }
 
     //ACTIONS
     private func editTapped() {
-        print("edit")
+        guard let post, let viewController = findViewController() else { return }
+        let editor = EditItemViewController()
+        editor.currentPost = post
+        let navigation = UINavigationController(rootViewController: editor)
+        navigation.modalPresentationStyle = .fullScreen
+        viewController.present(navigation, animated: true)
     }
 
     private func confirmDelete() {
@@ -166,6 +185,7 @@ final class ItemHeader: UIView {
     func prepareForReuse() {
         loadUserName = nil
         post = nil
+        updateMenu()
         usernameLabel.text = nil
         postedAtLabel.text = nil
         profileImageView.image = UIImage(named: "background_1")
@@ -173,6 +193,7 @@ final class ItemHeader: UIView {
 
     func configure(with post: Post) {
         self.post = post
+        updateMenu()
         postedAtLabel.text = post.timeMessage ?? "now"
 
         guard let username = post.postFrom, !username.isEmpty else {

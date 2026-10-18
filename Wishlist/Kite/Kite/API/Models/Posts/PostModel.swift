@@ -49,6 +49,7 @@ struct ItemDetails: Codable {
     let item_price: String
     let item_description: String
     let item_category: String
+    let item_link_name: String
     let item_link: String
     let purchased: Int
     let purchased_by: String
@@ -62,6 +63,7 @@ struct ItemDetails: Codable {
         case item_price
         case item_description
         case item_category
+        case item_link_name
         case item_link
         case purchased
         case purchased_by
@@ -89,6 +91,7 @@ struct ItemDetails: Codable {
         
         item_description = try container.decode(String.self, forKey: .item_description)
         item_category = try container.decode(String.self, forKey: .item_category)
+        item_link_name = try container.decodeIfPresent(String.self, forKey: .item_link_name) ?? ""
         item_link = try container.decode(String.self, forKey: .item_link)
         purchased = try container.decode(Int.self, forKey: .purchased)
         purchased_by = try container.decode(String.self, forKey: .purchased_by)

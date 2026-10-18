@@ -31,6 +31,9 @@ final class ReviewItemViewController: UIViewController {
     private let priceCaptionLabel = UILabel()
     private let priceField = UITextField()
 
+    private let linkNameCaptionLabel = UILabel()
+    private let linkNameField = UITextField()
+
     private let linkCaptionLabel = UILabel()
     private let linkField = UITextField()
 
@@ -74,7 +77,8 @@ final class ReviewItemViewController: UIViewController {
         setupPhotoRow()
         setupField(caption: titleCaptionLabel, title: "Title", field: titleField, placeholder: "Item name")
         setupField(caption: priceCaptionLabel, title: "Price", field: priceField, placeholder: "$0.00")
-        setupField(caption: linkCaptionLabel, title: "Link", field: linkField, placeholder: "https://")
+        setupField(caption: linkNameCaptionLabel, title: "Link name", field: linkNameField, placeholder: "Target")
+        setupField(caption: linkCaptionLabel, title: "Link URL", field: linkField, placeholder: "https://")
         linkField.keyboardType = .URL
         linkField.autocapitalizationType = .none
         linkField.autocorrectionType = .no
@@ -122,7 +126,16 @@ final class ReviewItemViewController: UIViewController {
             priceField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
             priceField.heightAnchor.constraint(equalToConstant: 48),
 
-            linkCaptionLabel.topAnchor.constraint(equalTo: priceField.bottomAnchor, constant: Layout.spacingL),
+            linkNameCaptionLabel.topAnchor.constraint(equalTo: priceField.bottomAnchor, constant: Layout.spacingL),
+            linkNameCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            linkNameCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            linkNameField.topAnchor.constraint(equalTo: linkNameCaptionLabel.bottomAnchor, constant: Layout.spacingS),
+            linkNameField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            linkNameField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            linkNameField.heightAnchor.constraint(equalToConstant: 48),
+
+            linkCaptionLabel.topAnchor.constraint(equalTo: linkNameField.bottomAnchor, constant: Layout.spacingL),
             linkCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
             linkCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
 
@@ -272,6 +285,7 @@ final class ReviewItemViewController: UIViewController {
     private func applyDraftToFields() {
         titleField.text = draft.name
         priceField.text = draft.price
+        linkNameField.text = draft.linkName
         linkField.text = draft.productURL
         postTextView.text = draft.postText
         photoImageView.image = draft.localImage
@@ -291,6 +305,7 @@ final class ReviewItemViewController: UIViewController {
     func syncDraftFromFields() -> ItemDraft {
         draft.name = titleField.text ?? ""
         draft.price = priceField.text
+        draft.linkName = linkNameField.text
         draft.productURL = linkField.text
         draft.postText = postTextView.text
         return draft
@@ -313,6 +328,7 @@ final class ReviewItemViewController: UIViewController {
         let itemName = updated.name.trimmingCharacters(in: .whitespacesAndNewlines)
         let itemPrice = (updated.price ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let itemLink = (updated.productURL ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let itemLinkName = (updated.linkName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let itemDescription = (updated.postText ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let postCaption = itemDescription.isEmpty ? itemName : itemDescription
 
@@ -345,7 +361,8 @@ final class ReviewItemViewController: UIViewController {
                 itemName: itemName,
                 itemPrice: itemPrice,
                 itemDescription: itemDescription.isEmpty ? itemName : itemDescription,
-                itemLink: itemLink
+                itemLink: itemLink,
+                itemLinkName: itemLinkName
             )
 
             if success {

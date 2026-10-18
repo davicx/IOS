@@ -222,7 +222,7 @@ class PostsAPI {
     }
     
     //Function A5: Post Item
-    func makeItemPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String) async throws -> NewPostResponseModel {
+    func makeItemPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String, itemLinkName: String = "") async throws -> NewPostResponseModel {
         let postType = "item"
         let masterSite = "wishlist"
         let notificationMessage = "Posted a New Item"
@@ -300,6 +300,10 @@ class PostsAPI {
         body.appendString("--\(boundary)\r\n")
         body.appendString("Content-Disposition: form-data; name=\"itemLink\"\r\n\r\n")
         body.appendString("\(itemLink)\r\n")
+
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"itemLinkName\"\r\n\r\n")
+        body.appendString("\(itemLinkName)\r\n")
         
         //Item Category
         body.appendString("--\(boundary)\r\n")
@@ -703,9 +707,57 @@ class PostsAPI {
      //Function C4: Select all Likes for a Post
      //Function C5: Delete a Post
      //Function C5: Edit a Post
- 
+    func editItem(postID: Int, postFrom: String, postCaption: String, itemName: String, itemPrice: String, itemDescription: String, itemLink: String, itemLinkName: String, postImage: UIImage?) async throws -> Bool {
+        guard let url = URL(string: "http://localhost:3003/item/edit/") else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        let boundary = UUID().uuidString
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        let body = NSMutableData()
+        func appendField(_ name: String, _ value: String) {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"\(name)\"\r\n\r\n")
+            body.appendString("\(value)\r\n")
+        }
+
+        appendField("postID", "\(postID)")
+        appendField("postFrom", postFrom)
+        appendField("postCaption", postCaption)
+        appendField("itemName", itemName)
+        appendField("itemPrice", itemPrice)
+        appendField("itemDescription", itemDescription)
+        appendField("itemLink", itemLink)
+        appendField("itemLinkName", itemLinkName)
+
+        if let postImage, let imageData = postImage.jpegData(compressionQuality: 1.0) {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"postImage\"; filename=\"image.jpg\"\r\n")
+            body.appendString("Content-Type: image/jpeg\r\n\r\n")
+            body.append(imageData)
+            body.appendString("\r\n")
+        }
+
+        body.appendString("--\(boundary)--\r\n")
+        request.httpBody = body as Data
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+
+        let decoded = try JSONDecoder().decode(EditItemResponse.self, from: data)
+        return decoded.success
+    }
 
 
+}
+
+private struct EditItemResponse: Decodable {
+    let success: Bool
 }
 
 

@@ -51,6 +51,7 @@ class Post {
     var itemDescription: String?
     var itemCategory: String?
     var itemLink: String?
+    var itemLinkName: String?
     var purchased: Int?
     var purchasedBy: String?
     var purchasedViewers: [String]?

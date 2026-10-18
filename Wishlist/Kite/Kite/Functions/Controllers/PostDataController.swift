@@ -216,6 +216,7 @@ class PostDataController {
             newPost.itemDescription = item.item_description
             newPost.itemCategory = item.item_category
             newPost.itemLink = item.item_link
+            newPost.itemLinkName = item.item_link_name
             newPost.purchased = item.purchased
             newPost.purchasedBy = item.purchased_by
             newPost.purchasedViewers = item.purchased_viewers
@@ -457,6 +458,30 @@ class PostDataController {
         }
     }
     
+    func applyEditedItem(postID: Int, postCaption: String, itemName: String, itemPrice: String, itemDescription: String, itemLink: String, itemLinkName: String, image: UIImage?) {
+        for (groupID, posts) in groupPosts {
+            if let index = posts.firstIndex(where: { $0.postID == postID }) {
+                var post = posts[index]
+                post.postCaption = postCaption
+                post.itemName = itemName
+                post.itemPrice = itemPrice
+                post.itemDescription = itemDescription
+                post.itemLink = itemLink
+                post.itemLinkName = itemLinkName
+                if let image {
+                    post.postImageData = image
+                }
+                var updatedPosts = posts
+                updatedPosts[index] = post
+                groupPosts[groupID] = updatedPosts
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .postUpdated, object: postID)
+                }
+                return
+            }
+        }
+    }
+
     //Function E2: Mark item unpurchased
     func markItemUnpurchased(postID: Int) {
         for (groupID, posts) in groupPosts {

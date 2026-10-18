@@ -65,6 +65,10 @@ final class IndividualListHeader: UIView {
 
     private var groupID: Int?
     private var groupName: String = ""
+    private var menuWidthConstraint: NSLayoutConstraint?
+
+    var onEditList: (() -> Void)?
+    var onInviteFriends: (() -> Void)?
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
@@ -154,13 +158,16 @@ final class IndividualListHeader: UIView {
 
             listMenuButton.trailingAnchor.constraint(equalTo: listNameView.trailingAnchor, constant: -Layout.spacingXS),
             listMenuButton.centerYAnchor.constraint(equalTo: listNameView.centerYAnchor),
-            listMenuButton.widthAnchor.constraint(equalToConstant: Layout.iconSize),
             listMenuButton.heightAnchor.constraint(equalToConstant: Layout.iconSize),
 
             listNameLabel.leadingAnchor.constraint(equalTo: listNameView.leadingAnchor, constant: Layout.spacingXS),
             listNameLabel.trailingAnchor.constraint(equalTo: listMenuButton.leadingAnchor, constant: -Layout.spacingS),
             listNameLabel.centerYAnchor.constraint(equalTo: listNameView.centerYAnchor)
         ])
+
+        let menuWidth = listMenuButton.widthAnchor.constraint(equalToConstant: Layout.iconSize)
+        menuWidth.isActive = true
+        menuWidthConstraint = menuWidth
     }
 
     private func setupListDescriptionView() {
@@ -264,7 +271,7 @@ final class IndividualListHeader: UIView {
 
     private func setupListMenu() {
         let editAction = UIAction(
-            title: "Edit",
+            title: "Edit List",
             image: UIImage(systemName: "pencil")
         ) { [weak self] _ in
             self?.editList()
@@ -284,7 +291,7 @@ final class IndividualListHeader: UIView {
 
     //ACTIONS
     private func editList() {
-        print("Edit List: \(groupID ?? 0)")
+        onEditList?()
     }
 
     private func confirmDeleteList() {
@@ -320,7 +327,7 @@ final class IndividualListHeader: UIView {
     }
 
     @objc private func didTapInviteFriends() {
-        print("Invite Friends")
+        onInviteFriends?()
     }
 
     @objc private func didTapShareList() {
@@ -343,6 +350,11 @@ final class IndividualListHeader: UIView {
         groupID = group.groupID
         groupName = group.groupName
         listNameLabel.text = group.groupName
+
+        let currentUser = UserDefaultManager().getLoggedInUser()
+        let isOwner = (group.createdBy ?? "").caseInsensitiveCompare(currentUser) == .orderedSame
+        listMenuButton.isHidden = !isOwner
+        menuWidthConstraint?.constant = isOwner ? Layout.iconSize : 0
 
         let description = group.groupDescription.trimmingCharacters(in: .whitespacesAndNewlines)
         listDescriptionLabel.text = description.isEmpty ? nil : description

@@ -62,6 +62,30 @@ class GroupDataController {
         onGroupsUpdated?()
     }
 
+    func addPendingMembers(groupID: Int, usernames: [String]) {
+        guard let group = getGroup(by: String(groupID)) else { return }
+        var pending = group.pendingGroupMembers
+        for name in usernames {
+            let alreadyListed = (group.activeGroupMembers + pending).contains {
+                $0.caseInsensitiveCompare(name) == .orderedSame
+            }
+            if !alreadyListed {
+                pending.append(name)
+            }
+        }
+        let updated = GroupModel(
+            groupID: group.groupID,
+            groupName: group.groupName,
+            groupDescription: group.groupDescription,
+            groupType: group.groupType,
+            groupImage: group.groupImage,
+            createdBy: group.createdBy,
+            activeGroupMembers: group.activeGroupMembers,
+            pendingGroupMembers: pending
+        )
+        updateGroupDetails(groupID: String(groupID), updatedGroup: updated)
+    }
+
     func removeGroup(groupID: Int) {
         groups.removeAll { $0.groupID == groupID }
         groupDetails.removeValue(forKey: String(groupID))

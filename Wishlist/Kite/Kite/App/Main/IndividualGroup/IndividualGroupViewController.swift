@@ -163,6 +163,13 @@ class IndividualGroupViewController: UIViewController {
             self?.openGroupMembers()
         }
 
+        listHeader.onEditList = { [weak self] in
+            self?.presentEditList()
+        }
+        listHeader.onInviteFriends = { [weak self] in
+            self?.presentInviteFriends()
+        }
+
         let width = view.bounds.width > 0 ? view.bounds.width : UIScreen.main.bounds.width
         let headerHeight: CGFloat = 110 + listMembers.totalHeight
         headerContainer.frame = CGRect(x: 0, y: 0, width: width, height: headerHeight)
@@ -202,6 +209,31 @@ class IndividualGroupViewController: UIViewController {
                 self.refreshTableHeaderLayout()
             }
         }
+    }
+
+    private func presentInviteFriends() {
+        guard let groupID,
+              let group = GroupDataController.shared.getGroup(by: String(groupID)) else { return }
+        let invite = InviteFriendsViewController()
+        invite.groupID = groupID
+        invite.listName = group.groupName
+        invite.memberUsernames = group.activeGroupMembers + group.pendingGroupMembers
+        invite.onInvited = { [weak self] names in
+            GroupDataController.shared.addPendingMembers(groupID: groupID, usernames: names)
+            self?.fetchGroupMembers()
+        }
+        let navigation = UINavigationController(rootViewController: invite)
+        navigation.modalPresentationStyle = .fullScreen
+        present(navigation, animated: true)
+    }
+
+    private func presentEditList() {
+        guard let groupID,
+              let group = GroupDataController.shared.getGroup(by: String(groupID)) else { return }
+        let editor = EditListViewController(list: group)
+        let navigation = UINavigationController(rootViewController: editor)
+        navigation.modalPresentationStyle = .fullScreen
+        present(navigation, animated: true)
     }
 
     private func openGroupMembers() {

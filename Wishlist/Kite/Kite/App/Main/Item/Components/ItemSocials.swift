@@ -44,6 +44,7 @@ final class ItemSocials: UIView {
     private func setupViews() {
         likeImageView.image = UIImage(named: "like")?.withRenderingMode(.alwaysTemplate)
         likeImageView.tintColor = .black
+        likeImageView.isUserInteractionEnabled = false
         likeImageView.accessibilityLabel = "Like"
         commentImageView.image = UIImage(named: "comment")
         commentImageView.accessibilityLabel = "Comment"
@@ -56,6 +57,7 @@ final class ItemSocials: UIView {
         likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
         likeWell.addSubview(likeImageView)
         likeWell.addSubview(likeButton)
+        likeWell.bringSubviewToFront(likeButton)
         commentWell.addSubview(commentImageView)
         bookmarkWell.addSubview(bookmarkImageView)
         [likeWell, commentWell, bookmarkWell].forEach {
@@ -85,8 +87,9 @@ final class ItemSocials: UIView {
         NSLayoutConstraint.activate([
             likeWell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingS),
             likeWell.topAnchor.constraint(equalTo: topAnchor),
-            likeWell.widthAnchor.constraint(equalToConstant: 44),
-            likeWell.heightAnchor.constraint(equalToConstant: 44),
+            likeWell.widthAnchor.constraint(equalToConstant: 52),
+            likeWell.heightAnchor.constraint(equalToConstant: 52),
+            likeWell.bottomAnchor.constraint(equalTo: socialDivider.topAnchor),
 
             likeImageView.centerXAnchor.constraint(equalTo: likeWell.centerXAnchor),
             likeImageView.centerYAnchor.constraint(equalTo: likeWell.centerYAnchor),
@@ -126,8 +129,6 @@ final class ItemSocials: UIView {
             bookmarkImageView.widthAnchor.constraint(equalToConstant: iconSide),
             bookmarkImageView.heightAnchor.constraint(equalToConstant: iconSide),
 
-            likeWell.bottomAnchor.constraint(equalTo: socialDivider.topAnchor),
-
             socialDivider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
             socialDivider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingM),
             socialDivider.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -152,7 +153,14 @@ final class ItemSocials: UIView {
     func configure(with post: Post) {
         self.post = post
         let liked = post.isLikedByCurrentUser ?? false
-        likeImageView.tintColor = liked ? UIColor(hex: "#F9595F") : .black
+        if liked {
+            let symbol = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+            likeImageView.image = UIImage(systemName: "heart.fill", withConfiguration: symbol)
+            likeImageView.tintColor = UIColor(hex: "#F9595F")
+        } else {
+            likeImageView.image = UIImage(named: "like")?.withRenderingMode(.alwaysTemplate)
+            likeImageView.tintColor = .black
+        }
 
         likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
     }

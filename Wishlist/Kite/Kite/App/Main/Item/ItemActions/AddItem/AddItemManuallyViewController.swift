@@ -34,6 +34,9 @@ final class AddItemManuallyViewController: UIViewController {
     private let priceCaptionLabel = UILabel()
     private let priceField = UITextField()
 
+    private let linkNameCaptionLabel = UILabel()
+    private let linkNameField = UITextField()
+
     private let linkCaptionLabel = UILabel()
     private let linkField = UITextField()
 
@@ -88,7 +91,8 @@ final class AddItemManuallyViewController: UIViewController {
         setupIntro()
         setupField(caption: titleCaptionLabel, title: "Title", field: titleField, placeholder: "Item name")
         setupField(caption: priceCaptionLabel, title: "Price", field: priceField, placeholder: "$0.00")
-        setupField(caption: linkCaptionLabel, title: "Link (optional)", field: linkField, placeholder: "https://")
+        setupField(caption: linkNameCaptionLabel, title: "Link name", field: linkNameField, placeholder: "Target")
+        setupField(caption: linkCaptionLabel, title: "Link URL", field: linkField, placeholder: "https://")
         linkField.keyboardType = .URL
         linkField.autocapitalizationType = .none
         linkField.autocorrectionType = .no
@@ -137,7 +141,16 @@ final class AddItemManuallyViewController: UIViewController {
             priceField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
             priceField.heightAnchor.constraint(equalToConstant: fieldHeight),
 
-            linkCaptionLabel.topAnchor.constraint(equalTo: priceField.bottomAnchor, constant: Layout.spacingL),
+            linkNameCaptionLabel.topAnchor.constraint(equalTo: priceField.bottomAnchor, constant: Layout.spacingL),
+            linkNameCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            linkNameCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+
+            linkNameField.topAnchor.constraint(equalTo: linkNameCaptionLabel.bottomAnchor, constant: Layout.spacingS),
+            linkNameField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
+            linkNameField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
+            linkNameField.heightAnchor.constraint(equalToConstant: fieldHeight),
+
+            linkCaptionLabel.topAnchor.constraint(equalTo: linkNameField.bottomAnchor, constant: Layout.spacingL),
             linkCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: side),
             linkCaptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -side),
 
@@ -346,6 +359,9 @@ final class AddItemManuallyViewController: UIViewController {
         if priceField.text?.isEmpty != false {
             priceField.text = "$49.99"
         }
+        if linkNameField.text?.isEmpty != false {
+            linkNameField.text = "Nintendo"
+        }
         if linkField.text?.isEmpty != false {
             linkField.text = "https://www.nintendo.com/secret-of-mana"
         }
@@ -371,6 +387,7 @@ final class AddItemManuallyViewController: UIViewController {
         draft.name = titleField.text ?? ""
         draft.price = priceField.text
         draft.postText = postTextView.text
+        draft.linkName = linkNameField.text
         draft.productURL = linkField.text
         draft.localImage = selectedImage ?? draft.localImage
         return draft

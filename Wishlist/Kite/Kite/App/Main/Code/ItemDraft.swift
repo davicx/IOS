@@ -15,6 +15,7 @@ struct ItemDraft {
     var price: String?          // stay String while editing; convert at submit
     var postText: String?       // what the user wants to say (not product copy)
     var productURL: String?
+    var linkName: String?
     var imageURL: String?       // remote, if any
     var localImage: UIImage?    // local pick / screenshot — fine for MVP
     var storeName: String?
@@ -26,6 +27,7 @@ struct ItemDraft {
             price: nil,
             postText: nil,
             productURL: nil,
+            linkName: nil,
             imageURL: nil,
             localImage: nil,
             storeName: nil,
@@ -40,6 +42,7 @@ struct ItemDraft {
             price: "$49.99",
             postText: "I want to get Secret of Mana for Nintendo Switch. Looks awesome!",
             productURL: "https://www.nintendo.com/store/products/secret-of-mana-switch/",
+            linkName: "Nintendo",
             imageURL: nil,
             localImage: nil,
             storeName: "Nintendo",

@@ -272,7 +272,43 @@ class GroupsAPI {
         }
     }
 
-    
+    //Function A9: Invite friends to a group
+    func inviteFriends(currentUser: String, groupID: Int, invitedUsers: [String], listName: String) async throws -> InviteFriendsResponseModel {
+        let endpoint = "http://localhost:3003/group/invite/"
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let parameters: [String: Any] = [
+            "currentUser": currentUser,
+            "groupID": groupID,
+            "invitedUsers": invitedUsers,
+            "notificationMessage": "invited you to join \(listName)",
+            "notificationType": "group_invite",
+            "notificationLink": "http://localhost:3003/group/\(groupID)"
+        ]
+
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            return InviteFriendsResponseModel()
+        }
+        request.httpBody = httpBody
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+
+        do {
+            return try JSONDecoder().decode(InviteFriendsResponseModel.self, from: data)
+        } catch {
+            print("Error decoding invite friends data:", error)
+            return InviteFriendsResponseModel()
+        }
+    }
 
 }
 

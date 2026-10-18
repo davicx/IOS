@@ -73,7 +73,7 @@ final class PostLogic {
     //FUNCTIONS B: All Functions Related to Creating Posts
     //Function B1: Create item post (WISHLIST)
     func createItemPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int,
-        listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String) async -> Bool {
+        listID: Int, itemName: String, itemPrice: String, itemDescription: String, itemLink: String, itemLinkName: String = "") async -> Bool {
         
         // Step 1: API call via PostsAPI
         let postsAPI = PostsAPI()
@@ -89,7 +89,8 @@ final class PostLogic {
                 itemName: itemName,
                 itemPrice: itemPrice,
                 itemDescription: itemDescription,
-                itemLink: itemLink
+                itemLink: itemLink,
+                itemLinkName: itemLinkName
             )
             
             guard responseModel.success else {
