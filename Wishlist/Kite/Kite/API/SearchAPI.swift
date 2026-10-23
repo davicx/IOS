@@ -64,7 +64,14 @@ class SearchAPI {
                 .joined(separator: " ")
             let name = fullName.isEmpty ? userName : fullName
             guard !name.isEmpty else { return nil }
-            return SearchUserResult(name: name, username: userName)
+            return SearchUserResult(
+                userID: intValue(user["userID"]),
+                name: name,
+                username: userName,
+                firstName: firstName,
+                lastName: lastName,
+                imageURL: stringValue(user["userImage"])
+            )
         }
     }
 
@@ -113,11 +120,25 @@ class SearchAPI {
         if value is NSNull { return "" }
         return String(describing: value).trimmingCharacters(in: .whitespacesAndNewlines)
     }
+
+    private func intValue(_ value: Any?) -> Int {
+        if let number = value as? NSNumber {
+            return number.intValue
+        }
+        if let string = value as? String, let number = Int(string) {
+            return number
+        }
+        return 0
+    }
 }
 
 struct SearchUserResult {
+    let userID: Int
     let name: String
     let username: String
+    let firstName: String
+    let lastName: String
+    let imageURL: String
 }
 
 struct SearchGroupResult {

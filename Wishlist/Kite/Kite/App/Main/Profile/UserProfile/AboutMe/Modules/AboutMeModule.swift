@@ -32,6 +32,8 @@ final class AboutMeModule: UIView {
     private let aboutMe = AboutMe()
     private let clothingModule = ClothingModule()
     private let logoutButton = UIButton(type: .system)
+    private var logoutTopConstraint: NSLayoutConstraint!
+    private var logoutHeightConstraint: NSLayoutConstraint!
 
     var onLogoutTapped: (() -> Void)?
     var onEditPreferencesTapped: (() -> Void)? {
@@ -94,12 +96,21 @@ final class AboutMeModule: UIView {
             clothingModule.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             clothingModule.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
-            logoutButton.topAnchor.constraint(equalTo: clothingModule.bottomAnchor, constant: Layout.spacingL),
             logoutButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.spacingL),
             logoutButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.spacingL),
-            logoutButton.heightAnchor.constraint(equalToConstant: 44),
             logoutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Layout.spacingL)
         ])
+
+        logoutTopConstraint = logoutButton.topAnchor.constraint(equalTo: clothingModule.bottomAnchor, constant: Layout.spacingL)
+        logoutHeightConstraint = logoutButton.heightAnchor.constraint(equalToConstant: 44)
+        logoutTopConstraint.isActive = true
+        logoutHeightConstraint.isActive = true
+    }
+
+    func setLogoutHidden(_ hidden: Bool) {
+        logoutButton.isHidden = hidden
+        logoutTopConstraint.constant = hidden ? 0 : Layout.spacingL
+        logoutHeightConstraint.constant = hidden ? 0 : 44
     }
 
     //ACTIONS

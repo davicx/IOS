@@ -268,6 +268,7 @@
 		DB546A41C38B4A28A35724B5 /* ItemHeaderOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F50967103BA495592C48D59 /* ItemHeaderOld.swift */; };
 		DF3D24009005497984CF9F2D /* ProfilePreferenceDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87281CB171AE41B8A8C621DE /* ProfilePreferenceDataController.swift */; };
 		E1010002306A111100715C3F /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010001306A111100715C3F /* ItemCell.swift */; };
+		E1010042306A140100715C3F /* ItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010041306A140100715C3F /* ItemList.swift */; };
 		E1010006306A111300715C3F /* ItemCaptionOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010005306A111300715C3F /* ItemCaptionOld.swift */; };
 		E1010008306A111400715C3F /* ItemSocialsOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010007306A111400715C3F /* ItemSocialsOld.swift */; };
 		E101000A306A111500715C3F /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1010009306A111500715C3F /* ItemInfoView.swift */; };
@@ -580,6 +581,7 @@
 		D7FD3C362F4D2C3E0054B9B4 /* PostComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComment.swift; sourceTree = "<group>"; };
 		D9463C24F9A44538B4D72266 /* ItemBodyOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBodyOld.swift; sourceTree = "<group>"; };
 		E1010001306A111100715C3F /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		E1010041306A140100715C3F /* ItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemList.swift; sourceTree = "<group>"; };
 		E1010005306A111300715C3F /* ItemCaptionOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCaptionOld.swift; sourceTree = "<group>"; };
 		E1010007306A111400715C3F /* ItemSocialsOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSocialsOld.swift; sourceTree = "<group>"; };
 		E1010009306A111500715C3F /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
@@ -1063,9 +1065,9 @@
 		D70289EB3069D88B00715C3F /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				D729EDBF308C23DA004B88B5 /* Modules */,
 				D70289EF3069D8E000715C3F /* Components */,
 				D70289EC3069D89800715C3F /* Cells */,
-				D70289ED3069D8A000715C3F /* Modules */,
 				D70289EE3069D8B000715C3F /* ItemActions */,
 				E1010031306A130100715C3F /* ItemHeader.swift */,
 				E1010033306A130200715C3F /* ItemBody.swift */,
@@ -1081,13 +1083,6 @@
 				E1010001306A111100715C3F /* ItemCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		D70289ED3069D8A000715C3F /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Modules;
 			sourceTree = "<group>";
 		};
 		D70289EE3069D8B000715C3F /* ItemActions */ = {
@@ -1278,12 +1273,12 @@
 			path = ListActions;
 			sourceTree = "<group>";
 		};
-		E20101372F18000100DD937F /* cells */ = {
+		D729EDBF308C23DA004B88B5 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				E20101332F18000100DD937F /* InviteFriendCell.swift */,
+				E1010041306A140100715C3F /* ItemList.swift */,
 			);
-			path = cells;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		D73601EB304E29CA0043B544 /* CodeBackupSort */ = {
@@ -1779,6 +1774,14 @@
 			path = ItemOriginal;
 			sourceTree = "<group>";
 		};
+		E20101372F18000100DD937F /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				E20101332F18000100DD937F /* InviteFriendCell.swift */,
+			);
+			path = cells;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1992,6 +1995,7 @@
 				D79BE4DA2E189112004D13B4 /* NewGroupFriendTableViewCell.swift in Sources */,
 				D71809472DBC37F5003BC46D /* CommentCell.swift in Sources */,
 				E1010002306A111100715C3F /* ItemCell.swift in Sources */,
+				E1010042306A140100715C3F /* ItemList.swift in Sources */,
 				E20100022F13000100DD937F /* ItemCellOriginal.swift in Sources */,
 				E20100042F13000100DD937F /* ItemHeaderOriginal.swift in Sources */,
 				E20100062F13000100DD937F /* ItemBodyOriginal.swift in Sources */,

@@ -200,7 +200,27 @@ class DiscoverViewController: UIViewController {
     }
 
     @objc private func userTapped(_ sender: DiscoverUser) {
-        print("Discover person tapped: \(sender.accessibilityLabel ?? "")")
+        guard let person = sender.searchResult, !person.username.isEmpty else {
+            print("Discover person tapped: \(sender.accessibilityLabel ?? "")")
+            return
+        }
+
+        let firstName = person.firstName.isEmpty ? person.username : person.firstName
+        let lastName = person.lastName.isEmpty ? " " : person.lastName
+        let user = User(
+            userID: person.userID,
+            userName: person.username,
+            userImage: person.imageURL,
+            firstName: firstName,
+            lastName: lastName
+        )
+
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        guard let profile = storyboard.instantiateViewController(withIdentifier: "FriendProfileViewControllerID") as? FriendProfileViewController else {
+            return
+        }
+        profile.friend = user
+        navigationController?.pushViewController(profile, animated: true)
     }
 
     @objc private func listTapped(_ sender: DiscoverList) {
@@ -310,6 +330,31 @@ class DiscoverViewController: UIViewController {
         }
     }
 
+    private func loadSearchAvatar(_ person: SearchUserResult, into row: DiscoverUser, generation: Int) {
+        Task { [weak row] in
+            let image = await searchAvatarImage(for: person)
+            await MainActor.run {
+                guard generation == self.searchGeneration, let image else { return }
+                let username = person.username.isEmpty ? "" : "@\(person.username)"
+                row?.configure(name: person.name, username: username, image: image)
+            }
+        }
+    }
+
+    private func searchAvatarImage(for person: SearchUserResult) async -> UIImage? {
+        if let user = await UsersDataController.shared.getOrFetchUserWithImage(username: person.username),
+           let image = await downloadedProfileImage(from: user.userImage) {
+            return image
+        }
+        return await downloadedProfileImage(from: person.imageURL)
+    }
+
+    private func downloadedProfileImage(from urlString: String) async -> UIImage? {
+        let imageURL = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard imageURL.hasPrefix("http://") || imageURL.hasPrefix("https://") else { return nil }
+        return await ImageCacheManager.shared.fetchImageIfNeeded(from: imageURL)
+    }
+
     private func loadListCover(_ list: GroupModel, into row: DiscoverList, generation: Int) {
         let imageURL = list.groupImage
         Task { [weak row] in
@@ -385,12 +430,15 @@ class DiscoverViewController: UIViewController {
             ))
         } else if !peopleRows.isEmpty {
             let group = sectionGroup(label: "PEOPLE")
+            let generation = searchGeneration
             peopleRows.forEach { person in
                 let row = DiscoverUser()
                 let username = person.username.isEmpty ? "" : "@\(person.username)"
+                row.searchResult = person
                 row.configure(name: person.name, username: username)
                 row.addTarget(self, action: #selector(userTapped(_:)), for: .touchUpInside)
                 group.addArrangedSubview(row)
+                loadSearchAvatar(person, into: row, generation: generation)
             }
             contentStack.addArrangedSubview(group)
         }

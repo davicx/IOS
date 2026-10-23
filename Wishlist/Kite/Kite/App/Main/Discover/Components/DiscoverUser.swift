@@ -16,6 +16,7 @@ import UIKit
 final class DiscoverUser: UIControl {
 
     //LOGIC
+    var searchResult: SearchUserResult?
 
     //UI COMPONENTS
     // DiscoverUser
@@ -132,9 +133,12 @@ final class DiscoverUser: UIControl {
         nameLabel.text = name
         usernameLabel.text = username
         initialLabel.text = String(name.prefix(1)).uppercased()
-        avatarImageView.image = image
+        avatarImageView.image = image?.withRenderingMode(.alwaysOriginal)
         avatarImageView.isHidden = image == nil
         initialLabel.isHidden = image != nil
+        if image != nil {
+            avatarView.bringSubviewToFront(avatarImageView)
+        }
         accessibilityLabel = "\(name), \(username)"
     }
 }
