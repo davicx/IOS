@@ -88,6 +88,7 @@ class FriendProfileViewController: UIViewController {
         setupModuleContainer()
 
         aboutMeModule.setLogoutHidden(true)
+        aboutMeModule.setEditHidden(true)
 
         itemList.onItemSelected = { [weak self] post in
             self?.openItem(post)

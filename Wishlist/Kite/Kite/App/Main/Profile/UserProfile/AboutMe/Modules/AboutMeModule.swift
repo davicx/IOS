@@ -36,6 +36,10 @@ final class AboutMeModule: UIView {
     private var logoutHeightConstraint: NSLayoutConstraint!
 
     var onLogoutTapped: (() -> Void)?
+    var onEditTapped: (() -> Void)? {
+        get { aboutMe.onEditTapped }
+        set { aboutMe.onEditTapped = newValue }
+    }
     var onEditPreferencesTapped: (() -> Void)? {
         get { clothingModule.onEditTapped }
         set { clothingModule.onEditTapped = newValue }
@@ -105,6 +109,10 @@ final class AboutMeModule: UIView {
         logoutHeightConstraint = logoutButton.heightAnchor.constraint(equalToConstant: 44)
         logoutTopConstraint.isActive = true
         logoutHeightConstraint.isActive = true
+    }
+
+    func setEditHidden(_ hidden: Bool) {
+        aboutMe.setEditHidden(hidden)
     }
 
     func setLogoutHidden(_ hidden: Bool) {

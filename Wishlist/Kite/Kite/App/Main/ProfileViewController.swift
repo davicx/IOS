@@ -107,6 +107,9 @@ class ProfileViewController: UIViewController {
         aboutMeModule.onLogoutTapped = { [weak self] in
             self?.tempLogoutTapped()
         }
+        aboutMeModule.onEditTapped = { [weak self] in
+            self?.presentEditProfile()
+        }
         aboutMeModule.onEditPreferencesTapped = { [weak self] in
             self?.presentPreferencesSheet(openAdd: false)
         }
@@ -483,6 +486,17 @@ class ProfileViewController: UIViewController {
         showContent(.lists)
     }
     
+    private func presentEditProfile() {
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        guard let editVC = storyboard.instantiateViewController(withIdentifier: "EditProfileViewController") as? EditProfileViewController else { return }
+        editVC.inputFirstName = currentUser?.firstName ?? ""
+        editVC.inputLastName = currentUser?.lastName ?? ""
+        editVC.inputBiography = currentUser?.biography ?? ""
+        editVC.inputProfileImage = currentUser?.profileImage ?? profileImageView.image
+        editVC.delegate = self
+        navigationController?.pushViewController(editVC, animated: true)
+    }
+
     @objc private func friendsCountTapped() {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         guard let friendsVC = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as? FriendsViewController else { return }

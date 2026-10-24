@@ -18,6 +18,7 @@ import UIKit
 final class AboutMe: UIView {
 
     //LOGIC
+    var onEditTapped: (() -> Void)?
     private var biographyText: String = ""
     /// Caps bio text area (~5–6 lines at 15pt). Longer bios scroll inside the card.
     private let maxBioTextHeight: CGFloat = 120
@@ -135,7 +136,11 @@ final class AboutMe: UIView {
 
     //ACTIONS
     @objc private func editTapped() {
-        print("(edit)")
+        onEditTapped?()
+    }
+
+    func setEditHidden(_ hidden: Bool) {
+        editButton.isHidden = hidden
     }
 
     //FUNCTIONS
