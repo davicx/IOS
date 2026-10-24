@@ -41,7 +41,7 @@ final class PostHeader: UIView {
     }
 
     private func setupViews() {
-        backgroundColor = .clear
+        backgroundColor = Colors.screenBackground
         setupHeaderViews()
     }
 
@@ -62,25 +62,26 @@ final class PostHeader: UIView {
         headerGroupMenuView.backgroundColor = .clear
 
         headerTextStackView.axis = .vertical
-        headerTextStackView.spacing = 2
-        headerTextStackView.alignment = .fill
+        headerTextStackView.spacing = 0
+        headerTextStackView.alignment = .leading
         headerTextStackView.distribution = .fill
 
         headerGroupImage.contentMode = .scaleAspectFill
         headerGroupImage.clipsToBounds = true
-        headerGroupImage.layer.cornerRadius = 4
+        headerGroupImage.layer.cornerRadius = 8
 
-        headerGroupNameLabel.font = Fonts.postHeaderEventTitleFont
-        headerGroupNameLabel.textColor = Colors.postHeaderEventTitleTextColor
+        headerGroupNameLabel.font = Fonts.semibold14
+        headerGroupNameLabel.textColor = Colors.primaryGrayText
         headerGroupNameLabel.numberOfLines = 1
         headerGroupNameLabel.lineBreakMode = .byTruncatingTail
 
-        headerGroupInfoLabel.font = Fonts.postHeaderEventTimeFont
-        headerGroupInfoLabel.textColor = Colors.postHeaderEventTimeTextColor
+        headerGroupInfoLabel.font = Fonts.postedAtFont
+        headerGroupInfoLabel.textColor = Colors.subtleGrayText
         headerGroupInfoLabel.numberOfLines = 1
         headerGroupInfoLabel.lineBreakMode = .byTruncatingTail
 
-        headerGroupMenuIcon.image = UIImage(named: "menu-horizontal")
+        headerGroupMenuIcon.image = UIImage(named: "menu-horizontal")?.withRenderingMode(.alwaysTemplate)
+        headerGroupMenuIcon.tintColor = Colors.primaryGrayText
         headerGroupMenuIcon.contentMode = .scaleAspectFit
 
         addSubview(headerGroupImageView)
@@ -94,10 +95,9 @@ final class PostHeader: UIView {
         headerGroupMenuView.addSubview(headerGroupMenuIcon)
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 52),
-
-            headerGroupImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            headerGroupImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            headerGroupImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
+            headerGroupImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            headerGroupImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6),
             headerGroupImageView.widthAnchor.constraint(equalToConstant: 40),
             headerGroupImageView.heightAnchor.constraint(equalToConstant: 40),
 
@@ -107,8 +107,8 @@ final class PostHeader: UIView {
             headerGroupImage.bottomAnchor.constraint(equalTo: headerGroupImageView.bottomAnchor),
 
             headerTextStackView.leadingAnchor.constraint(equalTo: headerGroupImageView.trailingAnchor, constant: 10),
-            headerTextStackView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -10),
-            headerTextStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            headerTextStackView.trailingAnchor.constraint(equalTo: headerGroupMenuView.leadingAnchor, constant: -Layout.spacingS),
+            headerTextStackView.centerYAnchor.constraint(equalTo: headerGroupImageView.centerYAnchor),
 
             headerGroupNameLabel.topAnchor.constraint(equalTo: headerGroupNameView.topAnchor),
             headerGroupNameLabel.leadingAnchor.constraint(equalTo: headerGroupNameView.leadingAnchor),
@@ -120,10 +120,10 @@ final class PostHeader: UIView {
             headerGroupInfoLabel.trailingAnchor.constraint(equalTo: headerGroupInfoView.trailingAnchor),
             headerGroupInfoLabel.bottomAnchor.constraint(equalTo: headerGroupInfoView.bottomAnchor),
 
-            headerGroupMenuView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            headerGroupMenuView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            headerGroupMenuView.widthAnchor.constraint(equalToConstant: 50),
-            headerGroupMenuView.heightAnchor.constraint(equalToConstant: 50),
+            headerGroupMenuView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingXS),
+            headerGroupMenuView.centerYAnchor.constraint(equalTo: headerGroupImageView.centerYAnchor),
+            headerGroupMenuView.widthAnchor.constraint(equalToConstant: 44),
+            headerGroupMenuView.heightAnchor.constraint(equalToConstant: 44),
 
             headerGroupMenuIcon.centerXAnchor.constraint(equalTo: headerGroupMenuView.centerXAnchor),
             headerGroupMenuIcon.centerYAnchor.constraint(equalTo: headerGroupMenuView.centerYAnchor),
@@ -138,6 +138,6 @@ final class PostHeader: UIView {
         headerGroupImage.image = groupImage
 
         headerGroupNameLabel.text = post.groupName ?? "Unknown Group"
-        headerGroupInfoLabel.text = post.timeMessage ?? "Just now"
+        headerGroupInfoLabel.text = "Fall Party * October"
     }
 }
