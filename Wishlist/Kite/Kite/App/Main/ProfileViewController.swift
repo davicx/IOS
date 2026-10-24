@@ -55,7 +55,7 @@ class ProfileViewController: UIViewController {
     private let moduleContainerView = UIView()
     private let aboutMeModule = AboutMeModule()
     private let postListModule = PostList()
-    private let itemModule = ItemModule()
+    private let itemList = ItemList()
     private let listModule = ListModule()
 
     private enum ProfileTab {
@@ -97,7 +97,7 @@ class ProfileViewController: UIViewController {
         // setupModuleSlider()
         setupModuleContainer()
 
-        itemModule.onItemSelected = { [weak self] post in
+        itemList.onItemSelected = { [weak self] post in
             self?.openItem(post)
         }
         listModule.onListSelected = { [weak self] list in
@@ -158,12 +158,14 @@ class ProfileViewController: UIViewController {
     private func setupNavigationBar() {
         navigationItem.title = "Profile"
 
+        /*
         let editProfileButton = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
             action: #selector(editProfileButton)
         )
         navigationItem.rightBarButtonItem = editProfileButton
+        */
 
         if let image = UIImage(named: "user") {
             let circularImage = imageFunctions.makeCircularImage(image: image, size: CGSize(width: 28, height: 28))
@@ -184,9 +186,8 @@ class ProfileViewController: UIViewController {
         userProfileImageView.backgroundColor = .clear
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        profileImageView.contentMode = .scaleAspectFill
-        profileImageView.clipsToBounds = true
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        ImageStyle.userProfileImage(imageView: profileImageView, diameter: 80)
         userProfileImageView.addSubview(profileImageView)
         
         dividerLine.backgroundColor = .systemGray4
@@ -395,7 +396,7 @@ class ProfileViewController: UIViewController {
 
         moduleContainerView.addSubview(aboutMeModule)
         moduleContainerView.addSubview(postListModule)
-        moduleContainerView.addSubview(itemModule)
+        moduleContainerView.addSubview(itemList)
         moduleContainerView.addSubview(listModule)
 
         // Fixed content area: fills remaining space below the segmented control.
@@ -422,10 +423,10 @@ class ProfileViewController: UIViewController {
             postListModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
             postListModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
 
-            itemModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
-            itemModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
-            itemModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
-            itemModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
+            itemList.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
+            itemList.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
+            itemList.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
+            itemList.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
 
             listModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
             listModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
@@ -433,8 +434,7 @@ class ProfileViewController: UIViewController {
             listModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor)
         ])
 
-        // GET /items is the shared home feed. There is no items-by-user call in PostsAPI.
-        itemModule.configure(posts: [])
+        itemList.configure(posts: [])
         showModule(at: 0)
     }
 
@@ -456,7 +456,7 @@ class ProfileViewController: UIViewController {
         let showingItems = selectedTab == .content && contentKind == .items
         let showingLists = selectedTab == .content && contentKind == .lists
         aboutMeModule.isHidden = selectedTab != .aboutMe
-        itemModule.isHidden = !showingItems
+        itemList.isHidden = !showingItems
         listModule.isHidden = !showingLists
         postListModule.isHidden = true
     }
@@ -514,9 +514,11 @@ class ProfileViewController: UIViewController {
         navigationController?.pushViewController(groupViewController, animated: true)
     }
     
+    /*
     @objc private func editProfileButton() {
         print("Edit Profile")
     }
+    */
 
     @objc private func tempLogoutTapped() {
         LoginManager.shared.logoutCurrentUser()
@@ -571,9 +573,21 @@ class ProfileViewController: UIViewController {
     private func loadVisibleContent() {
         switch contentKind {
         case .items:
-            break
+            loadProfileItems()
         case .lists:
             loadProfileLists()
+        }
+    }
+
+    private func loadProfileItems() {
+        let profileUserName = currentUser?.userName ?? userDefaultManager.getLoggedInUser()
+        guard !profileUserName.isEmpty else { return }
+
+        Task { [weak self] in
+            let posts = await PostDataController.shared.fetchItems(for: profileUserName)
+            await MainActor.run {
+                self?.itemList.configure(posts: posts)
+            }
         }
     }
 
@@ -647,11 +661,7 @@ class ProfileViewController: UIViewController {
             
             // Update profile image if it's now available
             if let profileImage = updatedUser.profileImage {
-                let circularImage = imageFunctions.makeCircularImage(
-                    image: profileImage,
-                    size: CGSize(width: 80, height: 80)
-                )
-                profileImageView.image = circularImage
+                profileImageView.image = profileImage
             }
         }
     }
@@ -731,11 +741,7 @@ class ProfileViewController: UIViewController {
         
         // Update profile image
         if let profileImage = user.profileImage {
-            let circularImage = imageFunctions.makeCircularImage(
-                image: profileImage,
-                size: CGSize(width: 80, height: 80)
-            )
-            profileImageView.image = circularImage
+            profileImageView.image = profileImage
         } else {
             // If image not loaded yet, try fetching it
             // Note: UsersDataController may also be fetching it in background,
@@ -747,21 +753,13 @@ class ProfileViewController: UIViewController {
                     let currentUsername = self.userDefaultManager.getLoggedInUser()
                     if let updatedUser = UsersDataController.shared.getUser(username: currentUsername),
                        let profileImage = updatedUser.profileImage {
-                        let circularImage = self.imageFunctions.makeCircularImage(
-                            image: profileImage,
-                            size: CGSize(width: 80, height: 80)
-                        )
-                        self.profileImageView.image = circularImage
+                        self.profileImageView.image = profileImage
                         // Update local reference
                         self.currentUser = updatedUser
                     } else {
                         // Fallback to placeholder
                         if let placeholderImage = UIImage(named: "user") {
-                            let circularImage = self.imageFunctions.makeCircularImage(
-                                image: placeholderImage,
-                                size: CGSize(width: 80, height: 80)
-                            )
-                            self.profileImageView.image = circularImage
+                            self.profileImageView.image = placeholderImage
                         }
                     }
                 }
@@ -800,11 +798,7 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
         DispatchQueue.main.async {
             // Update UI immediately with new data if available
             if let newImage = updatedImage {
-                let circularImage = self.imageFunctions.makeCircularImage(
-                    image: newImage,
-                    size: CGSize(width: 80, height: 80)
-                )
-                self.profileImageView.image = circularImage
+                self.profileImageView.image = newImage
             }
             
             print("Profile updated: \(firstName), \(lastName)")

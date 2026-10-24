@@ -132,7 +132,7 @@ final class ItemInfo: UIView {
             productImageView.topAnchor.constraint(equalTo: mediaRegion.topAnchor, constant: Layout.spacingS),
             productImageView.leadingAnchor.constraint(equalTo: mediaRegion.leadingAnchor, constant: Layout.spacingS),
             productImageView.trailingAnchor.constraint(equalTo: mediaRegion.trailingAnchor, constant: -Layout.spacingS),
-            productImageView.bottomAnchor.constraint(equalTo: mediaRegion.bottomAnchor, constant: -Layout.spacingXS),
+            productImageView.bottomAnchor.constraint(equalTo: mediaRegion.bottomAnchor),
 
             summaryRow.topAnchor.constraint(equalTo: productSummary.topAnchor, constant: Layout.spacingM),
             summaryRow.leadingAnchor.constraint(equalTo: productSummary.leadingAnchor, constant: Layout.spacingM),

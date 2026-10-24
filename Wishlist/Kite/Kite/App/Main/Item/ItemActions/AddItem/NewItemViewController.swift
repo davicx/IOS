@@ -90,9 +90,9 @@ final class NewItemViewController: UIViewController {
         cardsStack.alignment = .fill
         contentView.addSubview(cardsStack)
 
-        cardsStack.addArrangedSubview(pasteCard)
-        cardsStack.addArrangedSubview(photoCard)
         cardsStack.addArrangedSubview(manualCard)
+        cardsStack.addArrangedSubview(photoCard)
+        cardsStack.addArrangedSubview(pasteCard)
 
         setupPrivacyInfoView()
 
@@ -161,14 +161,14 @@ final class NewItemViewController: UIViewController {
     }
 
     private func configureCards() {
-        pasteCard.configure(
-            title: "Paste item details",
-            subtitle: "Paste a product link, description,\nor anything you have.",
-            iconName: "link",
+        manualCard.configure(
+            title: "Enter manually",
+            subtitle: "Fill everything out yourself\nstep by step.",
+            iconName: "pencil",
             iconTintColor: Colors.primaryPink,
             iconBackgroundColor: Colors.newItemPasteIconBackground,
             backgroundColor: Colors.newItemPasteCardBackground,
-            action: { [weak self] in self?.openPaste() }
+            action: { [weak self] in self?.openManual() }
         )
 
         photoCard.configure(
@@ -181,14 +181,14 @@ final class NewItemViewController: UIViewController {
             action: { [weak self] in self?.openPhoto() }
         )
 
-        manualCard.configure(
-            title: "Enter manually",
-            subtitle: "Fill everything out yourself\nstep by step.",
-            iconName: "pencil",
+        pasteCard.configure(
+            title: "Paste item details",
+            subtitle: "Paste a product link, description,\nor anything you have.",
+            iconName: "link",
             iconTintColor: Colors.primaryGrayText,
             iconBackgroundColor: Colors.newItemManualIconBackground,
             backgroundColor: Colors.newItemManualCardBackground,
-            action: { [weak self] in self?.openManual() }
+            action: { [weak self] in self?.openPaste() }
         )
     }
 

@@ -11,7 +11,6 @@ import UIKit
 class FriendProfileViewController: UIViewController {
     var friend: User?
 
-    private let postsAPI = PostsAPI()
     private let groupsAPI = GroupsAPI()
     private let friendAPI = FriendAPI()
     private let imageFunctions = ImageFunctions()
@@ -45,7 +44,7 @@ class FriendProfileViewController: UIViewController {
     private let contentTabs = ProfileContentTabs()
     private let moduleContainerView = UIView()
     private let aboutMeModule = AboutMeModule()
-    private let itemModule = ItemModule()
+    private let itemList = ItemList()
     private let listModule = ListModule()
 
     private enum ProfileTab {
@@ -90,7 +89,7 @@ class FriendProfileViewController: UIViewController {
 
         aboutMeModule.setLogoutHidden(true)
 
-        itemModule.onItemSelected = { [weak self] post in
+        itemList.onItemSelected = { [weak self] post in
             self?.openItem(post)
         }
         listModule.onListSelected = { [weak self] list in
@@ -137,9 +136,8 @@ class FriendProfileViewController: UIViewController {
         userProfileImageView.backgroundColor = .clear
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        profileImageView.contentMode = .scaleAspectFill
-        profileImageView.clipsToBounds = true
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        ImageStyle.userProfileImage(imageView: profileImageView, diameter: 80)
         userProfileImageView.addSubview(profileImageView)
 
         dividerLine.backgroundColor = .systemGray4
@@ -327,7 +325,7 @@ class FriendProfileViewController: UIViewController {
         moduleContainerView.clipsToBounds = true
 
         moduleContainerView.addSubview(aboutMeModule)
-        moduleContainerView.addSubview(itemModule)
+        moduleContainerView.addSubview(itemList)
         moduleContainerView.addSubview(listModule)
 
         NSLayoutConstraint.activate([
@@ -345,10 +343,10 @@ class FriendProfileViewController: UIViewController {
             aboutMeModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
             aboutMeModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
 
-            itemModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
-            itemModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
-            itemModule.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
-            itemModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
+            itemList.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
+            itemList.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
+            itemList.trailingAnchor.constraint(equalTo: moduleContainerView.trailingAnchor),
+            itemList.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor),
 
             listModule.topAnchor.constraint(equalTo: moduleContainerView.topAnchor),
             listModule.leadingAnchor.constraint(equalTo: moduleContainerView.leadingAnchor),
@@ -356,7 +354,7 @@ class FriendProfileViewController: UIViewController {
             listModule.bottomAnchor.constraint(equalTo: moduleContainerView.bottomAnchor)
         ])
 
-        itemModule.configure(posts: [])
+        itemList.configure(posts: [])
         showModule(at: 0)
     }
 
@@ -378,7 +376,7 @@ class FriendProfileViewController: UIViewController {
         let showingItems = selectedTab == .content && contentKind == .items
         let showingLists = selectedTab == .content && contentKind == .lists
         aboutMeModule.isHidden = selectedTab != .aboutMe
-        itemModule.isHidden = !showingItems
+        itemList.isHidden = !showingItems
         listModule.isHidden = !showingLists
     }
 
@@ -438,10 +436,7 @@ class FriendProfileViewController: UIViewController {
               let updatedUser = UsersDataController.shared.getUser(username: name),
               let profileImage = updatedUser.profileImage else { return }
 
-        profileImageView.image = imageFunctions.makeCircularImage(
-            image: profileImage,
-            size: CGSize(width: 80, height: 80)
-        )
+        profileImageView.image = profileImage
     }
 
     private func getUserInfo() async {
@@ -530,15 +525,9 @@ class FriendProfileViewController: UIViewController {
         navigationItem.title = user.displayName
 
         if let profileImage = user.profileImage {
-            profileImageView.image = imageFunctions.makeCircularImage(
-                image: profileImage,
-                size: CGSize(width: 80, height: 80)
-            )
+            profileImageView.image = profileImage
         } else if let placeholderImage = UIImage(named: "user") {
-            profileImageView.image = imageFunctions.makeCircularImage(
-                image: placeholderImage,
-                size: CGSize(width: 80, height: 80)
-            )
+            profileImageView.image = placeholderImage
         }
 
         userNameLabel.text = "@\(user.userName)"
@@ -564,20 +553,9 @@ class FriendProfileViewController: UIViewController {
         didLoadItems = true
 
         Task {
-            do {
-                let response = try await postsAPI.getAllItemsAPI()
-                let posts = try await createPostsArray(postsResponseModel: response)
-                let theirItems = posts.filter {
-                    ($0.postFrom ?? "").caseInsensitiveCompare(name) == .orderedSame
-                }
-                await MainActor.run {
-                    self.itemModule.configure(posts: theirItems)
-                }
-            } catch {
-                await MainActor.run {
-                    self.didLoadItems = false
-                    self.itemModule.configure(posts: [])
-                }
+            let posts = await PostDataController.shared.fetchItems(for: name)
+            await MainActor.run {
+                self.itemList.configure(posts: posts)
             }
         }
     }

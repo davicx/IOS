@@ -128,6 +128,17 @@ class PostDataController {
         }
     }
 
+    // One profile's items. Not the home feed.
+    func fetchItems(for userName: String) async -> [Post] {
+        do {
+            let postsResponseModel = try await postsAPI.getUserItemsAPI(userName: userName)
+            return try await loadPostsWithImages(from: postsResponseModel)
+        } catch {
+            print("PostDataController: Failed to fetch items for \(userName) - \(error)")
+            return []
+        }
+    }
+
     private func loadPostsWithImages(from postsResponseModel: PostResponseModel) async throws -> [Post] {
         let noImagePosts = try await createPostsArray(postsResponseModel: postsResponseModel)
         let postsWithImages = try await addPostImageToPostsArray(postsArray: noImagePosts)

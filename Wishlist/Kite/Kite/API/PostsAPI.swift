@@ -486,8 +486,32 @@ class PostsAPI {
             return PostResponseModel()
         }
     }
-    
 
+    //Function B2c: Get one user's items
+    func getUserItemsAPI(userName: String) async throws -> PostResponseModel {
+        let encoded = userName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? userName
+        let endpoint = "http://localhost:3003/items/user/\(encoded)"
+
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        let apiURL = URLRequest(url: url)
+        let (data, response) = try await URLSession.shared.data(for: apiURL)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+
+        do {
+            return try JSONDecoder().decode(PostResponseModel.self, from: data)
+        } catch {
+            print("Error decoding user items: \(error)")
+            return PostResponseModel()
+        }
+    }
+    
+    
     
     //Function B3: Get all User Posts
     //Function B4: Get Single Post by ID
