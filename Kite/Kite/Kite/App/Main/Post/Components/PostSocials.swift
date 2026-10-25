@@ -16,6 +16,334 @@ import UIKit
 //ACTIONS
 //FUNCTIONS
 
+
+
+final class PostSocials: UIView {
+
+    //UI COMPONENTS
+    private let socialIconsLeft = UIView()
+    private let socialIconsMiddle = UIView()
+    private let socialIconsRight = UIView()
+    private let likeImageView = UIImageView()
+    private let commentImageView = UIImageView()
+    private let bookmarkImageView = UIImageView()
+    private let likeButton = UIButton(type: .custom)
+    private let likeCountLabel = UILabel()
+    private let dotsStack = UIStackView()
+    private var post: Post?
+    private let iconSide: CGFloat = Layout.iconSize + 2
+
+    //MANAGE VIEWS
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = Colors.screenBackground
+        setupViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    //LAYOUT and UI
+    private func setupViews() {
+        // socialIconsLeft.backgroundColor = UIColor.systemPink.withAlphaComponent(0.35)
+        // socialIconsMiddle.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.35)
+        // socialIconsRight.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.35)
+
+        [socialIconsLeft, socialIconsMiddle, socialIconsRight].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+
+        likeImageView.image = UIImage(named: "like")?.withRenderingMode(.alwaysTemplate)
+        likeImageView.tintColor = .black
+        likeImageView.contentMode = .scaleAspectFit
+        likeImageView.isUserInteractionEnabled = false
+        commentImageView.image = UIImage(named: "comment")
+        commentImageView.contentMode = .scaleAspectFit
+        bookmarkImageView.image = UIImage(named: "bookmark")
+        bookmarkImageView.contentMode = .scaleAspectFit
+
+        likeCountLabel.font = Fonts.semibold14
+        likeCountLabel.textColor = UIColor(hex: "#171717")
+        likeCountLabel.text = "0"
+
+        likeButton.backgroundColor = .clear
+        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+
+        [likeImageView, likeCountLabel, commentImageView, likeButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            socialIconsLeft.addSubview($0)
+        }
+        socialIconsLeft.bringSubviewToFront(likeButton)
+
+        dotsStack.axis = .horizontal
+        dotsStack.spacing = DesignStyleTemp.dotSpacing
+        dotsStack.alignment = .center
+        dotsStack.translatesAutoresizingMaskIntoConstraints = false
+        socialIconsMiddle.addSubview(dotsStack)
+        rebuildDots()
+
+        bookmarkImageView.translatesAutoresizingMaskIntoConstraints = false
+        socialIconsRight.addSubview(bookmarkImageView)
+
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 44),
+
+            socialIconsLeft.leadingAnchor.constraint(equalTo: leadingAnchor),
+            socialIconsLeft.topAnchor.constraint(equalTo: topAnchor),
+            socialIconsLeft.bottomAnchor.constraint(equalTo: bottomAnchor),
+            socialIconsLeft.widthAnchor.constraint(equalToConstant: 140),
+
+            socialIconsMiddle.leadingAnchor.constraint(equalTo: socialIconsLeft.trailingAnchor),
+            socialIconsMiddle.topAnchor.constraint(equalTo: topAnchor),
+            socialIconsMiddle.bottomAnchor.constraint(equalTo: bottomAnchor),
+            socialIconsMiddle.trailingAnchor.constraint(equalTo: socialIconsRight.leadingAnchor),
+
+            socialIconsRight.trailingAnchor.constraint(equalTo: trailingAnchor),
+            socialIconsRight.topAnchor.constraint(equalTo: topAnchor),
+            socialIconsRight.bottomAnchor.constraint(equalTo: bottomAnchor),
+            socialIconsRight.widthAnchor.constraint(equalToConstant: 140),
+
+            likeImageView.leadingAnchor.constraint(equalTo: socialIconsLeft.leadingAnchor, constant: 14),
+            likeImageView.centerYAnchor.constraint(equalTo: socialIconsLeft.centerYAnchor),
+            likeImageView.widthAnchor.constraint(equalToConstant: iconSide),
+            likeImageView.heightAnchor.constraint(equalToConstant: iconSide),
+
+            likeCountLabel.leadingAnchor.constraint(equalTo: likeImageView.trailingAnchor, constant: Layout.spacingXS),
+            likeCountLabel.centerYAnchor.constraint(equalTo: likeImageView.centerYAnchor),
+
+            commentImageView.leadingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor, constant: Layout.spacingS),
+            commentImageView.centerYAnchor.constraint(equalTo: likeImageView.centerYAnchor),
+            commentImageView.widthAnchor.constraint(equalToConstant: iconSide),
+            commentImageView.heightAnchor.constraint(equalToConstant: iconSide),
+
+            likeButton.topAnchor.constraint(equalTo: likeImageView.topAnchor),
+            likeButton.leadingAnchor.constraint(equalTo: likeImageView.leadingAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor),
+            likeButton.bottomAnchor.constraint(equalTo: likeImageView.bottomAnchor),
+
+            dotsStack.centerXAnchor.constraint(equalTo: socialIconsMiddle.centerXAnchor),
+            dotsStack.centerYAnchor.constraint(equalTo: socialIconsMiddle.centerYAnchor),
+
+            bookmarkImageView.trailingAnchor.constraint(equalTo: socialIconsRight.trailingAnchor, constant: -14),
+            bookmarkImageView.centerYAnchor.constraint(equalTo: socialIconsRight.centerYAnchor),
+            bookmarkImageView.widthAnchor.constraint(equalToConstant: iconSide),
+            bookmarkImageView.heightAnchor.constraint(equalToConstant: iconSide)
+        ])
+    }
+
+    //ACTIONS
+    @objc private func likeTapped() {
+        guard let post else { return }
+        likeButton.isUserInteractionEnabled = false
+        let groupID = post.groupID ?? 0
+        Task {
+            await PostLogic.shared.toggleLike(post: post, groupID: groupID)
+            await MainActor.run {
+                self.likeButton.isUserInteractionEnabled = true
+            }
+        }
+    }
+
+    //FUNCTIONS
+    func configure(postID: Int) {
+        guard let post = PostDataController.shared.getPostByID(postID: postID) else { return }
+        configure(with: post)
+    }
+
+    func configure(with post: Post) {
+        self.post = post
+        let liked = post.isLikedByCurrentUser ?? false
+        if liked {
+            let symbol = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+            likeImageView.image = UIImage(systemName: "heart.fill", withConfiguration: symbol)
+            likeImageView.tintColor = UIColor(hex: "#F9595F")
+        } else {
+            likeImageView.image = UIImage(named: "like")?.withRenderingMode(.alwaysTemplate)
+            likeImageView.tintColor = .black
+        }
+        likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
+    }
+
+    private func rebuildDots() {
+        let pageCount = 4
+        let page = 0
+        let visible = min(pageCount, DesignStyleTemp.maxDots)
+        for index in 0..<visible {
+            let dot = UIView()
+            dot.backgroundColor = index == page ? DesignStyleTemp.activePage : DesignStyleTemp.inactivePage
+            dot.layer.cornerRadius = DesignStyleTemp.dotSize / 2
+            dot.translatesAutoresizingMaskIntoConstraints = false
+            dot.widthAnchor.constraint(equalToConstant: DesignStyleTemp.dotSize).isActive = true
+            dot.heightAnchor.constraint(equalToConstant: DesignStyleTemp.dotSize).isActive = true
+            dotsStack.addArrangedSubview(dot)
+        }
+    }
+}
+
+/*
+final class PostSocials: UIView {
+
+    //UI COMPONENTS
+    private let likeImageView = UIImageView()
+    private let commentImageView = UIImageView()
+    private let bookmarkImageView = UIImageView()
+    private let likeWell = UIView()
+    private let likeButton = UIButton(type: .custom)
+    private let commentWell = UIView()
+    private let bookmarkWell = UIView()
+    private let likeCountLabel = UILabel()
+    private var post: Post?
+    private let actionsDivider = UIView()
+    private let socialDivider = UIView()
+    private let iconSide: CGFloat = Layout.iconSize + 2
+
+    //MANAGE VIEWS
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = Colors.screenBackground
+        setupViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    //LAYOUT and UI
+    private func setupViews() {
+        likeImageView.image = UIImage(named: "like")?.withRenderingMode(.alwaysTemplate)
+        likeImageView.tintColor = .black
+        likeImageView.isUserInteractionEnabled = false
+        likeImageView.accessibilityLabel = "Like"
+        commentImageView.image = UIImage(named: "comment")
+        commentImageView.accessibilityLabel = "Comment"
+        bookmarkImageView.image = UIImage(named: "bookmark")
+        bookmarkImageView.accessibilityLabel = "Bookmark"
+
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.backgroundColor = .clear
+        likeButton.accessibilityLabel = "Like"
+        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+        likeWell.addSubview(likeImageView)
+        likeWell.addSubview(likeButton)
+        likeWell.bringSubviewToFront(likeButton)
+        commentWell.addSubview(commentImageView)
+        bookmarkWell.addSubview(bookmarkImageView)
+        [likeWell, commentWell, bookmarkWell].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+        [likeImageView, commentImageView, bookmarkImageView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.contentMode = .scaleAspectFit
+            $0.isAccessibilityElement = true
+        }
+
+        likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeCountLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        likeCountLabel.textColor = UIColor(hex: "#171717")
+        likeCountLabel.numberOfLines = 1
+        addSubview(likeCountLabel)
+
+        actionsDivider.translatesAutoresizingMaskIntoConstraints = false
+        actionsDivider.backgroundColor = UIColor(hex: "#B0B4BC")
+        addSubview(actionsDivider)
+
+        socialDivider.translatesAutoresizingMaskIntoConstraints = false
+        socialDivider.backgroundColor = UIColor(hex: "#B0B4BC")
+        addSubview(socialDivider)
+
+        NSLayoutConstraint.activate([
+            likeWell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingS),
+            likeWell.topAnchor.constraint(equalTo: topAnchor),
+            likeWell.widthAnchor.constraint(equalToConstant: 52),
+            likeWell.heightAnchor.constraint(equalToConstant: 52),
+            likeWell.bottomAnchor.constraint(equalTo: socialDivider.topAnchor),
+
+            likeImageView.centerXAnchor.constraint(equalTo: likeWell.centerXAnchor),
+            likeImageView.centerYAnchor.constraint(equalTo: likeWell.centerYAnchor),
+            likeImageView.widthAnchor.constraint(equalToConstant: iconSide),
+            likeImageView.heightAnchor.constraint(equalToConstant: iconSide),
+
+            likeButton.topAnchor.constraint(equalTo: likeWell.topAnchor),
+            likeButton.leadingAnchor.constraint(equalTo: likeWell.leadingAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: likeWell.trailingAnchor),
+            likeButton.bottomAnchor.constraint(equalTo: likeWell.bottomAnchor),
+
+            likeCountLabel.leadingAnchor.constraint(equalTo: likeImageView.trailingAnchor, constant: Layout.spacingXS),
+            likeCountLabel.centerYAnchor.constraint(equalTo: likeImageView.centerYAnchor),
+
+            actionsDivider.leadingAnchor.constraint(equalTo: likeCountLabel.trailingAnchor, constant: Layout.spacingL),
+            actionsDivider.centerYAnchor.constraint(equalTo: likeWell.centerYAnchor),
+            actionsDivider.widthAnchor.constraint(equalToConstant: 0.5),
+            actionsDivider.heightAnchor.constraint(equalToConstant: 22),
+
+            commentWell.leadingAnchor.constraint(equalTo: actionsDivider.trailingAnchor, constant: Layout.spacingL),
+            commentWell.centerYAnchor.constraint(equalTo: likeWell.centerYAnchor),
+            commentWell.widthAnchor.constraint(equalToConstant: 44),
+            commentWell.heightAnchor.constraint(equalToConstant: 44),
+
+            commentImageView.centerXAnchor.constraint(equalTo: commentWell.centerXAnchor),
+            commentImageView.centerYAnchor.constraint(equalTo: commentWell.centerYAnchor),
+            commentImageView.widthAnchor.constraint(equalToConstant: iconSide),
+            commentImageView.heightAnchor.constraint(equalToConstant: iconSide),
+
+            bookmarkWell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingS),
+            bookmarkWell.centerYAnchor.constraint(equalTo: likeWell.centerYAnchor),
+            bookmarkWell.widthAnchor.constraint(equalToConstant: 44),
+            bookmarkWell.heightAnchor.constraint(equalToConstant: 44),
+
+            bookmarkImageView.centerXAnchor.constraint(equalTo: bookmarkWell.centerXAnchor),
+            bookmarkImageView.centerYAnchor.constraint(equalTo: bookmarkWell.centerYAnchor),
+            bookmarkImageView.widthAnchor.constraint(equalToConstant: iconSide),
+            bookmarkImageView.heightAnchor.constraint(equalToConstant: iconSide),
+
+            socialDivider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
+            socialDivider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingM),
+            socialDivider.bottomAnchor.constraint(equalTo: bottomAnchor),
+            socialDivider.heightAnchor.constraint(equalToConstant: 0.5)
+        ])
+    }
+
+    //ACTIONS
+    @objc private func likeTapped() {
+        guard let post else { return }
+        likeButton.isUserInteractionEnabled = false
+        let groupID = post.groupID ?? 0
+        Task {
+            await PostLogic.shared.toggleLike(post: post, groupID: groupID)
+            await MainActor.run {
+                self.likeButton.isUserInteractionEnabled = true
+            }
+        }
+    }
+
+    //FUNCTIONS
+    func configure(postID: Int) {
+        guard let post = PostDataController.shared.getPostByID(postID: postID) else { return }
+        configure(with: post)
+    }
+
+    func configure(with post: Post) {
+        self.post = post
+        let liked = post.isLikedByCurrentUser ?? false
+        if liked {
+            let symbol = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+            likeImageView.image = UIImage(systemName: "heart.fill", withConfiguration: symbol)
+            likeImageView.tintColor = UIColor(hex: "#F9595F")
+        } else {
+            likeImageView.image = UIImage(named: "like")?.withRenderingMode(.alwaysTemplate)
+            likeImageView.tintColor = .black
+        }
+
+        likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
+    }
+}
+
+*/
+
+/*
 final class PostSocials: UIView {
     
     
@@ -277,6 +605,7 @@ final class PostSocials: UIView {
 
 }
 
+*/
 
 /*
  // Saved background colors (commented out in setupViews / setup*):

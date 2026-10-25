@@ -21,7 +21,7 @@ final class PostCell: UITableViewCell {
     private let postHeader = PostHeader()
     private let postImage = PostImage()
     //private let postCaption = PostCaption()
-    //private let postSocials = PostSocials()
+    private let postSocials = PostSocials()
     //private let mainDivider = MainDivider()
 
 
@@ -42,7 +42,7 @@ final class PostCell: UITableViewCell {
 
     //Kite
     private func setupPost() {
-        [postHeader, postImage].forEach {
+        [postHeader, postImage, postSocials].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -55,7 +55,11 @@ final class PostCell: UITableViewCell {
             postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             //postImage.heightAnchor.constraint(equalTo: postImage.widthAnchor, multiplier: 0.75),
-            postImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+
+            postSocials.topAnchor.constraint(equalTo: postImage.bottomAnchor),
+            postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postSocials.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         // [postHeader, postImage, postCaption, postSocials, mainDivider].forEach {
         //     $0.translatesAutoresizingMaskIntoConstraints = false
@@ -95,12 +99,11 @@ final class PostCell: UITableViewCell {
 
     //Configure socials with post so like count (and later like action) use live data.
     func configure(postID: Int) {
-        //postSocials.configure(postID: postID)
         if let post = PostDataController.shared.getPostByID(postID: postID) {
             postHeader.configure(with: post)
             postImage.configure(with: post)
             //postCaption.configure(with: post)
-
+            postSocials.configure(postID: postID)
         }
     }
 
@@ -108,8 +111,7 @@ final class PostCell: UITableViewCell {
         postHeader.configure(with: post)
         postImage.configure(with: post)
         //postCaption.configure(with: post)
-        //postSocials.configure(postID: post.postID)
-
+        postSocials.configure(postID: post.postID)
     }
 
 }

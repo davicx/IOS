@@ -39,7 +39,7 @@ class HomeViewController: UIViewController {
     let topNavigationView = UIView()
     let topNavigationProfileImageView = UIImageView()
     let topNavigationProfileButton = UIButton(type: .custom)
-    let topNavigationLogoImageView = UIImageView()
+    //let topNavigationLogoImageView = UIImageView()
 
     //MANAGE VIEWS
     override func viewDidLoad() {
@@ -123,11 +123,11 @@ class HomeViewController: UIViewController {
         topNavigationProfileButton.addTarget(self, action: #selector(profileImageTapped), for: .touchUpInside)
         topNavigationView.addSubview(topNavigationProfileButton)
 
-        topNavigationLogoImageView.image = UIImage(named: "blue_logo")
+        // topNavigationLogoImageView.image = UIImage(named: "blue_logo")
         //topNavigationLogoImageView.image = UIImage(named: "pink_logo")
-        topNavigationLogoImageView.contentMode = .scaleAspectFit
-        topNavigationLogoImageView.translatesAutoresizingMaskIntoConstraints = false
-        topNavigationView.addSubview(topNavigationLogoImageView)
+        // topNavigationLogoImageView.contentMode = .scaleAspectFit
+        // topNavigationLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+        // topNavigationView.addSubview(topNavigationLogoImageView)
 
         NSLayoutConstraint.activate([
             topNavigationProfileImageView.leadingAnchor.constraint(equalTo: topNavigationView.leadingAnchor),
@@ -140,10 +140,10 @@ class HomeViewController: UIViewController {
             topNavigationProfileButton.widthAnchor.constraint(equalToConstant: 40),
             topNavigationProfileButton.heightAnchor.constraint(equalToConstant: 44),
 
-            topNavigationLogoImageView.centerXAnchor.constraint(equalTo: topNavigationView.centerXAnchor),
-            topNavigationLogoImageView.centerYAnchor.constraint(equalTo: topNavigationView.centerYAnchor),
-            topNavigationLogoImageView.widthAnchor.constraint(equalToConstant: 38),
-            topNavigationLogoImageView.heightAnchor.constraint(equalToConstant: 38)
+            // topNavigationLogoImageView.centerXAnchor.constraint(equalTo: topNavigationView.centerXAnchor),
+            // topNavigationLogoImageView.centerYAnchor.constraint(equalTo: topNavigationView.centerYAnchor),
+            // topNavigationLogoImageView.widthAnchor.constraint(equalToConstant: 38),
+            // topNavigationLogoImageView.heightAnchor.constraint(equalToConstant: 38)
         ])
 
         navigationItem.titleView = topNavigationView
