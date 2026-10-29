@@ -24,12 +24,7 @@ class NewGroupFriendTableViewCell: UITableViewCell {
         didSet {
             let imageName = isChecked ? "checkmark.square.fill" : "square"
             selectionCheckbox.setImage(UIImage(systemName: imageName), for: .normal)
-            selectionCheckbox.tintColor = isChecked ? .systemBlue : .lightGray
-            
-            // Print username on toggle
-            if let friend = friend {
-                print(isChecked ? "\(friend.userName) was checked" : "\(friend.userName) was unchecked")
-            }
+            selectionCheckbox.tintColor = isChecked ? Colors.primaryPink : Colors.subtleGrayText
         }
     }
 
@@ -58,9 +53,13 @@ class NewGroupFriendTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 24
         profileImageView.clipsToBounds = true
 
-        usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        fullNameLabel.font = UIFont.systemFont(ofSize: 14)
-        fullNameLabel.textColor = .gray
+        usernameLabel.font = Fonts.semibold16
+        usernameLabel.textColor = Colors.primaryGrayText
+        fullNameLabel.font = Fonts.regular14
+        fullNameLabel.textColor = Colors.subtleGrayText
+        backgroundColor = Colors.screenBackground
+        contentView.backgroundColor = Colors.screenBackground
+        selectionStyle = .none
 
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -83,12 +82,12 @@ class NewGroupFriendTableViewCell: UITableViewCell {
     }
 
     // Public configure method
-    func configure(with friend: User) {
+    func configure(with friend: User, isChecked: Bool = false) {
         self.friend = friend
         usernameLabel.text = "@\(friend.userName)"
         fullNameLabel.text = friend.displayName
         profileImageView.image = friend.profileImage ?? UIImage(named: "placeholder_profile")
-        isChecked = false // Reset each time cell is reused
+        self.isChecked = isChecked
     }
 
     // Checkbox toggle action

@@ -76,7 +76,7 @@ final class PostHeader: UIView {
         headerGroupNameLabel.lineBreakMode = .byTruncatingTail
 
         headerGroupInfoLabel.font = Fonts.postedAtFont
-        headerGroupInfoLabel.textColor = Colors.subtleGrayText
+        headerGroupInfoLabel.textColor = Colors.mutedGrayText
         headerGroupInfoLabel.numberOfLines = 1
         headerGroupInfoLabel.lineBreakMode = .byTruncatingTail
 
