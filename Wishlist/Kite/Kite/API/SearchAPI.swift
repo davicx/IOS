@@ -23,7 +23,7 @@ class SearchAPI {
     func searchFriends(username: String, searchString: String) async throws -> FriendSearchResponseModel {
         print("Search Friends")
         
-        let endpoint = "http://localhost:3003/search/user/\(username)/string/\(searchString)/"
+        let endpoint = API.baseURL + "/search/user/\(username)/string/\(searchString)/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -88,7 +88,7 @@ class SearchAPI {
     }
 
     private func postSearch(path: String, searchString: String) async throws -> [Any] {
-        guard let url = URL(string: "http://localhost:3003" + path) else {
+        guard let url = URL(string: API.baseURL + path) else {
             throw networkError.invalidURL
         }
 

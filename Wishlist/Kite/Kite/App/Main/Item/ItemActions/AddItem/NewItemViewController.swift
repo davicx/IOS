@@ -22,9 +22,9 @@ final class NewItemViewController: UIViewController {
     private let subtitleLabel = UILabel()
 
     private let cardsStack = UIStackView()
-    private let pasteCard = NewItemOptionView()
-    private let photoCard = NewItemOptionView()
-    private let manualCard = NewItemOptionView()
+    private let fullCard = NewItemOptionView()
+    private let simpleCard = NewItemOptionView()
+    private let findCard = NewItemOptionView()
 
     private let privacyInfoView = UIView()
     private let privacyIconView = UIImageView()
@@ -69,7 +69,7 @@ final class NewItemViewController: UIViewController {
         scrollView.addSubview(contentView)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "How do you want\nto add this item?"
+        titleLabel.text = "What would you like\nto add?"
         titleLabel.font = Fonts.newItemIntroTitleFont
         titleLabel.textColor = Colors.primaryGrayText
         titleLabel.textAlignment = .center
@@ -77,7 +77,7 @@ final class NewItemViewController: UIViewController {
         contentView.addSubview(titleLabel)
 
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.text = "We’ll pull out the item details for you."
+        subtitleLabel.isHidden = true
         subtitleLabel.font = Fonts.newItemIntroSubtitleFont
         subtitleLabel.textColor = Colors.subtleGrayText
         subtitleLabel.textAlignment = .center
@@ -90,9 +90,9 @@ final class NewItemViewController: UIViewController {
         cardsStack.alignment = .fill
         contentView.addSubview(cardsStack)
 
-        cardsStack.addArrangedSubview(manualCard)
-        cardsStack.addArrangedSubview(photoCard)
-        cardsStack.addArrangedSubview(pasteCard)
+        cardsStack.addArrangedSubview(fullCard)
+        cardsStack.addArrangedSubview(simpleCard)
+        cardsStack.addArrangedSubview(findCard)
 
         setupPrivacyInfoView()
 
@@ -116,7 +116,7 @@ final class NewItemViewController: UIViewController {
             subtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.spacingXXL),
             subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.spacingXXL),
 
-            cardsStack.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: Layout.spacingXXL),
+            cardsStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Layout.spacingXXL),
             cardsStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.spacingXXL),
             cardsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.spacingXXL),
 
@@ -161,9 +161,9 @@ final class NewItemViewController: UIViewController {
     }
 
     private func configureCards() {
-        manualCard.configure(
-            title: "Enter manually",
-            subtitle: "Fill everything out yourself\nstep by step.",
+        fullCard.configure(
+            title: "Full Item",
+            subtitle: "Add item details, a photo,\nand a product link.",
             iconName: "pencil",
             iconTintColor: Colors.primaryPink,
             iconBackgroundColor: Colors.newItemPasteIconBackground,
@@ -171,19 +171,19 @@ final class NewItemViewController: UIViewController {
             action: { [weak self] in self?.openManual() }
         )
 
-        photoCard.configure(
-            title: "Add a photo",
-            subtitle: "Upload a screenshot or photo\nand we’ll extract the details.",
-            iconName: "camera",
+        simpleCard.configure(
+            title: "Simple Item",
+            subtitle: "Just write something.\nInclude a link if you like.",
+            iconName: "text.alignleft",
             iconTintColor: Colors.primaryBlue,
             iconBackgroundColor: Colors.newItemPhotoIconBackground,
             backgroundColor: Colors.newItemPhotoCardBackground,
-            action: { [weak self] in self?.openPhoto() }
+            action: { [weak self] in self?.openSimple() }
         )
 
-        pasteCard.configure(
-            title: "Paste item details",
-            subtitle: "Paste a product link, description,\nor anything you have.",
+        findCard.configure(
+            title: "Find an Item",
+            subtitle: "Use a photo or product link\nto find item details.",
             iconName: "link",
             iconTintColor: Colors.primaryGrayText,
             iconBackgroundColor: Colors.newItemManualIconBackground,
@@ -207,9 +207,9 @@ final class NewItemViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    private func openPhoto() {
-        let vc = AddItemFromPhotoViewController()
-        vc.draft = ItemDraft.empty(groupID: groupID)
+    private func openSimple() {
+        let vc = AddSimpleItemViewController()
+        vc.groupID = groupID
         vc.listName = listName
         navigationController?.pushViewController(vc, animated: true)
     }

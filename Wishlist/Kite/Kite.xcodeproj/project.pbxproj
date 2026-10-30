@@ -121,6 +121,7 @@
 		D721D2A02DE527070002FE4C /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721D29F2DE527070002FE4C /* FriendsViewController.swift */; };
 		D726CD3F2E7391A900A0A3DA /* UsersDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726CD3E2E7391A900A0A3DA /* UsersDataController.swift */; };
 		D72A1D1D3008541600764EE2 /* NewItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72A1D1C3008541600764EE2 /* NewItemViewController.swift */; };
+		A8C31F112F38000100AB1001 /* AddSimpleItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C31F102F38000100AB1001 /* AddSimpleItemViewController.swift */; };
 		D72C27BD2DC981520041ECAC /* CommentLikeResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */; };
 		D7341B4B2DE7D01000F745D5 /* imageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7341B4A2DE7D01000F745D5 /* imageFunctions.swift */; };
 		D73601F0304E29F50043B544 /* ProfileViewControllerBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73601EF304E29F50043B544 /* ProfileViewControllerBackup.swift */; };
@@ -436,6 +437,7 @@
 		D7243D040BEAE757098FAE68 /* ListEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyStateView.swift; sourceTree = "<group>"; };
 		D726CD3E2E7391A900A0A3DA /* UsersDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDataController.swift; sourceTree = "<group>"; };
 		D72A1D1C3008541600764EE2 /* NewItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemViewController.swift; sourceTree = "<group>"; };
+		A8C31F102F38000100AB1001 /* AddSimpleItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSimpleItemViewController.swift; sourceTree = "<group>"; };
 		D72B324BBDF4C44378ADFCAA /* ProfileModuleSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModuleSlider.swift; sourceTree = "<group>"; };
 		D72C27BC2DC981520041ECAC /* CommentLikeResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeResponseModel.swift; sourceTree = "<group>"; };
 		D731DAAE7CD47951959EB234 /* CreateListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListCell.swift; sourceTree = "<group>"; };
@@ -903,6 +905,7 @@
 			isa = PBXGroup;
 			children = (
 				D72A1D1C3008541600764EE2 /* NewItemViewController.swift */,
+				A8C31F102F38000100AB1001 /* AddSimpleItemViewController.swift */,
 				6AC5FBED69994804B58DCD49 /* NewItemOptionView.swift */,
 				975D54C671864E229A69F61C /* AddItemFromTextViewController.swift */,
 				E7E43F909A314000AB0DC78F /* AddItemFromPhotoViewController.swift */,
@@ -2176,6 +2179,7 @@
 				51C69B382D0E583500C46759 /* LikeModel.swift in Sources */,
 				51C69B242D0E574B00C46759 /* Comment.swift in Sources */,
 				D72A1D1D3008541600764EE2 /* NewItemViewController.swift in Sources */,
+				A8C31F112F38000100AB1001 /* AddSimpleItemViewController.swift in Sources */,
 				489BF68357DD4147AD6CEBF9 /* NewItemOptionView.swift in Sources */,
 				7882ABC0B7334D04BFCF8354 /* AddItemFromTextViewController.swift in Sources */,
 				87D5D6547BD0426495163672 /* AddItemFromPhotoViewController.swift in Sources */,

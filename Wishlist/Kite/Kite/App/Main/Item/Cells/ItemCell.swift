@@ -17,7 +17,6 @@ final class ItemCell: UITableViewCell {
 
     //UI COMPONENTS
     private let itemHolder = UIView()
-    private let itemHeader = ItemHeader()
     private let itemInfo = ItemInfo()
     private let itemFooter = ItemFooter()
     private let itemBody = ItemBody()
@@ -27,8 +26,13 @@ final class ItemCell: UITableViewCell {
     private var holderTrailing: NSLayoutConstraint!
     private var holderBottom: NSLayoutConstraint!
     private var dividerHeight: NSLayoutConstraint!
+    private var mediaHeight: NSLayoutConstraint!
+    private var mediaHeightZero: NSLayoutConstraint!
+    private var summaryHeightZero: NSLayoutConstraint!
+    private var footerTop: NSLayoutConstraint!
 
     var purchaseStyle: ItemPurchaseStyle = .pinkOutline
+    var showsCommentsLink = true
     var usesFeedCard = false {
         didSet {
             guard oldValue != usesFeedCard else { return }
@@ -55,7 +59,7 @@ final class ItemCell: UITableViewCell {
         itemHolder.backgroundColor = Colors.screenBackground
         contentView.addSubview(itemHolder)
 
-        [itemHeader, itemInfo.mediaRegion, itemFooter, itemBody, itemInfo.productSummary, divider].forEach {
+        [itemInfo.productSummary, itemInfo.mediaRegion, itemFooter, itemBody, divider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             itemHolder.addSubview($0)
         }
@@ -66,22 +70,27 @@ final class ItemCell: UITableViewCell {
         holderTrailing = itemHolder.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         holderBottom = itemHolder.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
 
+        mediaHeight = itemInfo.mediaRegion.heightAnchor.constraint(equalTo: itemInfo.mediaRegion.widthAnchor, multiplier: 0.75)
+        mediaHeightZero = itemInfo.mediaRegion.heightAnchor.constraint(equalToConstant: 0)
+        summaryHeightZero = itemInfo.productSummary.heightAnchor.constraint(equalToConstant: 0)
+        footerTop = itemFooter.topAnchor.constraint(equalTo: itemInfo.mediaRegion.bottomAnchor)
+
         NSLayoutConstraint.activate([
             itemHolder.topAnchor.constraint(equalTo: contentView.topAnchor),
             holderLeading,
             holderTrailing,
             holderBottom,
 
-            itemHeader.topAnchor.constraint(equalTo: itemHolder.topAnchor),
-            itemHeader.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
-            itemHeader.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
+            itemInfo.productSummary.topAnchor.constraint(equalTo: itemHolder.topAnchor),
+            itemInfo.productSummary.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
+            itemInfo.productSummary.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
 
-            itemInfo.mediaRegion.topAnchor.constraint(equalTo: itemHeader.bottomAnchor),
+            itemInfo.mediaRegion.topAnchor.constraint(equalTo: itemInfo.productSummary.bottomAnchor),
             itemInfo.mediaRegion.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
             itemInfo.mediaRegion.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
-            itemInfo.mediaRegion.heightAnchor.constraint(equalTo: itemInfo.mediaRegion.widthAnchor, multiplier: 0.75),
+            mediaHeight,
 
-            itemFooter.topAnchor.constraint(equalTo: itemInfo.mediaRegion.bottomAnchor),
+            footerTop,
             itemFooter.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
             itemFooter.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
 
@@ -89,11 +98,7 @@ final class ItemCell: UITableViewCell {
             itemBody.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
             itemBody.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
 
-            itemInfo.productSummary.topAnchor.constraint(equalTo: itemBody.bottomAnchor, constant: Layout.spacingM),
-            itemInfo.productSummary.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor, constant: Layout.spacingM),
-            itemInfo.productSummary.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor, constant: -Layout.spacingM),
-
-            divider.topAnchor.constraint(equalTo: itemInfo.productSummary.bottomAnchor, constant: Layout.spacingM),
+            divider.topAnchor.constraint(equalTo: itemBody.bottomAnchor),
             divider.leadingAnchor.constraint(equalTo: itemHolder.leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: itemHolder.trailingAnchor),
             divider.bottomAnchor.constraint(equalTo: itemHolder.bottomAnchor),
@@ -191,16 +196,71 @@ final class ItemCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         purchaseStyle = .pinkOutline
+        showsCommentsLink = true
         usesFeedCard = false
-        itemHeader.prepareForReuse()
+        applyItemLayout(showDetails: true, showImage: true)
         itemInfo.prepareForReuse()
+        itemBody.prepareForReuse()
     }
 
     //FUNCTIONS
     func configure(with post: Post) {
-        itemHeader.configure(with: post)
-        itemInfo.configure(with: post, purchaseStyle: purchaseStyle)
+        let showDetails = hasDetails(post)
+        let showImage = hasRealImage(post)
+        applyItemLayout(showDetails: showDetails, showImage: showImage)
+        itemInfo.configure(with: post, purchaseStyle: purchaseStyle, showsProduct: showDetails)
         itemFooter.configure(with: post)
-        itemBody.configure(with: post)
+        itemBody.configure(with: post, simple: !showDetails && !showImage, showsMenu: !showDetails, showsComments: showsCommentsLink)
+    }
+
+    private func applyItemLayout(showDetails: Bool, showImage: Bool) {
+        summaryHeightZero.isActive = !showDetails
+        if showImage {
+            mediaHeightZero.isActive = false
+            mediaHeight.isActive = true
+        } else {
+            mediaHeight.isActive = false
+            mediaHeightZero.isActive = true
+        }
+        footerTop.constant = showImage ? -4 : 0
+        itemInfo.productSummary.isHidden = !showDetails
+        itemInfo.mediaRegion.isHidden = !showImage
+    }
+
+    private func hasDetails(_ post: Post) -> Bool {
+        let name = post.itemName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !name.isEmpty { return true }
+        if !isBlankPrice(post.itemPrice) { return true }
+        let link = post.itemLink?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if link.isEmpty { return false }
+        return link.caseInsensitiveCompare("item_link") != .orderedSame
+    }
+
+    private func isBlankPrice(_ price: String?) -> Bool {
+        let trimmed = price?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if trimmed.isEmpty { return true }
+        let digits = trimmed.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")
+        if let value = Double(digits) {
+            return value == 0
+        }
+        return false
+    }
+
+    private func hasRealImage(_ post: Post) -> Bool {
+        if let image = post.postImageData, image.size.width > 0 {
+            return true
+        }
+        let candidates = [post.fileUrl, post.cloudKey, post.fileName, post.fileNameServer]
+        for value in candidates {
+            let text = (value ?? "").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            if text.isEmpty || text == "empty" || text == "no_cloud_key" || text == "local_cloud_key" {
+                continue
+            }
+            if text.hasSuffix("background.jpg") || text.contains("postimage-1759360291801") {
+                continue
+            }
+            return true
+        }
+        return false
     }
 }

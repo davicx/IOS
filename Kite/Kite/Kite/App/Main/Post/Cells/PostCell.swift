@@ -22,7 +22,7 @@ final class PostCell: UITableViewCell {
     private let postImage = PostImage()
     //private let postCaption = PostCaption()
     private let postSocials = PostSocials()
-    //private let mainDivider = MainDivider()
+    private let postDivider = MainDivider()
 
 
     //MANAGE VIEWS
@@ -42,7 +42,7 @@ final class PostCell: UITableViewCell {
 
     //Kite
     private func setupPost() {
-        [postHeader, postImage, postSocials].forEach {
+        [postHeader, postImage, postSocials, postDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -54,13 +54,20 @@ final class PostCell: UITableViewCell {
             postImage.topAnchor.constraint(equalTo: postHeader.bottomAnchor),
             postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            //postImage.heightAnchor.constraint(equalTo: postImage.widthAnchor, multiplier: 0.75),
 
             postSocials.topAnchor.constraint(equalTo: postImage.bottomAnchor),
             postSocials.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postSocials.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postSocials.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+
+            postDivider.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
+            postDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+        // postCaption.topAnchor.constraint(equalTo: postSocials.bottomAnchor),
+        // postCaption.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        // postCaption.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        // postCaption.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         // [postHeader, postImage, postCaption, postSocials, mainDivider].forEach {
         //     $0.translatesAutoresizingMaskIntoConstraints = false
         //     contentView.addSubview($0)
@@ -102,16 +109,16 @@ final class PostCell: UITableViewCell {
         if let post = PostDataController.shared.getPostByID(postID: postID) {
             postHeader.configure(with: post)
             postImage.configure(with: post)
-            //postCaption.configure(with: post)
             postSocials.configure(postID: postID)
+            //postCaption.configure(with: post)
         }
     }
 
     func updatePost(with post: Post) {
         postHeader.configure(with: post)
         postImage.configure(with: post)
-        //postCaption.configure(with: post)
         postSocials.configure(postID: post.postID)
+        //postCaption.configure(with: post)
     }
 
 }

@@ -43,6 +43,7 @@ final class PostCaption: UIView {
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = Colors.screenBackground
         setupViews()
     }
 
@@ -85,7 +86,7 @@ final class PostCaption: UIView {
 
     //RIGHT: Comment Header — [username] [time ago] on one row, left aligned (Instagram-style)
     private func setupCommentHeaderView() {
-        commentHeaderView.backgroundColor = UIColor(red: 1.0, green: 0.82, blue: 0.80, alpha: 1.0)
+        commentHeaderView.backgroundColor = Colors.screenBackground
 
         userNameLabel.font = Fonts.postUsernameFont
         userNameLabel.textColor = Colors.primaryGrayText
@@ -114,7 +115,7 @@ final class PostCaption: UIView {
         NSLayoutConstraint.activate([
             commentHeaderView.topAnchor.constraint(equalTo: topAnchor),
             commentHeaderView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
-            commentHeaderView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            commentHeaderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
             commentHeaderView.heightAnchor.constraint(equalToConstant: 22),
 
             userNameLabel.leadingAnchor.constraint(equalTo: commentHeaderView.leadingAnchor),
@@ -128,7 +129,7 @@ final class PostCaption: UIView {
 
     //RIGHT: Comment Body — height hugs post caption (dynamic, no min height)
     private func setupCommentBodyView() {
-        commentBodyView.backgroundColor = UIColor(red: 0.86, green: 0.82, blue: 0.96, alpha: 1.0)
+        commentBodyView.backgroundColor = Colors.screenBackground
 
         commentBodyLabel.font = Fonts.postCaptionFont
         commentBodyLabel.textColor = Colors.postCaptionFontColor
@@ -146,7 +147,7 @@ final class PostCaption: UIView {
         NSLayoutConstraint.activate([
             commentBodyView.topAnchor.constraint(equalTo: commentHeaderView.bottomAnchor),
             commentBodyView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
-            commentBodyView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            commentBodyView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL),
 
             commentBodyLabel.topAnchor.constraint(equalTo: commentBodyView.topAnchor),
             commentBodyLabel.leadingAnchor.constraint(equalTo: commentBodyView.leadingAnchor),
@@ -157,7 +158,7 @@ final class PostCaption: UIView {
 
     //RIGHT: Comment Footer
     private func setupCommentFooterView() {
-        commentFooterView.backgroundColor = UIColor.systemGray5
+        commentFooterView.backgroundColor = Colors.screenBackground
 
         addSubview(commentFooterView)
         commentFooterView.translatesAutoresizingMaskIntoConstraints = false
@@ -166,7 +167,7 @@ final class PostCaption: UIView {
             commentFooterView.topAnchor.constraint(equalTo: commentBodyView.bottomAnchor),
             commentFooterView.leadingAnchor.constraint(equalTo: userImageArea.trailingAnchor),
             commentFooterView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            commentFooterView.heightAnchor.constraint(equalToConstant: 2),
+            commentFooterView.heightAnchor.constraint(equalToConstant: Layout.spacingM),
             commentFooterView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
@@ -174,7 +175,7 @@ final class PostCaption: UIView {
     //FUNCTIONS
     func configure(with post: Post) {
         let postID = post.postID
-        let postCaption = post.postCaption ?? "no caption"
+        let postCaption = post.postCaption ?? ""
 
         print("PostCaption: postID=\(postID) caption=\(postCaption)")
 

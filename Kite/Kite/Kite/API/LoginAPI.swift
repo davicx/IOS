@@ -23,7 +23,7 @@ class LoginAPI {
     func registerNewUser (username: String, fullName: String, email: String, password: String)  async throws -> RegistrationResponseModel {
         print("Register")
         
-        let endpoint = "http://localhost:3003/user/register"
+        let endpoint = API.baseURL + "/user/register"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -67,7 +67,7 @@ class LoginAPI {
     //func loginUser(username: String?, email: String?, password: String) -> LoginResponseModel {
     func loginUser(username: String, password: String, deviceID: String) async throws -> LoginResponseModel {
         
-        let endpoint = "http://localhost:3003/user/login"
+        let endpoint = API.baseURL + "/user/login"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -113,7 +113,7 @@ class LoginAPI {
     //func loginUser(username: String?, email: String?, password: String) -> LoginResponseModel {
     func logoutUser(username: String, deviceID: String) async throws -> LogoutResponseModel {
         
-        let endpoint = "http://localhost:3003/user/logout"
+        let endpoint = API.baseURL + "/user/logout"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -160,7 +160,7 @@ class LoginAPI {
         print("getNewAccessToken")
 
         
-        let endpoint = "http://localhost:3003/refresh/tokens"
+        let endpoint = API.baseURL + "/refresh/tokens"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -224,7 +224,7 @@ class LoginAPI {
         print("getLoggedInUserStatus")
 
         
-        let endpoint = "http://localhost:3003/refresh/status"
+        let endpoint = API.baseURL + "/refresh/status"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

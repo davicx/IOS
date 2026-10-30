@@ -205,6 +205,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
         if indexPath.section == 0 {
             let postCell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
             postCell.purchaseStyle = .pinkFull
+            postCell.showsCommentsLink = false
             if let post {
                 postCell.configure(with: post)
             }

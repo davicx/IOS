@@ -8,6 +8,20 @@
 import UIKit
 
 
+// Comment one line.
+struct API {
+    static let environmentURL = "local"
+    // static let environmentURL = "aws"
+
+    static var baseURL: String {
+        if environmentURL == "aws" {
+            return "http://myapi.us-west-2.elasticbeanstalk.com"
+        }
+        return "http://localhost:3003"
+    }
+}
+
+
 struct Constants {
 
     struct Segue {

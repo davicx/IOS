@@ -18,22 +18,24 @@ final class ItemHeader: UIView {
     //LOGIC
     private var usersDataController: UsersDataController { UsersDataController.shared }
     private var loadUserName: String?
-    private var post: Post?
     private let avatarSize: CGFloat = 40
 
     //UI COMPONENTS
     private let profileImageView = UIImageView()
     private let usernameLabel = UILabel()
     private let postedAtLabel = UILabel()
-    private let textStack = UIStackView()
-    private let menuButton = UIButton(type: .system)
+    private let authorRow = UIStackView()
+    private let overflowMenu = ItemOverflowMenu()
+    private var authorToMenu: NSLayoutConstraint!
+    private var authorToEdge: NSLayoutConstraint!
+    let authorColumn = UILayoutGuide()
+    var avatarBottomAnchor: NSLayoutYAxisAnchor { profileImageView.bottomAnchor }
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = Colors.screenBackground
         setupViews()
-        setupMenu()
     }
 
     required init?(coder: NSCoder) {
@@ -47,50 +49,144 @@ final class ItemHeader: UIView {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(profileImageView)
 
-        usernameLabel.font = Fonts.semibold14
+        usernameLabel.font = Fonts.postUsernameFont
         usernameLabel.textColor = Colors.primaryText
         usernameLabel.numberOfLines = 1
         usernameLabel.lineBreakMode = .byTruncatingTail
+        usernameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        usernameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
         postedAtLabel.font = Fonts.postedAtFont
         postedAtLabel.textColor = Colors.secondaryText
         postedAtLabel.numberOfLines = 1
+        postedAtLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        postedAtLabel.setContentHuggingPriority(.required, for: .horizontal)
 
-        textStack.axis = .vertical
-        textStack.alignment = .leading
-        textStack.spacing = 0
-        textStack.translatesAutoresizingMaskIntoConstraints = false
-        textStack.addArrangedSubview(usernameLabel)
-        textStack.addArrangedSubview(postedAtLabel)
-        addSubview(textStack)
+        let spacer = UIView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
-        menuButton.translatesAutoresizingMaskIntoConstraints = false
-        menuButton.setImage(UIImage(named: "menu-horizontal"), for: .normal)
-        menuButton.tintColor = Colors.primaryText
-        menuButton.imageView?.contentMode = .scaleAspectFit
-        menuButton.contentEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
-        menuButton.accessibilityLabel = "More"
-        addSubview(menuButton)
+        authorRow.axis = .horizontal
+        authorRow.alignment = .center
+        authorRow.spacing = Layout.spacingS
+        authorRow.translatesAutoresizingMaskIntoConstraints = false
+        authorRow.addArrangedSubview(usernameLabel)
+        authorRow.addArrangedSubview(postedAtLabel)
+        authorRow.addArrangedSubview(spacer)
+        addSubview(authorRow)
+
+        addSubview(overflowMenu.button)
+        addLayoutGuide(authorColumn)
+
+        authorToMenu = authorRow.trailingAnchor.constraint(equalTo: overflowMenu.button.leadingAnchor)
+        authorToEdge = authorRow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingL)
+        let menuHeight = overflowMenu.button.heightAnchor.constraint(equalToConstant: 44)
+        menuHeight.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
-            profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingM),
-            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            profileImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6),
+            profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Layout.spacingL),
+            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.spacingM),
             profileImageView.widthAnchor.constraint(equalToConstant: avatarSize),
             profileImageView.heightAnchor.constraint(equalToConstant: avatarSize),
 
-            textStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
-            textStack.trailingAnchor.constraint(equalTo: menuButton.leadingAnchor, constant: -Layout.spacingS),
-            textStack.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
+            authorRow.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: Layout.spacingM),
+            authorToMenu,
+            authorRow.topAnchor.constraint(equalTo: profileImageView.topAnchor),
+            authorRow.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            menuButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingXS),
-            menuButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
-            menuButton.widthAnchor.constraint(equalToConstant: 44),
-            menuButton.heightAnchor.constraint(equalToConstant: 44)
+            authorColumn.leadingAnchor.constraint(equalTo: authorRow.leadingAnchor),
+            authorColumn.trailingAnchor.constraint(equalTo: authorRow.trailingAnchor),
+            authorColumn.topAnchor.constraint(equalTo: authorRow.topAnchor),
+            authorColumn.bottomAnchor.constraint(equalTo: authorRow.bottomAnchor),
+
+            overflowMenu.button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Layout.spacingXS),
+            overflowMenu.button.topAnchor.constraint(equalTo: topAnchor),
+            overflowMenu.button.widthAnchor.constraint(equalToConstant: 44),
+            menuHeight
         ])
     }
 
-    private func setupMenu() {
-        menuButton.showsMenuAsPrimaryAction = true
+    func setMenuHidden(_ hidden: Bool) {
+        overflowMenu.button.isHidden = hidden
+        if hidden {
+            authorToMenu.isActive = false
+            authorToEdge.isActive = true
+        } else {
+            authorToEdge.isActive = false
+            authorToMenu.isActive = true
+        }
+    }
+
+    //FUNCTIONS
+    func prepareForReuse() {
+        loadUserName = nil
+        overflowMenu.prepareForReuse()
+        setMenuHidden(false)
+        usernameLabel.text = nil
+        postedAtLabel.text = nil
+        profileImageView.image = UIImage(named: "background_1")
+    }
+
+    func configure(with post: Post) {
+        overflowMenu.configure(with: post)
+        postedAtLabel.text = post.timeMessage ?? "now"
+
+        guard let username = post.postFrom, !username.isEmpty else {
+            usernameLabel.text = nil
+            loadUserName = nil
+            profileImageView.image = UIImage(named: "background_1")
+            return
+        }
+
+        usernameLabel.text = username
+        loadUserProfile(username: username)
+    }
+
+    private func loadUserProfile(username: String) {
+        loadUserName = username
+
+        Task {
+            guard let user = await usersDataController.getOrFetchUserWithImage(username: username) else {
+                return
+            }
+
+            guard loadUserName == username else { return }
+
+            await MainActor.run {
+                guard self.loadUserName == username else { return }
+                if let image = user.profileImage {
+                    self.profileImageView.image = image
+                }
+            }
+        }
+    }
+
+}
+
+// Edit, delete, and hide for one post. The button is placed by the view that owns it.
+final class ItemOverflowMenu {
+
+    let button = UIButton(type: .system)
+    private var post: Post?
+
+    init() {
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "menu-horizontal"), for: .normal)
+        button.tintColor = Colors.primaryText
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
+        button.accessibilityLabel = "More"
+        button.showsMenuAsPrimaryAction = true
+        updateMenu()
+    }
+
+    func prepareForReuse() {
+        post = nil
+        updateMenu()
+    }
+
+    func configure(with post: Post) {
+        self.post = post
         updateMenu()
     }
 
@@ -113,17 +209,16 @@ final class ItemHeader: UIView {
             ) { [weak self] _ in
                 self?.confirmDelete()
             }
-            menuButton.menu = UIMenu(children: [editAction, deleteAction])
+            button.menu = UIMenu(children: [editAction, deleteAction])
         } else {
             let hideAction = UIAction(
                 title: "Hide",
                 image: UIImage(systemName: "eye.slash")
             ) { _ in }
-            menuButton.menu = UIMenu(children: [hideAction])
+            button.menu = UIMenu(children: [hideAction])
         }
     }
 
-    //ACTIONS
     private func editTapped() {
         guard let post, let viewController = findViewController() else { return }
         let editor = EditItemViewController()
@@ -181,53 +276,8 @@ final class ItemHeader: UIView {
         viewController.present(alert, animated: true)
     }
 
-    //FUNCTIONS
-    func prepareForReuse() {
-        loadUserName = nil
-        post = nil
-        updateMenu()
-        usernameLabel.text = nil
-        postedAtLabel.text = nil
-        profileImageView.image = UIImage(named: "background_1")
-    }
-
-    func configure(with post: Post) {
-        self.post = post
-        updateMenu()
-        postedAtLabel.text = post.timeMessage ?? "now"
-
-        guard let username = post.postFrom, !username.isEmpty else {
-            usernameLabel.text = nil
-            loadUserName = nil
-            profileImageView.image = UIImage(named: "background_1")
-            return
-        }
-
-        usernameLabel.text = username
-        loadUserProfile(username: username)
-    }
-
-    private func loadUserProfile(username: String) {
-        loadUserName = username
-
-        Task {
-            guard let user = await usersDataController.getOrFetchUserWithImage(username: username) else {
-                return
-            }
-
-            guard loadUserName == username else { return }
-
-            await MainActor.run {
-                guard self.loadUserName == username else { return }
-                if let image = user.profileImage {
-                    self.profileImageView.image = image
-                }
-            }
-        }
-    }
-
     private func findViewController() -> UIViewController? {
-        var responder: UIResponder? = self
+        var responder: UIResponder? = button
         while let next = responder?.next {
             if let viewController = next as? UIViewController {
                 return viewController

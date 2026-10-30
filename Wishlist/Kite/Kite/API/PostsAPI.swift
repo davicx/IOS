@@ -60,7 +60,7 @@ class PostsAPI {
         
             
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/text"
+        let endpoint = API.baseURL + "/post/text"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -118,7 +118,7 @@ class PostsAPI {
         
             
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/photo"
+        let endpoint = API.baseURL + "/post/photo"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -231,7 +231,7 @@ class PostsAPI {
         let itemCategory = "video_games"
         
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/item"
+        let endpoint = API.baseURL + "/post/item"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -386,15 +386,55 @@ class PostsAPI {
         }
     }
 
+    //Function A6: Text Item. No photo. Link is optional and stored on the item.
+    func makeTextItemPost(postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int, itemLink: String) async throws -> NewPostResponseModel {
+        let endpoint = API.baseURL + "/post/item/text"
+        guard let url = URL(string: endpoint) else {
+            throw networkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let parameters: [String: Any] = [
+            "masterSite": "wishlist",
+            "postType": "item",
+            "postFrom": postFrom,
+            "postTo": postTo,
+            "groupID": groupID,
+            "listID": listID,
+            "postCaption": postCaption,
+            "itemName": "",
+            "itemPrice": "",
+            "itemDescription": "",
+            "itemCategory": "",
+            "itemLink": itemLink,
+            "itemLinkName": "",
+            "notificationMessage": "Posted a New Item",
+            "notificationType": "new_item",
+            "notificationLink": "http://localhost:3003/posts/group/\(groupID)"
+        ]
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: parameters)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw networkError.invalidResponse
+        }
+
+        return try JSONDecoder().decode(NewPostResponseModel.self, from: data)
+    }
+
 
     //FUNCTIONS B: All Functions Related to getting Posts
     //Function B1: Get all Group Posts
     func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
         //print("GET POSTS!!!")
         
-        //let endpoint = "http://localhost:3003/posts/group/72"
+        //let endpoint = API.baseURL + "/posts/group/72"
   
-        let endpoint = "http://localhost:3003/posts/group/\(groupID)"
+        let endpoint = API.baseURL + "/posts/group/\(groupID)"
         //print("URL \(endpoint)")
         
         guard let url = URL(string: endpoint) else {
@@ -430,7 +470,7 @@ class PostsAPI {
     func getItemsAPI(groupID: Int) async throws -> PostResponseModel {
         //print("GET ITEMS!!!")
         
-        let endpoint = "http://localhost:3003/items/group/\(groupID)"
+        let endpoint = API.baseURL + "/items/group/\(groupID)"
         //print("URL \(endpoint)")
         
         guard let url = URL(string: endpoint) else {
@@ -464,7 +504,7 @@ class PostsAPI {
 
     //Function B2b: Get All Items (global Home feed)
     func getAllItemsAPI() async throws -> PostResponseModel {
-        let endpoint = "http://localhost:3003/items"
+        let endpoint = API.baseURL + "/items"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -490,7 +530,7 @@ class PostsAPI {
     //Function B2c: Get one user's items
     func getUserItemsAPI(userName: String) async throws -> PostResponseModel {
         let encoded = userName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? userName
-        let endpoint = "http://localhost:3003/items/user/\(encoded)"
+        let endpoint = API.baseURL + "/items/user/\(encoded)"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -521,7 +561,7 @@ class PostsAPI {
     //FUNCTIONS C: All Functions Related to Post Actions
     //Function C1: Like a Post
     func likePostAPI(currentUser: String, postID: Int, groupID: Int) async throws -> LikePostResponseModel {
-        let endpoint = "http://localhost:3003/post/like"
+        let endpoint = API.baseURL + "/post/like"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -566,7 +606,7 @@ class PostsAPI {
 
     //Function C2: Unlike a Post
     func unlikePostAPI(currentUser: String, postID: Int, groupID: Int) async throws -> LikePostResponseModel {
-        let endpoint = "http://localhost:3003/post/unlike"
+        let endpoint = API.baseURL + "/post/unlike"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -611,7 +651,7 @@ class PostsAPI {
     
     //Function C5: Delete a Post
     func deletePostAPI(currentUser: String, postID: Int) async throws -> Bool {
-        let endpoint = "http://localhost:3003/post/delete/"
+        let endpoint = API.baseURL + "/post/delete/"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -642,7 +682,7 @@ class PostsAPI {
     //FUNCTIONS D: All Functions Related to Items
     //Function D1: Purchase an Item
     func purchaseItemAPI(currentUser: String, postID: Int, itemID: Int, showPurchased: [String]) async throws -> PurchaseItemResponseModel {
-        let endpoint = "http://localhost:3003/items/purchase/add"
+        let endpoint = API.baseURL + "/items/purchase/add"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -686,7 +726,7 @@ class PostsAPI {
     
     //Function D2: Remove a Purchase for an Item
     func removeItemPurchaseAPI(currentUser: String, postID: Int, itemID: Int) async throws -> PurchaseItemResponseModel {
-        let endpoint = "http://localhost:3003/items/purchase/remove"
+        let endpoint = API.baseURL + "/items/purchase/remove"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -732,7 +772,7 @@ class PostsAPI {
      //Function C5: Delete a Post
      //Function C5: Edit a Post
     func editItem(postID: Int, postFrom: String, postCaption: String, itemName: String, itemPrice: String, itemDescription: String, itemLink: String, itemLinkName: String, postImage: UIImage?) async throws -> Bool {
-        guard let url = URL(string: "http://localhost:3003/item/edit/") else {
+        guard let url = URL(string: API.baseURL + "/item/edit/") else {
             throw networkError.invalidURL
         }
 
@@ -797,7 +837,7 @@ private struct EditItemResponse: Decodable {
  }
 
  func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
-     let endpoint = "http://localhost:3003/posts/group/\(groupID)"
+     let endpoint = API.baseURL + "/posts/group/\(groupID)"
      
      guard let url = URL(string: endpoint) else {
          throw networkError.invalidURL

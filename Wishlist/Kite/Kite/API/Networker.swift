@@ -23,8 +23,8 @@ class Networker {
     
     
     func getPostsAPI() async throws -> PostResponseModel {
-        //let endpoint = "http://localhost:3003/posts/group/72"
-        let endpoint = "http://localhost:3003/posts/group/72"
+        //let endpoint = API.baseURL + "/posts/group/72"
+        let endpoint = API.baseURL + "/posts/group/72"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

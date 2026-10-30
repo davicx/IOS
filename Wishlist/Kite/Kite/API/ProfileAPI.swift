@@ -39,7 +39,7 @@ class ProfileAPI {
     //FUNCTIONS A: All Functions Related to User Profile
     //Function A1: Get User Profile Information
     func getUserProfileAPI(currentUser: String) async throws -> UserProfileResponseModel {
-        let endpoint = "http://localhost:3003/profile/" + currentUser
+        let endpoint = API.baseURL + "/profile/" + currentUser
         
         //printHeader(headerMessage: "PROFILE API- getUserProfileAPI")
         
@@ -100,7 +100,7 @@ class ProfileAPI {
     
     //Function A2: Update User Profile Information without Image
     func updateUserProfileAPI(currentUser: String, imageName: String, firstName: String, lastName: String, biography: String) async throws -> UpdateUserProfileResponseModel {
-        let endpoint = "http://localhost:3003/profile/update"
+        let endpoint = API.baseURL + "/profile/update"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -142,7 +142,7 @@ class ProfileAPI {
     
     //Function A4: Get User Friend, Group and Post Count
     func getUserCountsAPI(currentUser: String) async throws -> UserCountResponseModel {
-        let endpoint = "http://localhost:3003/profile/info/" + currentUser
+        let endpoint = API.baseURL + "/profile/info/" + currentUser
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -191,7 +191,7 @@ class ProfileAPI {
         print("ProfileAPI updateFullUserProfileAPI")
         
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/profile/full/update/"
+        let endpoint = API.baseURL + "/profile/full/update/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -264,7 +264,7 @@ class ProfileAPI {
     //Function B1: Get User Preferences
     //http://localhost:3003/preferences/davey
     func getUserPreferencesAPI(userName: String) async throws -> PreferencesResponseModel {
-        let endpoint = "http://localhost:3003/preferences/" + userName
+        let endpoint = API.baseURL + "/preferences/" + userName
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -309,7 +309,7 @@ class ProfileAPI {
         preferenceDescription: String,
         displayOrder: Int = 0
     ) async throws -> AddPreferenceResponseModel {
-        let endpoint = "http://localhost:3003/preferences/add"
+        let endpoint = API.baseURL + "/preferences/add"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -381,7 +381,7 @@ class ProfileAPI {
         preferenceDescription: String,
         displayOrder: Int = 0
     ) async throws -> AddPreferenceResponseModel {
-        let endpoint = "http://localhost:3003/preferences/edit"
+        let endpoint = API.baseURL + "/preferences/edit"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -451,7 +451,7 @@ class ProfileAPI {
         currentUser: String,
         userPreferenceID: Int
     ) async throws -> RemovePreferenceResponseModel {
-        let endpoint = "http://localhost:3003/preferences/remove"
+        let endpoint = API.baseURL + "/preferences/remove"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

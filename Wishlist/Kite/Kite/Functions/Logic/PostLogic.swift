@@ -108,6 +108,33 @@ final class PostLogic {
         }
     }
 
+    //Function B1b: Create a text item. No photo. Optional link stays on the item.
+    func createTextItemPost(postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int, itemLink: String) async -> Bool {
+        let postsAPI = PostsAPI()
+
+        do {
+            let responseModel = try await postsAPI.makeTextItemPost(
+                postFrom: postFrom,
+                postTo: postTo,
+                postCaption: postCaption,
+                groupID: groupID,
+                listID: listID,
+                itemLink: itemLink
+            )
+
+            guard responseModel.success else {
+                print("PostLogic: Failed to create text item: \(responseModel.message)")
+                return false
+            }
+
+            await postDataController.addPost(postModel: responseModel.data, groupID: groupID)
+            return true
+        } catch {
+            print("PostLogic: Error creating text item: \(error)")
+            return false
+        }
+    }
+
     //Function B2: Create photo post (KITE)
     func createPhotoPost(postImage: UIImage, postFrom: String, postTo: String, postCaption: String, groupID: Int, listID: Int) async -> Bool {
         let postsAPI = PostsAPI()

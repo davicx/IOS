@@ -27,7 +27,7 @@ class CommentsAPI {
         let notificationType = "new_post_comment"
         let notificationLink = "http://localhost:3003/posts/group/\(groupID)"
         
-        let endpoint = "http://localhost:3003/comment"
+        let endpoint = API.baseURL + "/comment"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -68,7 +68,7 @@ class CommentsAPI {
 
     func likeComment(currentUser: String, postID: Int, commentID: Int, groupID: Int) async throws -> CommentLikeResponseModel {
         
-        let endpoint = "http://localhost:3003/comment/like"
+        let endpoint = API.baseURL + "/comment/like"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -111,7 +111,7 @@ class CommentsAPI {
     //Function 3: Unlike Comment
     func unlikeComment(currentUser: String, postID: Int, commentID: Int, groupID: Int) async throws -> CommentLikeResponseModel {
         
-        let endpoint = "http://localhost:3003/comment/unlike"
+        let endpoint = API.baseURL + "/comment/unlike"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -152,7 +152,7 @@ class CommentsAPI {
 
     //Function 4: Soft-delete Comment
     func deleteComment(currentUser: String, commentID: Int, postID: Int) async throws -> Bool {
-        let endpoint = "http://localhost:3003/comment/delete"
+        let endpoint = API.baseURL + "/comment/delete"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

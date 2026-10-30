@@ -55,6 +55,13 @@ class IndividualPostViewController: UIViewController {
             name: .commentUpdated,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePostUpdated),
+            name: .postUpdated,
+            object: nil
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -141,6 +148,13 @@ class IndividualPostViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             self?.individualPostTableView.reloadData()
             self?.printDebugAllCommentsForPost()
+        }
+    }
+
+    @objc private func handlePostUpdated(_ notification: Notification) {
+        guard let updatedPostID = notification.object as? Int, updatedPostID == postID else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.individualPostTableView.reloadData()
         }
     }
 

@@ -36,7 +36,7 @@ class GroupsAPI {
         let masterSite = "kite"
         
         // STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/group/create"
+        let endpoint = API.baseURL + "/group/create"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -99,7 +99,7 @@ class GroupsAPI {
         let masterSite = "kite"
         
         // STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/group/create"
+        let endpoint = API.baseURL + "/group/create"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -167,7 +167,7 @@ class GroupsAPI {
     
     //Function A2: Get Groups for a User
     func getGroupsAPI(for userName: String) async throws -> GroupsResponseModel {
-        let endpoint = "http://localhost:3003/groups/user/\(userName)"
+        let endpoint = API.baseURL + "/groups/user/\(userName)"
        
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -202,7 +202,7 @@ class GroupsAPI {
     
     //Function A6: Get All Groups User is In
     func getGroupsUserIsIn() async throws -> UserGroupsResponseModel {
-        let endpoint = "http://localhost:3003/groups/user/davey"
+        let endpoint = API.baseURL + "/groups/user/davey"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -233,7 +233,7 @@ class GroupsAPI {
     //Function A7: Get Single Group by ID
     //Function A8: Get Group Users
     func getGroupUsers(groupID: String) async throws -> GroupUsersResponseModel {
-        let endpoint = "http://localhost:3003/group/users/\(groupID)"
+        let endpoint = API.baseURL + "/group/users/\(groupID)"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL

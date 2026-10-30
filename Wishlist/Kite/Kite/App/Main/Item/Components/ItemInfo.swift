@@ -25,19 +25,18 @@ final class ItemInfo: UIView {
     let productSummary = UIView()
 
     private let productImageView = UIImageView()
+    private let accentBar = UIView()
+    private let headerRule = UIView()
+    private let column = UIStackView()
     private let itemTitleLabel = UILabel()
+    private let metaRow = UIStackView()
     private let itemPriceLabel = UILabel()
-    private let itemDescriptionLabel = UILabel()
+    private let purchaseHolder = UIView()
     private let purchaseButton = UIButton(type: .system)
     private let linkButton = UIButton(type: .system)
-    private let textStack = UIStackView()
-    private let summaryRow = UIView()
+    private let overflowMenu = ItemOverflowMenu()
 
-    private var titleToButton: NSLayoutConstraint!
-    private var titleToEdge: NSLayoutConstraint!
-    private var linkTop: NSLayoutConstraint!
-    private var linkHeight: NSLayoutConstraint!
-    private var rowBottom: NSLayoutConstraint!
+    private var purchaseHeight: NSLayoutConstraint!
     private var linkURL: String?
 
     private var post: Post?
@@ -65,96 +64,124 @@ final class ItemInfo: UIView {
         productImageView.backgroundColor = .clear
         mediaRegion.addSubview(productImageView)
 
+        let imageTop = productImageView.topAnchor.constraint(equalTo: mediaRegion.topAnchor, constant: Layout.spacingS)
+        imageTop.priority = UILayoutPriority(999)
+
         productSummary.translatesAutoresizingMaskIntoConstraints = false
-        productSummary.backgroundColor = UIColor(hex: "#E6E6EA")
-        productSummary.layer.cornerRadius = 12
+        productSummary.backgroundColor = Colors.screenBackground
         productSummary.clipsToBounds = true
+
+        accentBar.translatesAutoresizingMaskIntoConstraints = false
+        accentBar.backgroundColor = Colors.primaryBlue
+        accentBar.layer.cornerRadius = 1.5
+        productSummary.addSubview(accentBar)
+
+        headerRule.translatesAutoresizingMaskIntoConstraints = false
+        headerRule.backgroundColor = Colors.primaryBlue
+        productSummary.addSubview(headerRule)
 
         itemTitleLabel.font = Fonts.itemNameFont
         itemTitleLabel.textColor = Colors.primaryText
-        itemTitleLabel.numberOfLines = 2
+        itemTitleLabel.numberOfLines = 1
         itemTitleLabel.lineBreakMode = .byTruncatingTail
 
-        itemPriceLabel.font = Fonts.regular14
-        itemPriceLabel.textColor = Colors.secondaryText
-        itemPriceLabel.numberOfLines = 1
-
-        itemDescriptionLabel.font = Fonts.itemDescriptionFont
-        itemDescriptionLabel.textColor = Colors.secondaryText
-        itemDescriptionLabel.numberOfLines = 0
-        itemDescriptionLabel.isHidden = true
-
-        textStack.axis = .vertical
-        textStack.alignment = .leading
-        textStack.spacing = Layout.spacingXS
-        textStack.translatesAutoresizingMaskIntoConstraints = false
-        textStack.addArrangedSubview(itemTitleLabel)
-        textStack.addArrangedSubview(itemPriceLabel)
-
-        summaryRow.translatesAutoresizingMaskIntoConstraints = false
-        productSummary.addSubview(summaryRow)
-        summaryRow.addSubview(textStack)
-
-        purchaseButton.translatesAutoresizingMaskIntoConstraints = false
-        purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
-        purchaseButton.setContentHuggingPriority(.required, for: .horizontal)
-        purchaseButton.setContentCompressionResistancePriority(.required, for: .horizontal)
-        summaryRow.addSubview(purchaseButton)
-
-        linkButton.translatesAutoresizingMaskIntoConstraints = false
         linkButton.tintColor = Colors.primaryBlue
         linkButton.setTitleColor(Colors.primaryBlue, for: .normal)
         linkButton.titleLabel?.font = Fonts.itemLinkFont
         linkButton.titleLabel?.lineBreakMode = .byTruncatingTail
         linkButton.contentHorizontalAlignment = .leading
         linkButton.titleLabel?.numberOfLines = 1
-        linkButton.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        linkButton.setContentHuggingPriority(.defaultLow, for: .vertical)
-        linkButton.setImage(UIImage(systemName: "link"), for: .normal)
-        linkButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6)
-        linkButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
         linkButton.addTarget(self, action: #selector(linkTapped), for: .touchUpInside)
+        linkButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        linkButton.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         linkButton.isHidden = true
-        productSummary.addSubview(linkButton)
 
-        titleToButton = textStack.trailingAnchor.constraint(equalTo: purchaseButton.leadingAnchor, constant: -Layout.spacingM)
-        titleToEdge = textStack.trailingAnchor.constraint(equalTo: summaryRow.trailingAnchor, constant: 0)
-        linkTop = linkButton.topAnchor.constraint(equalTo: summaryRow.bottomAnchor, constant: 0)
-        linkHeight = linkButton.heightAnchor.constraint(equalToConstant: 0)
-        rowBottom = summaryRow.bottomAnchor.constraint(equalTo: productSummary.bottomAnchor, constant: -Layout.spacingM)
-        rowBottom.isActive = true
+        itemPriceLabel.font = Fonts.regular14
+        itemPriceLabel.textColor = Colors.secondaryText
+        itemPriceLabel.numberOfLines = 1
+        itemPriceLabel.setContentHuggingPriority(.required, for: .horizontal)
+        itemPriceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        itemPriceLabel.isHidden = true
 
-        let textBottom = textStack.bottomAnchor.constraint(equalTo: summaryRow.bottomAnchor)
-        textBottom.priority = .defaultHigh
-        textBottom.isActive = true
+        let metaSpacer = UIView()
+        metaSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        metaSpacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        metaRow.axis = .horizontal
+        metaRow.alignment = .center
+        metaRow.spacing = Layout.spacingS
+        metaRow.addArrangedSubview(linkButton)
+        metaRow.addArrangedSubview(metaSpacer)
+        metaRow.addArrangedSubview(itemPriceLabel)
+        metaRow.isHidden = true
+
+        purchaseButton.translatesAutoresizingMaskIntoConstraints = false
+        purchaseButton.addTarget(self, action: #selector(purchaseTapped), for: .touchUpInside)
+        purchaseButton.setContentHuggingPriority(.required, for: .horizontal)
+        purchaseButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        purchaseHolder.translatesAutoresizingMaskIntoConstraints = false
+        purchaseHolder.addSubview(purchaseButton)
+        purchaseHolder.isHidden = true
+
+        purchaseHeight = purchaseButton.heightAnchor.constraint(equalToConstant: 44)
+        purchaseHeight.priority = UILayoutPriority(999)
+
+        column.axis = .vertical
+        column.alignment = .fill
+        column.spacing = Layout.spacingS
+        column.translatesAutoresizingMaskIntoConstraints = false
+        column.addArrangedSubview(itemTitleLabel)
+        column.addArrangedSubview(metaRow)
+        column.addArrangedSubview(purchaseHolder)
+        column.setCustomSpacing(2, after: itemTitleLabel)
+        productSummary.addSubview(column)
+        productSummary.addSubview(overflowMenu.button)
+
+        let menuHeight = overflowMenu.button.heightAnchor.constraint(equalToConstant: 44)
+        menuHeight.priority = UILayoutPriority(999)
+
+        let columnTop = column.topAnchor.constraint(equalTo: productSummary.topAnchor, constant: Layout.spacingM)
+        let columnBottom = column.bottomAnchor.constraint(equalTo: headerRule.topAnchor, constant: -Layout.spacingS)
+        let accentTop = accentBar.topAnchor.constraint(equalTo: column.topAnchor)
+        let accentBottom = accentBar.bottomAnchor.constraint(equalTo: column.bottomAnchor)
+        let ruleHeight = headerRule.heightAnchor.constraint(equalToConstant: 2)
+        columnTop.priority = UILayoutPriority(999)
+        columnBottom.priority = UILayoutPriority(999)
+        accentTop.priority = UILayoutPriority(999)
+        accentBottom.priority = UILayoutPriority(999)
+        ruleHeight.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
-            productImageView.topAnchor.constraint(equalTo: mediaRegion.topAnchor, constant: Layout.spacingS),
+            imageTop,
             productImageView.leadingAnchor.constraint(equalTo: mediaRegion.leadingAnchor, constant: Layout.spacingS),
             productImageView.trailingAnchor.constraint(equalTo: mediaRegion.trailingAnchor, constant: -Layout.spacingS),
             productImageView.bottomAnchor.constraint(equalTo: mediaRegion.bottomAnchor),
 
-            summaryRow.topAnchor.constraint(equalTo: productSummary.topAnchor, constant: Layout.spacingM),
-            summaryRow.leadingAnchor.constraint(equalTo: productSummary.leadingAnchor, constant: Layout.spacingM),
-            summaryRow.trailingAnchor.constraint(equalTo: productSummary.trailingAnchor, constant: -Layout.spacingM),
-            summaryRow.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+            accentBar.leadingAnchor.constraint(equalTo: productSummary.leadingAnchor, constant: Layout.spacingL),
+            accentBar.widthAnchor.constraint(equalToConstant: 3),
+            accentTop,
+            accentBottom,
 
-            textStack.topAnchor.constraint(equalTo: summaryRow.topAnchor),
-            textStack.leadingAnchor.constraint(equalTo: summaryRow.leadingAnchor),
-            textStack.bottomAnchor.constraint(lessThanOrEqualTo: summaryRow.bottomAnchor),
-            titleToButton,
+            column.leadingAnchor.constraint(equalTo: accentBar.trailingAnchor, constant: Layout.spacingS),
+            column.trailingAnchor.constraint(equalTo: overflowMenu.button.leadingAnchor),
+            columnTop,
+            columnBottom,
 
-            purchaseButton.trailingAnchor.constraint(equalTo: summaryRow.trailingAnchor),
-            purchaseButton.centerYAnchor.constraint(equalTo: textStack.centerYAnchor),
-            purchaseButton.heightAnchor.constraint(equalToConstant: 44),
-            purchaseButton.topAnchor.constraint(greaterThanOrEqualTo: summaryRow.topAnchor),
-            purchaseButton.bottomAnchor.constraint(lessThanOrEqualTo: summaryRow.bottomAnchor),
+            overflowMenu.button.topAnchor.constraint(equalTo: productSummary.topAnchor),
+            overflowMenu.button.trailingAnchor.constraint(equalTo: productSummary.trailingAnchor, constant: -Layout.spacingXS),
+            overflowMenu.button.widthAnchor.constraint(equalToConstant: 44),
+            menuHeight,
 
-            linkTop,
-            linkButton.leadingAnchor.constraint(equalTo: productSummary.leadingAnchor, constant: Layout.spacingM),
-            linkButton.trailingAnchor.constraint(equalTo: productSummary.trailingAnchor, constant: -Layout.spacingM),
-            linkButton.bottomAnchor.constraint(equalTo: productSummary.bottomAnchor, constant: -Layout.spacingM),
-            linkHeight
+            purchaseButton.leadingAnchor.constraint(equalTo: purchaseHolder.leadingAnchor),
+            purchaseButton.topAnchor.constraint(equalTo: purchaseHolder.topAnchor),
+            purchaseButton.bottomAnchor.constraint(equalTo: purchaseHolder.bottomAnchor),
+            purchaseButton.trailingAnchor.constraint(lessThanOrEqualTo: purchaseHolder.trailingAnchor),
+            purchaseHeight,
+
+            headerRule.leadingAnchor.constraint(equalTo: productSummary.leadingAnchor),
+            headerRule.trailingAnchor.constraint(equalTo: productSummary.trailingAnchor),
+            headerRule.bottomAnchor.constraint(equalTo: productSummary.bottomAnchor),
+            ruleHeight
         ])
     }
 
@@ -174,39 +201,63 @@ final class ItemInfo: UIView {
         post = nil
         productImageView.image = nil
         itemTitleLabel.text = nil
+        itemTitleLabel.isHidden = true
         itemPriceLabel.text = nil
-        itemDescriptionLabel.text = nil
+        itemPriceLabel.isHidden = true
         linkURL = nil
         linkButton.setTitle(nil, for: .normal)
         linkButton.isHidden = true
-        showLinkRow(false)
+        metaRow.isHidden = true
+        purchaseHolder.isHidden = true
+        overflowMenu.prepareForReuse()
+        mediaRegion.isHidden = false
+        productSummary.isHidden = false
     }
 
-    func configure(with post: Post, purchaseStyle: ItemPurchaseStyle) {
+    func configure(with post: Post, purchaseStyle: ItemPurchaseStyle, showsProduct: Bool = true) {
         self.post = post
+        overflowMenu.configure(with: post)
+
+        if !showsProduct {
+            productImageView.image = nil
+            itemTitleLabel.text = nil
+            itemTitleLabel.isHidden = true
+            itemPriceLabel.text = nil
+            itemPriceLabel.isHidden = true
+            linkURL = nil
+            linkButton.setTitle(nil, for: .normal)
+            linkButton.isHidden = true
+            metaRow.isHidden = true
+            purchaseHolder.isHidden = true
+            mediaRegion.isHidden = true
+            productSummary.isHidden = true
+            return
+        }
+
+        productSummary.isHidden = false
 
         if let image = post.postImageData, image.size.width > 0 {
             productImageView.image = image
+            mediaRegion.isHidden = false
         } else {
             productImageView.image = nil
         }
 
-        let name = post.itemName?.trimmingCharacters(in: .whitespacesAndNewlines)
-        itemTitleLabel.text = (name?.isEmpty == false) ? name : "Untitled"
-        productImageView.accessibilityLabel = itemTitleLabel.text
+        let name = post.itemName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        itemTitleLabel.text = name
+        itemTitleLabel.isHidden = name.isEmpty
+        productImageView.accessibilityLabel = name
 
         let price = post.itemPrice?.trimmingCharacters(in: .whitespacesAndNewlines)
-        itemPriceLabel.text = (price?.isEmpty == false) ? price : nil
-        itemPriceLabel.isHidden = itemPriceLabel.text == nil
+        let showPrice = price != nil && !isBlankPrice(price)
+        itemPriceLabel.text = showPrice ? price : nil
+        itemPriceLabel.isHidden = !showPrice
 
         let linkTitle = displayLinkTitle(name: post.itemLinkName, url: post.itemLink)
         linkURL = usableLink(post.itemLink)
         linkButton.setTitle(linkTitle, for: .normal)
         linkButton.isHidden = linkTitle == nil
-        showLinkRow(linkTitle != nil)
-
-        let description = post.itemDescription?.trimmingCharacters(in: .whitespacesAndNewlines)
-        itemDescriptionLabel.text = (description?.isEmpty == false) ? description : nil
+        metaRow.isHidden = linkTitle == nil && !showPrice
 
         applyPurchaseButtonState(
             purchaseButtonState(post: post, currentUser: PostDataController.shared.currentUser),
@@ -217,9 +268,8 @@ final class ItemInfo: UIView {
     private func applyPurchaseButtonState(_ state: PurchaseButtonState, purchaseStyle: ItemPurchaseStyle) {
         buttonState = state
         let showsButton = state != .hidden
-        purchaseButton.isHidden = !showsButton
-        titleToButton.isActive = showsButton
-        titleToEdge.isActive = !showsButton
+        purchaseHolder.isHidden = !showsButton
+        purchaseHeight.constant = showsButton ? 44 : 0
 
         switch state {
         case .hidden:
@@ -246,11 +296,14 @@ final class ItemInfo: UIView {
         }
     }
 
-    private func showLinkRow(_ show: Bool) {
-        linkTop.constant = show ? Layout.spacingS : 0
-        linkHeight.constant = show ? 32 : 0
-        linkButton.isHidden = !show
-        rowBottom.isActive = !show
+    private func isBlankPrice(_ price: String?) -> Bool {
+        let trimmed = price?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if trimmed.isEmpty { return true }
+        let digits = trimmed.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")
+        if let value = Double(digits) {
+            return value == 0
+        }
+        return false
     }
 
     private func usableLink(_ raw: String?) -> String? {

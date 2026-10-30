@@ -60,7 +60,7 @@ class PostsAPI {
         
             
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/text"
+        let endpoint = API.baseURL + "/post/text"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -118,7 +118,7 @@ class PostsAPI {
         
             
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/photo"
+        let endpoint = API.baseURL + "/post/photo"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -231,7 +231,7 @@ class PostsAPI {
         let itemCategory = "video_games"
         
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/post/item"
+        let endpoint = API.baseURL + "/post/item"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -388,9 +388,9 @@ class PostsAPI {
     func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
         //print("GET POSTS!!!")
         
-        //let endpoint = "http://localhost:3003/posts/group/72"
+        //let endpoint = API.baseURL + "/posts/group/72"
   
-        let endpoint = "http://localhost:3003/posts/group/\(groupID)"
+        let endpoint = API.baseURL + "/posts/group/\(groupID)"
         //print("URL \(endpoint)")
         
         guard let url = URL(string: endpoint) else {
@@ -426,7 +426,7 @@ class PostsAPI {
     func getItemsAPI(groupID: Int) async throws -> PostResponseModel {
         //print("GET ITEMS!!!")
         
-        let endpoint = "http://localhost:3003/items/group/\(groupID)"
+        let endpoint = API.baseURL + "/items/group/\(groupID)"
         //print("URL \(endpoint)")
         
         guard let url = URL(string: endpoint) else {
@@ -460,7 +460,7 @@ class PostsAPI {
 
     //Function B1b: Get Home Feed Posts (master_site = kite)
     func getHomePostsAPI() async throws -> PostResponseModel {
-        let endpoint = "http://localhost:3003/posts/home"
+        let endpoint = API.baseURL + "/posts/home"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -485,7 +485,7 @@ class PostsAPI {
 
     //Function B2b: Get All Items (global Home feed)
     func getAllItemsAPI() async throws -> PostResponseModel {
-        let endpoint = "http://localhost:3003/items"
+        let endpoint = API.baseURL + "/items"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -518,7 +518,7 @@ class PostsAPI {
     //FUNCTIONS C: All Functions Related to Post Actions
     //Function C1: Like a Post
     func likePostAPI(currentUser: String, postID: Int, groupID: Int) async throws -> LikePostResponseModel {
-        let endpoint = "http://localhost:3003/post/like"
+        let endpoint = API.baseURL + "/post/like"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -563,7 +563,7 @@ class PostsAPI {
 
     //Function C2: Unlike a Post
     func unlikePostAPI(currentUser: String, postID: Int, groupID: Int) async throws -> LikePostResponseModel {
-        let endpoint = "http://localhost:3003/post/unlike"
+        let endpoint = API.baseURL + "/post/unlike"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -608,7 +608,7 @@ class PostsAPI {
     
     //Function C5: Delete a Post
     func deletePostAPI(currentUser: String, postID: Int) async throws -> Bool {
-        let endpoint = "http://localhost:3003/post/delete/"
+        let endpoint = API.baseURL + "/post/delete/"
 
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -639,7 +639,7 @@ class PostsAPI {
     //FUNCTIONS D: All Functions Related to Items
     //Function D1: Purchase an Item
     func purchaseItemAPI(currentUser: String, postID: Int, itemID: Int, showPurchased: [String]) async throws -> PurchaseItemResponseModel {
-        let endpoint = "http://localhost:3003/items/purchase/add"
+        let endpoint = API.baseURL + "/items/purchase/add"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -683,7 +683,7 @@ class PostsAPI {
     
     //Function D2: Remove a Purchase for an Item
     func removeItemPurchaseAPI(currentUser: String, postID: Int, itemID: Int) async throws -> PurchaseItemResponseModel {
-        let endpoint = "http://localhost:3003/items/purchase/remove"
+        let endpoint = API.baseURL + "/items/purchase/remove"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -746,7 +746,7 @@ class PostsAPI {
  }
 
  func getPostsAPI(groupID: Int) async throws -> PostResponseModel {
-     let endpoint = "http://localhost:3003/posts/group/\(groupID)"
+     let endpoint = API.baseURL + "/posts/group/\(groupID)"
      
      guard let url = URL(string: endpoint) else {
          throw networkError.invalidURL

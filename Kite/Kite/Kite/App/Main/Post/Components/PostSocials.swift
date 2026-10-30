@@ -29,6 +29,7 @@ final class PostSocials: UIView {
     private let bookmarkImageView = UIImageView()
     private let likeButton = UIButton(type: .custom)
     private let likeCountLabel = UILabel()
+    private let commentCountLabel = UILabel()
     private let dotsStack = UIStackView()
     private var post: Post?
     private let iconSide: CGFloat = Layout.iconSize + 2
@@ -59,8 +60,9 @@ final class PostSocials: UIView {
         likeImageView.tintColor = .black
         likeImageView.contentMode = .scaleAspectFit
         likeImageView.isUserInteractionEnabled = false
-        commentImageView.image = UIImage(named: "comment")
+        commentImageView.image = UIImage(named: "Comment")
         commentImageView.contentMode = .scaleAspectFit
+        commentImageView.accessibilityLabel = "Comment"
         bookmarkImageView.image = UIImage(named: "bookmark")
         bookmarkImageView.contentMode = .scaleAspectFit
 
@@ -68,10 +70,14 @@ final class PostSocials: UIView {
         likeCountLabel.textColor = UIColor(hex: "#171717")
         likeCountLabel.text = "0"
 
+        commentCountLabel.font = Fonts.semibold14
+        commentCountLabel.textColor = UIColor(hex: "#171717")
+        commentCountLabel.text = "0"
+
         likeButton.backgroundColor = .clear
         likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
 
-        [likeImageView, likeCountLabel, commentImageView, likeButton].forEach {
+        [likeImageView, likeCountLabel, commentImageView, commentCountLabel, likeButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             socialIconsLeft.addSubview($0)
         }
@@ -93,7 +99,6 @@ final class PostSocials: UIView {
             socialIconsLeft.leadingAnchor.constraint(equalTo: leadingAnchor),
             socialIconsLeft.topAnchor.constraint(equalTo: topAnchor),
             socialIconsLeft.bottomAnchor.constraint(equalTo: bottomAnchor),
-            socialIconsLeft.widthAnchor.constraint(equalToConstant: 140),
 
             socialIconsMiddle.leadingAnchor.constraint(equalTo: socialIconsLeft.trailingAnchor),
             socialIconsMiddle.topAnchor.constraint(equalTo: topAnchor),
@@ -117,6 +122,10 @@ final class PostSocials: UIView {
             commentImageView.centerYAnchor.constraint(equalTo: likeImageView.centerYAnchor),
             commentImageView.widthAnchor.constraint(equalToConstant: iconSide),
             commentImageView.heightAnchor.constraint(equalToConstant: iconSide),
+
+            commentCountLabel.leadingAnchor.constraint(equalTo: commentImageView.trailingAnchor, constant: Layout.spacingXS),
+            commentCountLabel.centerYAnchor.constraint(equalTo: commentImageView.centerYAnchor),
+            commentCountLabel.trailingAnchor.constraint(equalTo: socialIconsLeft.trailingAnchor, constant: -Layout.spacingS),
 
             likeButton.topAnchor.constraint(equalTo: likeImageView.topAnchor),
             likeButton.leadingAnchor.constraint(equalTo: likeImageView.leadingAnchor),
@@ -164,6 +173,17 @@ final class PostSocials: UIView {
             likeImageView.tintColor = .black
         }
         likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"
+
+        let commentCount = post.commentsArray?.count ?? 0
+        commentCountLabel.text = "\(commentCount)"
+        if commentCount > 1 {
+            let symbol = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+            commentImageView.image = UIImage(systemName: "bubble.fill", withConfiguration: symbol)
+            commentImageView.tintColor = UIColor(hex: "#E0A100")
+        } else {
+            commentImageView.image = UIImage(named: "Comment")
+            commentImageView.tintColor = .black
+        }
     }
 
     private func rebuildDots() {

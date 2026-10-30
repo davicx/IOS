@@ -43,7 +43,11 @@ final class ItemBody: UIView {
     }
 
     //FUNCTIONS
-    func configure(with post: Post) {
-        itemCaption.configure(with: post)
+    func prepareForReuse() {
+        itemCaption.prepareForReuse()
+    }
+
+    func configure(with post: Post, simple: Bool = false, showsMenu: Bool = true, showsComments: Bool = true) {
+        itemCaption.configure(with: post, simple: simple, showsMenu: showsMenu, showsComments: showsComments)
     }
 }

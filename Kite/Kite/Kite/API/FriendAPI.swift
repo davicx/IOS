@@ -39,7 +39,7 @@ class FriendAPI {
     //FUNCTIONS A: All Functions Related to Friend Actions
     //Function A1: Add Friend
     func addFriend(masterSite: String, currentUser: String, addFriendName: String) async throws -> AddFriendResponseModel {
-        let endpoint = "http://localhost:3003/friend/request/"
+        let endpoint = API.baseURL + "/friend/request/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -113,7 +113,7 @@ class FriendAPI {
 
     //Function A2: Remove Friend
     func removeFriend(masterSite: String, currentUser: String, removeFriendName: String) async throws -> RemoveFriendResponseModel {
-        let endpoint = "http://localhost:3003/friend/remove/"
+        let endpoint = API.baseURL + "/friend/remove/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -181,7 +181,7 @@ class FriendAPI {
 
     //Function A3: Accept Friend Invite
     func acceptFriendInvite(masterSite: String, currentUser: String, friendName: String) async throws -> AcceptFriendResponseModel {
-        let endpoint = "http://localhost:3003/friend/accept/"
+        let endpoint = API.baseURL + "/friend/accept/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -250,7 +250,7 @@ class FriendAPI {
     
     //Function A4: Decline Friend Invite
     func declineFriendInvite(masterSite: String, currentUser: String, friendName: String) async throws -> DeclineFriendResponseModel {
-        let endpoint = "http://localhost:3003/friend/decline/"
+        let endpoint = API.baseURL + "/friend/decline/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -306,7 +306,7 @@ class FriendAPI {
     
     //Function A5: Cancel Friend Request
     func cancelFriendRequest(masterSite: String, currentUser: String, friendName: String) async throws -> CancelFriendRequestResponseModel {
-        let endpoint = "http://localhost:3003/friend/cancel/"
+        let endpoint = API.baseURL + "/friend/cancel/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -364,7 +364,7 @@ class FriendAPI {
     //FUNCTIONS B: All Functions Related Friend Information
     //Function B1: Get a List of Someone's Friends with Friendship Status
     func getSpecificFriendData(otherUser: String, currentUser: String) async throws -> FriendListResponseModel {
-        let endpoint = "http://localhost:3003/friend/\(otherUser)/user/\(currentUser)"
+        let endpoint = API.baseURL + "/friend/\(otherUser)/user/\(currentUser)"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
@@ -409,7 +409,7 @@ class FriendAPI {
     
     //Function B2: Get the Current Users Friends
     func getAllCurrentUserFriends(currentUser: String) async throws -> FriendListResponseModel {
-        let endpoint = "http://localhost:3003/friends/all/" + currentUser
+        let endpoint = API.baseURL + "/friends/all/" + currentUser
         
         //printHeader(headerMessage: "PROFILE API - getAllCurrentUserFriends")
         
@@ -458,8 +458,8 @@ class FriendAPI {
     
     //Function B3: Get Another Users Friends
     func getOtherUserFriends(otherUser: String, currentUser: String) async throws -> FriendListResponseModel {
-        //let endpoint = "http://localhost:3003/friends/all/" + currentUser
-        let endpoint = "http://localhost:3003/friend/" + otherUser + "/user/" + currentUser
+        //let endpoint = API.baseURL + "/friends/all/" + currentUser
+        let endpoint = API.baseURL + "/friend/" + otherUser + "/user/" + currentUser
  
         printHeader(headerMessage: "PROFILE API - getOtherUserFriends")
         
@@ -511,7 +511,7 @@ class FriendAPI {
         print("ProfileAPI updateFullUserProfileAPI")
         
         //STEP 1: Create the URL
-        let endpoint = "http://localhost:3003/profile/full/update/"
+        let endpoint = API.baseURL + "/profile/full/update/"
         
         guard let url = URL(string: endpoint) else {
             throw networkError.invalidURL
