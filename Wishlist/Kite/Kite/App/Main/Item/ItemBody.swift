@@ -43,6 +43,11 @@ final class ItemBody: UIView {
     }
 
     //FUNCTIONS
+    func applyMidnight(_ on: Bool) {
+        backgroundColor = on ? MidnightColors.cardBackground : Colors.screenBackground
+        itemCaption.applyMidnight(on)
+    }
+
     func prepareForReuse() {
         itemCaption.prepareForReuse()
     }

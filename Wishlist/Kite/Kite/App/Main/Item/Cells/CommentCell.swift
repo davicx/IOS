@@ -57,6 +57,25 @@ final class CommentCell: UITableViewCell {
 
         setupCommentViews()
         setupDeleteMenu()
+        if Appearance.useMidnight {
+            applyMidnightColors()
+        }
+    }
+
+    private func applyMidnightColors() {
+        let card = MidnightColors.cardBackground
+        backgroundColor = card
+        contentView.backgroundColor = card
+        userImageArea.backgroundColor = card
+        commentHeaderView.backgroundColor = card
+        commentBodyView.backgroundColor = card
+        commentFooterView.backgroundColor = card
+        userNameLabel.textColor = MidnightColors.primaryText
+        postedAtLabel.textColor = MidnightColors.secondaryText
+        commentBodyLabel.textColor = MidnightColors.primaryText
+        likeCountLabel.textColor = MidnightColors.secondaryText
+        menuButton.setImage(UIImage(named: "menu-dots-gray")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        menuButton.tintColor = MidnightColors.icon
     }
 
     required init?(coder: NSCoder) {
@@ -314,9 +333,21 @@ final class CommentCell: UITableViewCell {
 
         let likeCount = comment.commentLikeCount ?? comment.commentLikes?.count ?? 0
         likeCountLabel.text = "\(likeCount)"
-        likeImageView.image = (comment.commentLikedByCurrentUser == true)
-            ? (UIImage(named: "liked") ?? UIImage(systemName: "heart.fill"))
-            : (UIImage(named: "like") ?? UIImage(systemName: "heart"))
+        let liked = comment.commentLikedByCurrentUser == true
+        if Appearance.useMidnight {
+            if liked {
+                likeImageView.image = UIImage(systemName: "heart.fill")
+                likeImageView.tintColor = MidnightColors.primaryAction
+            } else {
+                likeImageView.image = (UIImage(named: "like") ?? UIImage(systemName: "heart"))?.withRenderingMode(.alwaysTemplate)
+                likeImageView.tintColor = MidnightColors.icon
+            }
+        } else {
+            likeImageView.tintColor = nil
+            likeImageView.image = liked
+                ? (UIImage(named: "liked") ?? UIImage(systemName: "heart.fill"))
+                : (UIImage(named: "like") ?? UIImage(systemName: "heart"))
+        }
 
         let author = comment.commentFrom ?? comment.userName ?? ""
         let currentUser = postDataController.currentUser

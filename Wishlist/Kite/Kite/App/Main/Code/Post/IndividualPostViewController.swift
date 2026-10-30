@@ -42,6 +42,10 @@ class IndividualPostViewController: UIViewController {
         hidesBottomBarWhenPushed = true
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        Appearance.useMidnight ? .lightContent : .default
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNewComment()
@@ -59,7 +63,16 @@ class IndividualPostViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        applyMidnightChrome()
         postDataController.currentUserOwnsGroupForDisplay = currentUserOwnsGroup
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if Appearance.useMidnight {
+            navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.tintColor = Colors.primaryBlue
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -117,9 +130,12 @@ class IndividualPostViewController: UIViewController {
         individualPostTableView.rowHeight = UITableView.automaticDimension
         individualPostTableView.separatorStyle = .none
         individualPostTableView.sectionHeaderTopPadding = 0
-        individualPostTableView.backgroundColor = Colors.screenBackground
-        view.backgroundColor = Colors.screenBackground
-        
+        let page = Appearance.useMidnight ? MidnightColors.screenBackground : Colors.screenBackground
+        individualPostTableView.backgroundColor = page
+        individualPostTableView.indicatorStyle = Appearance.useMidnight ? .white : .default
+        view.backgroundColor = page
+        applyMidnightChrome()
+
         view.addSubview(individualPostTableView)
 
         NSLayoutConstraint.activate([
@@ -128,8 +144,16 @@ class IndividualPostViewController: UIViewController {
             individualPostTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             individualPostTableView.bottomAnchor.constraint(equalTo: makeComment.topAnchor)
         ])
-        
+
         view.bringSubviewToFront(makeComment)
+    }
+
+    private func applyMidnightChrome() {
+        guard Appearance.useMidnight else { return }
+        Appearance.applyNavigationBar(to: navigationItem)
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.tintColor = MidnightColors.icon
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     //ACTIONS
@@ -206,6 +230,7 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
             let postCell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
             postCell.purchaseStyle = .pinkFull
             postCell.showsCommentsLink = false
+            postCell.useMidnightTheme = Appearance.useMidnight
             if let post {
                 postCell.configure(with: post)
             }
@@ -221,12 +246,12 @@ extension IndividualPostViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 1 else { return nil }
         let header = UIView()
-        header.backgroundColor = Colors.screenBackground
+        header.backgroundColor = Appearance.useMidnight ? MidnightColors.cardBackground : Colors.screenBackground
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = "Comments"
         title.font = Fonts.semibold16
-        title.textColor = Colors.primaryText
+        title.textColor = Appearance.useMidnight ? MidnightColors.primaryText : Colors.primaryText
         header.addSubview(title)
         NSLayoutConstraint.activate([
             title.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: Layout.spacingM),

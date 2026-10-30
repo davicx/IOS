@@ -78,6 +78,17 @@ final class MakeComment: UIView {
         setupSendButton()
         setupLayout()
         setupTapToFocusComment()
+        if Appearance.useMidnight {
+            backgroundColor = MidnightColors.screenBackground
+            divider.backgroundColor = MidnightColors.divider
+            textView.backgroundColor = MidnightColors.raisedSurface
+            textView.textColor = MidnightColors.primaryText
+            textView.keyboardAppearance = .dark
+            textView.layer.borderWidth = 1
+            textView.layer.borderColor = MidnightColors.border.cgColor
+            placeholderLabel.textColor = MidnightColors.placeholderText
+            sendButton.setTitleColor(MidnightColors.primaryAction, for: .normal)
+        }
     }
 
     /// Focuses the comment field (e.g. from the view controller).

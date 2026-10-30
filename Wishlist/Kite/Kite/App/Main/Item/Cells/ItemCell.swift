@@ -33,6 +33,12 @@ final class ItemCell: UITableViewCell {
 
     var purchaseStyle: ItemPurchaseStyle = .pinkOutline
     var showsCommentsLink = true
+    var useMidnightTheme = false {
+        didSet {
+            guard oldValue != useMidnightTheme else { return }
+            applyCardStyle()
+        }
+    }
     var usesFeedCard = false {
         didSet {
             guard oldValue != usesFeedCard else { return }
@@ -113,21 +119,33 @@ final class ItemCell: UITableViewCell {
     }
 
     private func applyCardStyle() {
+        let card = useMidnightTheme ? MidnightColors.cardBackground : Colors.screenBackground
+        let page = useMidnightTheme ? MidnightColors.screenBackground : Colors.screenBackground
+        itemHolder.backgroundColor = card
+        divider.backgroundColor = useMidnightTheme ? MidnightColors.divider : UIColor(hex: "#B0B4BC")
+        itemHolder.layer.shadowOpacity = 0
+        itemInfo.applyMidnight(useMidnightTheme)
+        itemFooter.applyMidnight(useMidnightTheme)
+        itemBody.applyMidnight(useMidnightTheme)
+
         if usesFeedCard {
             backgroundColor = .clear
             contentView.backgroundColor = .clear
             itemHolder.layer.cornerRadius = 16
             itemHolder.layer.masksToBounds = true
+            itemHolder.layer.borderWidth = useMidnightTheme ? 1 : 0
+            itemHolder.layer.borderColor = MidnightColors.border.cgColor
             divider.isHidden = true
             dividerHeight.constant = 0
             holderLeading.constant = 8
             holderTrailing.constant = -8
             holderBottom.constant = -12
         } else {
-            backgroundColor = Colors.screenBackground
-            contentView.backgroundColor = Colors.screenBackground
+            backgroundColor = page
+            contentView.backgroundColor = page
             itemHolder.layer.cornerRadius = 0
             itemHolder.layer.masksToBounds = false
+            itemHolder.layer.borderWidth = 0
             divider.isHidden = false
             dividerHeight.constant = 1 / UIScreen.main.scale
             holderLeading.constant = 0
@@ -197,6 +215,7 @@ final class ItemCell: UITableViewCell {
         super.prepareForReuse()
         purchaseStyle = .pinkOutline
         showsCommentsLink = true
+        useMidnightTheme = false
         usesFeedCard = false
         applyItemLayout(showDetails: true, showImage: true)
         itemInfo.prepareForReuse()

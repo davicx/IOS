@@ -8,6 +8,46 @@
 import UIKit
 
 
+// Home feed and the post screen.
+// Use midnight:
+enum Appearance {
+    static let useMidnight = true
+    // Go back to normal: comment the line above and uncomment this one.
+    // static let useMidnight = false
+
+    static func applyNavigationBar(to item: UINavigationItem) {
+        guard useMidnight else { return }
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = MidnightColors.screenBackground
+        appearance.shadowColor = MidnightColors.divider
+        appearance.titleTextAttributes = [.foregroundColor: MidnightColors.primaryText]
+        appearance.largeTitleTextAttributes = [.foregroundColor: MidnightColors.primaryText]
+        item.standardAppearance = appearance
+        item.scrollEdgeAppearance = appearance
+        item.compactAppearance = appearance
+        item.compactScrollEdgeAppearance = appearance
+    }
+}
+
+enum MidnightColors {
+    static let screenBackground = UIColor(hex: "#061327")
+    static let cardBackground   = UIColor(hex: "#0C1E38")
+    static let raisedSurface    = UIColor(hex: "#122846")
+
+    static let border           = UIColor(hex: "#233F63")
+    static let divider          = UIColor(hex: "#1A304D")
+
+    static let primaryText      = UIColor(hex: "#F4F7FC")
+    static let secondaryText    = UIColor(hex: "#9AAEC9")
+    static let placeholderText  = UIColor(hex: "#7F94B0")
+
+    static let link             = UIColor(hex: "#00CBE8")
+    static let primaryAction    = UIColor(hex: "#FF4F91")
+    static let icon             = UIColor(hex: "#D6E2F3")
+}
+
+
 class Colors {
 
     //APP MAIN

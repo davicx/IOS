@@ -28,6 +28,7 @@ final class ItemSocials: UIView {
     private let actionsDivider = UIView()
     private let socialDivider = UIView()
     private let iconSide: CGFloat = Layout.iconSize + 2
+    private var midnight = false
 
     //MANAGE VIEWS
     override init(frame: CGRect) {
@@ -136,6 +137,26 @@ final class ItemSocials: UIView {
         ])
     }
 
+    func applyMidnight(_ on: Bool) {
+        midnight = on
+        backgroundColor = on ? MidnightColors.cardBackground : Colors.screenBackground
+        likeCountLabel.textColor = on ? MidnightColors.primaryText : Colors.primaryText
+        let line = on ? MidnightColors.divider : UIColor(hex: "#B0B4BC")
+        actionsDivider.backgroundColor = line
+        socialDivider.backgroundColor = line
+        if on {
+            commentImageView.image = UIImage(named: "comment")?.withRenderingMode(.alwaysTemplate)
+            commentImageView.tintColor = MidnightColors.icon
+            bookmarkImageView.image = UIImage(named: "bookmark")?.withRenderingMode(.alwaysTemplate)
+            bookmarkImageView.tintColor = MidnightColors.icon
+        } else {
+            commentImageView.image = UIImage(named: "comment")
+            commentImageView.tintColor = nil
+            bookmarkImageView.image = UIImage(named: "bookmark")
+            bookmarkImageView.tintColor = nil
+        }
+    }
+
     //ACTIONS
     @objc private func likeTapped() {
         guard let post else { return }
@@ -156,10 +177,10 @@ final class ItemSocials: UIView {
         if liked {
             let symbol = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
             likeImageView.image = UIImage(systemName: "heart.fill", withConfiguration: symbol)
-            likeImageView.tintColor = UIColor(hex: "#F9595F")
+            likeImageView.tintColor = midnight ? MidnightColors.primaryAction : UIColor(hex: "#F9595F")
         } else {
             likeImageView.image = UIImage(named: "like")?.withRenderingMode(.alwaysTemplate)
-            likeImageView.tintColor = .black
+            likeImageView.tintColor = midnight ? MidnightColors.icon : .black
         }
 
         likeCountLabel.text = "\(post.simpleLikesArray?.count ?? 0)"

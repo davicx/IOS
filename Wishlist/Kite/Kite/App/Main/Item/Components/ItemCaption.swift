@@ -23,6 +23,7 @@ final class ItemCaption: UIView {
     private let simpleTextView = UITextView()
     private let linkButton = UIButton(type: .system)
     private let commentsLabel = UILabel()
+    private var midnight = false
     private var textTop: NSLayoutConstraint!
     private var commentsTop: NSLayoutConstraint!
     private var commentsHeight: NSLayoutConstraint!
@@ -110,6 +111,22 @@ final class ItemCaption: UIView {
         ])
     }
 
+    func applyMidnight(_ on: Bool) {
+        midnight = on
+        backgroundColor = on ? MidnightColors.cardBackground : Colors.screenBackground
+        captionLabel.textColor = on ? MidnightColors.primaryText : Colors.primaryText
+        simpleTextView.textColor = on ? MidnightColors.primaryText : Colors.primaryText
+        let link = on ? MidnightColors.link : Colors.primaryBlue
+        simpleTextView.linkTextAttributes = [
+            .foregroundColor: link,
+            .underlineStyle: 0
+        ]
+        linkButton.setTitleColor(link, for: .normal)
+        linkButton.tintColor = link
+        commentsLabel.textColor = on ? MidnightColors.secondaryText : Colors.secondaryText
+        author.applyMidnight(on)
+    }
+
     //FUNCTIONS
     func prepareForReuse() {
         author.prepareForReuse()
@@ -178,7 +195,7 @@ final class ItemCaption: UIView {
             string: caption,
             attributes: [
                 .font: Fonts.regular16,
-                .foregroundColor: Colors.primaryText,
+                .foregroundColor: midnight ? MidnightColors.primaryText : Colors.primaryText,
                 .paragraphStyle: paragraph
             ]
         )
@@ -189,7 +206,7 @@ final class ItemCaption: UIView {
         detector.enumerateMatches(in: caption, options: [], range: range) { match, _, _ in
             guard let match, let url = match.url else { return }
             result.addAttribute(.link, value: url, range: match.range)
-            result.addAttribute(.foregroundColor, value: Colors.primaryBlue, range: match.range)
+            result.addAttribute(.foregroundColor, value: midnight ? MidnightColors.link : Colors.primaryBlue, range: match.range)
         }
         return result
     }

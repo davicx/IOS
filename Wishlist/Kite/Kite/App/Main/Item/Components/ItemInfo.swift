@@ -41,6 +41,7 @@ final class ItemInfo: UIView {
 
     private var post: Post?
     private var buttonState: PurchaseButtonState = .purchase
+    private var midnight = false
     var onPurchaseTapped: ((Post, PurchaseButtonState) -> Void)?
 
     //MANAGE VIEWS
@@ -185,6 +186,21 @@ final class ItemInfo: UIView {
         ])
     }
 
+    func applyMidnight(_ on: Bool) {
+        midnight = on
+        let card = on ? MidnightColors.cardBackground : Colors.screenBackground
+        let accent = on ? MidnightColors.link : Colors.primaryBlue
+        mediaRegion.backgroundColor = card
+        productSummary.backgroundColor = card
+        accentBar.backgroundColor = accent
+        headerRule.backgroundColor = accent
+        itemTitleLabel.textColor = on ? MidnightColors.primaryText : Colors.primaryText
+        itemPriceLabel.textColor = on ? MidnightColors.secondaryText : Colors.secondaryText
+        linkButton.tintColor = accent
+        linkButton.setTitleColor(accent, for: .normal)
+        overflowMenu.applyMidnight(on)
+    }
+
     //ACTIONS
     @objc private func purchaseTapped() {
         guard let post else { return }
@@ -278,19 +294,38 @@ final class ItemInfo: UIView {
         case .purchase:
             if purchaseStyle == .pinkFull {
                 Buttons.pinkFullStyle(button: purchaseButton)
+                if midnight {
+                    purchaseButton.backgroundColor = MidnightColors.primaryAction
+                }
             } else {
                 Buttons.pinkOutlineStyle(button: purchaseButton)
+                if midnight {
+                    purchaseButton.backgroundColor = .clear
+                    purchaseButton.setTitleColor(MidnightColors.primaryAction, for: .normal)
+                    purchaseButton.tintColor = MidnightColors.primaryAction
+                    purchaseButton.layer.borderColor = MidnightColors.primaryAction.cgColor
+                }
             }
             purchaseButton.setTitle("Purchase", for: .normal)
             purchaseButton.setImage(nil, for: .normal)
 
         case .youPurchased:
             Buttons.buttonGrayStyle(button: purchaseButton)
+            if midnight {
+                purchaseButton.backgroundColor = MidnightColors.raisedSurface
+                purchaseButton.setTitleColor(MidnightColors.secondaryText, for: .normal)
+                purchaseButton.tintColor = MidnightColors.secondaryText
+            }
             purchaseButton.setTitle("You Purchased", for: .normal)
             purchaseButton.setImage(nil, for: .normal)
 
         case .purchased:
             Buttons.buttonGrayStyle(button: purchaseButton)
+            if midnight {
+                purchaseButton.backgroundColor = MidnightColors.raisedSurface
+                purchaseButton.setTitleColor(MidnightColors.secondaryText, for: .normal)
+                purchaseButton.tintColor = MidnightColors.secondaryText
+            }
             purchaseButton.setTitle("Purchased", for: .normal)
             purchaseButton.setImage(nil, for: .normal)
         }

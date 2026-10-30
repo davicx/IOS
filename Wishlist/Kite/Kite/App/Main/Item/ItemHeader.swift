@@ -106,6 +106,13 @@ final class ItemHeader: UIView {
         ])
     }
 
+    func applyMidnight(_ on: Bool) {
+        backgroundColor = on ? MidnightColors.cardBackground : Colors.screenBackground
+        usernameLabel.textColor = on ? MidnightColors.primaryText : Colors.primaryText
+        postedAtLabel.textColor = on ? MidnightColors.secondaryText : Colors.secondaryText
+        overflowMenu.applyMidnight(on)
+    }
+
     func setMenuHidden(_ hidden: Bool) {
         overflowMenu.button.isHidden = hidden
         if hidden {
@@ -178,6 +185,10 @@ final class ItemOverflowMenu {
         button.accessibilityLabel = "More"
         button.showsMenuAsPrimaryAction = true
         updateMenu()
+    }
+
+    func applyMidnight(_ on: Bool) {
+        button.tintColor = on ? MidnightColors.icon : Colors.primaryText
     }
 
     func prepareForReuse() {

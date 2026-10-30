@@ -43,6 +43,11 @@ final class ItemFooter: UIView {
     }
 
     //FUNCTIONS
+    func applyMidnight(_ on: Bool) {
+        backgroundColor = on ? MidnightColors.cardBackground : Colors.screenBackground
+        itemSocials.applyMidnight(on)
+    }
+
     func configure(with post: Post) {
         itemSocials.configure(with: post)
     }

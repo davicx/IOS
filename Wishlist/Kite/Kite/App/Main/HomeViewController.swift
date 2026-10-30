@@ -80,8 +80,13 @@ class HomeViewController: UIViewController {
         setupTableView()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        Appearance.useMidnight ? .lightContent : .default
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        applyMidnightChrome()
         // Refresh table view to ensure cells show latest data from PostDataController
         // This is important when returning from other screens where likes may have changed
         postsTableView.reloadData()
@@ -96,6 +101,10 @@ class HomeViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        if Appearance.useMidnight {
+            navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.tintColor = Colors.primaryBlue
+        }
         pollingManager.stopPolling() // Stop polling when view goes away
     }
     
@@ -155,8 +164,19 @@ class HomeViewController: UIViewController {
         postsTableView.register(ItemCell.self, forCellReuseIdentifier: "ItemCell")
         postsTableView.rowHeight = UITableView.automaticDimension
         postsTableView.separatorStyle = .none
-        postsTableView.backgroundColor = Colors.feedBackground
-        view.backgroundColor = Colors.feedBackground
+        let feedColor = Appearance.useMidnight ? MidnightColors.screenBackground : Colors.feedBackground
+        postsTableView.backgroundColor = feedColor
+        postsTableView.indicatorStyle = Appearance.useMidnight ? .white : .default
+        view.backgroundColor = feedColor
+        applyMidnightChrome()
+    }
+
+    private func applyMidnightChrome() {
+        guard Appearance.useMidnight else { return }
+        Appearance.applyNavigationBar(to: navigationItem)
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.tintColor = MidnightColors.icon
+        setNeedsStatusBarAppearanceUpdate()
     }
 
 
@@ -208,6 +228,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
          let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
          let post = postDataController.getHomeFeedPosts()[indexPath.row]
          cell.usesFeedCard = true
+         cell.useMidnightTheme = Appearance.useMidnight
          cell.configure(with: post)
          return cell
      }
